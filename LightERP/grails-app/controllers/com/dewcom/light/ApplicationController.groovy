@@ -1,4 +1,4 @@
-package lighterp
+package com.dewcom.light
 
 import grails.core.GrailsApplication
 import grails.util.Environment

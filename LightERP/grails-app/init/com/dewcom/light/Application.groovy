@@ -1,4 +1,4 @@
-package lighterp
+package com.dewcom.light
 
 import grails.boot.GrailsApp
 import grails.boot.config.GrailsAutoConfiguration
