@@ -20,8 +20,8 @@
             'app.core',
             'app.routes',
             'app.sidebar',
-            'app.navsearch',
-            'app.preloader',
+            //'app.navsearch',
+            //'app.preloader',
             'app.loadingbar',
             'app.translate',
             'app.settings',
@@ -674,7 +674,7 @@
         $locationProvider.html5Mode(false);
 
         // defaults to dashboard
-        $urlRouterProvider.otherwise('/app/singleview');
+        $urlRouterProvider.otherwise('/app/client');
 
         // 
         // Application Routes
@@ -686,11 +686,26 @@
               templateUrl: helper.basepath('app.html'),
               resolve: helper.resolveFor('modernizr', 'icons')
           })
-          .state('app.singleview', {
-              url: '/singleview',
-              title: 'Single View',
-              templateUrl: helper.basepath('singleview.html')
-          })
+            .state('app.client', {
+                url: '/client',
+                title: 'Clientes',
+                templateUrl: helper.basepath('client.html')
+            })
+            .state('app.agent', {
+                url: '/agent',
+                title: 'Agentes',
+                templateUrl: helper.basepath('agent.html')
+            })
+            .state('app.supplier', {
+                url: '/supplier',
+                title: 'Proveedores',
+                templateUrl: helper.basepath('supplier.html')
+            })
+            .state('app.contact', {
+                url: '/contact',
+                title: 'Contactos',
+                templateUrl: helper.basepath('contact.html')
+            })
           .state('app.submenu', {
               url: '/submenu',
               title: 'Submenu',
@@ -747,8 +762,8 @@
       // Global Settings
       // -----------------------------------
       $rootScope.app = {
-        name: 'Angle',
-        description: 'Angular Bootstrap Admin Template',
+        name: 'Light-ERP',
+        description: 'Sistema administrativo',
         year: ((new Date()).getFullYear()),
         layout: {
           isFixed: true,
@@ -1168,7 +1183,7 @@
           suffix : '.json'
       });
 
-      $translateProvider.preferredLanguage('en');
+      $translateProvider.preferredLanguage('es');
       $translateProvider.useLocalStorage();
       $translateProvider.usePostCompiling(true);
       $translateProvider.useSanitizeValueStrategy('sanitizeParameters');

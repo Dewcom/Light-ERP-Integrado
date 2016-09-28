@@ -5,21 +5,27 @@
     "translate": "sidebar.heading.HEADER"
   },
   {
-    "text": "Single View",
-    "sref": "app.singleview",
+    "text": "Clientes",
+    "sref": "app.client",
     "icon": "fa fa-file-o",
-    "translate": "sidebar.nav.SINGLEVIEW"
+    "translate": "sidebar.nav.CLIENT"
   },
   {
-    "text": "Menu",
-    "sref": "#",
-    "icon": "icon-folder",
-    "submenu": [
-      { "text": "Sub Menu", 
-        "sref": "app.submenu", 
-        "translate": "sidebar.nav.menu.SUBMENU" 
-      }    
-    ],
-    "translate": "sidebar.nav.menu.MENU"
+    "text": "Agentes",
+    "sref": "app.agent",
+    "icon": "fa fa-file-o",
+    "translate": "sidebar.nav.AGENT"
+  },
+  {
+    "text": "Proveedor",
+    "sref": "app.supplier",
+    "icon": "fa fa-file-o",
+    "translate": "sidebar.nav.SUPPLIER"
+  },
+  {
+    "text": "Contacto",
+    "sref": "app.contact",
+    "icon": "fa fa-file-o",
+    "translate": "sidebar.nav.CONTACTO"
   }
 ]

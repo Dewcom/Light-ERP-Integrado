@@ -13,7 +13,10 @@
       "HEADER": "Main Navigation"
     },
     "nav": {
-      "SINGLEVIEW": "Single View",
+      "CLIENT": "Clientes",
+      "AGENT": "Agentes",
+      "SUPPLIER": "Proveedores",
+      "CONTACTO": "Contacto",
       "menu": {
         "MENU": "Menu",
         "SUBMENU": "Sub Menu"
