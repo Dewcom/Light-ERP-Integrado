@@ -1,0 +1,64 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div ng-controller="DataTableController as table1">
+            <form ng-submit="table1.addPerson()" class="form-inline">
+                <table datatable="ng" dt-options="table1.dtOptions" dt-column-defs="table1.dtColumnDefs" class="row-border hover">
+                    <thead>
+                    <tr>
+                        <th>
+                            <div class="form-group">
+                                <label>
+                                    <input type="number" name="id" ng-model="table1.person2Add.id" value="" class="form-control" />
+                                </label>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="form-group">
+                                <label>
+                                    <input type="text" name="firstName" ng-model="table1.person2Add.firstName" value="" class="form-control" />
+                                </label>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="form-group">
+                                <label>
+                                    <input type="text" name="lastName" ng-model="table1.person2Add.lastName" value="" class="form-control" />
+                                </label>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-labeled btn-success">
+                              <span class="btn-label">
+                                 <em class="fa fa-plus"></em>
+                              </span>Add</button>
+                            </div>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>Hero ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="hero in table1.heroes">
+                        <td>{{ hero.id }}</td>
+                        <td>{{ hero.firstName }}</td>
+                        <td>{{ hero.lastName }}</td>
+                        <td>
+                            <button type="button" ng-click="table1.modifyPerson($index)" class="btn btn-sm btn-warning">
+                                <em class="fa fa-edit"></em>
+                            </button>
+                            <button type="button" ng-click="table1.removePerson($index)" class="btn btn-sm btn-danger">
+                                <em class="fa fa-trash-o"></em>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
