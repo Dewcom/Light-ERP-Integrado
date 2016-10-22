@@ -17,6 +17,8 @@
 
     angular
         .module('angle', [
+            'app.services',
+            'app.pages',
             'app.core',
             'app.routes',
             'app.sidebar',
@@ -55,6 +57,22 @@
             'ui.utils'
         ]);
 })();
+
+(function() {
+    'use strict';
+
+    angular
+        .module('app.services', []);
+})();
+
+(function() {
+    'use strict';
+
+    angular
+        .module('app.pages', []);
+})();
+
+
 (function() {
     'use strict';
 
@@ -269,6 +287,17 @@
           // Save the route title
           $rootScope.currTitle = $state.current.title;
         });
+
+       $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+    var requireLogin = toState.data != undefined ? toState.data.requireLogin : false;
+    console.log('este mae ocupa login'+ requireLogin);
+      console.log('nombre state'+ toState.name);
+
+    //if (requireLogin && typeof $rootScope.currentUser === 'undefined') {
+    //  event.preventDefault();
+      // get me a login modal!
+   // }
+  });
 
       // Load a title dynamically
       $rootScope.currTitle = $state.current.title;
@@ -674,7 +703,7 @@
         $locationProvider.html5Mode(false);
 
         // defaults to dashboard
-        $urlRouterProvider.otherwise('/app/client');
+        $urlRouterProvider.otherwise('/page/login');
 
         // 
         // Application Routes
@@ -684,7 +713,12 @@
               url: '/app',
               abstract: true,
               templateUrl: helper.basepath('app.html'),
-              resolve: helper.resolveFor('modernizr', 'icons')
+              resolve: helper.resolveFor('modernizr', 'icons'),
+
+                   data: {
+                       requireLogin: true // this property will apply to all children of 'app'
+                   }
+
           })
             .state('app.client', {
                 url: '/client',
@@ -710,6 +744,23 @@
               url: '/submenu',
               title: 'Submenu',
               templateUrl: helper.basepath('submenu.html')
+          })
+
+           //
+          // Single Page Routes
+          // -----------------------------------
+          .state('page', {
+              url: '/page',
+              templateUrl: 'app/pages/page.html',
+              resolve: helper.resolveFor('modernizr', 'icons'),
+              controller: ['$rootScope', function($rootScope) {
+                  $rootScope.app.layout.isBoxed = false;
+              }]
+          })
+          .state('page.login', {
+              url: '/login',
+              title: 'Login',
+              templateUrl: 'app/pages/login.html'
           })
           // 
           // CUSTOM RESOLVES
