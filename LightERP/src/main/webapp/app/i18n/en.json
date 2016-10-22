@@ -10,13 +10,15 @@
   "sidebar": {
     "WELCOME": "Welcome",
     "heading": {
-      "HEADER": "Main Navigation"
+      "HEADER": "Menú"
     },
     "nav": {
-      "CLIENT": "Clientes",
-      "AGENT": "Agentes",
-      "SUPPLIER": "Proveedores",
-      "CONTACTO": "Contacto",
+      "TERCEROS": "Terceros",
+      "COMMERCE": "Comercial",
+      "BILLING": "Facturas",
+      "INVENTORY": "Inventario",
+      "USERS": "Usuarios",
+      "CONFIGURATION": "Configuración",
       "menu": {
         "MENU": "Menu",
         "SUBMENU": "Sub Menu"

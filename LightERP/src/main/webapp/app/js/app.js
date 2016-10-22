@@ -27,7 +27,8 @@
             'app.loadingbar',
             'app.translate',
             'app.settings',
-            'app.utils'
+            'app.utils',
+            'app.tables'
         ]);
 })();
 
@@ -54,7 +55,7 @@
             'cfp.loadingBar',
             'ngSanitize',
             'ngResource',
-            'ui.utils'
+            'ui.utils',
         ]);
 })();
 
@@ -96,6 +97,12 @@
 
     angular
         .module('app.preloader', []);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.tables', []);
 })();
 
 
@@ -213,6 +220,7 @@
     }
 
 })();
+
 /**=========================================================
  * Module: constants.js
  * Define constants to inject across the application
@@ -240,9 +248,9 @@
         .run(appRun);
 
     appRun.$inject = ['$rootScope', '$state', '$stateParams',  '$window', '$templateCache', 'Colors'];
-    
+
     function appRun($rootScope, $state, $stateParams, $window, $templateCache, Colors) {
-      
+
       // Set reference to access them from any scope
       $rootScope.$state = $state;
       $rootScope.$stateParams = $stateParams;
@@ -265,7 +273,7 @@
       };
 
       // Hooks Example
-      // ----------------------------------- 
+      // -----------------------------------
 
       // Hook not found
       $rootScope.$on('$stateNotFound',
@@ -305,7 +313,7 @@
         var title = $rootScope.app.name + ' - ' + ($rootScope.currTitle || $rootScope.app.description);
         document.title = title;
         return title;
-      };      
+      };
 
     }
 
@@ -341,11 +349,16 @@
           scripts: {
             'modernizr':          ['vendor/modernizr/modernizr.custom.js'],
             'icons':              ['vendor/fontawesome/css/font-awesome.min.css',
-                                   'vendor/simple-line-icons/css/simple-line-icons.css']
+                                   'vendor/simple-line-icons/css/simple-line-icons.css'],
+
           },
           // Angular based script (use the right module name)
           modules: [
             // {name: 'toaster', files: ['vendor/angularjs-toaster/toaster.js', 'vendor/angularjs-toaster/toaster.css']}
+              {name: 'datatables', files: ['vendor/datatables/media/css/jquery.dataTables.css',
+                                            'vendor/datatables/media/js/jquery.dataTables.js',
+                                            'vendor/angular-datatables/dist/angular-datatables.js'], serie: true}
+
           ]
         })
         ;
@@ -378,7 +391,7 @@
     function loadingbarRun($rootScope, $timeout, cfpLoadingBar){
 
       // Loading bar transition
-      // ----------------------------------- 
+      // -----------------------------------
       var thBar;
       $rootScope.$on('$stateChangeStart', function() {
           if($('.wrapper > section').length) // check if bar container exists
@@ -411,8 +424,8 @@
 
     //
     // directives definition
-    // 
-    
+    //
+
     function searchOpen () {
         var directive = {
             controller: searchOpenController,
@@ -428,13 +441,13 @@
             restrict: 'A'
         };
         return directive;
-        
+
     }
 
     //
     // Contrller definition
-    // 
-    
+    //
+
     searchOpenController.$inject = ['$scope', '$element', 'NavSearch'];
     function searchOpenController ($scope, $element, NavSearch) {
       $element
@@ -444,7 +457,7 @@
 
     searchDismissController.$inject = ['$scope', '$element', 'NavSearch'];
     function searchDismissController ($scope, $element, NavSearch) {
-      
+
       var inputSelector = '.navbar-form input[type="text"]';
 
       $(inputSelector)
@@ -453,7 +466,7 @@
           if (e.keyCode === 27) // ESC
             NavSearch.dismiss();
         });
-        
+
       // click anywhere closes the search
       $(document).on('click', NavSearch.dismiss);
       // dismissable options
@@ -517,7 +530,7 @@
 
         var directive = {
             restrict: 'EAC',
-            template: 
+            template:
               '<div class="preloader-progress">' +
                   '<div class="preloader-progress-bar" ' +
                        'ng-style="{width: loadCounter + \'%\'}"></div>' +
@@ -578,7 +591,7 @@
             // a custom event must be used instead
             var off = scope.$on('$viewContentLoaded', function () {
               viewsLoaded ++;
-              // we know there are at least two views to be loaded 
+              // we know there are at least two views to be loaded
               // before the app is ready (1-index.html 2-app*.html)
               if ( viewsLoaded === 2) {
                 // with resolve this fires only once
@@ -697,33 +710,62 @@
 
     routesConfig.$inject = ['$stateProvider', '$locationProvider', '$urlRouterProvider', 'RouteHelpersProvider'];
     function routesConfig($stateProvider, $locationProvider, $urlRouterProvider, helper){
-        
+
         // Set the following to true to enable the HTML5 Mode
         // You may have to set <base> tag in index and a routing configuration in your server
         $locationProvider.html5Mode(false);
 
-        // defaults to dashboard
+        // defaults to login
         $urlRouterProvider.otherwise('/page/login');
 
-        // 
+        //
         // Application Routes
-        // -----------------------------------   
+        // -----------------------------------
         $stateProvider
           .state('app', {
               url: '/app',
               abstract: true,
               templateUrl: helper.basepath('app.html'),
               resolve: helper.resolveFor('modernizr', 'icons'),
-
                    data: {
                        requireLogin: true // this property will apply to all children of 'app'
                    }
-
           })
-            .state('app.client', {
-                url: '/client',
+            .state('app.dashboard', {
+                url: '/dashboard',
+                title: 'Dashboard',
+                templateUrl: helper.basepath('dashboard.html')
+            })
+            .state('app.thirdPartyMain', {
+                url: '/thirdPartyMain',
                 title: 'Clientes',
-                templateUrl: helper.basepath('client.html')
+                templateUrl: helper.basepath('third-party-main.html'),
+                resolve: helper.resolveFor('datatables')
+            })
+            .state('app.commerce', {
+                url: '/commerce',
+                title: 'Comercial',
+                templateUrl: helper.basepath('commerce.html')
+            })
+            .state('app.billing', {
+                url: '/billing',
+                title: 'Facturas',
+                templateUrl: helper.basepath('billing.html')
+            })
+            .state('app.users', {
+                url: '/users',
+                title: 'Usuarios',
+                templateUrl: helper.basepath('users.html')
+            })
+            .state('app.inventory', {
+                url: '/inventory',
+                title: 'Inventario',
+                templateUrl: helper.basepath('inventory.html')
+            })
+            .state('app.configuration', {
+                url: '/configuration',
+                title: 'Configuración',
+                templateUrl: helper.basepath('configuration.html')
             })
             .state('app.agent', {
                 url: '/agent',
@@ -745,7 +787,6 @@
               title: 'Submenu',
               templateUrl: helper.basepath('submenu.html')
           })
-
            //
           // Single Page Routes
           // -----------------------------------
@@ -767,7 +808,7 @@
           //   Add your own resolves properties
           //   following this object extend
           //   method
-          // ----------------------------------- 
+          // -----------------------------------
           // .state('app.someroute', {
           //   url: '/some_url',
           //   templateUrl: 'path_to_template.html',
@@ -1180,7 +1221,7 @@
         function getMenu(onReady, onError) {
           var menuJson = 'server/sidebar-menu.json',
               menuURL  = menuJson + '?v=' + (new Date().getTime()); // jumps cache
-            
+
           onError = onError || function() { alert('Failure loading menu'); };
 
           $http
@@ -1249,7 +1290,7 @@
         .run(translateRun)
         ;
     translateRun.$inject = ['$rootScope', '$translate'];
-    
+
     function translateRun($rootScope, $translate){
 
       // Internationalization
@@ -1403,9 +1444,9 @@
                 e.preventDefault();
 
                 if (screenfull.enabled) {
-                  
+
                   screenfull.toggle();
-                  
+
                   // Switch icon indicator
                   if(screenfull.isFullscreen)
                     $(this).children('em').removeClass('fa-expand').addClass('fa-compress');
@@ -1461,7 +1502,7 @@
 
           });
         }
-        
+
         function createLink(uri) {
           var linkId = 'autoloaded-stylesheet',
               oldLink = $('#'+linkId).attr('id', linkId + '-old');
@@ -1749,6 +1790,134 @@
 
         function activate() {
           $log.log('I\'m a line from custom.js');
+        }
+    }
+})();
+
+
+
+/**=========================================================
+ * Module: datatable,js
+ * Angular Datatable controller
+ =========================================================*/
+
+(function() {
+    'use strict';
+
+    angular
+        .module('app.tables')
+        .controller('DataTableController', DataTableController);
+
+    DataTableController.$inject = ['$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder'];
+    function DataTableController($resource, DTOptionsBuilder, DTColumnDefBuilder) {
+        var vm = this;
+
+        activate();
+
+        ////////////////
+
+        function activate() {
+
+            // Ajax
+
+            $resource('server/datatable.json').query().$promise.then(function(persons) {
+                vm.persons = persons;
+            });
+
+            // Changing data
+
+            vm.heroes = [{
+                'id': 860,
+                'firstName': 'Superman',
+                'lastName': 'Yoda'
+            }, {
+                'id': 870,
+                'firstName': 'Ace',
+                'lastName': 'Ventura'
+            }, {
+                'id': 590,
+                'firstName': 'Flash',
+                'lastName': 'Gordon'
+            }, {
+                'id': 803,
+                'firstName': 'Luke',
+                'lastName': 'Skywalker'
+            }
+            ];
+
+            vm.dtOptions = DTOptionsBuilder.newOptions().withPaginationType('full_numbers');
+            vm.dtColumnDefs = [
+                DTColumnDefBuilder.newColumnDef(0),
+                DTColumnDefBuilder.newColumnDef(1),
+                DTColumnDefBuilder.newColumnDef(2),
+                DTColumnDefBuilder.newColumnDef(3).notSortable()
+            ];
+            vm.person2Add = _buildPerson2Add(1);
+            vm.addPerson = addPerson;
+            vm.modifyPerson = modifyPerson;
+            vm.removePerson = removePerson;
+
+            function _buildPerson2Add(id) {
+                return {
+                    id: id,
+                    firstName: 'Foo' + id,
+                    lastName: 'Bar' + id
+                };
+            }
+            function addPerson() {
+                vm.heroes.push(angular.copy(vm.person2Add));
+                vm.person2Add = _buildPerson2Add(vm.person2Add.id + 1);
+            }
+            function modifyPerson(index) {
+                vm.heroes.splice(index, 1, angular.copy(vm.person2Add));
+                vm.person2Add = _buildPerson2Add(vm.person2Add.id + 1);
+            }
+            function removePerson(index) {
+                vm.heroes.splice(index, 1);
+            }
+
+        }
+    }
+})();
+
+(function() {
+    'use strict';
+
+    angular
+        .module('app.tables')
+        .service('ngTableDataService', ngTableDataService);
+
+    function ngTableDataService() {
+        /* jshint validthis:true */
+        var self = this;
+        this.cache = null;
+        this.getData = getData;
+
+        ////////////////
+
+        function getData($defer, params, api) {
+            // if no cache, request data and filter
+            if ( ! self.cache ) {
+                if ( api ) {
+                    api.get(function(data){
+                        self.cache = data;
+                        filterdata($defer, params);
+                    });
+                }
+            }
+            else {
+                filterdata($defer, params);
+            }
+
+            function filterdata($defer, params) {
+                var from = (params.page() - 1) * params.count();
+                var to = params.page() * params.count();
+                var filteredData = self.cache.result.slice(from, to);
+
+                params.total(self.cache.total);
+                $defer.resolve(filteredData);
+            }
+
         }
     }
 })();

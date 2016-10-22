@@ -6,26 +6,38 @@
   },
   {
     "text": "Clientes",
-    "sref": "app.client",
+    "sref": "app.thirdPartyMain",
     "icon": "fa fa-file-o",
-    "translate": "sidebar.nav.CLIENT"
+    "translate": "sidebar.nav.TERCEROS"
   },
   {
-    "text": "Agentes",
-    "sref": "app.agent",
-    "icon": "fa fa-file-o",
-    "translate": "sidebar.nav.AGENT"
+    "text": "Comercial",
+    "sref": "app.commerce",
+    "icon": "fa fa-tasks",
+    "translate": "sidebar.nav.COMMERCE"
   },
   {
-    "text": "Proveedor",
-    "sref": "app.supplier",
-    "icon": "fa fa-file-o",
-    "translate": "sidebar.nav.SUPPLIER"
+    "text": "Facturas",
+    "sref": "app.billing",
+    "icon": "fa fa-pencil-square-o",
+    "translate": "sidebar.nav.BILLING"
   },
   {
-    "text": "Contacto",
-    "sref": "app.contact",
-    "icon": "fa fa-file-o",
-    "translate": "sidebar.nav.CONTACTO"
+    "text": "Inventario",
+    "sref": "app.inventory",
+    "icon": "fa fa-book",
+    "translate": "sidebar.nav.INVENTORY"
+  },
+  {
+    "text": "Usuarios",
+    "sref": "app.users",
+    "icon": "fa fa-group",
+    "translate": "sidebar.nav.USERS"
+  },
+  {
+    "text": "Configuración",
+    "sref": "app.configuration",
+    "icon": "fa fa-cogs",
+    "translate": "sidebar.nav.CONFIGURATION"
   }
 ]
