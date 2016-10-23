@@ -28,7 +28,8 @@
             'app.translate',
             'app.settings',
             'app.utils',
-            'app.tables'
+            'app.tables',
+            'app.adminConfig'
         ]);
 })();
 
@@ -140,7 +141,6 @@
           'app.colors'
           ]);
 })();
-
 (function() {
     'use strict';
 
@@ -165,6 +165,12 @@
           'gray-lighter':           '#edf1f2'
         })
         ;
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.adminConfig', []);
 })();
 /**=========================================================
  * Module: colors.js
@@ -769,7 +775,8 @@
             .state('app.configuration', {
                 url: '/configuration',
                 title: 'Configuración',
-                templateUrl: helper.basepath('configuration.html')
+                templateUrl: helper.basepath('configuration.html'),
+                resolve: helper.resolveFor('datatables')
             })
             .state('app.agent', {
                 url: '/agent',
@@ -807,7 +814,7 @@
               title: 'Login',
               templateUrl: 'app/pages/login.html'
           })
-          // 
+          //
           // CUSTOM RESOLVES
           //   Add your own resolves properties
           //   following this object extend

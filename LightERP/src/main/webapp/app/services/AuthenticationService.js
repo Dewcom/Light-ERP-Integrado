@@ -1,3 +1,4 @@
+
  'use strict';
 
     angular
@@ -28,6 +29,7 @@
     login: login
   };
 });
+
 
 
 

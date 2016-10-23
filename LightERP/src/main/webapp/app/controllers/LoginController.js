@@ -2,25 +2,25 @@
  * Module: access-login.js
  * Demo for login api
  =========================================================*/
-    'use strict';
+'use strict';
 
-    angular
-        .module('app.pages')
-        .controller('LoginController', LoginController);
+angular
+    .module('app.pages')
+    .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$http', '$state', 'authenticationService'];
-    function LoginController($http, $state, authenticationService) {
-        var vm = this;
+LoginController.$inject = ['$http', '$state', 'authenticationService'];
+function LoginController($http, $state, authenticationService) {
+    var vm = this;
 
-        activate();
+    activate();
 
-        ////////////////
+    ////////////////
 
-        function activate() {
-          // bind here all data from the form
-          vm.account = {};
-          // place the message if something goes wrong
-          vm.authMsg = '';
+    function activate() {
+        // bind here all data from the form
+        vm.account = {};
+        // place the message if something goes wrong
+        vm.authMsg = '';
 
           vm.login = function() {
             if(vm.loginForm.$valid) {
@@ -45,12 +45,12 @@
                 });
             }
             else {
-              // set as dirty if the user click directly to login so we show the validation messages
-              /*jshint -W106*/
-              vm.loginForm.account_email.$dirty = true;
-              vm.loginForm.account_password.$dirty = true;
+                // set as dirty if the user click directly to login so we show the validation messages
+                /*jshint -W106*/
+                vm.loginForm.account_email.$dirty = true;
+                vm.loginForm.account_password.$dirty = true;
             }
           };
-
         }
     }
+
