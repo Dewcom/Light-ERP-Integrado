@@ -23,10 +23,26 @@
           vm.authMsg = '';
 
           vm.login = function() {
-            vm.authMsg = '';
             if(vm.loginForm.$valid) {
-                   console.log(vm.account_email);
-            authenticationService.login(vm.account_email, vm.account_password );
+
+              authenticationService.login(vm.account.email, vm.account.password)
+                .then(function(response) {
+                  console.log(response);
+                  $state.go('app.dashboard')  
+                },
+                function(response) {
+                    console.log(response);
+
+                    if(response.status == 401){
+
+                     vm.authMsg = 'Usuario o clave incorrectos';
+                    }
+                    else{
+
+                     vm.authMsg = 'Ha ocurrido un problema al autenticarse';
+                    }
+                  
+                });
             }
             else {
               // set as dirty if the user click directly to login so we show the validation messages
@@ -35,5 +51,6 @@
               vm.loginForm.account_password.$dirty = true;
             }
           };
+
         }
     }

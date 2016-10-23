@@ -6,23 +6,23 @@
           
 
   function login(userName, password) {
+      
     var userInfo;
-debugger;
-    $http.post("http://localhost:8080/api/login", {
-      username: "admin",
-      password: "admin"
-    }).then(function(result) {
-      userInfo = {
-        accessToken: result.data.access_token,
-        userName: result.data.username
+     var promise = $http.post("http://localhost:8080/api/login", {
+      username:userName,
+      password:password
+    }).then(function(response) {
+       userInfo = {
+        accessToken: response.data.access_token,
+        userName: response.data.username,
+        role: response.data.roles[0]
       };
-      console.log(userInfo);
       $window.sessionStorage["userInfo"] = JSON.stringify(userInfo);
-    }, function(error) {
-      console.log(error);
+      return response
     });
-
+     return promise;
   }
+
 
   return {
     login: login

@@ -297,14 +297,18 @@
         });
 
        $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+      
     var requireLogin = toState.data != undefined ? toState.data.requireLogin : false;
+    var userInfo =  $window.sessionStorage["userInfo"];
     console.log('este mae ocupa login'+ requireLogin);
       console.log('nombre state'+ toState.name);
+      //  console.log($window.sessionStorage["userInfo"]);
 
-    //if (requireLogin && typeof $rootScope.currentUser === 'undefined') {
-    //  event.preventDefault();
-      // get me a login modal!
-   // }
+    if (requireLogin && typeof userInfo === 'undefined') {
+       $state.go("page.login");
+      event.preventDefault();
+      
+    }
   });
 
       // Load a title dynamically
@@ -716,7 +720,7 @@
         $locationProvider.html5Mode(false);
 
         // defaults to login
-        $urlRouterProvider.otherwise('/page/login');
+        $urlRouterProvider.otherwise('/app/dashboard');
 
         //
         // Application Routes
