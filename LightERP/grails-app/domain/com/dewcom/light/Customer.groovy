@@ -37,7 +37,7 @@ class Customer {
         mobile nullabe: true, blank: true
         website nullabe: true, blank: true
         email nullabe: true, blank: true
-        discountPercentage nullabe: true, blank: true
-        creditLimit nullabe: true, blank: true
+        discountPercentage nullabe: true
+        creditLimit nullabe: true
     }
 }
