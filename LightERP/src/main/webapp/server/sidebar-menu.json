@@ -1,43 +1,36 @@
 [
   {
     "text": "Menu Heading",
-    "heading": "true",
-    "translate": "sidebar.heading.HEADER"
+    "heading": "true"
   },
   {
     "text": "Clientes",
     "sref": "app.thirdPartyMain",
-    "icon": "fa fa-file-o",
-    "translate": "sidebar.nav.TERCEROS"
+    "icon": "fa fa-file-o"
   },
   {
     "text": "Comercial",
     "sref": "app.commerce",
-    "icon": "fa fa-tasks",
-    "translate": "sidebar.nav.COMMERCE"
+    "icon": "fa fa-tasks"
   },
   {
     "text": "Facturas",
     "sref": "app.billing",
-    "icon": "fa fa-pencil-square-o",
-    "translate": "sidebar.nav.BILLING"
+    "icon": "fa fa-pencil-square-o"
   },
   {
     "text": "Inventario",
     "sref": "app.inventory",
-    "icon": "fa fa-book",
-    "translate": "sidebar.nav.INVENTORY"
+    "icon": "fa fa-book"
   },
   {
     "text": "Usuarios",
     "sref": "app.users",
-    "icon": "fa fa-group",
-    "translate": "sidebar.nav.USERS"
+    "icon": "fa fa-group"
   },
   {
     "text": "Configuración",
     "sref": "app.configuration",
-    "icon": "fa fa-cogs",
-    "translate": "sidebar.nav.CONFIGURATION"
+    "icon": "fa fa-cogs"
   }
 ]
