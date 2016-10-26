@@ -29,6 +29,7 @@
       </ul>
       <!-- END Left navbar-->
       <!-- START Right Navbar-->
+      <div ng-controller="LoginController as login">
       <ul class="nav navbar-nav navbar-right">
          <!-- Search icon-->
         <!-- <li>
@@ -38,12 +39,13 @@
          </li>-->
          <!-- START Offsidebar button-->
          <li>
-            <a href="" ng-click="app.offsidebarOpen = !app.offsidebarOpen">
-               <em class="icon-notebook"></em>
+            <a title="Cerrar sesi&oacute;n " href="#" ng-click="login.logout()">
+               <em class="icon-logout"></em>
             </a>
          </li>
          <!-- END Offsidebar menu-->
       </ul>
+      </div>
       <!-- END Right Navbar-->
    </div>
    <!-- END Nav wrapper-->

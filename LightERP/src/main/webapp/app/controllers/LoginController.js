@@ -51,6 +51,11 @@ function LoginController($http, $state, authenticationService) {
                 vm.loginForm.account_password.$dirty = true;
             }
           };
+
+           vm.logout = function() {
+              authenticationService.logout();
+              $state.go("page.login");
+          };
         }
     }
 

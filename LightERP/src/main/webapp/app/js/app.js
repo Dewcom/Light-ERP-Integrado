@@ -306,10 +306,6 @@
       
     var requireLogin = toState.data != undefined ? toState.data.requireLogin : false;
     var userInfo =  $window.sessionStorage["userInfo"];
-    console.log('este mae ocupa login'+ requireLogin);
-      console.log('nombre state'+ toState.name);
-      //  console.log($window.sessionStorage["userInfo"]);
-
     if (requireLogin && typeof userInfo === 'undefined') {
        $state.go("page.login");
       event.preventDefault();
