@@ -9,7 +9,7 @@ class CustomerService {
 
     Customer getCustomer(def customerId) {
         log.info "====== Getting customer from DB ======"
-        log.info pid
+        log.info customerId
         try {
             Customer customerFromDB = Customer.findByIdAndEnabled(customerId, Constants.ESTADO_ACTIVO);
             return customerFromDB
@@ -55,18 +55,22 @@ class CustomerService {
             Customer tmpCustomerToUpdate = Customer.findByIdAndEnabled(argRestCustomer.id, Constants.ESTADO_ACTIVO)
             if (tmpCustomerToUpdate) {
                 tmpCustomerToUpdate.name = argRestCustomer.name;
-                tmpCustomerToUpdate.firstLastName = argRestCustomer.name;
-                tmpCustomerToUpdate.secondLastName = argRestCustomer.name;
-                tmpCustomerToUpdate.address1 = argRestCustomer.name;
-                tmpCustomerToUpdate.address2 = argRestCustomer.name;
-                tmpCustomerToUpdate.phoneNumber1 = argRestCustomer.name;
-                tmpCustomerToUpdate.phoneNumber2 = argRestCustomer.name;
-                tmpCustomerToUpdate.mobile = argRestCustomer.name;
-                tmpCustomerToUpdate.website = argRestCustomer.name;
-                tmpCustomerToUpdate.email = argRestCustomer.name;
-                tmpCustomerToUpdate.website = argRestCustomer.name;
+                tmpCustomerToUpdate.firstLastName = argRestCustomer.firstLastName;
+                tmpCustomerToUpdate.secondLastName = argRestCustomer.secondLastName;
+                tmpCustomerToUpdate.address1 = argRestCustomer.address1;
+                tmpCustomerToUpdate.address2 = argRestCustomer.address2;
+                tmpCustomerToUpdate.phoneNumber1 = argRestCustomer.phoneNumber1;
+                tmpCustomerToUpdate.phoneNumber2 = argRestCustomer.phoneNumber2;
+                tmpCustomerToUpdate.mobile = argRestCustomer.mobile;
+                tmpCustomerToUpdate.website = argRestCustomer.website;
+                tmpCustomerToUpdate.email = argRestCustomer.email;
                 tmpCustomerToUpdate.discountPercentage = argRestCustomer.discountPercentage;
                 tmpCustomerToUpdate.creditLimit = argRestCustomer.creditLimit;
+                tmpCustomerToUpdate.idDistrict = argRestCustomer.idDistrict;
+
+                tmpCustomerToUpdate.identificationType = IdentificationType.findByIdAndEnabled(argRestCustomer.identificationType, Constants.ESTADO_ACTIVO);
+                tmpCustomerToUpdate.customerType =  CustomerType.findByIdAndEnabled(argRestCustomer.customerType, Constants.ESTADO_ACTIVO);
+
                 tmpCustomerToUpdate.save(flush: true);
             } else {
                 throw new LightRuntimeException("update.customer.notFound.error");
@@ -88,18 +92,20 @@ class CustomerService {
         Customer tmpCustomer = new Customer();
 
         tmpCustomer.name = argRestCostumer.name;
-        tmpCustomer.firstLastName = argRestCostumer.name;
-        tmpCustomer.secondLastName = argRestCostumer.name;
-        tmpCustomer.address1 = argRestCostumer.name;
-        tmpCustomer.address2 = argRestCostumer.name;
-        tmpCustomer.phoneNumber1 = argRestCostumer.name;
-        tmpCustomer.phoneNumber2 = argRestCostumer.name;
-        tmpCustomer.mobile = argRestCostumer.name;
-        tmpCustomer.website = argRestCostumer.name;
-        tmpCustomer.email = argRestCostumer.name;
-        tmpCustomer.website = argRestCostumer.name;
+        tmpCustomer.identification = argRestCostumer.identification;
+        tmpCustomer.firstLastName = argRestCostumer.firstLastName;
+        tmpCustomer.secondLastName = argRestCostumer.secondLastName;
+        tmpCustomer.address1 = argRestCostumer.address1;
+        tmpCustomer.address2 = argRestCostumer.address2;
+        tmpCustomer.phoneNumber1 = argRestCostumer.phoneNumber1;
+        tmpCustomer.phoneNumber2 = argRestCostumer.phoneNumber2;
+        tmpCustomer.mobile = argRestCostumer.mobile;
+        tmpCustomer.website = argRestCostumer.website;
+        tmpCustomer.email = argRestCostumer.email;
+        tmpCustomer.website = argRestCostumer.website;
         tmpCustomer.discountPercentage = argRestCostumer.discountPercentage;
         tmpCustomer.creditLimit = argRestCostumer.creditLimit;
+        tmpCustomer.idDistrict = argRestCostumer.idDistrict;
 
         tmpCustomer.identificationType = IdentificationType.findByIdAndEnabled(argRestCostumer.identificationType, Constants.ESTADO_ACTIVO);
         tmpCustomer.customerType =  CustomerType.findByIdAndEnabled(argRestCostumer.customerType, Constants.ESTADO_ACTIVO);

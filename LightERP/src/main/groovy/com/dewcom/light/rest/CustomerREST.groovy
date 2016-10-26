@@ -6,6 +6,7 @@ import com.dewcom.light.Constants
  * Created by Leo chen on 11/09/16.
  */
 class CustomerREST implements Validateable {
+    int id
     String name
     String firstLastName
     String secondLastName
@@ -26,6 +27,6 @@ class CustomerREST implements Validateable {
     int customerType
 
     static constraints = {
-
+        id nullabe: true
     }
 }
