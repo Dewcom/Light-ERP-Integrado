@@ -4,14 +4,14 @@
     "heading": "true"
   },
   {
-    "text": "Clientes",
+    "text": "Terceros",
     "sref": "app.thirdPartyMain",
     "icon": "fa fa-file-o"
   },
   {
     "text": "Comercial",
     "sref": "app.commerce",
-    "icon": "fa fa-tasks"
+    "icon": "fa fa-object-group"
   },
   {
     "text": "Facturas",

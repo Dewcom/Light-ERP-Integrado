@@ -27,11 +27,11 @@
                             </div>
                         </th>
                         <th>
-                            <div class="form-group">
+                            <div class="form-group" ng-controller="ClientController as modal" ng-click="modal.open('lg')">
                                 <button type="submit" class="btn btn-labeled btn-success">
                               <span class="btn-label">
                                  <em class="fa fa-plus"></em>
-                              </span>Add</button>
+                              </span>Agregar</button>
                             </div>
                         </th>
                     </tr>
@@ -61,4 +61,5 @@
             </form>
         </div>
     </div>
+    <div ng-include="'app/views/modals/add-client-modal.html'"></div>
 </div>

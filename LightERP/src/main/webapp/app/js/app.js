@@ -29,7 +29,9 @@
             'app.settings',
             'app.utils',
             'app.tables',
-            'app.adminConfig'
+            'app.forms',
+            'app.adminConfig',
+            'app.client'
         ]);
 })();
 
@@ -105,6 +107,12 @@
     angular
         .module('app.tables', []);
 })();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.forms', []);
+})();
 
 
 (function() {
@@ -171,6 +179,12 @@
 
     angular
         .module('app.adminConfig', []);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.client', []);
 })();
 /**=========================================================
  * Module: colors.js
@@ -363,7 +377,10 @@
             // {name: 'toaster', files: ['vendor/angularjs-toaster/toaster.js', 'vendor/angularjs-toaster/toaster.css']}
               {name: 'datatables', files: ['vendor/datatables/media/css/jquery.dataTables.css',
                                             'vendor/datatables/media/js/jquery.dataTables.js',
-                                            'vendor/angular-datatables/dist/angular-datatables.js'], serie: true}
+                                            'vendor/angular-datatables/dist/angular-datatables.js'], serie: true},
+              {name: 'ngDialog', files: ['vendor/ngDialog/js/ngDialog.min.js',
+                  'vendor/ngDialog/css/ngDialog.min.css',
+                  'vendor/ngDialog/css/ngDialog-theme-default.min.css'] }
 
           ]
         })
@@ -746,7 +763,7 @@
                 url: '/thirdPartyMain',
                 title: 'Clientes',
                 templateUrl: helper.basepath('third-party-main.html'),
-                resolve: helper.resolveFor('datatables')
+                resolve: helper.resolveFor('datatables', 'ngDialog')
             })
             .state('app.commerce', {
                 url: '/commerce',
@@ -1860,9 +1877,6 @@
                 DTColumnDefBuilder.newColumnDef(3).notSortable()
             ];
             vm.person2Add = _buildPerson2Add(1);
-            vm.addPerson = addPerson;
-            vm.modifyPerson = modifyPerson;
-            vm.removePerson = removePerson;
 
             function _buildPerson2Add(id) {
                 return {
@@ -1870,17 +1884,6 @@
                     firstName: 'Foo' + id,
                     lastName: 'Bar' + id
                 };
-            }
-            function addPerson() {
-                vm.heroes.push(angular.copy(vm.person2Add));
-                vm.person2Add = _buildPerson2Add(vm.person2Add.id + 1);
-            }
-            function modifyPerson(index) {
-                vm.heroes.splice(index, 1, angular.copy(vm.person2Add));
-                vm.person2Add = _buildPerson2Add(vm.person2Add.id + 1);
-            }
-            function removePerson(index) {
-                vm.heroes.splice(index, 1);
             }
 
         }
