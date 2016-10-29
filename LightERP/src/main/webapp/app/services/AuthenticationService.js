@@ -23,9 +23,13 @@ angular
             return promise;
         }
 
+         function logout() {
+            $window.sessionStorage.removeItem('userInfo');
+        }
 
         return {
-            login: login
+            login: login,
+            logout: logout
         };
     });
 
