@@ -13,8 +13,7 @@ function AdminConfigController($http, $state, customerTypeService) {
     init();
 
     function init() {
-        customerTypeService.getAl
-        l().then(function(response) {
+        customerTypeService.getAll().then(function(response) {
             vm.customerTypes = response;
         });
     }

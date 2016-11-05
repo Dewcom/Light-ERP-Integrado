@@ -5631,7 +5631,9 @@ ul.ColVis_collection > li > label input[type=radio]:checked + span {
 table.dataTable {
   border-bottom: 1px solid #e4eaec !important;
 }
-table.dataTable thead th,
+table.dataTable thead th{
+    text-align: center;
+}
 table.dataTable thead td {
   border-bottom: 1px solid #e4eaec !important;
 }
@@ -5691,7 +5693,8 @@ body table.dataTable.row-border tbody th,
 body table.dataTable.row-border tbody td,
 body table.dataTable.display tbody th,
 body table.dataTable.display tbody td {
-  border-top-color: #eee;
+    border-top-color: #eee;
+    text-align: center;
 }
 body table.dataTable tbody tr:nth-child(odd),
 body table.dataTable.hover tbody tr:hover,
@@ -6177,4 +6180,20 @@ body .ng-table-pager:after {
 }
 .form-wizard.wizard-vertical .well {
   padding: 0;
+}
+
+
+/*CUSTOM CSS*/
+/*
+/*AGREGAR ACA CUALQUIER CSS EXTRA QUE NECESITEMOS PONER
+*/
+.dataTableTop{
+    margin: 10px 0px 30px 0px;
+}
+.dataTableTop h3{
+}
+.dataTableTop button{
+    float: right;
+    margin-top: 24px;
+    margin-right: 5px;
 }

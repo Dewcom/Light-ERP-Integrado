@@ -1,0 +1,49 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div ng-controller="CustomerController as controller">
+            <form ng-submit="controller.addPerson()" class="form-inline">
+
+                <div class="col-md-12 dataTableTop">
+                    <div class="col-md-9">
+                        <h3>Lista de clientes</h3>
+                    </div>
+                    <div class="col-md-3" ng-click="controller.open('lg')">
+                        <button type="submit" class="btn btn-labeled btn-success addButton">
+                          <span class="btn-label">
+                             <em class="fa fa-plus"></em>
+                          </span>Agregar
+                        </button>
+                    </div>
+                </div>
+                <table datatable="ng" dt-options="controller.dtOptions" dt-column-defs="controller.dtColumnDefs" class="row-border hover">
+                    <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Identificación</th>
+                        <th>Teléfono</th>
+                        <th>Correo electrónico</th>
+                        <th>Opciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="customerList in controller.customerList">
+                        <td>{{ customerList.name + ' ' + customerList.firstLastName + ' ' + customerList.secondLastName}}</td>
+                        <td>{{ customerList.identification }}</td>
+                        <td>{{ customerList.phoneNumber1 }}</td>
+                        <td>{{ customerList.email }}</td>
+                        <td>
+                            <button type="button" ng-click="controller.showDetails($index)" class="btn btn-sm btn-toolbar">
+                                <em class="fa fa-search"></em>
+                            </button>
+                            <button type="button" ng-click="controller.removePerson($index)" class="btn btn-sm btn-danger">
+                                <em class="fa fa-trash-o"></em>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
+    <div ng-include="'app/views/modals/add-client-modal.html'"></div>
+</div>
