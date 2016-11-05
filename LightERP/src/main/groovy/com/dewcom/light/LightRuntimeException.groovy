@@ -14,7 +14,7 @@ class LightRuntimeException extends RuntimeException {
     private String key;
     private Object[] arguments;
 
-    public SacRuntimeException(String psystemCode, String psystemMessage, Object[] parguments, Integer psystem) {
+    public LightRuntimeException(String psystemCode, String psystemMessage, Object[] parguments, Integer psystem) {
         super
         this.systemCode = psystemCode;
         this.systemMessage = psystemMessage;
@@ -22,7 +22,7 @@ class LightRuntimeException extends RuntimeException {
         this.system = psystem;
     }
 
-    public SacRuntimeException(String psystemMessage) {
+    public LightRuntimeException(String psystemMessage) {
         super
         this.systemMessage = psystemMessage;
     }

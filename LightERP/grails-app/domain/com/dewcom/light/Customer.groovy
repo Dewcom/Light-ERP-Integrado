@@ -29,7 +29,7 @@ class Customer {
         firstLastName blank: false
         secondLastName blank: false
         identification blank: false, unique: true
-        idDistrict nullabe: true, blank: true
+        idDistrict nullabe: true
         address1 blank: false
         address2 nullabe: true, blank: true
         phoneNumber1 blank: false
