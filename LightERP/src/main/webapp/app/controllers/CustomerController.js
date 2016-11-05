@@ -37,11 +37,11 @@
             }
         }
 
-        activate();
+        init();
 
         ////////////////
 
-        function activate() {
+        function init() {
 
             /**=========================================================
              * Datatables
@@ -55,13 +55,23 @@
 
             vm.dtOptions = DTOptionsBuilder.newOptions()
                 .withPaginationType('full_numbers')
-                .withLanguage(language);
+                .withLanguage(language)
             vm.dtColumnDefs = [
                 DTColumnDefBuilder.newColumnDef(0),
                 DTColumnDefBuilder.newColumnDef(1),
                 DTColumnDefBuilder.newColumnDef(2),
-                DTColumnDefBuilder.newColumnDef(3)
+                DTColumnDefBuilder.newColumnDef(3),
+                DTColumnDefBuilder.newColumnDef(4).notSortable()
             ];
+
+            /**=========================================================
+             * Eliminar clientes
+             =========================================================*/
+            vm.disableCustomer = function(customerId){
+                customerService.disableCustomer(customerId).then(function(response) {
+                    init();
+                });
+            }
 
 
             /**=========================================================
