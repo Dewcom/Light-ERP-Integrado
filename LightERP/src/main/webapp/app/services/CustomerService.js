@@ -24,6 +24,29 @@ angular
             return customerList;
         }
 
+        customerService.addCustomer = function(newCustomer) {
+            console.log("#################");
+            console.log(newCustomer);
+            var addCustomerResult = $http({
+                method: 'POST',
+                url: 'http://localhost:8080/api/customer/create',
+                data: {
+                    id: newCustomer
+                },
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            }).then(function (response) {
+                console.log(response.data.message);
+                return response.data.message;
+            },function (error) {
+                console.log(error);
+                return error.status;
+            });
+
+            return disableCustomerResult;
+        }
+
         customerService.disableCustomer = function(customerId) {
 
             var disableCustomerResult = $http({

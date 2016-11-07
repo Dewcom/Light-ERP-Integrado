@@ -8,8 +8,10 @@
         .controller('CustomerController', CustomerController)
         .directive('formWizard', formWizard);
 
-    CustomerController.$inject = ['$uibModal','$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder', 'customerService'];
-    function CustomerController($uibModal, $resource, DTOptionsBuilder, DTColumnDefBuilder, customerService) {
+    CustomerController.$inject = ['$uibModal','$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder',
+        'customerService', 'customerTypeService', 'identificationTypeService'];
+    function CustomerController($uibModal, $resource, DTOptionsBuilder, DTColumnDefBuilder, customerService,
+                                customerTypeService, identificationTypeService) {
         var vm = this;
 
         var language = {
@@ -44,6 +46,22 @@
         function init() {
 
             /**=========================================================
+             * Tipos de cliente
+             =========================================================*/
+
+            customerTypeService.getAll().then(function(response) {
+                vm.customerTypeList = response;
+            });
+
+            /**=========================================================
+             * Tipos de identificacion
+             =========================================================*/
+
+            identificationTypeService.getAll().then(function(response) {
+                vm.identificationTypeList = response;
+            });
+
+            /**=========================================================
              * Datatables
              =========================================================*/
 
@@ -63,51 +81,86 @@
                 DTColumnDefBuilder.newColumnDef(3),
                 DTColumnDefBuilder.newColumnDef(4).notSortable()
             ];
+        }
 
-            /**=========================================================
-             * Eliminar clientes
-             =========================================================*/
-            vm.disableCustomer = function(customerId){
-                customerService.disableCustomer(customerId).then(function(response) {
-                    init();
-                });
-            }
+        /**=========================================================
+         * Agregar clientes
+         =========================================================*/
 
-
-            /**=========================================================
-             * Module: modals
-             =========================================================*/
-
-            vm.open = function (size) {
-
-                var modalInstance = $uibModal.open({
-                    templateUrl: '/addClientModal.html',
-                    controller: ModalInstanceCtrl,
-                    size: size
-                });
-
-                var state = $('#modal-state');
-                modalInstance.result.then(function () {
-                    state.text('Modal dismissed with OK status');
-                }, function () {
-                    state.text('Modal dismissed with Cancel status');
-                });
+        vm.addCustomer = function(addCustomerWizard) {
+            /*console.log(addCustomerWizard);
+            var newCustomer ={
+                "name":vm.name,
+                "firstLastName":vm.firstLastName ,
+                "secondLastName":vm.secondLastName,
+                "identification":vm.identification,
+                "idDistrict":vm.selectedDistrict1 ,
+                "address1":vm.address1 ,
+                "address2":vm.address2 ,
+                "phoneNumber1":vm.phoneNumber1,
+                "phoneNumber2":vm.phoneNumber2 ,
+                "mobile":vm.mobile ,
+                "website":vm.website ,
+                "email":vm.email ,
+                "discountPercentage":vm.discountPercentage,
+                "creditLimit":vm.creditLimit,
+                "identificationType":vm.selectedIdentificationType,
+                "customerType":vm.selectedCustomerType
             };
 
-            // Please note that $uibModalInstance represents a modal window (instance) dependency.
-            // It is not the same as the $uibModal service used above.
+            console.log("## controller");
+            console.log(vm.name);
+            console.log(newCustomer);*/
+            customerService.addCustomer(newCustomer).then(function(response) {
 
-            ModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance'];
-            function ModalInstanceCtrl($scope, $uibModalInstance) {
+            });
+        };
 
-                $scope.ok = function () {
-                    $uibModalInstance.close('closed');
-                };
+    /**=========================================================
+         * Eliminar clientes
+         =========================================================*/
+        vm.disableCustomer = function(customerId){
+            customerService.disableCustomer(customerId).then(function(response) {
+                init();
+            });
+        }
 
-                $scope.cancel = function () {
-                    $uibModalInstance.dismiss('cancel');
-                };
-            }
+
+
+
+        /**=========================================================
+         * Module: modals
+         =========================================================*/
+
+        vm.open = function (size) {
+
+            var modalInstance = $uibModal.open({
+                templateUrl: '/addClientModal.html',
+                controller: ModalInstanceCtrl,
+                size: size
+            });
+
+            var state = $('#modal-state');
+            modalInstance.result.then(function () {
+                state.text('Modal dismissed with OK status');
+            }, function () {
+                state.text('Modal dismissed with Cancel status');
+            });
+        };
+
+        // Please note that $uibModalInstance represents a modal window (instance) dependency.
+        // It is not the same as the $uibModal service used above.
+
+        ModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance'];
+        function ModalInstanceCtrl($scope, $uibModalInstance) {
+
+            $scope.ok = function () {
+                $uibModalInstance.close('closed');
+            };
+
+            $scope.cancel = function () {
+                $uibModalInstance.dismiss('cancel');
+            };
         }
     }
 

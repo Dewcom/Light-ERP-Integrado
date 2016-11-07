@@ -31,13 +31,13 @@ class Customer {
         identification blank: false, unique: true
         idDistrict nullabe: true
         address1 blank: false
-        address2 nullabe: true, blank: true
+        address2 nullable: true, blank: true
         phoneNumber1 blank: false
-        phoneNumber2 nullabe: true, blank: true
-        mobile nullabe: true, blank: true
-        website nullabe: true, blank: true
-        email nullabe: true, blank: true
-        discountPercentage nullabe: true
-        creditLimit nullabe: true
+        phoneNumber2 nullable: true, blank: true
+        mobile nullable: true, blank: true
+        website nullable: true, blank: true
+        email nullable: true, blank: true
+        discountPercentage nullable: true
+        creditLimit nullable: true
     }
 }

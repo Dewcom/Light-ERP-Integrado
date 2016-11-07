@@ -27,13 +27,13 @@ class Supplier {
         firstLastName blank: false
         secondLastName blank: false
         identification blank: false, unique: true
-        idDistrict nullabe: true, blank: true
+        idDistrict nullable: true, blank: true
         address1 blank: false
-        address2 nullabe: true, blank: true
+        address2 nullable: true, blank: true
         phoneNumber1 blank: false
-        phoneNumber2 nullabe: true, blank: true
-        mobile nullabe: true, blank: true
-        website nullabe: true, blank: true
-        email nullabe: true, blank: true
+        phoneNumber2 nullable: true, blank: true
+        mobile nullable: true, blank: true
+        website nullable: true, blank: true
+        email nullable: true, blank: true
     }
 }
