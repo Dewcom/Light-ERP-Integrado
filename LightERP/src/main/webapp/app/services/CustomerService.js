@@ -31,7 +31,7 @@ angular
                 method: 'POST',
                 url: 'http://localhost:8080/api/customer/create',
                 data: {
-                    id: newCustomer
+                    customer: newCustomer
                 },
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'

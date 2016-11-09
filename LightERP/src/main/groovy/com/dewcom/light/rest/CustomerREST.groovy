@@ -11,7 +11,7 @@ class CustomerREST implements Validateable {
     String firstLastName
     String secondLastName
     String identification
-    int idDistrict //Con el id del distrito obtenemos el cantón y la provincia
+    Integer idDistrict //Con el id del distrito obtenemos el cantón y la provincia
     String address1
     String address2
     String phoneNumber1
@@ -21,10 +21,10 @@ class CustomerREST implements Validateable {
     String email
     Byte enabled = Constants.ESTADO_ACTIVO
     Date regitrationDate = new Date()
-    double discountPercentage
-    double creditLimit
-    int identificationType
-    int customerType
+    Double discountPercentage
+    Double creditLimit
+    Integer identificationType
+    Integer customerType
 
     static constraints = {
         name blank: false
