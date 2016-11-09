@@ -87,8 +87,11 @@
          * Agregar clientes
          =========================================================*/
 
-        vm.addCustomer = function(addCustomerWizard) {
-            /*console.log(addCustomerWizard);
+        vm.addCustomer = function($scope) {
+            console.log("En el controller");
+            console.log(vm.name);
+            console.log($scope.name);
+
             var newCustomer ={
                 "name":vm.name,
                 "firstLastName":vm.firstLastName ,
@@ -107,10 +110,7 @@
                 "identificationType":vm.selectedIdentificationType,
                 "customerType":vm.selectedCustomerType
             };
-
-            console.log("## controller");
-            console.log(vm.name);
-            console.log(newCustomer);*/
+            console.log(newCustomer);
             customerService.addCustomer(newCustomer).then(function(response) {
 
             });
@@ -153,6 +153,7 @@
 
         ModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance'];
         function ModalInstanceCtrl($scope, $uibModalInstance) {
+            $scope.addCustomerForm = {};
 
             $scope.ok = function () {
                 $uibModalInstance.close('closed');
@@ -160,6 +161,38 @@
 
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
+            };
+
+            /**=========================================================
+             * Agregar clientes
+             =========================================================*/
+
+            $scope.addCustomer = function() {
+
+                var newCustomer ={
+                    "name":$scope.addCustomerForm.name,
+                    "firstLastName":$scope.addCustomerForm.firstLastName ,
+                    "secondLastName":$scope.addCustomerForm.secondLastName,
+                    "identification":$scope.addCustomerForm.identification,
+                    "idDistrict":$scope.addCustomerForm.selectedDistrict1 ,
+                    "address1":$scope.addCustomerForm.address1 ,
+                    "address2":$scope.addCustomerForm.address2 ,
+                    "phoneNumber1":$scope.addCustomerForm.phoneNumber1,
+                    "phoneNumber2":$scope.addCustomerForm.phoneNumber2 ,
+                    "mobile":$scope.addCustomerForm.mobile ,
+                    "website":$scope.addCustomerForm.website ,
+                    "email":$scope.addCustomerForm.email ,
+                    "discountPercentage":$scope.addCustomerForm.discountPercentage,
+                    "creditLimit":$scope.addCustomerForm.creditLimit,
+                    "identificationType":$scope.addCustomerForm.selectedIdentificationType,
+                    "customerType":$scope.addCustomerForm.selectedCustomerType
+                };
+                console.log(newCustomer);
+                customerService.addCustomer(newCustomer).then(function(response) {
+
+                });
+
+                $uibModalInstance.close('closed');
             };
         }
     }

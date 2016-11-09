@@ -44,7 +44,7 @@ angular
                 return error.status;
             });
 
-            return disableCustomerResult;
+            return addCustomerResult;
         }
 
         customerService.disableCustomer = function(customerId) {
