@@ -1,23 +1,24 @@
 package com.dewcom.light
 
-import com.dewcom.light.rest.ResponseREST
 import com.dewcom.light.rest.CustomerREST
+import com.dewcom.light.rest.ResponseREST
+import com.dewcom.light.rest.UpdateContactRequestREST
 import com.dewcom.light.rest.UpdateCustomerRequestREST
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 
-class CustomerController extends RestController {
+class ContactController extends RestController {
     static allowedMethods = [get: "GET", create: "POST", update: "PUT", delete: "DELETE"]
     def messageSource
-    def customerService
+    def contactService
 
     /**
-     * Este método se encarga de obtener una lista de cliente o uno especifico por medio del ID
+     * Este método se encarga de obtener una lista de contactos o uno especifico por medio del ID
      * @author Leonardo Chen
      */
     @Secured(['ROLE_ANONYMOUS'])
     def get() {
-        log.info "========== Get customer  request =========="
+        log.info "========== Get contact  request =========="
 
         ResponseREST tmpResponse = new ResponseREST();
 
@@ -25,24 +26,24 @@ class CustomerController extends RestController {
             def tmpId = params.id
 
             if(tmpId){
-                Customer customerFromDB = customerService.getCustomer(tmpId);
+                Contact contactFromDB = contactService.getContact(tmpId);
 
-                if(customerFromDB){
+                if(contactFromDB){
                     tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
-                    tmpResponse.data = customerFromDB
+                    tmpResponse.data = contactFromDB
                 }else{
-                    tmpResponse.message = messageSource.getMessage("customer.not.found", null, Locale.default);
+                    tmpResponse.message = messageSource.getMessage("contact.not.found", null, Locale.default);
                     tmpResponse.code = Constants.REGISTER_NOT_FOUND
                 }
             }else{
-                def customersFromDB = customerService.getAllCustomers();
+                def customersFromDB = contactService.getAllContacts();
 
                 tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
                 tmpResponse.data = customersFromDB
             }
-            log.info "====== Get customer response ======"
+            log.info "====== Get contact response ======"
             log.info tmpResponse as JSON
             render tmpResponse as JSON
         } catch (Exception e) {
@@ -51,39 +52,30 @@ class CustomerController extends RestController {
     }
 
     /**
-     * Este método se encarga de crear un nuevo cliente
+     * Este método se encarga de crear un contacto
      * @author Leonardo Chen
      * @param name
      */
     @Secured(['ROLE_ANONYMOUS'])
     def create() {
-        log.info "==========  Create customer  request =========="
+        log.info "==========  Create contact  request =========="
         log.info request.JSON
 
         ResponseREST tmpResponse = new ResponseREST();
-        Customer tmpCustomer;
-        CustomerREST  restCustomer = new CustomerREST(request.JSON);
+        Contact  tmpContact = new Contact(request.JSON);
         try {
 
-            def tmpCustomerToCheck = Customer.findByIdentificationAndEnabled(restCustomer.identification, Constants.ESTADO_ACTIVO)
-           if(tmpCustomerToCheck){
-               tmpResponse.code = Constants.ERROR_UNDECLARED_EXCEPTION
-               tmpResponse.message =  messageSource.getMessage("create.customer.id.nonUnique", null, Locale.default)
-               render tmpResponse as JSON
-               return
-           }
 
-            restCustomer.validate();
-            if (restCustomer.hasErrors()) {
-                this.handleDataErrorsREST(messageSource, restCustomer.errors);
+            tmpContact.validate();
+            if (tmpContact.hasErrors()) {
+                this.handleDataErrorsREST(messageSource, tmpContact.errors);
             } else {
-                tmpCustomer = Customer.fromRestCustomer(restCustomer);
-                customerService.createCustomer(tmpCustomer);
+                contactService.createContact(tmpContact);
 
-                tmpResponse.message = messageSource.getMessage("create.customer.success", null, Locale.default)
+                tmpResponse.message = messageSource.getMessage("create.contact.success", null, Locale.default)
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
             }
-            log.info "====== Create customer response ======"
+            log.info "====== Create contact response ======"
             log.info tmpResponse as JSON
             render tmpResponse as JSON
         } catch (Exception e) {
@@ -92,33 +84,33 @@ class CustomerController extends RestController {
     }
 
     /**
-     * Este método se encarga de borrar (Borrado lógico) un cliente
+     * Este método se encarga de borrar (Borrado lógico) un contacto
      * @author Leonardo Chen
      * @param id
      */
     @Secured(['ROLE_ANONYMOUS'])
     def delete() {
-        log.info "==========  Delete customer type request =========="
+        log.info "==========  Delete contact  request =========="
         log.info request.JSON
 
         ResponseREST tmpResponse = new ResponseREST();
         try {
             if (request.JSON && request.JSON != null &&  request.JSON.id != null ) {
-                Customer tmpCustomer = customerService.getCustomer(request.JSON.id);
+                Contact tmpContact = contactService.getContact(request.JSON.id);
 
-                if(tmpCustomer) {
-                    customerService.deleteCustomer(tmpCustomer);
-                    tmpResponse.message = messageSource.getMessage("delete.customer.success", null, Locale.default);
+                if(tmpContact) {
+                    contactService.deleteContact(tmpContact);
+                    tmpResponse.message = messageSource.getMessage("delete.contact.success", null, Locale.default);
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
                 }else {
-                    tmpResponse.message = messageSource.getMessage("customer.not.found", null, Locale.default);
+                    tmpResponse.message = messageSource.getMessage("contact.not.found", null, Locale.default);
                     tmpResponse.code = Constants.REGISTER_NOT_FOUND
                 }
             }else{
                 tmpResponse.message = messageSource.getMessage("generic.request.error.missing.parameters", null, Locale.default);
                 tmpResponse.code = Constants.ERROR_VALIDACION_DE_CAMPOS
             }
-            log.info "====== Delete customer response ======"
+            log.info "====== Delete contact response ======"
             log.info tmpResponse as JSON
             render tmpResponse as JSON
         } catch (Exception e) {
@@ -127,28 +119,28 @@ class CustomerController extends RestController {
     }
 
     /**
-     * Este método se encarga de modificar un cliente
+     * Este método se encarga de modificar un contacto
      * @author Leonardo Chen
      * @param name
      */
     @Secured(['ROLE_ANONYMOUS'])
     def update() {
-        log.info "==========  Update customer request =========="
+        log.info "==========  Update contact request =========="
         log.info request.JSON
 
         ResponseREST tmpResponse = new ResponseREST();
-        UpdateCustomerRequestREST tmpCustomer = new UpdateCustomerRequestREST(request.JSON);
+        UpdateContactRequestREST tmpContactRest = new UpdateContactRequestREST(request.JSON);
         try {
-            tmpCustomer.validate();
-            if (tmpCustomer.hasErrors()) {
-                this.handleDataErrorsREST(messageSource, tmpCustomer.errors);
+            tmpContactRest.validate();
+            if (tmpContactRest.hasErrors()) {
+                this.handleDataErrorsREST(messageSource, tmpContactRest.errors);
             } else {
-                    customerService.updateCustomer(tmpCustomer);
-                    tmpResponse.message = messageSource.getMessage("update.customer.success", null, Locale.default)
+                    contactService.updateContact(tmpContactRest);
+                    tmpResponse.message = messageSource.getMessage("update.contact.success", null, Locale.default)
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
 
             }
-            log.info "====== Update customer response ======"
+            log.info "====== Update contact response ======"
             log.info tmpResponse as JSON
             render tmpResponse as JSON
         }catch (Exception e) {

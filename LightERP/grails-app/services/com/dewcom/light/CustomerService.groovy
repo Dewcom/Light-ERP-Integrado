@@ -1,11 +1,13 @@
 package com.dewcom.light
 
-
+import com.dewcom.light.rest.UpdateCustomerRequestREST
 import grails.transaction.Transactional
  import com.dewcom.light.rest.CustomerREST
 
 @Transactional
 class CustomerService {
+
+    def messageSource
 
     Customer getCustomer(def customerId) {
         log.info "====== Getting customer from DB ======"
@@ -15,7 +17,7 @@ class CustomerService {
             return customerFromDB
         } catch (Exception e) {
             log.error(e);
-            throw new LightRuntimeException("get.customer.error");
+            throw new LightRuntimeException(messageSource.getMessage("get.customer.error", null, Locale.default));
         }
     }
 
@@ -27,7 +29,7 @@ class CustomerService {
             return customersFromDB
         } catch (Exception e) {
             log.error(e);
-            throw new LightRuntimeException("get.all.customers.error");
+            throw new LightRuntimeException(messageSource.getMessage("get.all.customers.error", null, Locale.default));
         }
     }
 
@@ -36,7 +38,7 @@ class CustomerService {
             pcustomer.save(flush: true, failOnError:true)
         } catch (Exception e) {
             log.error(e);
-            throw new LightRuntimeException("create.customer.error");
+            throw new LightRuntimeException(messageSource.getMessage("create.customer.error", null, Locale.default));
         }
     }
 
@@ -46,11 +48,11 @@ class CustomerService {
             pcustomer.save(flush: true)
         } catch (Exception e) {
             log.error(e);
-            throw new LightRuntimeException("delete.customer.error");
+            throw new LightRuntimeException(messageSource.getMessage("delete.customer.error", null, Locale.default));
         }
     }
 
-    def updateCustomer(CustomerREST argRestCustomer) {
+    def updateCustomer(UpdateCustomerRequestREST argRestCustomer) {
         try {
             Customer tmpCustomerToUpdate = Customer.findByIdAndEnabled(argRestCustomer.id, Constants.ESTADO_ACTIVO)
             if (tmpCustomerToUpdate) {
@@ -73,7 +75,7 @@ class CustomerService {
 
                 tmpCustomerToUpdate.save(flush: true);
             } else {
-                throw new LightRuntimeException("update.customer.notFound.error");
+                throw new LightRuntimeException(messageSource.getMessage("update.customer.notFound.error", null, Locale.default));
             }
         }
 
@@ -83,33 +85,8 @@ class CustomerService {
                 throw e;
             }
             else{
-              throw new LightRuntimeException("update.customer.error");
+              throw new LightRuntimeException(messageSource.getMessage("update.customer.error", null, Locale.default));
             }
         }
-    }
-
-    def restCustomerToCustomer(CustomerREST argRestCostumer){
-        Customer tmpCustomer = new Customer();
-
-        tmpCustomer.name = argRestCostumer.name;
-        tmpCustomer.identification = argRestCostumer.identification;
-        tmpCustomer.firstLastName = argRestCostumer.firstLastName;
-        tmpCustomer.secondLastName = argRestCostumer.secondLastName;
-        tmpCustomer.address1 = argRestCostumer.address1;
-        tmpCustomer.address2 = argRestCostumer.address2;
-        tmpCustomer.phoneNumber1 = argRestCostumer.phoneNumber1;
-        tmpCustomer.phoneNumber2 = argRestCostumer.phoneNumber2;
-        tmpCustomer.mobile = argRestCostumer.mobile;
-        tmpCustomer.website = argRestCostumer.website;
-        tmpCustomer.email = argRestCostumer.email;
-        tmpCustomer.website = argRestCostumer.website;
-        tmpCustomer.discountPercentage = argRestCostumer.discountPercentage;
-        tmpCustomer.creditLimit = argRestCostumer.creditLimit;
-        tmpCustomer.idDistrict = argRestCostumer.idDistrict;
-
-        tmpCustomer.identificationType = IdentificationType.findByIdAndEnabled(argRestCostumer.identificationType, Constants.ESTADO_ACTIVO);
-        tmpCustomer.customerType =  CustomerType.findByIdAndEnabled(argRestCostumer.customerType, Constants.ESTADO_ACTIVO);
-
-        return tmpCustomer;
     }
 }

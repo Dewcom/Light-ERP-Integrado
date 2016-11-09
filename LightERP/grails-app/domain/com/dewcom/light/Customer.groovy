@@ -1,5 +1,7 @@
 package com.dewcom.light
 
+import com.dewcom.light.rest.CustomerREST
+
 class Customer {
 
     String name
@@ -28,7 +30,7 @@ class Customer {
         name blank: false
         firstLastName blank: false
         secondLastName blank: false
-        identification blank: false, unique: true
+        identification blank: false, nullable: false
         idDistrict nullabe: true
         address1 blank: false
         address2 nullable: true, blank: true
@@ -39,5 +41,31 @@ class Customer {
         email nullable: true, blank: true
         discountPercentage nullable: true
         creditLimit nullable: true
+    }
+
+
+    def static fromRestCustomer(CustomerREST argRestCostumer){
+        Customer tmpCustomer = new Customer();
+
+        tmpCustomer.name = argRestCostumer.name;
+        tmpCustomer.identification = argRestCostumer.identification;
+        tmpCustomer.firstLastName = argRestCostumer.firstLastName;
+        tmpCustomer.secondLastName = argRestCostumer.secondLastName;
+        tmpCustomer.address1 = argRestCostumer.address1;
+        tmpCustomer.address2 = argRestCostumer.address2;
+        tmpCustomer.phoneNumber1 = argRestCostumer.phoneNumber1;
+        tmpCustomer.phoneNumber2 = argRestCostumer.phoneNumber2;
+        tmpCustomer.mobile = argRestCostumer.mobile;
+        tmpCustomer.website = argRestCostumer.website;
+        tmpCustomer.email = argRestCostumer.email;
+        tmpCustomer.website = argRestCostumer.website;
+        tmpCustomer.discountPercentage = argRestCostumer.discountPercentage;
+        tmpCustomer.creditLimit = argRestCostumer.creditLimit;
+        tmpCustomer.idDistrict = argRestCostumer.idDistrict;
+
+        tmpCustomer.identificationType = IdentificationType.findByIdAndEnabled(argRestCostumer.identificationType, Constants.ESTADO_ACTIVO);
+        tmpCustomer.customerType =  CustomerType.findByIdAndEnabled(argRestCostumer.customerType, Constants.ESTADO_ACTIVO);
+
+        return tmpCustomer;
     }
 }
