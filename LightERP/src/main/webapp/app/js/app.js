@@ -66,6 +66,14 @@
     'use strict';
 
     angular
+        .module('app.client', [
+            'add.notify'
+        ]);
+})();
+(function() {
+    'use strict';
+
+    angular
         .module('app.services', []);
 })();
 
@@ -140,6 +148,12 @@
 
     angular
         .module('app.translate', []);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.notify', []);
 })();
 (function() {
     'use strict';

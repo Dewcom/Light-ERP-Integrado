@@ -83,39 +83,6 @@
             ];
         }
 
-        /**=========================================================
-         * Agregar clientes
-         =========================================================*/
-
-        vm.addCustomer = function($scope) {
-            console.log("En el controller");
-            console.log(vm.name);
-            console.log($scope.name);
-
-            var newCustomer ={
-                "name":vm.name,
-                "firstLastName":vm.firstLastName ,
-                "secondLastName":vm.secondLastName,
-                "identification":vm.identification,
-                "idDistrict":vm.selectedDistrict1 ,
-                "address1":vm.address1 ,
-                "address2":vm.address2 ,
-                "phoneNumber1":vm.phoneNumber1,
-                "phoneNumber2":vm.phoneNumber2 ,
-                "mobile":vm.mobile ,
-                "website":vm.website ,
-                "email":vm.email ,
-                "discountPercentage":vm.discountPercentage,
-                "creditLimit":vm.creditLimit,
-                "identificationType":vm.selectedIdentificationType,
-                "customerType":vm.selectedCustomerType
-            };
-            console.log(newCustomer);
-            customerService.addCustomer(newCustomer).then(function(response) {
-
-            });
-        };
-
     /**=========================================================
          * Eliminar clientes
          =========================================================*/
@@ -137,7 +104,9 @@
             var modalInstance = $uibModal.open({
                 templateUrl: '/addClientModal.html',
                 controller: ModalInstanceCtrl,
-                size: size
+                size: size,
+                backdrop: 'static', // No cierra clickeando fuera
+                keyboard: false // No cierra con escape
             });
 
             var state = $('#modal-state');
@@ -155,7 +124,7 @@
         function ModalInstanceCtrl($scope, $uibModalInstance) {
             $scope.addCustomerForm = {};
 
-            $scope.ok = function () {
+            $scope.close = function () {
                 $uibModalInstance.close('closed');
             };
 
@@ -170,7 +139,7 @@
             $scope.addCustomer = function() {
 
                 var newCustomer ={
-                    "name":$scope.addCustomerForm.name,
+                    /*"name":$scope.addCustomerForm.name,*/
                     "firstLastName":$scope.addCustomerForm.firstLastName ,
                     "secondLastName":$scope.addCustomerForm.secondLastName,
                     "identification":$scope.addCustomerForm.identification,
@@ -188,8 +157,10 @@
                     "customerType":$scope.addCustomerForm.selectedCustomerType
                 };
                 console.log(newCustomer);
-                customerService.addCustomer(newCustomer).then(function(response) {
-
+                customerService.addCustomer(newCustomer).then(function (response) {
+                    console.log(response);
+                },function (error) {
+                    console.log(error);
                 });
 
                 $uibModalInstance.close('closed');

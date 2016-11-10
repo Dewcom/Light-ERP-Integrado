@@ -25,7 +25,6 @@ angular
         }
 
         customerService.addCustomer = function(newCustomer) {
-            console.log("#################");
             console.log(newCustomer);
             var addCustomerResult = $http({
                 method: 'POST',
@@ -38,7 +37,7 @@ angular
                 }
             }).then(function (response) {
                 console.log(response.data.message);
-                return response.data.message;
+                return response.data;
             },function (error) {
                 console.log(error);
                 return error.status;
