@@ -9,9 +9,9 @@
         .directive('formWizard', formWizard);
 
     CustomerController.$inject = ['$uibModal','$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder',
-        'customerService', 'customerTypeService', 'identificationTypeService'];
+        'customerService', 'customerTypeService', 'identificationTypeService','toaster', '$state'];
     function CustomerController($uibModal, $resource, DTOptionsBuilder, DTColumnDefBuilder, customerService,
-                                customerTypeService, identificationTypeService) {
+                                customerTypeService, identificationTypeService, toaster, $state ) {
         var vm = this;
 
         var language = {
@@ -139,7 +139,7 @@
             $scope.addCustomer = function() {
 
                 var newCustomer ={
-                    /*"name":$scope.addCustomerForm.name,*/
+                    "name":$scope.addCustomerForm.name,
                     "firstLastName":$scope.addCustomerForm.firstLastName ,
                     "secondLastName":$scope.addCustomerForm.secondLastName,
                     "identification":$scope.addCustomerForm.identification,
@@ -158,13 +158,48 @@
                 };
                 console.log(newCustomer);
                 customerService.addCustomer(newCustomer).then(function (response) {
-                    console.log(response);
+                    var toasterdata;
+
+                    if(response.code == "0"){
+                        toasterdata = {
+                            type: 'success',
+                            title: 'Cliente',
+                            text: response.message
+                        };
+                    }else{
+                        toasterdata = {
+                            type: 'warning',
+                            title: 'Cliente',
+                            text: response.message
+                        };
+
+                    }
+                    $scope.pop(toasterdata);
                 },function (error) {
                     console.log(error);
                 });
 
                 $uibModalInstance.close('closed');
             };
+
+
+            /*$scope.pop = function(toasterdata) {
+                console.log(toasterdata);
+                $state.reload();
+                toaster.pop(toasterdata.type, toasterdata.title, toasterdata.text);
+            }*/
+
+            $scope.pop = function(toasterdata){
+                toaster.pop({
+                    type: toasterdata.type,
+                    title : toasterdata.title,
+                    body: toasterdata.text,
+                    onHideCallback: function () {
+                        $state.reload();
+                    }
+                });
+
+            }
         }
     }
 

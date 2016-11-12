@@ -373,32 +373,40 @@
 
     }
 })();
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('app.lazyload')
         .constant('APP_REQUIRES', {
-          // jQuery based and standalone scripts
-          scripts: {
-            'modernizr':          ['vendor/modernizr/modernizr.custom.js'],
-            'icons':              ['vendor/fontawesome/css/font-awesome.min.css',
-                                   'vendor/simple-line-icons/css/simple-line-icons.css'],
+            // jQuery based and standalone scripts
+            scripts: {
+                'modernizr': ['vendor/modernizr/modernizr.custom.js'],
+                'icons': ['vendor/fontawesome/css/font-awesome.min.css',
+                    'vendor/simple-line-icons/css/simple-line-icons.css'],
 
-          },
-          // Angular based script (use the right module name)
-          modules: [
-            // {name: 'toaster', files: ['vendor/angularjs-toaster/toaster.js', 'vendor/angularjs-toaster/toaster.css']}
-              {name: 'datatables', files: ['vendor/datatables/media/css/jquery.dataTables.css',
-                                            'vendor/datatables/media/js/jquery.dataTables.js',
-                                            'vendor/angular-datatables/dist/angular-datatables.js'], serie: true},
-              {name: 'ngDialog', files: ['vendor/ngDialog/js/ngDialog.min.js',
-                  'vendor/ngDialog/css/ngDialog.min.css',
-                  'vendor/ngDialog/css/ngDialog-theme-default.min.css'] }
+            },
+            // Angular based script (use the right module name)
+            modules: [
+                // {name: 'toaster', files: ['vendor/angularjs-toaster/toaster.js', 'vendor/angularjs-toaster/toaster.css']}
+                {
+                    name: 'datatables', files: ['vendor/datatables/media/css/jquery.dataTables.css',
+                    'vendor/datatables/media/js/jquery.dataTables.js',
+                    'vendor/angular-datatables/dist/angular-datatables.js'], serie: true
+                },
+                {
+                    name: 'ngDialog', files: ['vendor/ngDialog/js/ngDialog.min.js',
+                    'vendor/ngDialog/css/ngDialog.min.css',
+                    'vendor/ngDialog/css/ngDialog-theme-default.min.css']
+                },
+                {
+                    name: 'toaster', files: ['vendor/angularjs-toaster/toaster.js',
+                    'vendor/angularjs-toaster/toaster.css']
+                }
 
-          ]
+            ]
         })
-        ;
+    ;
 
 })();
 
@@ -763,7 +771,7 @@
               url: '/app',
               abstract: true,
               templateUrl: helper.basepath('app.html'),
-              resolve: helper.resolveFor('modernizr', 'icons'),
+              resolve: helper.resolveFor('modernizr', 'icons', 'toaster'),
                    data: {
                        requireLogin: true // this property will apply to all children of 'app'
                    }
