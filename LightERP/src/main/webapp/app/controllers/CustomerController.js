@@ -11,7 +11,7 @@
     CustomerController.$inject = ['$uibModal','$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder',
         'customerService', 'customerTypeService', 'identificationTypeService','toaster', '$state'];
     function CustomerController($uibModal, $resource, DTOptionsBuilder, DTColumnDefBuilder, customerService,
-                                customerTypeService, identificationTypeService, toaster, $state ) {
+                                customerTypeService, identificationTypeService, toaster, $state) {
         var vm = this;
 
         var language = {
@@ -84,16 +84,13 @@
         }
 
     /**=========================================================
-         * Eliminar clientes
-         =========================================================*/
+     * Eliminar clientes
+     =========================================================*/
         vm.disableCustomer = function(customerId){
             customerService.disableCustomer(customerId).then(function(response) {
                 init();
             });
-        }
-
-
-
+        };
 
         /**=========================================================
          * Module: modals
@@ -181,13 +178,6 @@
 
                 $uibModalInstance.close('closed');
             };
-
-
-            /*$scope.pop = function(toasterdata) {
-                console.log(toasterdata);
-                $state.reload();
-                toaster.pop(toasterdata.type, toasterdata.title, toasterdata.text);
-            }*/
 
             $scope.pop = function(toasterdata){
                 toaster.pop({

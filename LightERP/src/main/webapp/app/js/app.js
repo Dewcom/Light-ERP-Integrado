@@ -787,6 +787,13 @@
                 templateUrl: helper.basepath('third-party-main.html'),
                 resolve: helper.resolveFor('datatables', 'ngDialog')
             })
+            .state('app.customerDetail', {
+                url: '/customerDetail',
+                title: 'Detalle cliente',
+                templateUrl: helper.basepath('customer-detail.html'),
+                resolve: helper.resolveFor('datatables'),
+                params : { customer: null, }
+            })
             .state('app.commerce', {
                 url: '/commerce',
                 title: 'Comercial',
