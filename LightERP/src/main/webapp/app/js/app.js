@@ -791,8 +791,7 @@
                 url: '/customerDetail',
                 title: 'Detalle cliente',
                 templateUrl: helper.basepath('customer-detail.html'),
-                resolve: helper.resolveFor('datatables'),
-                params : { customer: null, }
+                params : { customer: null }
             })
             .state('app.commerce', {
                 url: '/commerce',

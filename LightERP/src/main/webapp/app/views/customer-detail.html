@@ -1,97 +1,468 @@
 <div ng-controller="CustomerDetailController as controller">
-    <h3>Detalle del cliente</h3>
+    <div class="row">
+        <div class="col-md-7">
+            <h3>Detalle del cliente</h3>
+        </div>
+        <div class="col-md-5 customButtonGroup">
+            <button type="submit" class="btn btn-labeled btn-info" ng-click="controller.goBack()">
+                <span class="btn-label">
+                    <em class="fa fa-mail-reply"></em>
+                </span>Regresar
+            </button>
+            <button type="submit" class="btn btn-labeled btn-success">
+                <span class="btn-label">
+                    <em class="fa fa-plus"></em>
+                </span>Guardar
+            </button>
+            <button type="button" class="btn btn-labeled btn-danger">
+                   <span class="btn-label"><i class="fa fa-times"></i>
+                   </span>Cancelar
+            </button>
+        </div>
+    </div>
     <form class="panel">
         <uib-tabset justified="true">
             <uib-tab>
-                <uib-tab-heading>Información</uib-tab-heading>
-                <div>
-                    <fieldset>
-                        <div class="form-group">
-                            <label class="col-md-2 control-label">Nombre:</label>
-                            <div class="col-md-10">
-                                <input type="text" name="currentCustomer.name" ng-model="currentCustomer.name" class="form-control"/>
+                <form name="customerForm.formValidate" ng-submit="form.submitForm()" novalidate="" class="form-validate form-horizontal">
+                    <uib-tab-heading>Información</uib-tab-heading>
+                    <div>
+                        <fieldset>
+                            <legend>Cliente</legend>
+                            <!-- START row-->
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Tipo de cliente</label>
+                                        <div class="controls">
+                                            <select name="selectedCustomerType" ng-model="currentCustomer.selectedCustomerType" ng-options="item.id as item.name for item in controller.customerTypeList" class="form-control" required="required">
+                                            </select>
+                                            <span ng-show="form.validateInput('selectedCustomerType', 'required')" class="text-danger">This field is required</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Tipo de identificación</label>
+                                        <div class="controls">
+                                            <select name="selectedIdentificationType" ng-model="currentCustomer.selectedIdentificationType" ng-options="item.id as item.name for item in controller.identificationTypeList" class="form-control" required="required">
+                                            </select>
+                                            <span ng-show="formStep1.$submitted &amp;&amp; formStep1.selectedIdentificationType.$invalid" class="text-danger">Este campo es inválido</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Identificación</label>
+                                        <div class="controls">
+                                            <input type="text" name="identification" ng-model="currentCustomer.identification" placeholder="110102020" required="required" class="form-control" />
+                                            <span ng-show="formStep1.$submitted &amp;&amp; formStep1.identification.$invalid" class="text-danger">Este campo es inválido</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Nombre</label>
+                                        <div class="controls">
+                                            <input type="text" name="name" ng-model="currentCustomer.name" placeholder="Juan" required="required" class="form-control" />
+                                            <span ng-show="formStep1.$submitted &amp;&amp; formStep1.name.$invalid" class="text-danger">Este campo es inválido</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Primer apellido</label>
+                                        <div class="controls">
+                                            <input type="text" name="firstLastName" ng-model="currentCustomer.firstLastName" placeholder="Perez" required="required" class="form-control" />
+                                            <span ng-show="formStep1.$submitted &amp;&amp; formStep1.firstLastName.$invalid" class="text-danger">Este campo es inválido</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Segundo apellido</label>
+                                        <div class="controls">
+                                            <input type="text" name="secondLastName" ng-model="currentCustomer.secondLastName" placeholder="Perez" required="required" class="form-control" />
+                                            <span ng-show="formStep1.$submitted &amp;&amp; formStep1.secondLastName.$invalid" class="text-danger">Este campo es inválido</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </fieldset>
-                    <fieldset>
-                        <div class="form-group">
-                            <label class="col-md-2 control-label">Description:</label>
-                            <div class="col-md-10">
-                                <textarea cols="5" placeholder="Short description.." class="form-control"></textarea>
+                            <!-- END row-->
+                        </fieldset>
+                        <fieldset>
+                            <legend>Información de contacto</legend>
+                            <!-- START row-->
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Teléfono #1</label>
+                                        <div class="controls">
+                                            <input type="tel" name="phoneNumber1" ng-model="currentCustomer.phoneNumber1" placeholder="22221111" required="required" class="form-control" />
+                                            <span ng-show="formStep2.$submitted &amp;&amp; formStep2.phoneNumber1.$invalid" class="text-danger">Este campo es inválido</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Teléfono #2</label>
+                                        <div class="controls">
+                                            <input type="tel" name="phoneNumber2" ng-model="currentCustomer.phoneNumber2    " placeholder="22221111" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Teléfono móvil</label>
+                                        <div class="controls">
+                                            <input type="tel" name="mobile" ng-model="currentCustomer.mobile" placeholder="88887777" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Correo electrónico</label>
+                                        <div class="controls">
+                                            <input type="email" name="email" ng-model="currentCustomer.email" placeholder="contactEmail1" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Website</label>
+                                        <div class="controls">
+                                            <input type="text" name="website" ng-model="currentCustomer.website" placeholder="www.website.com" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </fieldset>
-                    <fieldset>
-                        <div class="form-group">
-                            <label class="col-md-2 control-label">Price:</label>
-                            <div class="col-md-10">
-                                <input type="text" placeholder="$ 123.20" class="form-control"/>
+                            <!-- END row-->
+                        </fieldset>
+                        <fieldset>
+                            <legend>Direcciones</legend>
+                            <!-- START row-->
+                            <h4>Dirección #1</h4>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Provincia</label>
+                                        <div class="controls">
+                                            <select name="selectedProvince1" ng-model="currentCustomer.selectedProvince1" class="form-control" required="required">
+                                                <option value="?" selected="selected"></option>
+                                                <option value="0">San José</option>
+                                                <option value="1">Heredia</option>
+                                                <option value="2">Alajuela</option>
+                                            </select>
+                                            <span ng-show="formStep3.$submitted &amp;&amp; formStep3.selectedProvince1.$invalid" class="text-danger">Este campo es inválido</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Cantón</label>
+                                        <div class="controls">
+                                            <select name="selectedCanton1" ng-model="currentCustomer.selectedCanton1" class="form-control" required="required">
+                                                <option value=0>Tibás</option>
+                                                <option value=1>Montes de Oca</option>
+                                                <option value=2>Perez Zeledón</option>
+                                            </select>
+                                            <span ng-show="formStep3.$submitted &amp;&amp; formStep3.selectedCanton1.$invalid" class="text-danger">Este campo es inválido</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Distrito</label>
+                                        <div class="controls">
+                                            <select name="selectedDistrict1" ng-model="currentCustomer.selectedDistrict1" class="form-control" required="required">
+                                                <option value=0>San Pedro</option>
+                                                <option value=1>Santa Marta</option>
+                                            </select>
+                                            <span ng-show="formStep3.$submitted &amp;&amp; formStep3.selectedDistrict1.$invalid" class="text-danger">Este campo es inválido</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Dirección</label>
+                                        <div class="controls">
+                                            <textarea style="resize: none" name="address1" ng-model="currentCustomer.address1" placeholder="Dirección y señas" class="form-control" required="required" />
+                                            <span ng-show="formStep3.$submitted &amp;&amp; formStep3.address1.$invalid" class="text-danger">Este campo es inválido</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </fieldset>
-                    <fieldset>
-                        <div class="form-group">
-                            <label class="col-md-2 control-label">Quantity:</label>
-                            <div class="col-md-10">
-                                <input type="number" placeholder="0" min="0" class="form-control"/>
+                            <!-- END row-->
+                            <!-- START row-->
+                            <h4>Dirección #2</h4>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Provincia</label>
+                                        <div class="controls">
+                                            <select name="selectedProvince2" ng-model="currentCustomer.selectedProvince2" class="form-control">
+                                                <option value="?" selected="selected"></option>
+                                                <option value="0">San José</option>
+                                                <option value="1">Heredia</option>
+                                                <option value="2">Alajuela</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Cantón</label>
+                                        <div class="controls">
+                                            <select name="selectedCanton2" ng-model="currentCustomer.selectedCanton2" class="form-control">
+                                                <option value="?" selected="selected"></option>
+                                                <option value="0">Tibás</option>
+                                                <option value="1">Montes de Oca</option>
+                                                <option value="2">Perez Zeledón</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Distrito</label>
+                                        <div class="controls">
+                                            <select name="selectedDistrict2" ng-model="currentCustomer.selectedDistrict2" class="form-control">
+                                                <option value="?" selected="selected"></option>
+                                                <option value="0">San Pedro</option>
+                                                <option value="1">Santa Marta</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>Dirección</label>
+                                        <div class="controls">
+                                            <textarea style="resize: none" name="address2" ng-model="currentCustomer.address2" placeholder="Dirección y señas" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </fieldset>
-                    <fieldset>
-                        <div class="form-group">
-                            <label class="col-md-2 control-label">Tax :</label>
-                            <div class="col-md-10">
-                                <input type="text" placeholder="20%" class="form-control"/>
+                            <!-- END row-->
+                        </fieldset>
+                        <fieldset>
+                            <legend>Crédito</legend>
+                            <!-- START row-->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Límite de crédito</label>
+                                        <div class="controls">
+                                            <input type="number" name="creditLimit" ng-model="currentCustomer.creditLimit" placeholder="$" required="required" class="form-control" />
+                                            <span ng-show="formStep4.$submitted &amp;&amp; formStep4.creditLimit.$invalid" class="text-danger">Este campo es inválido</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Porcentaje de descuento</label>
+                                        <div class="controls">
+                                            <input type="number" name="discountPorcentage" ng-model="currentCustomer.discountPercentage" placeholder="%" required="required" class="form-control" />
+                                            <span ng-show="formStep4.$submitted &amp;&amp; formStep4.discountPorcentage.$invalid" class="text-danger">Este campo es inválido</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </fieldset>
-                    <fieldset>
-                        <div class="form-group">
-                            <label class="col-md-2 control-label">Status:</label>
-                            <div class="col-md-10">
-                                <select class="form-control">
-                                    <option value="">Select..</option>
-                                    <option value="0">Public</option>
-                                    <option value="1">Pending</option>
-                                </select>
-                            </div>
-                        </div>
-                    </fieldset>
-                </div>
+                            <!-- END row-->
+                        </fieldset>
+                    </div>
+                </form>
             </uib-tab>
             <uib-tab>
-                <uib-tab-heading>SEO Metadata</uib-tab-heading>
+                <uib-tab-heading>Contactos</uib-tab-heading>
                 <div>
                     <fieldset>
-                        <div class="form-group">
-                            <label class="col-md-2 control-label">Title</label>
-                            <div class="col-md-10">
-                                <input type="text" placeholder="Brief description.." class="form-control"/>
+                        <legend>Contactos</legend>
+                        <!-- START row-->
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <!-- START panel-->
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><h4>Contacto #1</h4></div>
+                                    <div class="panel-body">
+                                        <!-- START row-->
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Nombre</label>
+                                                    <div class="controls">
+                                                        <input type="text" name="contactName1" ng-model="currentCustomer.contactName1" placeholder="Juan" required="required" class="form-control" />
+                                                        <span ng-show="formStep5.$submitted &amp;&amp; formStep5.contactName1.$invalid" class="text-danger">Este campo es inválido</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Primer apellido</label>
+                                                    <div class="controls">
+                                                        <input type="text" name="contactFirstLastName1" ng-model="currentCustomer.contactFirstLastName1" placeholder="Perez" required="required" class="form-control" />
+                                                        <span ng-show="formStep5.$submitted &amp;&amp; formStep5.contactFirstLastName1.$invalid" class="text-danger">Este campo es inválido</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Segundo apellido</label>
+                                                    <div class="controls">
+                                                        <input type="text" name="contactSecondLastName1" ng-model="currentCustomer.contactSecondLastName1" placeholder="Perez" required="required" class="form-control" />
+                                                        <span ng-show="formStep5.$submitted &amp;&amp; formStep5.contactSecondLastName1.$invalid" class="text-danger">Este campo es inválido</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Puesto</label>
+                                                    <div class="controls">
+                                                        <input type="text" name="contactPosition1" ng-model="currentCustomer.contactPosition1" placeholder="Director" required="required" class="form-control" />
+                                                        <span ng-show="formStep5.$submitted &amp;&amp; formStep5.contactPosition1.$invalid" class="text-danger">Este campo es inválido</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Departamento</label>
+                                                    <div class="controls">
+                                                        <input type="text" name="contactDepartment1" ng-model="currentCustomer.contactDepartment1" placeholder="Ventas" required="required" class="form-control" />
+                                                        <span ng-show="formStep5.$submitted &amp;&amp; formStep5.contactDepartment1.$invalid" class="text-danger">Este campo es inválido</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Teléfono</label>
+                                                    <div class="controls">
+                                                        <input type="text" name="contactPhoneNumber1" ng-model="currentCustomer.contactPhoneNumber1" placeholder="22222222" required="required" class="form-control" />
+                                                        <span ng-show="formStep5.$submitted &amp;&amp; formStep5.contactPhoneNumber1.$invalid" class="text-danger">Este campo es inválido</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Extensión</label>
+                                                    <div class="controls">
+                                                        <input type="text" name="contactExtention1" ng-model="currentCustomer.contactExtention1" placeholder="100" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Teléfono móvil</label>
+                                                    <div class="controls">
+                                                        <input type="text" name="contactMobile1" ng-model="currentCustomer.contactMobile1" placeholder="88887777" required="required" class="form-control" />
+                                                        <span ng-show="formStep5.$submitted &amp;&amp; formStep5.contactMobile1.$invalid" class="text-danger">Este campo es inválido</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Email</label>
+                                                    <div class="controls">
+                                                        <input type="email" name="contactEmail1" ng-model="currentCustomer.contactEmail1" placeholder="contact@dominio.com" required="required" class="form-control" />
+                                                        <span ng-show="formStep5.$submitted &amp;&amp; formStep5.contactEmail1.$invalid" class="text-danger">Este campo es inválido</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END panel-->
+                            </div>
+                            <div class="col-sm-6">
+                                <!-- START panel-->
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><h4>Contacto #2</h4></div>
+                                    <div class="panel-body">
+                                        <!-- START row-->
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Nombre</label>
+                                                    <div class="controls">
+                                                        <input type="text" name="contactName2" ng-model="currentCustomer.contactName2" placeholder="Juan" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Primer apellido</label>
+                                                    <div class="controls">
+                                                        <input type="text" name="contactFirstLastName2" ng-model="currentCustomer.contactFirstLastName2" placeholder="Perez" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Segundo apellido</label>
+                                                    <div class="controls">
+                                                        <input type="text" name="contactSecondLastName2" ng-model="currentCustomer.contactSecondLastName2" placeholder="Perez" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Puesto</label>
+                                                    <div class="controls">
+                                                        <input type="text" name="contactPosition2" ng-model="currentCustomer.contactPosition2" placeholder="Director" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Departamento</label>
+                                                    <div class="controls">
+                                                        <input type="text" name="contactDepartment2" ng-model="currentCustomer.contactDepartment2" placeholder="Ventas" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Teléfono</label>
+                                                    <div class="controls">
+                                                        <input type="text" name="contactPhoneNumber2" ng-model="currentCustomer.contactPhoneNumber2" placeholder="22222222" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Extensión</label>
+                                                    <div class="controls">
+                                                        <input type="text" name="contactExtention2" ng-model="currentCustomer.contactExtention2" placeholder="100" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Teléfono móvil</label>
+                                                    <div class="controls">
+                                                        <input type="text" name="contactMobile2" ng-model="currentCustomer.contactMobile2" placeholder="88887777" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Email</label>
+                                                    <div class="controls">
+                                                        <input type="email" name="contactEmail2" ng-model="currentCustomer.contactEmail2" placeholder="contact@dominio.com" class="form-control" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END panel-->
                             </div>
                         </div>
-                    </fieldset>
-                    <fieldset>
-                        <div class="form-group">
-                            <label class="col-md-2 control-label">Description</label>
-                            <div class="col-md-10">
-                                <textarea rows="5" placeholder="Max 255 characters..." class="form-control"></textarea>
-                            </div>
-                        </div>
-                    </fieldset>
-                    <fieldset>
-                        <div class="form-group">
-                            <label class="col-md-2 control-label">Keywords</label>
-                            <div class="col-md-10">
-                                <textarea rows="5" placeholder="Max 1000 characters..." class="form-control"></textarea>
-                            </div>
-                        </div>
+                        <!-- END row-->
                     </fieldset>
                 </div>
             </uib-tab>
         </uib-tabset>
     </form>
-    <div class="text-right mt-lg">
-        <button type="button" class="btn btn-warning">Discard</button>
-        <button type="button" class="btn btn-success">Save</button>
-    </div>
 </div>
