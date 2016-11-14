@@ -46,6 +46,26 @@ angular
             return addCustomerResult;
         }
 
+        customerService.updateCustomer = function(updatedCustomer) {
+            console.log(updatedCustomer);
+            var updateCustomerResult = $http({
+                method: 'PUT',
+                url: 'http://localhost:8080/api/customer/update',
+                data: updatedCustomer,
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            }).then(function (response) {
+                console.log(response.data.message);
+                return response.data;
+            },function (error) {
+                console.log(error);
+                return error.status;
+            });
+
+            return updateCustomerResult;
+        }
+
         customerService.disableCustomer = function(customerId) {
 
             var disableCustomerResult = $http({
