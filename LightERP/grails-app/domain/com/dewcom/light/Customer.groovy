@@ -8,7 +8,7 @@ class Customer {
     String firstLastName
     String secondLastName
     String identification
-    int idDistrict //Con el id del distrito obtenemos el cantón y la provincia
+    Integer idDistrict //Con el id del distrito obtenemos el cantón y la provincia
     String address1
     String address2
     String phoneNumber1
@@ -18,8 +18,8 @@ class Customer {
     String email
     Byte enabled = Constants.ESTADO_ACTIVO
     Date regitrationDate = new Date()
-    double discountPercentage
-    double creditLimit
+    Double discountPercentage
+    Double creditLimit
     IdentificationType identificationType
     CustomerType customerType
 
@@ -62,6 +62,11 @@ class Customer {
         tmpCustomer.discountPercentage = argRestCostumer.discountPercentage;
         tmpCustomer.creditLimit = argRestCostumer.creditLimit;
         tmpCustomer.idDistrict = argRestCostumer.idDistrict;
+
+        argRestCostumer.contacts.each {
+            tmpCustomer.addToContacts(it)
+        }
+
 
         tmpCustomer.identificationType = IdentificationType.findByIdAndEnabled(argRestCostumer.identificationType, Constants.ESTADO_ACTIVO);
         tmpCustomer.customerType =  CustomerType.findByIdAndEnabled(argRestCostumer.customerType, Constants.ESTADO_ACTIVO);

@@ -1,5 +1,6 @@
 package com.dewcom.light.rest
 
+import com.dewcom.light.Contact
 import grails.validation.Validateable
 import com.dewcom.light.Constants
 /**
@@ -25,6 +26,7 @@ class CustomerREST implements Validateable {
     Double creditLimit
     Integer identificationType
     Integer customerType
+    List<Contact> contacts
 
     static constraints = {
         name blank: false
