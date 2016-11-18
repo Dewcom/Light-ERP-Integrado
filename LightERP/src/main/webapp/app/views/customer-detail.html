@@ -143,17 +143,16 @@
                         <fieldset>
                             <legend>Direcciones</legend>
                             <!-- START row-->
-                            <h4>Dirección #1</h4>
+                            <h4>Dirección</h4>
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Provincia</label>
                                         <div class="controls">
-                                            <select name="selectedProvince1" ng-model="currentCustomer.selectedProvince1" class="form-control" required="required">
-                                                <option value="?" selected="selected"></option>
-                                                <option value="0">San José</option>
-                                                <option value="1">Heredia</option>
-                                                <option value="2">Alajuela</option>
+                                            <select name="selectedProvince1" ng-model="currentCustomer.selectedProvince1" class="form-control"
+                                                    required="required" ng-options="item.name for item in controller.provinces"
+                                                    ng-change="controller.loadCantons(currentCustomer.selectedProvince1)">
+                                                <option value="?"></option>
                                             </select>
                                             <span ng-show="formStep3.$submitted &amp;&amp; formStep3.selectedProvince1.$invalid" class="text-danger">Este campo es inválido</span>
                                         </div>
@@ -163,10 +162,10 @@
                                     <div class="form-group">
                                         <label>Cantón</label>
                                         <div class="controls">
-                                            <select name="selectedCanton1" ng-model="currentCustomer.selectedCanton1" class="form-control" required="required">
-                                                <option value=0>Tibás</option>
-                                                <option value=1>Montes de Oca</option>
-                                                <option value=2>Perez Zeledón</option>
+                                            <select name="selectedCanton1" ng-model="currentCustomer.selectedCanton1" class="form-control"
+                                                    required="required" ng-options="item.name for item in controller.cantons"
+                                                    ng-change="controller.loadDistricts(currentCustomer.selectedCanton1)">
+                                                <option value="?"></option>
                                             </select>
                                             <span ng-show="formStep3.$submitted &amp;&amp; formStep3.selectedCanton1.$invalid" class="text-danger">Este campo es inválido</span>
                                         </div>
@@ -176,9 +175,9 @@
                                     <div class="form-group">
                                         <label>Distrito</label>
                                         <div class="controls">
-                                            <select name="selectedDistrict1" ng-model="currentCustomer.selectedDistrict1" class="form-control" required="required">
-                                                <option value=0>San Pedro</option>
-                                                <option value=1>Santa Marta</option>
+                                            <select name="selectedDistrict1" ng-model="currentCustomer.selectedDistrict1" class="form-control"
+                                                    required="required" ng-options="item.name for item in controller.districts">
+                                                <option value="?"></option>
                                             </select>
                                             <span ng-show="formStep3.$submitted &amp;&amp; formStep3.selectedDistrict1.$invalid" class="text-danger">Este campo es inválido</span>
                                         </div>
@@ -190,57 +189,6 @@
                                         <div class="controls">
                                             <textarea style="resize: none" name="address1" ng-model="currentCustomer.address1" placeholder="Dirección y señas" class="form-control" required="required" />
                                             <span ng-show="formStep3.$submitted &amp;&amp; formStep3.address1.$invalid" class="text-danger">Este campo es inválido</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- END row-->
-                            <!-- START row-->
-                            <h4>Dirección #2</h4>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>Provincia</label>
-                                        <div class="controls">
-                                            <select name="selectedProvince2" ng-model="currentCustomer.selectedProvince2" class="form-control">
-                                                <option value="?" selected="selected"></option>
-                                                <option value="0">San José</option>
-                                                <option value="1">Heredia</option>
-                                                <option value="2">Alajuela</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>Cantón</label>
-                                        <div class="controls">
-                                            <select name="selectedCanton2" ng-model="currentCustomer.selectedCanton2" class="form-control">
-                                                <option value="?" selected="selected"></option>
-                                                <option value="0">Tibás</option>
-                                                <option value="1">Montes de Oca</option>
-                                                <option value="2">Perez Zeledón</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>Distrito</label>
-                                        <div class="controls">
-                                            <select name="selectedDistrict2" ng-model="currentCustomer.selectedDistrict2" class="form-control">
-                                                <option value="?" selected="selected"></option>
-                                                <option value="0">San Pedro</option>
-                                                <option value="1">Santa Marta</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>Dirección</label>
-                                        <div class="controls">
-                                            <textarea style="resize: none" name="address2" ng-model="currentCustomer.address2" placeholder="Dirección y señas" class="form-control" />
                                         </div>
                                     </div>
                                 </div>
