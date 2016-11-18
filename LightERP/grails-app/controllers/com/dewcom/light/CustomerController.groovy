@@ -62,9 +62,8 @@ class CustomerController extends RestController {
 
         ResponseREST tmpResponse = new ResponseREST();
         Customer tmpCustomer;
-        CustomerREST  restCustomer = new CustomerREST(request.JSON.customer);
+        CustomerREST restCustomer = new CustomerREST(request.JSON.customer);
         try {
-            log.info "cantidad de fuckin contactos"
             log.info restCustomer.contacts.size()
             def tmpCustomerToCheck = Customer.findByIdentificationAndEnabled(restCustomer.identification, Constants.ESTADO_ACTIVO)
            if(tmpCustomerToCheck){

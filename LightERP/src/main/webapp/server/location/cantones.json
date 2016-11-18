@@ -1,0 +1,407 @@
+[
+  {
+    "idProvince": 2,
+    "idCanton": 1,
+    "name": "Alajuela"
+  },
+  {
+    "idProvince": 2,
+    "idCanton": 5,
+    "name": "Atenas"
+  },
+  {
+    "idProvince": 2,
+    "idCanton": 3,
+    "name": "Grecia"
+  },
+  {
+    "idProvince": 2,
+    "idCanton": 15,
+    "name": "Guatuso"
+  },
+  {
+    "idProvince": 2,
+    "idCanton": 14,
+    "name": "Los Chiles"
+  },
+  {
+    "idProvince": 2,
+    "idCanton": 6,
+    "name": "Naranjo"
+  },
+  {
+    "idProvince": 2,
+    "idCanton": 9,
+    "name": "Orotina"
+  },
+  {
+    "idProvince": 2,
+    "idCanton": 7,
+    "name": "Palmares"
+  },
+  {
+    "idProvince": 2,
+    "idCanton": 8,
+    "name": "Poas"
+  },
+  {
+    "idProvince": 2,
+    "idCanton": 10,
+    "name": "San Carlos"
+  },
+  {
+    "idProvince": 2,
+    "idCanton": 4,
+    "name": "San Mateo"
+  },
+  {
+    "idProvince": 2,
+    "idCanton": 2,
+    "name": "San Ramon"
+  },
+  {
+    "idProvince": 2,
+    "idCanton": 13,
+    "name": "Upala"
+  },
+  {
+    "idProvince": 2,
+    "idCanton": 12,
+    "name": "Valverde Vega"
+  },
+  {
+    "idProvince": 2,
+    "idCanton": 11,
+    "name": "Zarcero"
+  },
+  {
+    "idProvince": 3,
+    "idCanton": 6,
+    "name": "Alvarado"
+  },
+  {
+    "idProvince": 3,
+    "idCanton": 1,
+    "name": "Cartago"
+  },
+  {
+    "idProvince": 3,
+    "idCanton": 8,
+    "name": "El Guarco"
+  },
+  {
+    "idProvince": 3,
+    "idCanton": 4,
+    "name": "Jimenez"
+  },
+  {
+    "idProvince": 3,
+    "idCanton": 3,
+    "name": "La Union"
+  },
+  {
+    "idProvince": 3,
+    "idCanton": 7,
+    "name": "Oreamuno"
+  },
+  {
+    "idProvince": 3,
+    "idCanton": 2,
+    "name": "Paraiso"
+  },
+  {
+    "idProvince": 3,
+    "idCanton": 5,
+    "name": "Turrialba"
+  },
+  {
+    "idProvince": 5,
+    "idCanton": 7,
+    "name": "Abangares"
+  },
+  {
+    "idProvince": 5,
+    "idCanton": 4,
+    "name": "Bagaces"
+  },
+  {
+    "idProvince": 5,
+    "idCanton": 5,
+    "name": "Carrillo"
+  },
+  {
+    "idProvince": 5,
+    "idCanton": 6,
+    "name": "Cañas"
+  },
+  {
+    "idProvince": 5,
+    "idCanton": 11,
+    "name": "Hojancha"
+  },
+  {
+    "idProvince": 5,
+    "idCanton": 10,
+    "name": "La Cruz"
+  },
+  {
+    "idProvince": 5,
+    "idCanton": 1,
+    "name": "Liberia"
+  },
+  {
+    "idProvince": 5,
+    "idCanton": 9,
+    "name": "Nandayure"
+  },
+  {
+    "idProvince": 5,
+    "idCanton": 2,
+    "name": "Nicoya"
+  },
+  {
+    "idProvince": 5,
+    "idCanton": 3,
+    "name": "Santa Cruz"
+  },
+  {
+    "idProvince": 5,
+    "idCanton": 8,
+    "name": "Tilaran"
+  },
+  {
+    "idProvince": 4,
+    "idCanton": 2,
+    "name": "Barva"
+  },
+  {
+    "idProvince": 4,
+    "idCanton": 7,
+    "name": "Belen"
+  },
+  {
+    "idProvince": 4,
+    "idCanton": 8,
+    "name": "Flores"
+  },
+  {
+    "idProvince": 4,
+    "idCanton": 1,
+    "name": "Heredia"
+  },
+  {
+    "idProvince": 4,
+    "idCanton": 6,
+    "name": "San Isidro"
+  },
+  {
+    "idProvince": 4,
+    "idCanton": 9,
+    "name": "San Pablo"
+  },
+  {
+    "idProvince": 4,
+    "idCanton": 5,
+    "name": "San Rafael"
+  },
+  {
+    "idProvince": 4,
+    "idCanton": 4,
+    "name": "Santa Barbara"
+  },
+  {
+    "idProvince": 4,
+    "idCanton": 3,
+    "name": "Santo Domingo"
+  },
+  {
+    "idProvince": 4,
+    "idCanton": 10,
+    "name": "Sarapiqui"
+  },
+  {
+    "idProvince": 7,
+    "idCanton": 6,
+    "name": "Guacimo"
+  },
+  {
+    "idProvince": 7,
+    "idCanton": 1,
+    "name": "Limon"
+  },
+  {
+    "idProvince": 7,
+    "idCanton": 5,
+    "name": "Matina"
+  },
+  {
+    "idProvince": 7,
+    "idCanton": 2,
+    "name": "Pococi"
+  },
+  {
+    "idProvince": 7,
+    "idCanton": 3,
+    "name": "Siquirres"
+  },
+  {
+    "idProvince": 7,
+    "idCanton": 4,
+    "name": "Talamanca"
+  },
+  {
+    "idProvince": 6,
+    "idCanton": 6,
+    "name": "Aguirre"
+  },
+  {
+    "idProvince": 6,
+    "idCanton": 3,
+    "name": "Buenos Aires"
+  },
+  {
+    "idProvince": 6,
+    "idCanton": 10,
+    "name": "Corredores"
+  },
+  {
+    "idProvince": 6,
+    "idCanton": 8,
+    "name": "Coto Brus"
+  },
+  {
+    "idProvince": 6,
+    "idCanton": 2,
+    "name": "Esparza"
+  },
+  {
+    "idProvince": 6,
+    "idCanton": 11,
+    "name": "Garabito"
+  },
+  {
+    "idProvince": 6,
+    "idCanton": 7,
+    "name": "Golfito"
+  },
+  {
+    "idProvince": 6,
+    "idCanton": 4,
+    "name": "Montes de Oro"
+  },
+  {
+    "idProvince": 6,
+    "idCanton": 5,
+    "name": "Osa"
+  },
+  {
+    "idProvince": 6,
+    "idCanton": 9,
+    "name": "Parrita"
+  },
+  {
+    "idProvince": 6,
+    "idCanton": 1,
+    "name": "Puntarenas"
+  },
+  {
+    "idProvince": 1,
+    "idCanton": 12,
+    "name": "Acosta"
+  },
+  {
+    "idProvince": 1,
+    "idCanton": 10,
+    "name": "Alajuelita"
+  },
+  {
+    "idProvince": 1,
+    "idCanton": 6,
+    "name": "Aserri"
+  },
+  {
+    "idProvince": 1,
+    "idCanton": 18,
+    "name": "Curridabat"
+  },
+  {
+    "idProvince": 1,
+    "idCanton": 3,
+    "name": "Desamparados"
+  },
+  {
+    "idProvince": 1,
+    "idCanton": 17,
+    "name": "Dota"
+  },
+  {
+    "idProvince": 1,
+    "idCanton": 2,
+    "name": "Escazu"
+  },
+  {
+    "idProvince": 1,
+    "idCanton": 8,
+    "name": "Goicoechea"
+  },
+  {
+    "idProvince": 1,
+    "idCanton": 20,
+    "name": "Leon Cortes"
+  },
+  {
+    "idProvince": 1,
+    "idCanton": 15,
+    "name": "Montes de Oca"
+  },
+  {
+    "idProvince": 1,
+    "idCanton": 7,
+    "name": "Mora"
+  },
+  {
+    "idProvince": 1,
+    "idCanton": 14,
+    "name": "Moravia"
+  },
+  {
+    "idProvince": 1,
+    "idCanton": 19,
+    "name": "Perez Zeledon"
+  },
+  {
+    "idProvince": 1,
+    "idCanton": 4,
+    "name": "Puriscal"
+  },
+  {
+    "idProvince": 1,
+    "idCanton": 1,
+    "name": "San Jose"
+  },
+  {
+    "idProvince": 1,
+    "idCanton": 9,
+    "name": "Santa Ana"
+  },
+  {
+    "idProvince": 1,
+    "idCanton": 5,
+    "name": "Tarrazu"
+  },
+  {
+    "idProvince": 1,
+    "idCanton": 13,
+    "name": "Tibas"
+  },
+  {
+    "idProvince": 1,
+    "idCanton": 16,
+    "name": "Turrubares"
+  },
+  {
+    "idProvince": 1,
+    "idCanton": 11,
+    "name": "Vazquez de Coronado"
+  }
+]

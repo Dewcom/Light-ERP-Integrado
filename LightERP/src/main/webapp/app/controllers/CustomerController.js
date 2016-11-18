@@ -9,9 +9,9 @@
         .directive('formWizard', formWizard);
 
     CustomerController.$inject = ['$uibModal','$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder',
-        'customerService', 'customerTypeService', 'identificationTypeService','toaster', '$state'];
+        'customerService', 'customerTypeService', 'identificationTypeService','toaster', '$state', '$http', '$filter'];
     function CustomerController($uibModal, $resource, DTOptionsBuilder, DTColumnDefBuilder, customerService,
-                                customerTypeService, identificationTypeService, toaster, $state) {
+                                customerTypeService, identificationTypeService, toaster, $state, $http, $filter) {
         var vm = this;
 
         var language = {
@@ -81,6 +81,33 @@
                 DTColumnDefBuilder.newColumnDef(3),
                 DTColumnDefBuilder.newColumnDef(4).notSortable()
             ];
+
+            //Distribución territorial
+            vm.provinces= [];
+            vm.cantons= [];
+            vm.districts= [];
+
+            $resource('server/location/provincias.json').query().$promise.then(function(data) {
+                vm.provinces = data;
+            });
+
+            //Se carga la lista de cantones
+            vm.loadCantons = function(province){
+
+                $resource('server/location/cantones.json').query().$promise.then(function(data) {
+                    vm.cantons = $filter('filter')(data, {idProvince: province.idProvince });
+                });
+            }
+
+            //Se carga la lista de distritos
+            vm.loadDistricts = function(canton){
+
+                $resource('server/location/distritos.json').query().$promise.then(function(data) {
+
+                    vm.districts = $filter('filter')(data, {idCanton: canton.idCanton, idProvince: canton.idProvince })
+                    console.log(vm.districts);
+                });
+            }
         }
 
     /**=========================================================
@@ -142,7 +169,7 @@
                     "firstLastName":$scope.addCustomerForm.firstLastName ,
                     "secondLastName":$scope.addCustomerForm.secondLastName,
                     "identification":$scope.addCustomerForm.identification,
-                    "idDistrict":$scope.addCustomerForm.selectedDistrict1 ,
+                    "idDistrict":$scope.addCustomerForm.selectedDistrict1.idDistrict ,
                     "address1":$scope.addCustomerForm.address1 ,
                     "address2":$scope.addCustomerForm.address2 ,
                     "phoneNumber1":$scope.addCustomerForm.phoneNumber1,
@@ -201,6 +228,7 @@
 
                 $uibModalInstance.close('closed');
             };
+
 
             $scope.pop = function(toasterdata){
                 toaster.pop({
