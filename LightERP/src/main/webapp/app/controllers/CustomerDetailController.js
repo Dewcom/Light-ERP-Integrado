@@ -9,14 +9,12 @@ CustomerDetailController.$inject = ['$http', '$state', '$stateParams', '$scope',
 function CustomerDetailController($http, $state, $stateParams, $scope, customerTypeService,
                                   identificationTypeService, customerService, toaster) {
     var vm = this;
-    var test;
 
     ////////////////
     init();
 
     function init() {
         $scope.currentCustomer = $stateParams.customer;
-        test = $stateParams.customer;
 
         /**=========================================================
          * Tipos de cliente
@@ -48,6 +46,7 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
     vm.updateCustomer = function () {
 
         var updatedCustomer = {
+            "id" : $scope.currentCustomer.id,
             "name": $scope.currentCustomer.name,
             "firstLastName": $scope.currentCustomer.firstLastName,
             "secondLastName": $scope.currentCustomer.secondLastName,
