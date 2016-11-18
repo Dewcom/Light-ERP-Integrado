@@ -33,6 +33,19 @@ class ContactService {
             throw new LightRuntimeException(messageSource.getMessage("get.all.contacts.error", null, Locale.default));
         }
     }
+    def getContactsByCustomerId(def customerId) {
+        log.info "====== Getting all contacts from DB by customerId ======"
+        def tmpCustomer = Customer.findById(customerId)
+        try {
+            def contactsFromDB = Contact.findAllByEnabledAndCustomer(Constants.ESTADO_ACTIVO, tmpCustomer);
+            return contactsFromDB
+        } catch (Exception e) {
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("get.all.contacts.error", null, Locale.default));
+        }
+    }
+
+
 
     def createContact(Contact pcontact) {
         try {

@@ -135,7 +135,6 @@
 
             $scope.addCustomer = function() {
 
-                var contacts
 
                 var newCustomer ={
                     "name":$scope.addCustomerForm.name,

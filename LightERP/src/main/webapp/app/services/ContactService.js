@@ -8,7 +8,7 @@ angular
 
         contactService.getAll = function() {
 
-            var customerList = $http({
+            var contactList = $http({
                 method: 'GET',
                 url: 'http://localhost:8080/api/contact/get',
                 headers: {
@@ -21,7 +21,7 @@ angular
                 return error.status;
             });
 
-            return customerList;
+            return contactList;
         }
 
         return contactService;
