@@ -20,7 +20,7 @@ class RestController {
             e = e.getUndeclaredThrowable()
         }
 
-        tmpResponse.message = e.systemMessage
+        tmpResponse.message = e.message
         tmpResponse.code = Constants.ERROR_UNDECLARED_EXCEPTION
 
         log.info "=======Response con errores======="

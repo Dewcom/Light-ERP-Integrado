@@ -135,6 +135,8 @@
 
             $scope.addCustomer = function() {
 
+                var contacts
+
                 var newCustomer ={
                     "name":$scope.addCustomerForm.name,
                     "firstLastName":$scope.addCustomerForm.firstLastName ,
@@ -151,7 +153,28 @@
                     "discountPercentage":$scope.addCustomerForm.discountPercentage,
                     "creditLimit":$scope.addCustomerForm.creditLimit,
                     "identificationType":$scope.addCustomerForm.selectedIdentificationType,
-                    "customerType":$scope.addCustomerForm.selectedCustomerType
+                    "customerType":$scope.addCustomerForm.selectedCustomerType,
+                    "contacts": [
+                        { "name": $scope.addCustomerForm.contactName1,
+                            "firstLastName": $scope.addCustomerForm.contactFirstLastName1,
+                            "secondLastName": $scope.addCustomerForm.contactSecondLastName1,
+                            "jobTitle": $scope.addCustomerForm.contactPosition1,
+                            "department": $scope.addCustomerForm.contactDepartment1,
+                            "phoneNumber1": $scope.addCustomerForm.contactPhoneNumber1,
+                            "email": $scope.addCustomerForm.contactEmail1,
+                            "mobile": $scope.addCustomerForm.contactMobile1
+                        },
+                        {
+                            "name": $scope.addCustomerForm.contactName2,
+                            "firstLastName": $scope.addCustomerForm.contactFirstLastName2,
+                            "secondLastName": $scope.addCustomerForm.contactSecondLastName2,
+                            "jobTitle": $scope.addCustomerForm.contactPosition2,
+                            "department": $scope.addCustomerForm.contactDepartment2,
+                            "phoneNumber1": $scope.addCustomerForm.contactPhoneNumber2,
+                            "email": $scope.addCustomerForm.contactEmail1,
+                            "mobile": $scope.addCustomerForm.contactMobile2
+                        }
+                    ]
                 };
                 console.log(newCustomer);
                 customerService.addCustomer(newCustomer).then(function (response) {

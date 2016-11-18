@@ -12,6 +12,8 @@ class Contact {
     String email
     Byte enabled = Constants.ESTADO_ACTIVO
     Date regitrationDate = new Date()
+    Customer customer
+    static belongsTo = [Customer]
 
     static constraints = {
         name blank: false

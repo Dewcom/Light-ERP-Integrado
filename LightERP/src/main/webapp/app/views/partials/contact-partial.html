@@ -1,63 +1,33 @@
-<div class="panel panel-default">
+<div class="panel panel-default" ng-controller="ContactController as controller">
     <div class="panel-body">
-        <div ng-controller="DataTableController as table4">
-            <form ng-submit="table4.addPerson()" class="form-inline">
-                <table datatable="ng" dt-options="table4.dtOptions" dt-column-defs="table4.dtColumnDefs" class="row-border hover">
-                    <thead>
-                    <tr>
-                        <th>
-                            <div class="form-group">
-                                <label>
-                                    <input type="number" name="id" ng-model="table4.person2Add.id" value="" class="form-control" />
-                                </label>
-                            </div>
-                        </th>
-                        <th>
-                            <div class="form-group">
-                                <label>
-                                    <input type="text" name="firstName" ng-model="table4.person2Add.firstName" value="" class="form-control" />
-                                </label>
-                            </div>
-                        </th>
-                        <th>
-                            <div class="form-group">
-                                <label>
-                                    <input type="text" name="lastName" ng-model="table4.person2Add.lastName" value="" class="form-control" />
-                                </label>
-                            </div>
-                        </th>
-                        <th>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-labeled btn-success">
-                              <span class="btn-label">
-                                 <em class="fa fa-plus"></em>
-                              </span>Add</button>
-                            </div>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>Hero ID</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="hero in table4.heroes">
-                        <td>{{ hero.id }}</td>
-                        <td>{{ hero.firstName }}</td>
-                        <td>{{ hero.lastName }}</td>
-                        <td>
-                            <button type="button" ng-click="table4.modifyPerson($index)" class="btn btn-sm btn-warning">
-                                <em class="fa fa-edit"></em>
-                            </button>
-                            <button type="button" ng-click="table4.removePerson($index)" class="btn btn-sm btn-danger">
-                                <em class="fa fa-trash-o"></em>
-                            </button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+        <div>
+            <div class="col-md-12 dataTableTop">
+                <div class="col-md-9">
+                    <h3>Lista de contactos</h3>
+                </div>
+            </div>
+            <table datatable="ng" dt-options="controller.dtOptions" dt-column-defs="controller.dtColumnDefs"
+                   class="row-border hover">
+                <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Departamento</th>
+                    <th>Puesto</th>
+                    <th>Teléfono</th>
+                    <th>Correo electrónico</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="contactObj in controller.contactList">
+                    <td>{{ contactObj.name + ' ' + contactObj.firstLastName + ' ' + contactObj.secondLastName}}
+                    </td>
+                    <td>{{ contactObj.department }}</td>
+                    <td>{{ contactObj.jobTitle }}</td>
+                    <td>{{ contactObj.phoneNumber1 }}</td>
+                    <td>{{ contactObj.email }}</td>
+                </tr>
+                </tbody>
+            </table>
             </form>
         </div>
     </div>
