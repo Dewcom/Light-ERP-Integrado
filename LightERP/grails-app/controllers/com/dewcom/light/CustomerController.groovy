@@ -37,12 +37,12 @@ class CustomerController extends RestController {
                 }
             }else{
                 def customersFromDB = customerService.getAllCustomers();
-
                 tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
                 tmpResponse.data = customersFromDB
             }
             log.info "====== Get customer response ======"
+            JSON.use('deep')
             log.info tmpResponse as JSON
             render tmpResponse as JSON
         } catch (Exception e) {
@@ -64,7 +64,6 @@ class CustomerController extends RestController {
         Customer tmpCustomer;
         CustomerREST restCustomer = new CustomerREST(request.JSON.customer);
         try {
-            log.info restCustomer.contacts.size()
             def tmpCustomerToCheck = Customer.findByIdentificationAndEnabled(restCustomer.identification, Constants.ESTADO_ACTIVO)
            if(tmpCustomerToCheck){
                tmpResponse.code = Constants.ERROR_UNDECLARED_EXCEPTION
