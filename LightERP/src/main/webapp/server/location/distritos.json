@@ -1,127 +1,127 @@
 [
   {
     "idProvince": "1",
-    "idCanton": "1",
+    "idCanton": "12",
     "idDistrict": "1",
     "name": "Cangrejal"
   },
   {
     "idProvince": "1",
-    "idCanton": "1",
+    "idCanton": "12",
     "idDistrict": "2",
     "name": "Guaitíl"
   },
   {
     "idProvince": "1",
-    "idCanton": "1",
+    "idCanton": "12",
     "idDistrict": "3",
     "name": "Palmichal"
   },
   {
     "idProvince": "1",
-    "idCanton": "1",
+    "idCanton": "12",
     "idDistrict": "4",
     "name": "Sabanillas"
   },
   {
     "idProvince": "1",
-    "idCanton": "1",
+    "idCanton": "12",
     "idDistrict": "5",
     "name": "San Ignacio"
   },
   {
     "idProvince": "1",
-    "idCanton": "1",
+    "idCanton": "10",
     "idDistrict": "6",
     "name": "Alajuelita"
   },
   {
     "idProvince": "1",
-    "idCanton": "1",
+    "idCanton": "10",
     "idDistrict": "7",
     "name": "Concepción"
   },
   {
     "idProvince": "1",
-    "idCanton": "1",
+    "idCanton": "10",
     "idDistrict": "8",
     "name": "San Antonio"
   },
   {
     "idProvince": "1",
-    "idCanton": "1",
+    "idCanton": "10",
     "idDistrict": "9",
     "name": "San Felipe"
   },
   {
     "idProvince": "1",
-    "idCanton": "1",
+    "idCanton": "10",
     "idDistrict": "10",
     "name": "San Josecito"
   },
   {
     "idProvince": "1",
-    "idCanton": "1",
+    "idCanton": "6",
     "idDistrict": "11",
     "name": "Aserrí"
   },
   {
     "idProvince": "1",
-    "idCanton": "2",
+    "idCanton": "6",
     "idDistrict": "12",
     "name": "Legua"
   },
   {
     "idProvince": "1",
-    "idCanton": "2",
+    "idCanton": "6",
     "idDistrict": "13",
     "name": "Monterrey"
   },
   {
     "idProvince": "1",
-    "idCanton": "2",
+    "idCanton": "6",
     "idDistrict": "14",
     "name": "Salitrillos"
   },
   {
     "idProvince": "1",
-    "idCanton": "3",
+    "idCanton": "6",
     "idDistrict": "15",
     "name": "San Gabriel"
   },
   {
     "idProvince": "1",
-    "idCanton": "3",
+    "idCanton": "6",
     "idDistrict": "16",
     "name": "Tarbaca (Praga)"
   },
   {
     "idProvince": "1",
-    "idCanton": "3",
+    "idCanton": "6",
     "idDistrict": "17",
     "name": "Vuelta de Jorco"
   },
   {
     "idProvince": "1",
-    "idCanton": "3",
+    "idCanton": "18",
     "idDistrict": "18",
     "name": "Curridabat"
   },
   {
     "idProvince": "1",
-    "idCanton": "3",
+    "idCanton": "18",
     "idDistrict": "19",
     "name": "Granadilla"
   },
   {
     "idProvince": "1",
-    "idCanton": "3",
+    "idCanton": "18",
     "idDistrict": "20",
     "name": "Sánchez"
   },
   {
     "idProvince": "1",
-    "idCanton": "3",
+    "idCanton": "18",
     "idDistrict": "21",
     "name": "Tirrases"
   },
@@ -163,559 +163,559 @@
   },
   {
     "idProvince": "1",
-    "idCanton": "4",
+    "idCanton": "3",
     "idDistrict": "28",
     "name": "Rosario"
   },
   {
     "idProvince": "1",
-    "idCanton": "4",
+    "idCanton": "3",
     "idDistrict": "29",
     "name": "San Antonio"
   },
   {
     "idProvince": "1",
-    "idCanton": "4",
+    "idCanton": "3",
     "idDistrict": "30",
     "name": "San Cristóbal"
   },
   {
     "idProvince": "1",
-    "idCanton": "4",
+    "idCanton": "3",
     "idDistrict": "31",
     "name": "San Juan de Dios"
   },
   {
     "idProvince": "1",
-    "idCanton": "4",
+    "idCanton": "3",
     "idDistrict": "32",
     "name": "San Miguel"
   },
   {
     "idProvince": "1",
-    "idCanton": "4",
+    "idCanton": "3",
     "idDistrict": "33",
     "name": "San Rafael"
   },
   {
     "idProvince": "1",
-    "idCanton": "4",
+    "idCanton": "3",
     "idDistrict": "34",
     "name": "San Rafael Abajo"
   },
   {
     "idProvince": "1",
-    "idCanton": "4",
+    "idCanton": "17",
     "idDistrict": "35",
     "name": "Copey"
   },
   {
     "idProvince": "1",
-    "idCanton": "4",
+    "idCanton": "17",
     "idDistrict": "36",
     "name": "Jardin"
   },
   {
     "idProvince": "1",
-    "idCanton": "5",
+    "idCanton": "17",
     "idDistrict": "37",
     "name": "Santa María"
   },
   {
     "idProvince": "1",
-    "idCanton": "5",
+    "idCanton": "2",
     "idDistrict": "38",
     "name": "Escazú"
   },
   {
     "idProvince": "1",
-    "idCanton": "5",
+    "idCanton": "2",
     "idDistrict": "39",
     "name": "San Antonio"
   },
   {
     "idProvince": "1",
-    "idCanton": "6",
+    "idCanton": "2",
     "idDistrict": "40",
     "name": "San Rafael"
   },
   {
     "idProvince": "1",
-    "idCanton": "6",
+    "idCanton": "8",
     "idDistrict": "41",
     "name": "Calle Blancos"
   },
   {
     "idProvince": "1",
-    "idCanton": "6",
+    "idCanton": "8",
     "idDistrict": "42",
     "name": "Guadalupe"
   },
   {
     "idProvince": "1",
-    "idCanton": "6",
+    "idCanton": "8",
     "idDistrict": "43",
     "name": "Ipís"
   },
   {
     "idProvince": "1",
-    "idCanton": "6",
+    "idCanton": "8",
     "idDistrict": "44",
     "name": "Mata de Platano"
   },
   {
     "idProvince": "1",
-    "idCanton": "6",
+    "idCanton": "8",
     "idDistrict": "45",
     "name": "Purral"
   },
   {
     "idProvince": "1",
-    "idCanton": "6",
+    "idCanton": "8",
     "idDistrict": "46",
     "name": "Rancho Redondo"
   },
   {
     "idProvince": "1",
-    "idCanton": "7",
+    "idCanton": "8",
     "idDistrict": "47",
     "name": "San Francisco"
   },
   {
     "idProvince": "1",
-    "idCanton": "7",
+    "idCanton": "20",
     "idDistrict": "48",
     "name": "Llano Bonito"
   },
   {
     "idProvince": "1",
-    "idCanton": "7",
+    "idCanton": "20",
     "idDistrict": "49",
     "name": "San Andrés"
   },
   {
     "idProvince": "1",
-    "idCanton": "7",
+    "idCanton": "20",
     "idDistrict": "50",
     "name": "San Antonio"
   },
   {
     "idProvince": "1",
-    "idCanton": "7",
+    "idCanton": "20",
     "idDistrict": "51",
     "name": "San Isidro"
   },
   {
     "idProvince": "1",
-    "idCanton": "8",
+    "idCanton": "20",
     "idDistrict": "52",
     "name": "San Pablo"
   },
   {
     "idProvince": "1",
-    "idCanton": "8",
+    "idCanton": "20",
     "idDistrict": "53",
     "name": "Santa Cruz"
   },
   {
     "idProvince": "1",
-    "idCanton": "8",
+    "idCanton": "15",
     "idDistrict": "54",
     "name": "Mercedes (Betania)"
   },
   {
     "idProvince": "1",
-    "idCanton": "8",
+    "idCanton": "15",
     "idDistrict": "55",
     "name": "Sabanilla"
   },
   {
     "idProvince": "1",
-    "idCanton": "8",
+    "idCanton": "15",
     "idDistrict": "56",
     "name": "San Pedro"
   },
   {
     "idProvince": "1",
-    "idCanton": "8",
+    "idCanton": "15",
     "idDistrict": "57",
     "name": "San Rafael"
   },
   {
     "idProvince": "1",
-    "idCanton": "8",
+    "idCanton": "7",
     "idDistrict": "58",
     "name": "Colón"
   },
   {
     "idProvince": "1",
-    "idCanton": "9",
+    "idCanton": "7",
     "idDistrict": "59",
     "name": "Guayabo"
   },
   {
     "idProvince": "1",
-    "idCanton": "9",
+    "idCanton": "7",
     "idDistrict": "60",
     "name": "Picagres"
   },
   {
     "idProvince": "1",
-    "idCanton": "9",
+    "idCanton": "7",
     "idDistrict": "61",
     "name": "Piedras Negras"
   },
   {
     "idProvince": "1",
-    "idCanton": "9",
+    "idCanton": "7",
     "idDistrict": "62",
     "name": "Tabarcia"
   },
   {
     "idProvince": "1",
-    "idCanton": "9",
+    "idCanton": "14",
     "idDistrict": "63",
     "name": "San Jerónimo"
   },
   {
     "idProvince": "1",
-    "idCanton": "9",
+    "idCanton": "14",
     "idDistrict": "64",
     "name": "San Vicente"
   },
   {
     "idProvince": "1",
-    "idCanton": "10",
+    "idCanton": "14",
     "idDistrict": "65",
     "name": "Trinidad"
   },
   {
     "idProvince": "1",
-    "idCanton": "10",
+    "idCanton": "19",
     "idDistrict": "66",
     "name": "Barú"
   },
   {
     "idProvince": "1",
-    "idCanton": "10",
+    "idCanton": "19",
     "idDistrict": "67",
     "name": "Cajón"
   },
   {
     "idProvince": "1",
-    "idCanton": "10",
+    "idCanton": "19",
     "idDistrict": "68",
     "name": "Daniel Flores"
   },
   {
     "idProvince": "1",
-    "idCanton": "10",
+    "idCanton": "19",
     "idDistrict": "69",
     "name": "General"
   },
   {
     "idProvince": "1",
-    "idCanton": "11",
+    "idCanton": "19",
     "idDistrict": "70",
     "name": "Pejibaye"
   },
   {
     "idProvince": "1",
-    "idCanton": "11",
+    "idCanton": "19",
     "idDistrict": "71",
     "name": "Platanares"
   },
   {
     "idProvince": "1",
-    "idCanton": "11",
+    "idCanton": "19",
     "idDistrict": "72",
     "name": "Páramo"
   },
   {
     "idProvince": "1",
-    "idCanton": "11",
+    "idCanton": "19",
     "idDistrict": "73",
     "name": "Rivas"
   },
   {
     "idProvince": "1",
-    "idCanton": "11",
+    "idCanton": "19",
     "idDistrict": "74",
     "name": "Río Nuevo"
   },
   {
     "idProvince": "1",
-    "idCanton": "12",
+    "idCanton": "19",
     "idDistrict": "75",
     "name": "San Isidro del General"
   },
   {
     "idProvince": "1",
-    "idCanton": "12",
+    "idCanton": "19",
     "idDistrict": "76",
     "name": "San Pedro"
   },
   {
     "idProvince": "1",
-    "idCanton": "12",
+    "idCanton": "4",
     "idDistrict": "77",
     "name": "Barbacoas"
   },
   {
     "idProvince": "1",
-    "idCanton": "12",
+    "idCanton": "4",
     "idDistrict": "78",
     "name": "Candelaria"
   },
   {
     "idProvince": "1",
-    "idCanton": "12",
+    "idCanton": "4",
     "idDistrict": "79",
     "name": "Chires"
   },
   {
     "idProvince": "1",
-    "idCanton": "13",
+    "idCanton": "4",
     "idDistrict": "80",
     "name": "Desamparaditos"
   },
   {
     "idProvince": "1",
-    "idCanton": "13",
+    "idCanton": "4",
     "idDistrict": "81",
     "name": "Grifo Alto"
   },
   {
     "idProvince": "1",
-    "idCanton": "13",
+    "idCanton": "4",
     "idDistrict": "82",
     "name": "Mercedes Sur"
   },
   {
     "idProvince": "1",
-    "idCanton": "13",
+    "idCanton": "4",
     "idDistrict": "83",
     "name": "San Antonio"
   },
   {
     "idProvince": "1",
-    "idCanton": "13",
+    "idCanton": "4",
     "idDistrict": "84",
     "name": "San Rafael"
   },
   {
     "idProvince": "1",
-    "idCanton": "14",
+    "idCanton": "4",
     "idDistrict": "85",
     "name": "Santiago"
   },
   {
     "idProvince": "1",
-    "idCanton": "14",
+    "idCanton": "1",
     "idDistrict": "86",
     "name": "Catedral"
   },
   {
     "idProvince": "1",
-    "idCanton": "14",
+    "idCanton": "1",
     "idDistrict": "87",
     "name": "El Carmen"
   },
   {
     "idProvince": "1",
-    "idCanton": "15",
+    "idCanton": "1",
     "idDistrict": "88",
     "name": "Hatillo"
   },
   {
     "idProvince": "1",
-    "idCanton": "15",
+    "idCanton": "1",
     "idDistrict": "89",
     "name": "Hospital"
   },
   {
     "idProvince": "1",
-    "idCanton": "15",
+    "idCanton": "1",
     "idDistrict": "90",
     "name": "Mata Redonda"
   },
   {
     "idProvince": "1",
-    "idCanton": "15",
+    "idCanton": "1",
     "idDistrict": "91",
     "name": "Merced"
   },
   {
     "idProvince": "1",
-    "idCanton": "16",
+    "idCanton": "1",
     "idDistrict": "92",
     "name": "Pavas"
   },
   {
     "idProvince": "1",
-    "idCanton": "16",
+    "idCanton": "1",
     "idDistrict": "93",
     "name": "San Francisco de Dos Rios"
   },
   {
     "idProvince": "1",
-    "idCanton": "16",
+    "idCanton": "1",
     "idDistrict": "94",
     "name": "San Sebastián"
   },
   {
     "idProvince": "1",
-    "idCanton": "16",
+    "idCanton": "1",
     "idDistrict": "95",
     "name": "Uruca"
   },
   {
     "idProvince": "1",
-    "idCanton": "16",
+    "idCanton": "1",
     "idDistrict": "96",
     "name": "Zapote"
   },
   {
     "idProvince": "1",
-    "idCanton": "17",
+    "idCanton": "9",
     "idDistrict": "97",
     "name": "Brasil"
   },
   {
     "idProvince": "1",
-    "idCanton": "17",
+    "idCanton": "9",
     "idDistrict": "98",
     "name": "Piedades"
   },
   {
     "idProvince": "1",
-    "idCanton": "17",
+    "idCanton": "9",
     "idDistrict": "99",
     "name": "Pozos (Concepción)"
   },
   {
     "idProvince": "1",
-    "idCanton": "18",
+    "idCanton": "9",
     "idDistrict": "100",
     "name": "Salitral"
   },
   {
     "idProvince": "1",
-    "idCanton": "18",
+    "idCanton": "9",
     "idDistrict": "101",
     "name": "Santa Ana"
   },
   {
     "idProvince": "1",
-    "idCanton": "18",
+    "idCanton": "9",
     "idDistrict": "102",
     "name": "Uruca o San Joaquín"
   },
   {
     "idProvince": "1",
-    "idCanton": "18",
+    "idCanton": "5",
     "idDistrict": "103",
     "name": "San Carlos"
   },
   {
     "idProvince": "1",
-    "idCanton": "19",
+    "idCanton": "5",
     "idDistrict": "104",
     "name": "San Lorenzo"
   },
   {
     "idProvince": "1",
-    "idCanton": "19",
+    "idCanton": "5",
     "idDistrict": "105",
     "name": "San Marcos"
   },
   {
     "idProvince": "1",
-    "idCanton": "19",
+    "idCanton": "13",
     "idDistrict": "106",
     "name": "Anselmo Llorente"
   },
   {
     "idProvince": "1",
-    "idCanton": "19",
+    "idCanton": "13",
     "idDistrict": "107",
     "name": "Cinco Esquinas"
   },
   {
     "idProvince": "1",
-    "idCanton": "19",
+    "idCanton": "13",
     "idDistrict": "108",
     "name": "Colima"
   },
   {
     "idProvince": "1",
-    "idCanton": "19",
+    "idCanton": "13",
     "idDistrict": "109",
     "name": "Leon XIII"
   },
   {
     "idProvince": "1",
-    "idCanton": "19",
+    "idCanton": "13",
     "idDistrict": "110",
     "name": "San Juan"
   },
   {
     "idProvince": "1",
-    "idCanton": "19",
+    "idCanton": "16",
     "idDistrict": "111",
     "name": "Cárara"
   },
   {
     "idProvince": "1",
-    "idCanton": "19",
+    "idCanton": "16",
     "idDistrict": "112",
     "name": "San Juan de Mata"
   },
   {
     "idProvince": "1",
-    "idCanton": "19",
+    "idCanton": "16",
     "idDistrict": "113",
     "name": "San Luis"
   },
   {
     "idProvince": "1",
-    "idCanton": "19",
+    "idCanton": "16",
     "idDistrict": "114",
     "name": "San Pablo"
   },
   {
     "idProvince": "1",
-    "idCanton": "20",
+    "idCanton": "16",
     "idDistrict": "115",
     "name": "San Pedro"
   },
   {
     "idProvince": "1",
-    "idCanton": "20",
+    "idCanton": "11",
     "idDistrict": "116",
     "name": "Cascajal"
   },
   {
     "idProvince": "1",
-    "idCanton": "20",
+    "idCanton": "11",
     "idDistrict": "117",
-    "name": "Dulce name de Jesús"
+    "name": "Dulce Nombre de Jesús"
   },
   {
     "idProvince": "1",
-    "idCanton": "20",
+    "idCanton": "11",
     "idDistrict": "118",
     "name": "Patalillo"
   },
   {
     "idProvince": "1",
-    "idCanton": "20",
+    "idCanton": "11",
     "idDistrict": "119",
     "name": "San Isidro"
   },
   {
     "idProvince": "1",
-    "idCanton": "20",
+    "idCanton": "11",
     "idDistrict": "120",
     "name": "San Rafael"
   },
@@ -1431,7 +1431,7 @@
     "idProvince": "3",
     "idCanton": "37",
     "idDistrict": "239",
-    "name": "Dulce name"
+    "name": "Dulce Nombre"
   },
   {
     "idProvince": "3",
@@ -1527,7 +1527,7 @@
     "idProvince": "3",
     "idCanton": "40",
     "idDistrict": "255",
-    "name": "Dulce name"
+    "name": "Dulce Nombre"
   },
   {
     "idProvince": "3",
@@ -1825,7 +1825,7 @@
   },
   {
     "idProvince": "4",
-    "idCanton": "48",
+    "idCanton": "49",
     "idDistrict": "305",
     "name": "Rincón de Sabanilla"
   },
@@ -1897,7 +1897,7 @@
   },
   {
     "idProvince": "4",
-    "idCanton": "51",
+    "idCanton": "52",
     "idDistrict": "317",
     "name": "Santo Domingo"
   },

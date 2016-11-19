@@ -2,12 +2,12 @@
   {
     "idProvince": "1",
     "idCanton": "1",
-    "name": "San Jose"
+    "name": "San José"
   },
   {
     "idProvince": "1",
     "idCanton": "2",
-    "name": "Escazu"
+    "name": "Escazú"
   },
   {
     "idProvince": "1",
@@ -22,12 +22,12 @@
   {
     "idProvince": "1",
     "idCanton": "5",
-    "name": "Tarrazu"
+    "name": "Tarrazú"
   },
   {
     "idProvince": "1",
     "idCanton": "6",
-    "name": "Aserri"
+    "name": "Aserrí"
   },
   {
     "idProvince": "1",
@@ -52,7 +52,7 @@
   {
     "idProvince": "1",
     "idCanton": "11",
-    "name": "Vazquez de Coronado"
+    "name": "Vázquez de Coronado"
   },
   {
     "idProvince": "1",
@@ -62,7 +62,7 @@
   {
     "idProvince": "1",
     "idCanton": "13",
-    "name": "Tibas"
+    "name": "Tibás"
   },
   {
     "idProvince": "1",
@@ -92,12 +92,12 @@
   {
     "idProvince": "1",
     "idCanton": "19",
-    "name": "Perez Zeledon"
+    "name": "Perez Zeledón"
   },
   {
     "idProvince": "1",
     "idCanton": "20",
-    "name": "Leon Cortes"
+    "name": "León Cortés"
   },
   {
     "idProvince": "2",
@@ -142,7 +142,7 @@
   {
     "idProvince": "2",
     "idCanton": "29",
-    "name": "Poas"
+    "name": "Poás"
   },
   {
     "idProvince": "2",
@@ -157,7 +157,7 @@
   {
     "idProvince": "2",
     "idCanton": "32",
-    "name": "San Ramon"
+    "name": "San Ramón"
   },
   {
     "idProvince": "2",
@@ -197,7 +197,7 @@
   {
     "idProvince": "3",
     "idCanton": "40",
-    "name": "La Union"
+    "name": "La Unión"
   },
   {
     "idProvince": "3",
@@ -222,7 +222,7 @@
   {
     "idProvince": "4",
     "idCanton": "45",
-    "name": "Belen"
+    "name": "Belén"
   },
   {
     "idProvince": "4",
@@ -262,7 +262,7 @@
   {
     "idProvince": "4",
     "idCanton": "53",
-    "name": "Sarapiqui"
+    "name": "Sarapiquí"
   },
   {
     "idProvince": "5",
@@ -317,7 +317,7 @@
   {
     "idProvince": "5",
     "idCanton": "64",
-    "name": "Tilaran"
+    "name": "Tilarán"
   },
   {
     "idProvince": "6",
@@ -392,7 +392,7 @@
   {
     "idProvince": "7",
     "idCanton": "79",
-    "name": "Pococi"
+    "name": "Pococí"
   },
   {
     "idProvince": "7",

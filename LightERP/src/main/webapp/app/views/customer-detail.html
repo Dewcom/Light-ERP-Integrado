@@ -34,9 +34,13 @@
                                     <div class="form-group">
                                         <label>Tipo de cliente</label>
                                         <div class="controls">
-                                            <select name="selectedCustomerType" ng-model="currentCustomer.selectedCustomerType" ng-options="item.id as item.name for item in controller.customerTypeList" class="form-control" required="required">
+                                            <select name="selectedCustomerType" ng-model="currentCustomer.selectedCustomerType"
+                                                    ng-options="item.id as item.name for item in controller.customerTypeList"
+                                                    class="form-control" required="required">
+                                                <option value="?"></option>
                                             </select>
-                                            <span ng-show="form.validateInput('selectedCustomerType', 'required')" class="text-danger">This field is required</span>
+                                            <span ng-show="form.validateInput('selectedCustomerType', 'required')"
+                                                  class="text-danger">This field is required</span>
                                         </div>
                                     </div>
                                 </div>
@@ -44,7 +48,10 @@
                                     <div class="form-group">
                                         <label>Tipo de identificación</label>
                                         <div class="controls">
-                                            <select name="selectedIdentificationType" ng-model="currentCustomer.selectedIdentificationType" ng-options="item.id as item.name for item in controller.identificationTypeList" class="form-control" required="required">
+                                            <select name="selectedIdentificationType" ng-model="currentCustomer.selectedIdentificationType"
+                                                    ng-options="item.id as item.name for item in controller.identificationTypeList"
+                                                    class="form-control" required="required">
+                                                <option value="?"></option>
                                             </select>
                                             <span ng-show="formStep1.$submitted &amp;&amp; formStep1.selectedIdentificationType.$invalid" class="text-danger">Este campo es inválido</span>
                                         </div>
@@ -106,7 +113,7 @@
                                     <div class="form-group">
                                         <label>Teléfono #2</label>
                                         <div class="controls">
-                                            <input type="tel" name="phoneNumber2" ng-model="currentCustomer.phoneNumber2    " placeholder="22221111" class="form-control" />
+                                            <input type="tel" name="phoneNumber2" ng-model="currentCustomer.phoneNumber2" placeholder="22221111" class="form-control" />
                                         </div>
                                     </div>
                                 </div>
@@ -149,9 +156,9 @@
                                     <div class="form-group">
                                         <label>Provincia</label>
                                         <div class="controls">
-                                            <select name="selectedProvince1" ng-model="currentCustomer.selectedProvince1" class="form-control"
-                                                    required="required" ng-options="item.name for item in controller.provinces"
-                                                    ng-change="controller.loadCantons(currentCustomer.selectedProvince1)">
+                                            <select name="selectedProvince1" ng-model="currentCustomer.selectedProvince1"
+                                                    ng-options="item.idProvince as item.name for item in controller.provinces"
+                                                    class="form-control" required="required" ng-change="controller.loadCantons(currentCustomer.selectedProvince1)">
                                                 <option value="?"></option>
                                             </select>
                                             <span ng-show="formStep3.$submitted &amp;&amp; formStep3.selectedProvince1.$invalid" class="text-danger">Este campo es inválido</span>
@@ -162,9 +169,9 @@
                                     <div class="form-group">
                                         <label>Cantón</label>
                                         <div class="controls">
-                                            <select name="selectedCanton1" ng-model="currentCustomer.selectedCanton1" class="form-control"
-                                                    required="required" ng-options="item.name for item in controller.cantons"
-                                                    ng-change="controller.loadDistricts(currentCustomer.selectedCanton1)">
+                                            <select name="selectedCanton1" ng-model="currentCustomer.selectedCanton1"
+                                                    ng-options="item.idCanton as item.name for item in controller.cantons"
+                                                    class="form-control" required="required" ng-change="controller.loadDistricts(currentCustomer.selectedCanton1)">
                                                 <option value="?"></option>
                                             </select>
                                             <span ng-show="formStep3.$submitted &amp;&amp; formStep3.selectedCanton1.$invalid" class="text-danger">Este campo es inválido</span>
@@ -175,8 +182,9 @@
                                     <div class="form-group">
                                         <label>Distrito</label>
                                         <div class="controls">
-                                            <select name="selectedDistrict1" ng-model="currentCustomer.selectedDistrict1" class="form-control"
-                                                    required="required" ng-options="item.name for item in controller.districts">
+                                            <select name="selectedDistrict1" ng-model="currentCustomer.selectedDistrict1"
+                                                    ng-options="item.idDistrict as item.name for item in controller.districts"
+                                                    class="form-control" required="required">
                                                 <option value="?"></option>
                                             </select>
                                             <span ng-show="formStep3.$submitted &amp;&amp; formStep3.selectedDistrict1.$invalid" class="text-danger">Este campo es inválido</span>

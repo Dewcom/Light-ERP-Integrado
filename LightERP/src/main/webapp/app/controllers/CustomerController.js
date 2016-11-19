@@ -92,19 +92,19 @@
             });
 
             //Se carga la lista de cantones
-            vm.loadCantons = function(province){
+            vm.loadCantons = function(pidProvince){
 
                 $resource('server/location/cantones.json').query().$promise.then(function(data) {
-                    vm.cantons = $filter('filter')(data, {idProvince: province.idProvince });
+                    vm.cantons = $filter('filter')(data, {idProvince: pidProvince });
                 });
-            }
+            };
 
             //Se carga la lista de distritos
-            vm.loadDistricts = function(canton){
+            vm.loadDistricts = function(pidCanton){
 
                 $resource('server/location/distritos.json').query().$promise.then(function(data) {
 
-                    vm.districts = $filter('filter')(data, {idCanton: canton.idCanton});
+                    vm.districts = $filter('filter')(data, {idCanton: pidCanton});
                 });
             }
         }
@@ -168,7 +168,7 @@
                     "firstLastName":$scope.addCustomerForm.firstLastName ,
                     "secondLastName":$scope.addCustomerForm.secondLastName,
                     "identification":$scope.addCustomerForm.identification,
-                    "idDistrict":$scope.addCustomerForm.selectedDistrict1.idDistrict ,
+                    "idDistrict":parseInt($scope.addCustomerForm.selectedDistrict1.idDistrict) , //Los id del Json de location estan en string
                     "address1":$scope.addCustomerForm.address1 ,
                     "address2":$scope.addCustomerForm.address2 ,
                     "phoneNumber1":$scope.addCustomerForm.phoneNumber1,

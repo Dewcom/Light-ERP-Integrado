@@ -69,6 +69,7 @@ class CustomerService {
                 tmpCustomerToUpdate.discountPercentage = argRestCustomer.discountPercentage;
                 tmpCustomerToUpdate.creditLimit = argRestCustomer.creditLimit;
                 tmpCustomerToUpdate.idDistrict = argRestCustomer.idDistrict;
+                tmpCustomerToUpdate.identification = argRestCustomer.identification;
 
                 tmpCustomerToUpdate.identificationType = IdentificationType.findByIdAndEnabled(argRestCustomer.identificationType, Constants.ESTADO_ACTIVO);
                 tmpCustomerToUpdate.customerType =  CustomerType.findByIdAndEnabled(argRestCustomer.customerType, Constants.ESTADO_ACTIVO);

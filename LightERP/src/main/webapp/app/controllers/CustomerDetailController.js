@@ -14,7 +14,36 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
     init();
 
     function init() {
-        $scope.currentCustomer = $stateParams.customer;
+        var customer = $stateParams.customer;
+
+        $scope.currentCustomer = customer;
+
+        console.log(customer);
+        $scope.currentCustomer.selectedCustomerType = customer.customerType.id;
+        $scope.currentCustomer.selectedIdentificationType = customer.identificationType.id;
+
+        $resource('server/location/distritos.json').query().$promise.then(function(data) {
+            var districtObjList = $filter('filter')(data, {idDistrict: customer.idDistrict });
+
+            var notFound = true;
+            do{
+                angular.forEach(districtObjList, function (value, key) {
+                    if(parseInt(value.idDistrict) === customer.idDistrict ){
+                        $scope.currentCustomer.selectedProvince1 = parseInt(value.idProvince);
+
+                        vm.loadCantons(parseInt(value.idProvince));
+                        $scope.currentCustomer.selectedCanton1 = value.idCanton;
+
+                        vm.loadDistricts(parseInt(value.idCanton));
+                        $scope.currentCustomer.selectedDistrict1 = value.idDistrict;
+
+                        notFound = false;
+                    }
+                });
+
+            }while(notFound);
+
+        });
 
         /**=========================================================
          * Tipos de cliente
@@ -42,21 +71,34 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
         });
 
         //Se carga la lista de cantones
-        vm.loadCantons = function(province){
+        vm.loadCantons = function(pidProvince){
+            vm.cantons = [];
 
             $resource('server/location/cantones.json').query().$promise.then(function(data) {
-                vm.cantons = $filter('filter')(data, {idProvince: province.idProvince });
+                var provinceObjList= $filter('filter')(data, {idProvince: pidProvince });
+
+                angular.forEach(provinceObjList, function (value, key) {
+                    if(parseInt(value.idProvince) === pidProvince ){
+                        vm.cantons.push(value);
+                    }
+                });
             });
-        }
+        };
 
         //Se carga la lista de distritos
-        vm.loadDistricts = function(canton){
+        vm.loadDistricts = function(pidCanton){
+            vm.districts = [];
 
             $resource('server/location/distritos.json').query().$promise.then(function(data) {
+                var districtObjList= $filter('filter')(data, {idCanton: pidCanton });
 
-                vm.districts = $filter('filter')(data, {idCanton: canton.idCanton, idProvince: canton.idProvince });
+                angular.forEach(districtObjList, function (value, key) {
+                    if(value.idCanton == pidCanton ){
+                        vm.districts.push(value);
+                    }
+                });
             });
-        }
+        };
     }
 
     //REGRESA A LA PANTALLA DE LISTA DE CLIENTES
@@ -77,7 +119,7 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
             "firstLastName": $scope.currentCustomer.firstLastName,
             "secondLastName": $scope.currentCustomer.secondLastName,
             "identification": $scope.currentCustomer.identification,
-            "idDistrict": $scope.currentCustomer.selectedDistrict1,
+            "idDistrict": parseInt($scope.currentCustomer.selectedDistrict1),
             "address1": $scope.currentCustomer.address1,
             "address2": $scope.currentCustomer.address2,
             "phoneNumber1": $scope.currentCustomer.phoneNumber1,
