@@ -104,8 +104,7 @@
 
                 $resource('server/location/distritos.json').query().$promise.then(function(data) {
 
-                    vm.districts = $filter('filter')(data, {idCanton: canton.idCanton, idProvince: canton.idProvince })
-                    console.log(vm.districts);
+                    vm.districts = $filter('filter')(data, {idCanton: canton.idCanton});
                 });
             }
         }

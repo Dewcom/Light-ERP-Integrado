@@ -1,5 +1,9 @@
 [
   {
+    "idProvince": 1,
+    "name": "San Jose"
+  },
+  {
     "idProvince": 2,
     "name": "Alajuela"
   },
@@ -8,23 +12,19 @@
     "name": "Cartago"
   },
   {
-    "idProvince": 5,
-    "name": "Guanacaste"
-  },
-  {
     "idProvince": 4,
     "name": "Heredia"
   },
   {
-    "idProvince": 7,
-    "name": "Limón"
+    "idProvince": 5,
+    "name": "Guanacaste"
   },
   {
     "idProvince": 6,
     "name": "Puntarenas"
   },
   {
-    "idProvince": 1,
-    "name": "San Jose"
+    "idProvince": 7,
+    "name": "Limón"
   }
 ]

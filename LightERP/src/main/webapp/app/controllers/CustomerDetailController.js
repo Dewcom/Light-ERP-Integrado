@@ -5,9 +5,9 @@ angular
     .controller('CustomerDetailController', CustomerDetailController);
 
 CustomerDetailController.$inject = ['$http', '$state', '$stateParams', '$scope', 'customerTypeService',
-                                    'identificationTypeService', 'customerService', 'toaster'];
+                                    'identificationTypeService', 'customerService', 'toaster', '$resource', '$filter'];
 function CustomerDetailController($http, $state, $stateParams, $scope, customerTypeService,
-                                  identificationTypeService, customerService, toaster) {
+                                  identificationTypeService, customerService, toaster, $resource, $filter) {
     var vm = this;
 
     ////////////////
@@ -31,6 +31,32 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
         identificationTypeService.getAll().then(function (response) {
             vm.identificationTypeList = response;
         });
+
+        //Distribución territorial
+        vm.provinces= [];
+        vm.cantons= [];
+        vm.districts= [];
+
+        $resource('server/location/provincias.json').query().$promise.then(function(data) {
+            vm.provinces = data;
+        });
+
+        //Se carga la lista de cantones
+        vm.loadCantons = function(province){
+
+            $resource('server/location/cantones.json').query().$promise.then(function(data) {
+                vm.cantons = $filter('filter')(data, {idProvince: province.idProvince });
+            });
+        }
+
+        //Se carga la lista de distritos
+        vm.loadDistricts = function(canton){
+
+            $resource('server/location/distritos.json').query().$promise.then(function(data) {
+
+                vm.districts = $filter('filter')(data, {idCanton: canton.idCanton, idProvince: canton.idProvince });
+            });
+        }
     }
 
     //REGRESA A LA PANTALLA DE LISTA DE CLIENTES
