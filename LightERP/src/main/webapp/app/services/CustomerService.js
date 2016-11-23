@@ -24,6 +24,24 @@ angular
             return customerList;
         }
 
+        customerService.get = function(customerId) {
+
+            var customer = $http({
+                method: 'GET',
+                url: 'http://localhost:8080/api/customer/get?id=' + customerId,
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            }).then(function (response) {
+                return response.data;
+            },function (error) {
+                console.log(error);
+                return error.status;
+            });
+
+            return customer;
+        }
+
         customerService.addCustomer = function(newCustomer) {
             console.log(newCustomer);
             var addCustomerResult = $http({

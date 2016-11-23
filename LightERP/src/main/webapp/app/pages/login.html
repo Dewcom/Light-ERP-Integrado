@@ -1,7 +1,7 @@
-<div class="panel-heading text-center">
-    <div ng-controller="LoginController as login" class="block-center mt-xl wd-xl">
-        <!-- START panel-->
-        <div class="panel-body">
+<div ng-controller="LoginController as login" class="block-center mt-xl wd-xl">
+    <!-- START panel-->
+    <div class="panel panel-flat">
+        <div class="panel-heading text-center">
             <a href="#">
                 <img src="app/img/logo-test.png" alt="Image" class="block-center img-rounded"/>
             </a>
@@ -23,13 +23,6 @@
                     <span class="fa fa-lock form-control-feedback text-muted"></span>
                     <span ng-show="login.loginForm.account_password.$dirty &amp;&amp; login.loginForm.account_password.$error.required"
                           class="text-danger">Este campo es requerido</span>
-                </div>
-                <div class="clearfix">
-                    <div class="checkbox c-checkbox pull-left mt0">
-                        <label>
-                            <input type="checkbox" value="" name="account_remember" ng-model="login.account.remember"/>
-                            <span class="fa fa-check"></span>Recordar usuario</label>
-                    </div>
                 </div>
                 <button type="submit" class="btn btn-block btn-primary mt-lg">Ingresar</button>
             </form>

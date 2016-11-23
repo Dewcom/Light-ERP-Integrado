@@ -5,44 +5,54 @@ angular
     .controller('CustomerDetailController', CustomerDetailController);
 
 CustomerDetailController.$inject = ['$http', '$state', '$stateParams', '$scope', 'customerTypeService',
-                                    'identificationTypeService', 'customerService', 'toaster', '$resource', '$filter'];
+                                    'identificationTypeService', 'customerService', 'toaster', '$resource',
+                                    '$timeout', '$filter'];
 function CustomerDetailController($http, $state, $stateParams, $scope, customerTypeService,
-                                  identificationTypeService, customerService, toaster, $resource, $filter) {
+                                  identificationTypeService, customerService, toaster, $resource, $timeout, $filter) {
     var vm = this;
 
     ////////////////
     init();
 
     function init() {
-        var customer = $stateParams.customer;
+        console.log($stateParams.customerId);
 
-        $scope.currentCustomer = customer;
+        customerService.get($stateParams.customerId).then(function(response) {
+            console.log(response);
 
-        console.log(customer);
-        $scope.currentCustomer.selectedCustomerType = customer.customerType.id;
-        $scope.currentCustomer.selectedIdentificationType = customer.identificationType.id;
+            if(response.code == '0'){
+                console.log(response);
 
-        $resource('server/location/distritos.json').query().$promise.then(function(data) {
-            var districtObjList = $filter('filter')(data, {idDistrict: customer.idDistrict });
+                var customer = response.data;
 
-            var notFound = true;
-            do{
-                angular.forEach(districtObjList, function (value, key) {
-                    if(parseInt(value.idDistrict) === customer.idDistrict ){
-                        $scope.currentCustomer.selectedProvince1 = parseInt(value.idProvince);
+                $scope.currentCustomer = customer;
 
-                        vm.loadCantons(parseInt(value.idProvince));
-                        $scope.currentCustomer.selectedCanton1 = value.idCanton;
+                $scope.currentCustomer.selectedCustomerType = customer.customerType.id;
+                $scope.currentCustomer.selectedIdentificationType = customer.identificationType.id;
 
-                        vm.loadDistricts(parseInt(value.idCanton));
-                        $scope.currentCustomer.selectedDistrict1 = value.idDistrict;
+                $resource('server/location/distritos.json').query().$promise.then(function(data) {
+                    var districtObjList = $filter('filter')(data, {idDistrict: customer.idDistrict });
 
-                        notFound = false;
-                    }
+                    var notFound = true;
+                    do{
+                        angular.forEach(districtObjList, function (value, key) {
+                            if(parseInt(value.idDistrict) === customer.idDistrict ){
+                                $scope.currentCustomer.selectedProvince1 = parseInt(value.idProvince);
+
+                                vm.loadCantons(parseInt(value.idProvince));
+                                $scope.currentCustomer.selectedCanton1 = value.idCanton;
+
+                                vm.loadDistricts(parseInt(value.idCanton));
+                                $scope.currentCustomer.selectedDistrict1 = value.idDistrict;
+
+                                notFound = false;
+                            }
+                        });
+
+                    }while(notFound);
+
                 });
-
-            }while(notFound);
-
+            }
         });
 
         /**=========================================================
@@ -106,6 +116,20 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
         $state.go('app.thirdPartyMain');
     };
 
+    //CANCELA LOS CAMBIOS EN PANTALLA
+    vm.cancel = function () {
+        var toasterdata;
+
+        toasterdata = {
+            type: 'info',
+            title: 'Cliente',
+            text: "Cambios cancelados"
+        };
+
+        $scope.pop(toasterdata);
+        $timeout(function(){ $scope.callAtTimeout(); }, 2000);
+    };
+
 
     /**=========================================================
      * Modificar clientes
@@ -161,12 +185,11 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
         toaster.pop({
             type: toasterdata.type,
             title : toasterdata.title,
-            body: toasterdata.text,
-            onHideCallback: function () {
-                $state.reload();
-            }
+            body: toasterdata.text
         });
+    };
 
-    }
-
+    $scope.callAtTimeout = function(){
+        $state.reload();
+    };
 }

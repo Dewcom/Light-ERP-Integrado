@@ -9,9 +9,10 @@
         .directive('formWizard', formWizard);
 
     CustomerController.$inject = ['$uibModal','$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder',
-        'customerService', 'customerTypeService', 'identificationTypeService','toaster', '$state', '$http', '$filter'];
+        'customerService', 'customerTypeService', 'identificationTypeService','toaster', '$state', '$http',
+        '$filter', '$timeout'];
     function CustomerController($uibModal, $resource, DTOptionsBuilder, DTColumnDefBuilder, customerService,
-                                customerTypeService, identificationTypeService, toaster, $state, $http, $filter) {
+        customerTypeService, identificationTypeService, toaster, $state, $http, $filter, $timeout) {
         var vm = this;
 
         var language = {
@@ -220,6 +221,7 @@
 
                     }
                     $scope.pop(toasterdata);
+                    $timeout(function(){ $scope.callAtTimeout(); }, 2000);
                 },function (error) {
                     console.log(error);
                 });
@@ -227,17 +229,17 @@
                 $uibModalInstance.close('closed');
             };
 
-
             $scope.pop = function(toasterdata){
                 toaster.pop({
                     type: toasterdata.type,
                     title : toasterdata.title,
-                    body: toasterdata.text,
-                    onHideCallback: function () {
-                        $state.reload();
-                    }
+                    body: toasterdata.text
                 });
 
+            };
+
+            $scope.callAtTimeout = function(){
+                $state.reload();
             }
         }
     }

@@ -791,7 +791,7 @@
                 url: '/customerDetail',
                 title: 'Detalle cliente',
                 templateUrl: helper.basepath('customer-detail.html'),
-                params : { customer: null }
+                params : { customerId: null }
             })
             .state('app.commerce', {
                 url: '/commerce',

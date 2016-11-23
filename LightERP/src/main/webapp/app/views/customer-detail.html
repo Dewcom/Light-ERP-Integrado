@@ -14,7 +14,7 @@
                     <em class="fa fa-plus"></em>
                 </span>Guardar
             </button>
-            <button type="button" class="btn btn-labeled btn-danger">
+            <button type="button" class="btn btn-labeled btn-danger" ng-click="controller.cancel()">
                    <span class="btn-label"><i class="fa fa-times"></i>
                    </span>Cancelar
             </button>
@@ -261,4 +261,5 @@
             </uib-tab>
         </uib-tabset>
     </form>
+    <toaster-container toaster-options="{'position-class': 'toast-bottom-right', 'close-button':true}"></toaster-container>
 </div>
