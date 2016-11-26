@@ -128,7 +128,7 @@
                     if(response.code == "0"){
                         toasterdata = {
                             type: 'success',
-                            title: 'Cliente',
+                            title: 'Eliminar cliente',
                             text: response.message
                         };
                     }else{
@@ -139,7 +139,7 @@
                         };
 
                     }
-                    $scope.pop(toasterdata);
+                    pop(toasterdata);
                     init();
                 },function (error) {
                     console.log(error);
@@ -239,7 +239,7 @@
                     if(response.code == "0"){
                         toasterdata = {
                             type: 'success',
-                            title: 'Cliente',
+                            title: 'Agregar cliente',
                             text: response.message
                         };
                     }else{
@@ -250,40 +250,26 @@
                         };
 
                     }
-                    $scope.pop(toasterdata);
-                    $timeout(function(){ $scope.callAtTimeout(); }, 3000);
+                    pop(toasterdata);
+                    $timeout(function(){ callAtTimeout(); }, 3000);
                 },function (error) {
                     console.log(error);
                 });
 
                 $uibModalInstance.close('closed');
             };
-
-
-            $scope.pop = function(toasterdata){
-                toaster.pop({
-                    type: toasterdata.type,
-                    title : toasterdata.title,
-                    body: toasterdata.text
-                });
-
-            };
-
-            $scope.callAtTimeout = function(){
-                $state.reload();
-            }
         }
 
-        $scope.pop = function(toasterdata){
+
+        function pop(toasterdata){
             toaster.pop({
                 type: toasterdata.type,
                 title : toasterdata.title,
                 body: toasterdata.text
             });
+        }
 
-        };
-
-        $scope.callAtTimeout = function(){
+        function callAtTimeout(){
             $state.reload();
         }
     }
