@@ -30,7 +30,7 @@ class Customer {
         name blank: false
         firstLastName blank: false
         secondLastName blank: false
-        identification blank: false, nullable: false
+        identification blank: false, nullable: false, maxSize: 20
         idDistrict nullabe: true
         address1 blank: false
         address2 nullable: true, blank: true
@@ -64,7 +64,9 @@ class Customer {
         tmpCustomer.idDistrict = argRestCostumer.idDistrict;
 
         argRestCostumer.contacts.each {
-            tmpCustomer.addToContacts(it)
+            if(!it.toString().equals("{}")){
+                tmpCustomer.addToContacts(it)
+            }
         }
 
 

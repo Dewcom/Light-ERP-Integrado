@@ -96,8 +96,8 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response.data.message);
-                return response.data.message;
+                console.log(response);
+                return response.data;
             },function (error) {
                 console.log(error);
                 return error.status;

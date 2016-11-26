@@ -10,10 +10,11 @@
 
     CustomerController.$inject = ['$uibModal','$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder',
         'customerService', 'customerTypeService', 'identificationTypeService','toaster', '$state', '$http',
-        '$filter', '$timeout'];
+        '$filter', '$timeout', 'ngDialog', '$scope'];
     function CustomerController($uibModal, $resource, DTOptionsBuilder, DTColumnDefBuilder, customerService,
-        customerTypeService, identificationTypeService, toaster, $state, $http, $filter, $timeout) {
+        customerTypeService, identificationTypeService, toaster, $state, $http, $filter, $timeout, ngDialog, $scope) {
         var vm = this;
+        var customerToDeleteName;
 
         var language = {
             "sProcessing":     "Procesando...",
@@ -113,9 +114,38 @@
     /**=========================================================
      * Eliminar clientes
      =========================================================*/
-        vm.disableCustomer = function(customerId){
-            customerService.disableCustomer(customerId).then(function(response) {
-                init();
+        vm.disableCustomer = function (customerId) {
+            ngDialog.openConfirm({
+                template: 'disableCustomerModal',
+                className: 'ngdialog-theme-default',
+                closeByDocument: false,
+                closeByEscape: false
+            }).then(function (value) {
+                customerService.disableCustomer(customerId).then(function (response) {
+                    var toasterdata;
+                    console.log(response);
+
+                    if(response.code == "0"){
+                        toasterdata = {
+                            type: 'success',
+                            title: 'Cliente',
+                            text: response.message
+                        };
+                    }else{
+                        toasterdata = {
+                            type: 'warning',
+                            title: 'Cliente',
+                            text: response.message
+                        };
+
+                    }
+                    $scope.pop(toasterdata);
+                    init();
+                },function (error) {
+                    console.log(error);
+                });
+            }, function (reason) {
+                console.log('Modal promise rejected. Reason: ', reason);
             });
         };
 
@@ -197,7 +227,7 @@
                             "jobTitle": $scope.addCustomerForm.contactPosition2,
                             "department": $scope.addCustomerForm.contactDepartment2,
                             "phoneNumber1": $scope.addCustomerForm.contactPhoneNumber2,
-                            "email": $scope.addCustomerForm.contactEmail1,
+                            "email": $scope.addCustomerForm.contactEmail2,
                             "mobile": $scope.addCustomerForm.contactMobile2
                         }
                     ]
@@ -221,13 +251,14 @@
 
                     }
                     $scope.pop(toasterdata);
-                    $timeout(function(){ $scope.callAtTimeout(); }, 2000);
+                    $timeout(function(){ $scope.callAtTimeout(); }, 3000);
                 },function (error) {
                     console.log(error);
                 });
 
                 $uibModalInstance.close('closed');
             };
+
 
             $scope.pop = function(toasterdata){
                 toaster.pop({
@@ -241,6 +272,19 @@
             $scope.callAtTimeout = function(){
                 $state.reload();
             }
+        }
+
+        $scope.pop = function(toasterdata){
+            toaster.pop({
+                type: toasterdata.type,
+                title : toasterdata.title,
+                body: toasterdata.text
+            });
+
+        };
+
+        $scope.callAtTimeout = function(){
+            $state.reload();
         }
     }
 
