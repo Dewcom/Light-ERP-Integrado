@@ -154,4 +154,28 @@ class CustomerController extends RestController {
             this.handleRESTExceptions(messageSource, e);
         }
     }
+
+    @Secured(['ROLE_ANONYMOUS'])
+    def getCustomerContacts() {
+        log.info "========== Get customer contacts request =========="
+
+        ResponseREST tmpResponse = new ResponseREST();
+
+        try {
+            def tmpId = params.id
+            def tmpContactsList = new ArrayList()
+            if(tmpId){
+                tmpContactsList = customerService.getCustomerContacts(tmpId);
+            }
+            tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
+            tmpResponse.code = Constants.SUCCESS_RESPONSE
+            tmpResponse.data = tmpContactsList
+
+            log.info "====== Get contacts by client id response ======"
+            log.info tmpResponse as JSON
+            render tmpResponse as JSON
+        } catch (Exception e) {
+            this.handleRESTExceptions(messageSource, e)
+        }
+    }
 }

@@ -63,6 +63,8 @@
                 vm.identificationTypeList = response;
             });
 
+
+
             /**=========================================================
              * Datatables
              =========================================================*/
@@ -72,6 +74,8 @@
             customerService.getAll().then(function(response) {
                 vm.customerList = response;
             });
+
+
 
             vm.dtOptions = DTOptionsBuilder.newOptions()
                 .withPaginationType('full_numbers')

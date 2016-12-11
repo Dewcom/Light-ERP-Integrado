@@ -106,6 +106,26 @@ angular
             return disableCustomerResult;
         }
 
+
+        customerService.getAllContacts = function(customerId) {
+
+            var customerContactsList = $http({
+                method: 'GET',
+                url: 'http://localhost:8080/api/customer/contacts?id='+customerId,
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            }).then(function (response) {
+                console.log(response.data)
+                return response.data.data;
+            },function (error) {
+                console.log(error);
+                return error.status;
+            });
+
+            return customerContactsList;
+        }
+
         return customerService;
     });
 

@@ -10,6 +10,7 @@
                    class="row-border hover">
                 <thead>
                 <tr>
+                    <th>Cliente</th>
                     <th>Nombre</th>
                     <th>Departamento</th>
                     <th>Puesto</th>
@@ -19,6 +20,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="contactObj in controller.contactList">
+                    <td>{{ contactObj.customer.name }}</td>
                     <td>{{ contactObj.name + ' ' + contactObj.firstLastName + ' ' + contactObj.secondLastName}}
                     </td>
                     <td>{{ contactObj.department }}</td>

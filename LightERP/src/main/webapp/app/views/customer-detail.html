@@ -233,10 +233,10 @@
             </uib-tab>
             <uib-tab>
                 <uib-tab-heading>Contactos</uib-tab-heading>
-                <div>
+                <div ng-controller="ContactController as contactController">
                     <legend>Contactos</legend>
                     <div class="row">
-                        <div ng-repeat="customerContact in currentCustomer.contacts" class="col-md-4">
+                        <div ng-repeat="customerContact in controller.customerContacts" class="col-md-4">
                             <div class="panel panel-default">
                                 <div class="panel-body text-left">
                                     <h4>{{customerContact.name + ' '+ customerContact.firstLastName + ' ' +customerContact.secondLastName}}</h4>
@@ -251,7 +251,7 @@
                                 <div class="panel-footer clearfix">
                                     <div class="pull-left"><a href="" class="btn btn-xs btn-primary">Enviar correo</a>
                                     </div>
-                                    <div class="pull-right"><a href="" class="btn btn-xs btn-default">Editar</a>
+                                    <div ng-click="contactController.open('md', customerContact)" class="pull-right"><a href="" class="btn btn-xs btn-default">Editar</a>
                                     </div>
                                 </div>
                             </div>
@@ -262,4 +262,15 @@
         </uib-tabset>
     </form>
     <toaster-container toaster-options="{'position-class': 'toast-bottom-right', 'close-button':true}"></toaster-container>
+    <script type="text/ng-template" id="disableContactModal">
+        <div class="ngdialog-message text-center">
+            <h3>Eliminar contacto</h3>
+            <p>¿Está seguro que desea eliminar al contacto?</p>
+            <div>
+                <button type="button" ng-click="confirm(confirmValue)" class="btn btn-primary mr">Confirmar</button>
+                <button type="button" ng-click="closeThisDialog('button')" class="btn btn-default">Cancelar</button>
+            </div>
+        </div>
+    </script>
+
 </div>

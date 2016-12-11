@@ -24,6 +24,48 @@ angular
             return contactList;
         }
 
+        contactService.updateContact = function(updatedContact) {
+            console.log(updatedContact);
+            var updateContactResult = $http({
+                method: 'PUT',
+                url: 'http://localhost:8080/api/contact/update',
+                data: updatedContact,
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            }).then(function (response) {
+                console.log(response.data.message);
+                return response.data;
+            },function (error) {
+                console.log(error);
+                return error.status;
+            });
+
+            return updateContactResult;
+        }
+
+        contactService.disableContact = function(contactId) {
+
+            var disableContactResutl = $http({
+                method: 'DELETE',
+                url: 'http://localhost:8080/api/contact/delete',
+                data: {
+                    id: contactId
+                },
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            }).then(function (response) {
+                console.log(response);
+                return response.data;
+            },function (error) {
+                console.log(error);
+                return error.status;
+            });
+
+            return disableContactResutl;
+        }
+
         return contactService;
     });
 

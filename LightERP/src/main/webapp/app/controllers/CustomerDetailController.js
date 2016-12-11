@@ -15,6 +15,7 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
     init();
 
     function init() {
+        var customer;
         console.log($stateParams.customerId);
 
         customerService.get($stateParams.customerId).then(function(response) {
@@ -23,9 +24,10 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
             if(response.code == '0'){
                 console.log(response);
 
-                var customer = response.data;
+                 customer = response.data;
 
                 $scope.currentCustomer = customer;
+
 
                 $scope.currentCustomer.selectedCustomerType = customer.customerType.id;
                 $scope.currentCustomer.selectedIdentificationType = customer.identificationType.id;
@@ -95,6 +97,10 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
             });
         };
 
+
+
+
+
         //Se carga la lista de distritos
         vm.loadDistricts = function(pidCanton){
             vm.districts = [];
@@ -109,6 +115,15 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
                 });
             });
         };
+
+        /**=========================================================
+         * ContactosDelCliente
+         =========================================================*/
+
+            customerService.getAllContacts($stateParams.customerId).then(function (response) {
+               vm.customerContacts = response;
+            });
+
     }
 
     //REGRESA A LA PANTALLA DE LISTA DE CLIENTES
@@ -129,6 +144,7 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
         $scope.pop(toasterdata);
         $timeout(function(){ $scope.callAtTimeout(); }, 2000);
     };
+
 
 
     /**=========================================================

@@ -35,7 +35,7 @@ class CustomerService {
 
     def createCustomer(Customer pcustomer) {
         try {
-            pcustomer.save(flush: true, failOnError:true)
+            pcustomer.save(flush: true, failOnError: true)
         } catch (Exception e) {
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("create.customer.error", null, Locale.default));
@@ -72,7 +72,7 @@ class CustomerService {
                 tmpCustomerToUpdate.identification = argRestCustomer.identification;
 
                 tmpCustomerToUpdate.identificationType = IdentificationType.findByIdAndEnabled(argRestCustomer.identificationType, Constants.ESTADO_ACTIVO);
-                tmpCustomerToUpdate.customerType =  CustomerType.findByIdAndEnabled(argRestCustomer.customerType, Constants.ESTADO_ACTIVO);
+                tmpCustomerToUpdate.customerType = CustomerType.findByIdAndEnabled(argRestCustomer.customerType, Constants.ESTADO_ACTIVO);
 
                 tmpCustomerToUpdate.save(flush: true);
             } else {
@@ -82,12 +82,24 @@ class CustomerService {
 
         catch (Exception e) {
             log.error(e);
-            if(e instanceof LightRuntimeException ){
+            if (e instanceof LightRuntimeException) {
                 throw e;
-            }
-            else{
-              throw new LightRuntimeException(messageSource.getMessage("update.customer.error", null, Locale.default));
+            } else {
+                throw new LightRuntimeException(messageSource.getMessage("update.customer.error", null, Locale.default));
             }
         }
+    }
+
+    def getCustomerContacts(def customerId) {
+        log.info "====== Getting all contacts from DB by customerId ======"
+        def tmpCustomer = Customer.findById(customerId)
+        try {
+            def contactsFromDB = Contact.findAllByEnabledAndCustomer(Constants.ESTADO_ACTIVO, tmpCustomer);
+            return contactsFromDB
+        } catch (Exception e) {
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("get.all.contacts.error", null, Locale.default));
+        }
+
     }
 }
