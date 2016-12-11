@@ -81,36 +81,34 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4" >
                                         <div class="form-group">
-                                            <label>Nombre</label>
+                                            <!--Asegurar que los id's finales sirvan para esta validación-->
+                                            <label ng-show="addCustomerForm.selectedIdentificationType == 2">Nombre del cliente</label>
+                                            <label ng-show="addCustomerForm.selectedIdentificationType == 1">Nombre de la empresa</label>
                                             <div class="controls">
-                                                <input type="text" name="name" ng-model="addCustomerForm.name" placeholder="Juan"
-                                                       required="required" class="form-control" maxlength="50" replace="[^a-zA-Z]" with=""/>
+                                                <input ng-show="addCustomerForm.selectedIdentificationType != null" type="text" name="name" ng-model="addCustomerForm.name" required="required"
+                                                       class="form-control" maxlength="50" replace="[^a-zA-Z]" with=""/>
                                                 <span ng-show="formStep1.$submitted &amp;&amp; formStep1.name.$invalid"
                                                       class="text-danger">Este campo es inválido</span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4" ng-show="addCustomerForm.selectedIdentificationType == 2">
                                         <div class="form-group">
                                             <label>Primer apellido</label>
                                             <div class="controls">
                                                 <input type="text" name="firstLastName" ng-model="addCustomerForm.firstLastName"
-                                                       placeholder="Perez" required="required" class="form-control" maxlength="50" replace="[^a-zA-Z]" with=""/>
-                                                <span ng-show="formStep1.$submitted &amp;&amp; formStep1.firstLastName.$invalid"
-                                                      class="text-danger">Este campo es inválido</span>
+                                                       class="form-control" maxlength="50" replace="[^a-zA-Z]" with=""/>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4" ng-show="addCustomerForm.selectedIdentificationType == 2">
                                         <div class="form-group">
                                             <label>Segundo apellido</label>
                                             <div class="controls">
                                                 <input type="text" name="secondLastName" ng-model="addCustomerForm.secondLastName"
-                                                       placeholder="Perez" required="required" class="form-control" maxlength="50" replace="[^a-zA-Z]" with=""/>
-                                                <span ng-show="formStep1.$submitted &amp;&amp; formStep1.secondLastName.$invalid"
-                                                      class="text-danger">Este campo es inválido</span>
+                                                       class="form-control" maxlength="50" replace="[^a-zA-Z]" with=""/>
                                             </div>
                                         </div>
                                     </div>
@@ -292,7 +290,7 @@
                                             <label>Porcentaje de descuento</label>
                                             <div class="controls">
                                                 <input type="number" name="discountPorcentage" ng-model="addCustomerForm.discountPercentage"
-                                                       placeholder="%" required="required" class="form-control" min="0"/>
+                                                       placeholder="%" required="required" class="form-control" min="0" max="99"/>
                                                 <span ng-show="formStep4.$submitted &amp;&amp; formStep4.discountPorcentage.$invalid"
                                                       class="text-danger">Este campo es inválido</span>
                                             </div>

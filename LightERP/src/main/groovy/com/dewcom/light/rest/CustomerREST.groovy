@@ -30,8 +30,8 @@ class CustomerREST implements Validateable {
 
     static constraints = {
         name blank: false
-        firstLastName blank: false
-        secondLastName blank: false
+        firstLastName blank: false, nullable: true
+        secondLastName blank: false, nullable: true
         identification blank: false, nullable: false
         idDistrict nullable: true
         address1 blank: false, nullable: false
