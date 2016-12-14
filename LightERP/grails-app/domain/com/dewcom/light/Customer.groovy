@@ -28,8 +28,8 @@ class Customer {
 
     static constraints = {
         name blank: false
-        firstLastName blank: false
-        secondLastName blank: false
+        firstLastName blank: true, nullable: true
+        secondLastName blank: true, nullable: true
         identification blank: false, nullable: false, maxSize: 20
         idDistrict nullabe: true
         address1 blank: false

@@ -26,7 +26,8 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="customerObj in controller.customerList">
-                    <td>{{ customerObj.name + ' ' + customerObj.firstLastName + ' ' + customerObj.secondLastName}}</td>
+                    <td ng-if="customerObj.firstLastName == null" >{{ customerObj.name }}</td>
+                    <td ng-if="customerObj.firstLastName != null" >{{ customerObj.name + ' ' + customerObj.firstLastName + ' ' + customerObj.secondLastName}}</td>
                     <td>{{ customerObj.identification }}</td>
                     <td>{{ customerObj.phoneNumber1 }}</td>
                     <td ng-if="customerObj.email == null" >**SIN CORREO**</td>

@@ -127,7 +127,7 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
         };
 
         $scope.pop(toasterdata);
-        $timeout(function(){ $scope.callAtTimeout(); }, 2000);
+        $timeout(function(){ $scope.callAtTimeout(); }, 3000);
     };
 
 
@@ -172,7 +172,6 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
                     title: 'Cliente',
                     text: response.message
                 };
-
             }
             $scope.pop(toasterdata);
         }, function (error) {
