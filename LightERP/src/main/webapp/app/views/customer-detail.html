@@ -150,13 +150,14 @@
                         <fieldset>
                             <legend>Direcciones</legend>
                             <!-- START row-->
-                            <h4>Dirección</h4>
-                            <div class="row">
+
+                            <div ng-repeat="address in controller.addresses">
+                                <h4>Dirección</h4>
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label>Provincia</label>
                                         <div class="controls">
-                                            <select name="selectedProvince1" ng-model="currentCustomer.selectedProvince1"
+                                            <select name="selectedProvince1" ng-model="currentCustomer.selectedProvince1" ng-selected="{{attorney.id == selectedAttorney.id}}"
                                                     ng-options="item.idProvince as item.name for item in controller.provinces"
                                                     class="form-control" required="required" ng-change="controller.loadCantons(currentCustomer.selectedProvince1)">
                                                 <option value="?"></option>

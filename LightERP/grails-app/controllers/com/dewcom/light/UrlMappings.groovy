@@ -14,5 +14,6 @@ class UrlMappings {
         "404"(view: '/notFound')
 
         get "/api/customer/contacts"(controller: 'customer', action: 'getCustomerContacts')
+        get "/api/customer/addresses"(controller: 'customer', action: 'getCustomerAddresses')
     }
 }

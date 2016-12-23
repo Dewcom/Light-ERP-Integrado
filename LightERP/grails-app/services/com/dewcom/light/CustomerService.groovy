@@ -1,8 +1,11 @@
 package com.dewcom.light
 
 import com.dewcom.light.rest.UpdateCustomerRequestREST
+import grails.converters.JSON
 import grails.transaction.Transactional
  import com.dewcom.light.rest.CustomerREST
+import net.minidev.json.JSONArray
+import org.grails.web.json.JSONObject
 
 @Transactional
 class CustomerService {
@@ -44,6 +47,9 @@ class CustomerService {
 
     def deleteCustomer(Customer pcustomer) {
         try {
+            pcustomer.addresses.each {
+                it.enabled = Constants.ESTADO_INACTIVO
+            }
             pcustomer.enabled = Constants.ESTADO_INACTIVO;
             pcustomer.save(flush: true)
         } catch (Exception e) {
@@ -56,11 +62,10 @@ class CustomerService {
         try {
             Customer tmpCustomerToUpdate = Customer.findByIdAndEnabled(argRestCustomer.id, Constants.ESTADO_ACTIVO)
             if (tmpCustomerToUpdate) {
+
                 tmpCustomerToUpdate.name = argRestCustomer.name;
                 tmpCustomerToUpdate.firstLastName = argRestCustomer.firstLastName;
                 tmpCustomerToUpdate.secondLastName = argRestCustomer.secondLastName;
-                tmpCustomerToUpdate.address1 = argRestCustomer.address1;
-                tmpCustomerToUpdate.address2 = argRestCustomer.address2;
                 tmpCustomerToUpdate.phoneNumber1 = argRestCustomer.phoneNumber1;
                 tmpCustomerToUpdate.phoneNumber2 = argRestCustomer.phoneNumber2;
                 tmpCustomerToUpdate.mobile = argRestCustomer.mobile;
@@ -68,8 +73,24 @@ class CustomerService {
                 tmpCustomerToUpdate.email = argRestCustomer.email;
                 tmpCustomerToUpdate.discountPercentage = argRestCustomer.discountPercentage;
                 tmpCustomerToUpdate.creditLimit = argRestCustomer.creditLimit;
-                tmpCustomerToUpdate.idDistrict = argRestCustomer.idDistrict;
                 tmpCustomerToUpdate.identification = argRestCustomer.identification;
+
+                argRestCustomer.addresses.each {
+
+                    def tmpIt = it;
+
+                    tmpCustomerToUpdate.addresses.each {
+                        if(tmpIt.id == it.id){
+                            tmpIt.address = it.address;
+                            tmpIt.idDistrict = it.idDistrict;
+                        }
+                    }
+
+                    if(tmpIt.id == null){
+                        tmpCustomerToUpdate.addToAddresses(tmpIt);
+                    }
+                }
+
 
                 tmpCustomerToUpdate.identificationType = IdentificationType.findByIdAndEnabled(argRestCustomer.identificationType, Constants.ESTADO_ACTIVO);
                 tmpCustomerToUpdate.customerType = CustomerType.findByIdAndEnabled(argRestCustomer.customerType, Constants.ESTADO_ACTIVO);
@@ -99,6 +120,20 @@ class CustomerService {
         } catch (Exception e) {
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("get.all.contacts.error", null, Locale.default));
+        }
+
+    }
+
+    def getCustomerAddresses(def customerId) {
+        log.info "====== Getting all addresses from DB by customerId ======"
+        def tmpCustomer = Customer.findById(customerId);
+        try {
+            def addressesFromDB = Address.findAllByEnabledAndCustomer(Constants.ESTADO_ACTIVO, tmpCustomer);
+            log.info(addressesFromDB);
+            return addressesFromDB
+        } catch (Exception e) {
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("get.all.addresses.error", null, Locale.default));
         }
 
     }
