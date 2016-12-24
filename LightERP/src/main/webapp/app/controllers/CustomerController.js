@@ -280,7 +280,7 @@
                 $scope.addCustomerForm.selectedDistrict = null;
                 $scope.addCustomerForm.address = "";
 
-            }
+            };
 
             //Se formatea la direccion para enviar al BE
             $scope.formatAddreses = function () {
@@ -293,6 +293,12 @@
 
                 return finalAddressList;
 
+            }
+
+            //Se elimina la direccion de la lista temporal de direcciones
+            $scope.deleteTmpAddress = function (paddress) {
+                var index = tmpAddressList.indexOf(paddress);
+                tmpAddressList.splice(index, 1);
             }
         }
 

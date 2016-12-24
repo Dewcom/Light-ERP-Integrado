@@ -142,8 +142,6 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
             vm.customerContacts = response;
         });
 
-
-        console.log("#######################");
         console.log(locationList);
 
     }
