@@ -22,7 +22,6 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
             console.log(response);
 
             if (response.code == '0') {
-                console.log(response);
 
                 customer = response.data;
 
@@ -180,8 +179,8 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
             "secondLastName": $scope.currentCustomer.secondLastName,
             "identification": $scope.currentCustomer.identification,
             "idDistrict": parseInt($scope.currentCustomer.selectedDistrict1),
-            "address1": $scope.currentCustomer.address1,
-            "address2": $scope.currentCustomer.address2,
+
+
             "phoneNumber1": $scope.currentCustomer.phoneNumber1,
             "phoneNumber2": $scope.currentCustomer.phoneNumber2,
             "mobile": $scope.currentCustomer.mobile,
