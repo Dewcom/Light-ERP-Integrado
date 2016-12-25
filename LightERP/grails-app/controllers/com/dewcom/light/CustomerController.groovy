@@ -77,7 +77,6 @@ class CustomerController extends RestController {
                 this.handleDataErrorsREST(messageSource, restCustomer.errors);
             } else {
                 tmpCustomer = Customer.fromRestCustomer(restCustomer);
-                productService
                 customerService.createCustomer(tmpCustomer);
 
                 tmpResponse.message = messageSource.getMessage("create.customer.success", null, Locale.default)

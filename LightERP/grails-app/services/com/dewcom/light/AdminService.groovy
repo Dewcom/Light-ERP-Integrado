@@ -3,12 +3,15 @@ package com.dewcom.light
 import com.dewcom.light.rest.UpdateAgentTypeREST
 import com.dewcom.light.rest.UpdateCustomerTypeREST
 import com.dewcom.light.rest.UpdateIdentificationTypeREST
+import com.dewcom.light.rest.UpdateProductTypeREST
 import grails.transaction.Transactional
 
 @Transactional
 class AdminService {
 
-    IdentificationType getIdType(def pid) {
+    //Identification type
+
+    IdentificationType getIdentificationType(def pid) {
         log.info "====== Getting identification type from DB ======"
         log.info pid
         try{
@@ -20,7 +23,7 @@ class AdminService {
         }
     }
 
-    List<IdentificationType> getAllIdTypes() {
+    List<IdentificationType> getAllIdentificationTypes() {
         log.info "====== Getting all identification types from DB ======"
         try{
             def idTypesFromDB = IdentificationType.findAllByEnabled(Constants.ESTADO_ACTIVO);
@@ -59,6 +62,9 @@ class AdminService {
             throw new LightRuntimeException("update.identification.type.error");
         }
     }
+
+
+    //Agent type
 
     AgentType getAgentType(def pid) {
         log.info "====== Getting agent type from DB ======"
@@ -112,6 +118,8 @@ class AdminService {
         }
     }
 
+    //Customer type
+
     CustomerType getCustomerType(def pid) {
         log.info "====== Getting customer type from DB ======"
         log.info pid
@@ -161,6 +169,61 @@ class AdminService {
         }catch(Exception e){
             log.error(e);
             throw new LightRuntimeException("update.customer.type.error");
+        }
+    }
+
+
+    //Produtct type
+
+    ProductType getProductType(def pid) {
+        log.info "====== Getting product type from DB ======"
+        log.info pid
+        try{
+            ProductType productTypeFromDB = ProductType.findByIdAndEnabled(pid, Constants.ESTADO_ACTIVO);
+            return productTypeFromDB
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException("get.product.type.error");
+        }
+    }
+
+    def getAllProductTypes() {
+        log.info "====== Getting all product types from DB ======"
+        try{
+            def proudutTypesFromDB = ProductType.findAllByEnabled(Constants.ESTADO_ACTIVO);
+            return proudutTypesFromDB
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException("get.all.product.types.error");
+        }
+    }
+
+    def createProductType(ProductType pproductType) {
+        try{
+            pproductType.save(flush: true)
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException("create.product.type.error");
+        }
+    }
+
+    def deleteProductType(ProductType pproductType) {
+        try{
+            pproductType.enabled = Constants.ESTADO_INACTIVO;
+            pproductType.save(flush: true)
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException("delete.product.type.error");
+        }
+    }
+
+    def updateProductType(ProductType pcustomerType, UpdateProductTypeREST pupdateProductTypeREST) {
+        try{
+            pcustomerType.name = pupdateProductTypeREST.name;
+            pcustomerType.save(flush: true)
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException("update.product.type.error");
         }
     }
 }

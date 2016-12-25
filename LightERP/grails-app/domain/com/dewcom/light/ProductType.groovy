@@ -1,6 +1,6 @@
 package com.dewcom.light
 
-class CustomerType {
+class ProductType {
     String name
     Byte enabled = Constants.ESTADO_ACTIVO
     Date registrationDate = new Date()

@@ -15,7 +15,7 @@ class Supplier {
     String website
     String email
     Byte enabled = Constants.ESTADO_ACTIVO
-    Date regitrationDate = new Date()
+    Date registrationDate = new Date()
     IdentificationType identificationType
     SupplierType supplierType
 

@@ -1,23 +1,23 @@
 package com.dewcom.light
 
 import com.dewcom.light.rest.ResponseREST
-import com.dewcom.light.rest.UpdateIdentificationTypeREST
-import grails.converters.JSON
+import com.dewcom.light.rest.UpdateProductTypeREST
 import grails.plugin.springsecurity.annotation.Secured
+import grails.converters.*
 
-class IdentificationTypeController extends RestController {
+class ProductTypeController extends RestController {
     static allowedMethods = [get: "GET", create: "POST", update: "PUT", delete: "DELETE"]
     def messageSource
     def adminService
 
     /**
-     * Este método se encarga de obtener cada uno de los tipos de identificación o uno específico si el
+     * Este método se encarga de obtener cada uno de los tipos de productos o uno específico si el
      * id es suministrado como parámetro
      * @author Mauricio Fernández Mora
      */
     @Secured(['ROLE_ANONYMOUS'])
     def get() {
-        log.info "========== Get identification types request =========="
+        log.info "========== Get product types request =========="
 
         ResponseREST tmpResponse = new ResponseREST();
 
@@ -25,24 +25,24 @@ class IdentificationTypeController extends RestController {
             def tmpId = params.id
 
             if(tmpId){
-                IdentificationType idTypeFromDB = adminService.getIdentificationType(tmpId);
+                ProductType idTypeFromDB = adminService.getProductType(tmpId);
 
                 if(idTypeFromDB){
                     tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
                     tmpResponse.data = idTypeFromDB
                 }else{
-                    tmpResponse.message = messageSource.getMessage("identification.type.not.found", null, Locale.default);
+                    tmpResponse.message = messageSource.getMessage("product.type.not.found", null, Locale.default);
                     tmpResponse.code = Constants.REGISTER_NOT_FOUND
                 }
             }else{
-                def idTypesFromDB = adminService.getAllIdentificationTypes();
+                def idTypesFromDB = adminService.getAllProductTypes();
 
                 tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
                 tmpResponse.data = idTypesFromDB
             }
-            log.info "====== Get identification type response ======"
+            log.info "====== Get product type response ======"
             log.info tmpResponse as JSON
             render tmpResponse as JSON
         } catch (Exception e) {
@@ -51,28 +51,29 @@ class IdentificationTypeController extends RestController {
     }
 
     /**
-     * Este método se encarga de crear un nuevo tipo de identificación
+     * Este método se encarga de crear un nuevo tipo de producto
      * @author Mauricio Fernández Mora
      * @param name
      */
     @Secured(['ROLE_ANONYMOUS'])
     def create() {
-        log.info "==========  Create identification type request =========="
+        log.info "==========  Create product type request =========="
         log.info request.JSON
 
         ResponseREST tmpResponse = new ResponseREST();
-        IdentificationType tmpIdentificationType = new IdentificationType(request.JSON);
-        try {
-            tmpIdentificationType.validate();
-            if (tmpIdentificationType.hasErrors()) {
-                this.handleDataErrorsREST(messageSource, tmpIdentificationType.errors);
-            } else {
-                adminService.createIdType(tmpIdentificationType);
+        ProductType tmpProductType = new ProductType(request.JSON);
 
-                tmpResponse.message = messageSource.getMessage("create.identification.type.success", null, Locale.default)
+        try {
+            tmpProductType.validate();
+            if (tmpProductType.hasErrors()) {
+                this.handleDataErrorsREST(messageSource, tmpProductType.errors);
+            } else {
+                adminService.createProductType(tmpProductType);
+
+                tmpResponse.message = messageSource.getMessage("create.product.type.success", null, Locale.default)
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
             }
-            log.info "====== Create identification type response ======"
+            log.info "====== Create product type response ======"
             log.info tmpResponse as JSON
             render tmpResponse as JSON
         } catch (Exception e) {
@@ -81,33 +82,33 @@ class IdentificationTypeController extends RestController {
     }
 
     /**
-     * Este método se encarga de borrar (Borrado lógico) un tipo de identificacion
+     * Este método se encarga de borrar (Borrado lógico) un tipo de producto
      * @author Mauricio Fernández Mora
      * @param id
      */
     @Secured(['ROLE_ANONYMOUS'])
     def delete() {
-        log.info "==========  Delete identification type request =========="
+        log.info "==========  Delete product type request =========="
         log.info request.JSON
 
         ResponseREST tmpResponse = new ResponseREST();
         try {
             if (request.JSON && request.JSON != null) {
-                IdentificationType tmpIdType = adminService.getIdentificationType(request.JSON.id);
+                ProductType tmpProductType = adminService.getProductType(request.JSON.id);
 
-                if(tmpIdType) {
-                    adminService.deleteIdType(tmpIdType);
-                    tmpResponse.message = messageSource.getMessage("delete.identification.type.success", null, Locale.default);
+                if(tmpProductType) {
+                    adminService.deleteProductType(tmpProductType);
+                    tmpResponse.message = messageSource.getMessage("delete.product.type.success", null, Locale.default);
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
                 }else {
-                    tmpResponse.message = messageSource.getMessage("identification.type.not.found", null, Locale.default);
+                    tmpResponse.message = messageSource.getMessage("product.type.not.found", null, Locale.default);
                     tmpResponse.code = Constants.REGISTER_NOT_FOUND
                 }
             }else{
                 tmpResponse.message = messageSource.getMessage("generic.request.error.missing.parameters", null, Locale.default);
                 tmpResponse.code = Constants.ERROR_VALIDACION_DE_CAMPOS
             }
-            log.info "====== Delete identification type response ======"
+            log.info "====== Delete product type response ======"
             log.info tmpResponse as JSON
             render tmpResponse as JSON
         } catch (Exception e) {
@@ -116,36 +117,35 @@ class IdentificationTypeController extends RestController {
     }
 
     /**
-     * Este método se encarga de modificar un tipo de identificacion
+     * Este método se encarga de modificar un tipo de producto
      * @author Mauricio Fernández Mora
-     * @param name
      */
     @Secured(['ROLE_ANONYMOUS'])
     def update() {
-        log.info "==========  Update identification type request =========="
+        log.info "==========  Update product type request =========="
         log.info request.JSON
 
         ResponseREST tmpResponse = new ResponseREST();
-        UpdateIdentificationTypeREST tmpUpdateIdentificationTypeREST = new UpdateIdentificationTypeREST(request.JSON);
+        UpdateProductTypeREST tmpUpdateProductTypeREST = new UpdateProductTypeREST(request.JSON);
         try {
-            tmpUpdateIdentificationTypeREST.validate();
-            if (tmpUpdateIdentificationTypeREST.hasErrors()) {
-                this.handleDataErrorsREST(messageSource, tmpUpdateIdentificationTypeREST.errors);
+            tmpUpdateProductTypeREST.validate();
+            if (tmpUpdateProductTypeREST.hasErrors()) {
+                this.handleDataErrorsREST(messageSource, tmpUpdateProductTypeREST.errors);
             } else {
-                IdentificationType tmpIdentificationType = adminService.getIdentificationType(tmpUpdateIdentificationTypeREST.id);
+                ProductType tmpProductType = adminService.getProductType(tmpUpdateProductTypeREST.id);
 
-                if(tmpIdentificationType) {
+                if(tmpProductType) {
 
-                    adminService.updateIdType(tmpIdentificationType, tmpUpdateIdentificationTypeREST);
+                    adminService.updateProductType(tmpProductType, tmpUpdateProductTypeREST);
 
-                    tmpResponse.message = messageSource.getMessage("update.identification.type.success", null, Locale.default)
+                    tmpResponse.message = messageSource.getMessage("update.product.type.success", null, Locale.default)
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
                 }else {
-                    tmpResponse.message = messageSource.getMessage("identification.type.not.found", null, Locale.default)
+                    tmpResponse.message = messageSource.getMessage("product.type.not.found", null, Locale.default)
                     tmpResponse.code = Constants.REGISTER_NOT_FOUND
                 }
             }
-            log.info "====== Update identification type response ======"
+            log.info "====== Update product type response ======"
             log.info tmpResponse as JSON
             render tmpResponse as JSON
         }catch (Exception e) {
