@@ -1,3 +1,4 @@
+import com.dewcom.light.PresentationType
 import com.dewcom.light.ProductType
 import grails.converters.JSON
 import com.dewcom.light.AgentType
@@ -55,6 +56,13 @@ class BootStrap {
         }
 
         JSON.registerObjectMarshaller(ProductType) {
+            def returnArray = [:]
+            returnArray['id'] = it.id
+            returnArray['name'] = it.name
+            return returnArray
+        }
+
+        JSON.registerObjectMarshaller(PresentationType) {
             def returnArray = [:]
             returnArray['id'] = it.id
             returnArray['name'] = it.name

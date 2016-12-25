@@ -5,7 +5,8 @@ import grails.validation.Validateable
 /**
  * Created by Mauricio Fernández Mora on 25/12/16.
  */
-class UpdateProductTypeREST implements Validateable{
+class UpdatePresentationTypeREST implements Validateable {
+
     int id
     String name
 
