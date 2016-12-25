@@ -25,9 +25,7 @@ class Product {
     static constraints = {
         productCode blank: false
         name blank: false
-        presentationType blank: false
         bulkQuantity null: true
-        productType blank: false
         costInDollars null: true
         costInColones null: true
         suggestedCost null: true

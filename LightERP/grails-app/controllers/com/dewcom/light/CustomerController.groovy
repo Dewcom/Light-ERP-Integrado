@@ -57,7 +57,7 @@ class CustomerController extends RestController {
      */
     @Secured(['ROLE_ANONYMOUS'])
     def create() {
-        log.info "==========  Create customer  request =========="
+        log.info "==========  Create customer request =========="
         log.info request.JSON
 
         ResponseREST tmpResponse = new ResponseREST();
@@ -98,7 +98,7 @@ class CustomerController extends RestController {
      */
     @Secured(['ROLE_ANONYMOUS'])
     def delete() {
-        log.info "==========  Delete customer type request =========="
+        log.info "==========  Delete customer request =========="
         log.info request.JSON
 
         ResponseREST tmpResponse = new ResponseREST();

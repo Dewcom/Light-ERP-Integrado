@@ -26,7 +26,7 @@ class CustomerService {
 
 
     def getAllCustomers() {
-        log.info "====== Getting all customer from DB ======"
+        log.info "====== Getting all customers from DB ======"
         try {
             def customersFromDB = Customer.findAllByEnabled(Constants.ESTADO_ACTIVO);
             return customersFromDB
