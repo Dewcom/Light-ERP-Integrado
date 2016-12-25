@@ -51,24 +51,25 @@ class ProductService {
         }
     }
 
-    def updateProduct(UpdateProductRequestREST pRestProduct) {
+    def updateProduct(UpdateProductRequestREST prestProduct) {
         try {
-            Product tmpProductToUpdate = Product.findByIdAndEnabled(pRestProduct.id, Constants.ESTADO_ACTIVO)
+            Product tmpProductToUpdate = Product.findByIdAndEnabled(prestProduct.id, Constants.ESTADO_ACTIVO)
             if (tmpProductToUpdate) {
 
-                tmpProductToUpdate.productCode = pRestProduct.productCode;
-                tmpProductToUpdate.name = pRestProduct.name;
-                tmpProductToUpdate.presentationType = pRestProduct.presentationType;
-                tmpProductToUpdate.bulkQuantity = pRestProduct.bulkQuantity;
-                tmpProductToUpdate.productType = pRestProduct.productType;
-                tmpProductToUpdate.costInDollars = pRestProduct.costInDollars;
-                tmpProductToUpdate.costInColones = pRestProduct.costInColones;
-                tmpProductToUpdate.suggestedCost = pRestProduct.suggestedCost;
-                tmpProductToUpdate.tariffHeading = pRestProduct.tariffHeading;
-                tmpProductToUpdate.commercialName = pRestProduct.commercialName;
-                tmpProductToUpdate.priceInDollars = pRestProduct.priceInDollars;
-                tmpProductToUpdate.priceInColones = pRestProduct.priceInColones;
-                tmpProductToUpdate.utilityPercentage = pRestProduct.utilityPercentage;
+                tmpProductToUpdate.productCode = prestProduct.productCode;
+                tmpProductToUpdate.name = prestProduct.name;
+                tmpProductToUpdate.bulkQuantity = prestProduct.bulkQuantity;
+                tmpProductToUpdate.costInDollars = prestProduct.costInDollars;
+                tmpProductToUpdate.costInColones = prestProduct.costInColones;
+                tmpProductToUpdate.suggestedCost = prestProduct.suggestedCost;
+                tmpProductToUpdate.tariffHeading = prestProduct.tariffHeading;
+                tmpProductToUpdate.commercialName = prestProduct.commercialName;
+                tmpProductToUpdate.priceInDollars = prestProduct.priceInDollars;
+                tmpProductToUpdate.priceInColones = prestProduct.priceInColones;
+                tmpProductToUpdate.utilityPercentage = prestProduct.utilityPercentage;
+
+                tmpProductToUpdate.productType = ProductType.findByIdAndEnabled(prestProduct.productType, Constants.ESTADO_ACTIVO);
+                tmpProductToUpdate.presentationType = PresentationType.findByIdAndEnabled(prestProduct.presentationType, Constants.ESTADO_ACTIVO);
 
                 tmpProductToUpdate.save(flush: true);
             } else {

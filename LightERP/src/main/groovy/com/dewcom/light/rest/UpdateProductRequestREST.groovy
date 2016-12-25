@@ -10,9 +10,9 @@ class UpdateProductRequestREST implements Validateable {
     Integer id
     String productCode
     String name
-    int presentationType
+    Integer presentationType
     double bulkQuantity
-    int productType
+    Integer productType
     double costInDollars
     double costInColones
     double suggestedCost
@@ -28,9 +28,7 @@ class UpdateProductRequestREST implements Validateable {
     static constraints = {
         productCode blank: false
         name blank: false
-        presentationType blank: false
         bulkQuantity null: true
-        productType blank: false
         costInDollars null: true
         costInColones null: true
         suggestedCost null: true

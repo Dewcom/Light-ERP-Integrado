@@ -7,9 +7,9 @@ class Product {
 
     String productCode
     String name
-    int presentationType
+    PresentationType presentationType
     double bulkQuantity
-    int productType
+    ProductType productType
     double costInDollars
     double costInColones
     double suggestedCost
@@ -42,9 +42,7 @@ class Product {
 
         tmpProduct.productCode = pRestProduct.productCode;
         tmpProduct.name = pRestProduct.name;
-        tmpProduct.presentationType = pRestProduct.presentationType;
         tmpProduct.bulkQuantity = pRestProduct.bulkQuantity;
-        tmpProduct.productType = pRestProduct.productType;
         tmpProduct.costInDollars = pRestProduct.costInDollars;
         tmpProduct.costInColones = pRestProduct.costInColones;
         tmpProduct.suggestedCost = pRestProduct.suggestedCost;
@@ -53,6 +51,9 @@ class Product {
         tmpProduct.priceInDollars = pRestProduct.priceInDollars;
         tmpProduct.priceInColones = pRestProduct.priceInColones;
         tmpProduct.utilityPercentage = pRestProduct.utilityPercentage;
+
+        tmpProduct.presentationType = PresentationType.findByIdAndEnabled(pRestProduct.presentationType, Constants.ESTADO_ACTIVO);
+        tmpProduct.productType =  ProductType.findByIdAndEnabled(pRestProduct.productType, Constants.ESTADO_ACTIVO);
 
         return tmpProduct;
     }

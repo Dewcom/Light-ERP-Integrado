@@ -1,6 +1,8 @@
 package com.dewcom.light.rest
 
 import com.dewcom.light.Constants
+import com.dewcom.light.PresentationType
+import com.dewcom.light.ProductType
 import grails.validation.Validateable
 
 /**
@@ -10,9 +12,9 @@ class ProductRest implements Validateable{
 
     String productCode
     String name
-    int presentationType
+    Integer presentationType
     double bulkQuantity
-    int productType
+    Integer productType
     double costInDollars
     double costInColones
     double suggestedCost
@@ -20,7 +22,7 @@ class ProductRest implements Validateable{
     String commercialName
     double priceInDollars
     double priceInColones
-    double salesTax
+    double salesTax = Constants.SALES_TAX
     double utilityPercentage
     Byte enabled = Constants.ESTADO_ACTIVO
     Date registrationDate = new Date()
@@ -28,16 +30,14 @@ class ProductRest implements Validateable{
     static constraints = {
         productCode blank: false
         name blank: false
-        presentationType blank: false
-        bulkQuantity null: true, blank: true
-        productType blank: false
-        costInDollars null: true, blank: true
-        costInColones null: true, blank: true
-        suggestedCost null: true, blank: true
+        bulkQuantity null: true
+        costInDollars null: true
+        costInColones null: true
+        suggestedCost null: true
         tariffHeading blank: false
         commercialName null: true, blank: true
-        priceInDollars null: true, blank: true
-        priceInColones null: true, blank: true
-        utilityPercentage null: true, blank: true
+        priceInDollars null: true
+        priceInColones null: true
+        utilityPercentage null: true
     }
 }
