@@ -5,8 +5,6 @@ package com.dewcom.light
  */
 class Constants {
 
-    public static String CREATE_CAMPAIGN_STARTDATE_AND_ENDDATE_PATTERN = "YYYY-MM-dd";
-
     //Códigos para respuestas REST
     public static final String SUCCESS_RESPONSE = "0";
     public static final String ERROR_APLICACION_LIGHT = "50";
@@ -38,4 +36,8 @@ class Constants {
     public static final String ERROR_VALIDACION_DE_CAMPOS_TAMANO_MIN_ORIG = "minSize.notmet";
     public static final String ERROR_VALIDACION_DE_CAMPOS_NO_EN_LISTA_ORIG = "not.inList";
     public static final String ERROR_VALIDACION_DE_CAMPOS_VALOR_UNICO_ORIG = "unique";
+
+    //Contantes de negocio
+    public static final double SALES_TAX = 13;
+
 }
