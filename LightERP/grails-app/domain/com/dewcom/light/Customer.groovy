@@ -8,22 +8,19 @@ class Customer {
     String firstLastName
     String secondLastName
     String identification
-    Integer idDistrict //Con el id del distrito obtenemos el cantón y la provincia
-    String address1
-    String address2
     String phoneNumber1
     String phoneNumber2
     String mobile
     String website
     String email
     Byte enabled = Constants.ESTADO_ACTIVO
-    Date regitrationDate = new Date()
+    Date registrationDate = new Date()
     Double discountPercentage
     Double creditLimit
     IdentificationType identificationType
     CustomerType customerType
 
-    static hasMany = [contacts: Contact, agents: Agent]
+    static hasMany = [contacts: Contact, agents: Agent, addresses: Address]
     static belongsTo = [Agent]
 
     static constraints = {
@@ -31,9 +28,6 @@ class Customer {
         firstLastName blank: true, nullable: true
         secondLastName blank: true, nullable: true
         identification blank: false, nullable: false, maxSize: 20
-        idDistrict nullabe: true
-        address1 blank: false
-        address2 nullable: true, blank: true
         phoneNumber1 blank: false
         phoneNumber2 nullable: true, blank: true
         mobile nullable: true, blank: true
@@ -44,34 +38,39 @@ class Customer {
     }
 
 
-    def static fromRestCustomer(CustomerREST argRestCostumer){
+    def static fromRestCustomer(CustomerREST argRestCustomer){
+
         Customer tmpCustomer = new Customer();
 
-        tmpCustomer.name = argRestCostumer.name;
-        tmpCustomer.identification = argRestCostumer.identification;
-        tmpCustomer.firstLastName = argRestCostumer.firstLastName;
-        tmpCustomer.secondLastName = argRestCostumer.secondLastName;
-        tmpCustomer.address1 = argRestCostumer.address1;
-        tmpCustomer.address2 = argRestCostumer.address2;
-        tmpCustomer.phoneNumber1 = argRestCostumer.phoneNumber1;
-        tmpCustomer.phoneNumber2 = argRestCostumer.phoneNumber2;
-        tmpCustomer.mobile = argRestCostumer.mobile;
-        tmpCustomer.website = argRestCostumer.website;
-        tmpCustomer.email = argRestCostumer.email;
-        tmpCustomer.website = argRestCostumer.website;
-        tmpCustomer.discountPercentage = argRestCostumer.discountPercentage;
-        tmpCustomer.creditLimit = argRestCostumer.creditLimit;
-        tmpCustomer.idDistrict = argRestCostumer.idDistrict;
+        tmpCustomer.name = argRestCustomer.name;
+        tmpCustomer.identification = argRestCustomer.identification;
+        tmpCustomer.firstLastName = argRestCustomer.firstLastName;
+        tmpCustomer.secondLastName = argRestCustomer.secondLastName;
+        tmpCustomer.phoneNumber1 = argRestCustomer.phoneNumber1;
+        tmpCustomer.phoneNumber2 = argRestCustomer.phoneNumber2;
+        tmpCustomer.mobile = argRestCustomer.mobile;
+        tmpCustomer.website = argRestCustomer.website;
+        tmpCustomer.email = argRestCustomer.email;
+        tmpCustomer.website = argRestCustomer.website;
+        tmpCustomer.discountPercentage = argRestCustomer.discountPercentage;
+        tmpCustomer.creditLimit = argRestCustomer.creditLimit;
 
-        argRestCostumer.contacts.each {
+        argRestCustomer.contacts.each {
             if(!it.toString().equals("{}")){
-                tmpCustomer.addToContacts(it)
+                println(it);
+                tmpCustomer.addToContacts(it);
             }
         }
 
+        argRestCustomer.addresses.each {
+            if(!it.toString().equals("{}")){
+                println(it);
+                tmpCustomer.addToAddresses(it);
+            }
+        }
 
-        tmpCustomer.identificationType = IdentificationType.findByIdAndEnabled(argRestCostumer.identificationType, Constants.ESTADO_ACTIVO);
-        tmpCustomer.customerType =  CustomerType.findByIdAndEnabled(argRestCostumer.customerType, Constants.ESTADO_ACTIVO);
+        tmpCustomer.identificationType = IdentificationType.findByIdAndEnabled(argRestCustomer.identificationType, Constants.ESTADO_ACTIVO);
+        tmpCustomer.customerType =  CustomerType.findByIdAndEnabled(argRestCustomer.customerType, Constants.ESTADO_ACTIVO);
 
         return tmpCustomer;
     }

@@ -1,5 +1,6 @@
 package com.dewcom.light.rest
 
+import com.dewcom.light.Address
 import com.dewcom.light.Contact
 import grails.validation.Validateable
 import com.dewcom.light.Constants
@@ -12,30 +13,25 @@ class CustomerREST implements Validateable {
     String firstLastName
     String secondLastName
     String identification
-    Integer idDistrict //Con el id del distrito obtenemos el cantón y la provincia
-    String address1
-    String address2
     String phoneNumber1
     String phoneNumber2
     String mobile
     String website
     String email
     Byte enabled = Constants.ESTADO_ACTIVO
-    Date regitrationDate = new Date()
+    Date registrationDate = new Date()
     Double discountPercentage
     Double creditLimit
     Integer identificationType
     Integer customerType
     List<Contact> contacts
+    List<Address> addresses
 
     static constraints = {
         name blank: false
         firstLastName blank: false, nullable: true
         secondLastName blank: false, nullable: true
         identification blank: false, nullable: false
-        idDistrict nullable: true
-        address1 blank: false, nullable: false
-        address2 nullable: true, blank: true
         phoneNumber1 blank: false, nullable: false
         phoneNumber2 nullable: true, blank: true
         mobile nullable: true, blank: true

@@ -17,7 +17,7 @@ class CustomerController extends RestController {
      */
     @Secured(['ROLE_ANONYMOUS'])
     def get() {
-        log.info "========== Get customer  request =========="
+        log.info "========== Get customer request =========="
 
         ResponseREST tmpResponse = new ResponseREST();
 
@@ -57,7 +57,7 @@ class CustomerController extends RestController {
      */
     @Secured(['ROLE_ANONYMOUS'])
     def create() {
-        log.info "==========  Create customer  request =========="
+        log.info "==========  Create customer request =========="
         log.info request.JSON
 
         ResponseREST tmpResponse = new ResponseREST();
@@ -97,7 +97,7 @@ class CustomerController extends RestController {
      */
     @Secured(['ROLE_ANONYMOUS'])
     def delete() {
-        log.info "==========  Delete customer type request =========="
+        log.info "==========  Delete customer request =========="
         log.info request.JSON
 
         ResponseREST tmpResponse = new ResponseREST();
@@ -172,6 +172,30 @@ class CustomerController extends RestController {
             tmpResponse.data = tmpContactsList
 
             log.info "====== Get contacts by client id response ======"
+            log.info tmpResponse as JSON
+            render tmpResponse as JSON
+        } catch (Exception e) {
+            this.handleRESTExceptions(messageSource, e)
+        }
+    }
+
+    @Secured(['ROLE_ANONYMOUS'])
+    def getCustomerAddresses() {
+        log.info "========== Get customer addresses request =========="
+
+        ResponseREST tmpResponse = new ResponseREST();
+
+        try {
+            def tmpId = params.id
+            def tmpAddressesList = new ArrayList()
+            if(tmpId){
+                tmpAddressesList = customerService.getCustomerAddresses(tmpId);
+            }
+            tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
+            tmpResponse.code = Constants.SUCCESS_RESPONSE
+            tmpResponse.data = tmpAddressesList
+
+            log.info "====== Get addresses by client id response ======"
             log.info tmpResponse as JSON
             render tmpResponse as JSON
         } catch (Exception e) {

@@ -16,6 +16,8 @@
         var vm = this;
         var customerToDeleteName;
 
+        var addressList;
+
         var language = {
             "sProcessing":     "Procesando...",
             "sLengthMenu":     "Mostrar _MENU_ registros",
@@ -39,7 +41,7 @@
                 "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
                 "sSortDescending": ": Activar para ordenar la columna de manera descendente"
             }
-        }
+        };
 
         init();
 
@@ -182,6 +184,8 @@
         function ModalInstanceCtrl($scope, $uibModalInstance) {
             $scope.addCustomerForm = {};
 
+            var tmpAddressList = [];
+
             $scope.close = function () {
                 $uibModalInstance.close('closed');
             };
@@ -202,9 +206,7 @@
                     "firstLastName":$scope.addCustomerForm.firstLastName ,
                     "secondLastName":$scope.addCustomerForm.secondLastName,
                     "identification":$scope.addCustomerForm.identification,
-                    "idDistrict":parseInt($scope.addCustomerForm.selectedDistrict1.idDistrict) , //Los id del Json de location estan en string
-                    "address1":$scope.addCustomerForm.address1 ,
-                    "address2":$scope.addCustomerForm.address2 ,
+                    "addresses": $scope.formatAddreses(),
                     "phoneNumber1":$scope.addCustomerForm.phoneNumber1,
                     "phoneNumber2":$scope.addCustomerForm.phoneNumber2 ,
                     "mobile":$scope.addCustomerForm.mobile ,
@@ -262,6 +264,42 @@
 
                 $uibModalInstance.close('closed');
             };
+
+            $scope.addAddress = function () {
+
+                var addressObj = { "idDistrict": $scope.addCustomerForm.selectedDistrict.idDistrict,
+                    "address":$scope.addCustomerForm.address, "provinceName" : $scope.addCustomerForm.selectedProvince.name,
+                    "cantonName" : $scope.addCustomerForm.selectedCanton.name, "districtName" : $scope.addCustomerForm.selectedCanton.name};
+
+                tmpAddressList.push(addressObj);
+
+                $scope.addressList = tmpAddressList;
+
+                $scope.addCustomerForm.selectedProvince = null;
+                $scope.addCustomerForm.selectedCanton = null;
+                $scope.addCustomerForm.selectedDistrict = null;
+                $scope.addCustomerForm.address = "";
+
+            };
+
+            //Se formatea la direccion para enviar al BE
+            $scope.formatAddreses = function () {
+                var finalAddressList = [];
+
+                angular.forEach(tmpAddressList, function (value, key) {
+                    var finalAddressObj = { "idDistrict": value.idDistrict, "address":value.address};
+                    finalAddressList.push(finalAddressObj);
+                });
+
+                return finalAddressList;
+
+            }
+
+            //Se elimina la direccion de la lista temporal de direcciones
+            $scope.deleteTmpAddress = function (paddress) {
+                var index = tmpAddressList.indexOf(paddress);
+                tmpAddressList.splice(index, 1);
+            }
         }
 
 

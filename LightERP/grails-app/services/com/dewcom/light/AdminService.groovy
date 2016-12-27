@@ -3,12 +3,16 @@ package com.dewcom.light
 import com.dewcom.light.rest.UpdateAgentTypeREST
 import com.dewcom.light.rest.UpdateCustomerTypeREST
 import com.dewcom.light.rest.UpdateIdentificationTypeREST
+import com.dewcom.light.rest.UpdatePresentationTypeREST
+import com.dewcom.light.rest.UpdateProductTypeREST
 import grails.transaction.Transactional
 
 @Transactional
 class AdminService {
 
-    IdentificationType getIdType(def pid) {
+    //Identification type
+
+    IdentificationType getIdentificationType(def pid) {
         log.info "====== Getting identification type from DB ======"
         log.info pid
         try{
@@ -20,7 +24,7 @@ class AdminService {
         }
     }
 
-    List<IdentificationType> getAllIdTypes() {
+    List<IdentificationType> getAllIdentificationTypes() {
         log.info "====== Getting all identification types from DB ======"
         try{
             def idTypesFromDB = IdentificationType.findAllByEnabled(Constants.ESTADO_ACTIVO);
@@ -59,6 +63,9 @@ class AdminService {
             throw new LightRuntimeException("update.identification.type.error");
         }
     }
+
+
+    //Agent type
 
     AgentType getAgentType(def pid) {
         log.info "====== Getting agent type from DB ======"
@@ -112,6 +119,8 @@ class AdminService {
         }
     }
 
+    //Customer type
+
     CustomerType getCustomerType(def pid) {
         log.info "====== Getting customer type from DB ======"
         log.info pid
@@ -161,6 +170,115 @@ class AdminService {
         }catch(Exception e){
             log.error(e);
             throw new LightRuntimeException("update.customer.type.error");
+        }
+    }
+
+    //Product type
+
+    ProductType getProductType(def pid) {
+        log.info "====== Getting product type from DB ======"
+        log.info pid
+        try{
+            ProductType productTypeFromDB = ProductType.findByIdAndEnabled(pid, Constants.ESTADO_ACTIVO);
+            return productTypeFromDB
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException("get.product.type.error");
+        }
+    }
+
+    def getAllProductTypes() {
+        log.info "====== Getting all product types from DB ======"
+        try{
+            def productTypesFromDB = ProductType.findAllByEnabled(Constants.ESTADO_ACTIVO);
+            return productTypesFromDB
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException("get.all.product.types.error");
+        }
+    }
+
+    def createProductType(ProductType pproductType) {
+        try{
+            pproductType.save(flush: true)
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException("create.product.type.error");
+        }
+    }
+
+    def deleteProductType(ProductType pproductType) {
+        try{
+            pproductType.enabled = Constants.ESTADO_INACTIVO;
+            pproductType.save(flush: true)
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException("delete.product.type.error");
+        }
+    }
+
+    def updateProductType(ProductType pproductType, UpdateProductTypeREST pupdateProductTypeREST) {
+        try{
+            pproductType.name = pupdateProductTypeREST.name;
+            pproductType.save(flush: true)
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException("update.product.type.error");
+        }
+    }
+
+
+    //Presentation type
+
+    PresentationType getPresentationType(def pid) {
+        log.info "====== Getting presentation type from DB ======"
+        log.info pid
+        try{
+            PresentationType presentationTypeFromDB = PresentationType.findByIdAndEnabled(pid, Constants.ESTADO_ACTIVO);
+            return presentationTypeFromDB
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException("get.presentation.type.error");
+        }
+    }
+
+    def getAllPresentationTypes() {
+        log.info "====== Getting all presentation types from DB ======"
+        try{
+            def presentationTypesFromDB = PresentationType.findAllByEnabled(Constants.ESTADO_ACTIVO);
+            return presentationTypesFromDB
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException("get.all.presentation.types.error");
+        }
+    }
+
+    def createPresentationType(PresentationType ppresentationType) {
+        try{
+            ppresentationType.save(flush: true)
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException("create.presentation.type.error");
+        }
+    }
+
+    def deletePresentationType(PresentationType ppresentationType) {
+        try{
+            ppresentationType.enabled = Constants.ESTADO_INACTIVO;
+            ppresentationType.save(flush: true)
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException("delete.presentation.type.error");
+        }
+    }
+
+    def updatePresentationType(PresentationType ppresentationType, UpdatePresentationTypeREST pudatePresentationTypeREST) {
+        try{
+            ppresentationType.name = pudatePresentationTypeREST.name;
+            ppresentationType.save(flush: true)
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException("update.presentation.type.error");
         }
     }
 }

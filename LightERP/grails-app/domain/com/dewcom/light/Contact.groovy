@@ -11,7 +11,7 @@ class Contact {
     String mobile
     String email
     Byte enabled = Constants.ESTADO_ACTIVO
-    Date regitrationDate = new Date()
+    Date registrationDate = new Date()
     Customer customer
     static belongsTo = [Customer]
 

@@ -22,7 +22,7 @@ angular
             });
 
             return customerList;
-        }
+        };
 
         customerService.get = function(customerId) {
 
@@ -33,6 +33,7 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
+                console.log(response);
                 return response.data;
             },function (error) {
                 console.log(error);
@@ -40,7 +41,7 @@ angular
             });
 
             return customer;
-        }
+        };
 
         customerService.addCustomer = function(newCustomer) {
             console.log(newCustomer);
@@ -62,7 +63,7 @@ angular
             });
 
             return addCustomerResult;
-        }
+        };
 
         customerService.updateCustomer = function(updatedCustomer) {
             console.log(updatedCustomer);
@@ -82,7 +83,7 @@ angular
             });
 
             return updateCustomerResult;
-        }
+        };
 
         customerService.disableCustomer = function(customerId) {
 
@@ -104,8 +105,7 @@ angular
             });
 
             return disableCustomerResult;
-        }
-
+        };
 
         customerService.getAllContacts = function(customerId) {
 
@@ -124,12 +124,26 @@ angular
             });
 
             return customerContactsList;
+        };
+
+        customerService.getAllAddresses = function(customerId) {
+
+            var customerAddressList = $http({
+                method: 'GET',
+                url: 'http://localhost:8080/api/customer/addresses?id='+customerId,
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            }).then(function (response) {
+                console.log(response.data)
+                return response.data.data;
+            },function (error) {
+                console.log(error);
+                return error.status;
+            });
+
+            return customerAddressList;
         }
 
         return customerService;
     });
-
-
-
-
-

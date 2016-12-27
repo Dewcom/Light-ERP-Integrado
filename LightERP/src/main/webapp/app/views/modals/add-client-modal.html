@@ -84,17 +84,17 @@
                                     <div class="col-md-4" >
                                         <div class="form-group">
                                             <!--Asegurar que los id's finales sirvan para esta validación-->
-                                            <label ng-show="addCustomerForm.selectedIdentificationType == 2">Nombre del cliente</label>
-                                            <label ng-show="addCustomerForm.selectedIdentificationType == 1">Nombre de la empresa</label>
+                                            <label ng-show="addCustomerForm.selectedIdentificationType == 1">Nombre del cliente</label>
+                                            <label ng-show="addCustomerForm.selectedIdentificationType == 2">Nombre de la empresa</label>
                                             <div class="controls">
                                                 <input ng-show="addCustomerForm.selectedIdentificationType != null" type="text" name="name" ng-model="addCustomerForm.name" required="required"
                                                        class="form-control" maxlength="50" replace="[^a-zA-Z]" with=""/>
-                                                <span ng-show="formStep1.$submitted &amp;&amp; formStep1.name.$invalid"
+                                                <span ng-show="formStep1.$submitted &amp;&amp; formStep1.name.$invalid && addCustomerForm.name != null"
                                                       class="text-danger">Este campo es inválido</span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4" ng-show="addCustomerForm.selectedIdentificationType == 2">
+                                    <div class="col-md-4" ng-show="addCustomerForm.selectedIdentificationType == 1">
                                         <div class="form-group">
                                             <label>Primer apellido</label>
                                             <div class="controls">
@@ -103,7 +103,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4" ng-show="addCustomerForm.selectedIdentificationType == 2">
+                                    <div class="col-md-4" ng-show="addCustomerForm.selectedIdentificationType == 1">
                                         <div class="form-group">
                                             <label>Segundo apellido</label>
                                             <div class="controls">
@@ -199,18 +199,23 @@
                                 <legend>Direcciones</legend>
                                 <!-- START row-->
                                 <h4>Dirección</h4>
+                                <div ng-show="addCustomerForm.selectedProvince != null">
+                                    <button type="button" class="btn btn-labeled btn-success" ng-click="addAddress()">
+                                        <span class="btn-label">
+                                        <em class="fa fa-plus"></em>
+                                        </span>Agregar dirección
+                                    </button>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label>Provincia</label>
                                             <div class="controls">
-                                                <select name="selectedProvince1" ng-model="addCustomerForm.selectedProvince1"
+                                                <select name="selectedProvince" ng-model="addCustomerForm.selectedProvince"
                                                         ng-options="item.name for item in modalCtrl.provinces" class="form-control"
-                                                        required="required" ng-change="modalCtrl.loadCantons(addCustomerForm.selectedProvince1.idProvince)">
+                                                        ng-change="modalCtrl.loadCantons(addCustomerForm.selectedProvince.idProvince)">
                                                     <option value="?"></option>
                                                 </select>
-                                                <span ng-show="formStep3.$submitted &amp;&amp; formStep3.selectedProvince1.$invalid"
-                                                      class="text-danger">Este campo es inválido</span>
                                             </div>
                                         </div>
                                     </div>
@@ -218,13 +223,11 @@
                                         <div class="form-group">
                                             <label>Cantón</label>
                                             <div class="controls">
-                                                <select name="selectedCanton1" ng-model="addCustomerForm.selectedCanton1"
+                                                <select name="selectedCanton" ng-model="addCustomerForm.selectedCanton"
                                                         ng-options="item.name for item in modalCtrl.cantons" class="form-control"
-                                                        required="required" ng-change="modalCtrl.loadDistricts(addCustomerForm.selectedCanton1.idCanton)">
+                                                        ng-change="modalCtrl.loadDistricts(addCustomerForm.selectedCanton.idCanton)">
                                                     <option value="?"></option>
                                                 </select>
-                                                <span ng-show="formStep3.$submitted &amp;&amp; formStep3.selectedCanton1.$invalid"
-                                                      class="text-danger">Este campo es inválido</span>
                                             </div>
                                         </div>
                                     </div>
@@ -232,29 +235,70 @@
                                         <div class="form-group">
                                             <label>Distrito</label>
                                             <div class="controls">
-                                                <select name="selectedDistrict1" ng-model="addCustomerForm.selectedDistrict1"
-                                                        ng-options="item.name for item in modalCtrl.districts"class="form-control"
-                                                        required="required" `>
+                                                <select name="selectedDistrict" ng-model="addCustomerForm.selectedDistrict"
+                                                        ng-options="item.name for item in modalCtrl.districts"class="form-control">
                                                     <option value="?"></option>
                                                 </select>
-                                                <span ng-show="formStep3.$submitted &amp;&amp; formStep3.selectedDistrict1.$invalid"
-                                                      class="text-danger">Este campo es inválido</span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label>Dirección</label>
                                             <div class="controls">
-                                                <textarea style="resize: none" name="address1" ng-model="addCustomerForm.address1"
-                                                          placeholder="Dirección y señas" class="form-control" required="required" />
-                                                <span ng-show="formStep3.$submitted &amp;&amp; formStep3.address1.$invalid"
-                                                      class="text-danger">Este campo es inválido</span>
+                                                <textarea style="resize: none" name="address" ng-model="addCustomerForm.address"
+                                                    class="form-control">
+                                                </textarea>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <!-- END row-->
+                                <fieldset>
+                                    <h4 ng-show="addressList != null">Lista de direcciones</h4>
+                                    <div ng-repeat="address in addressList" class="row">
+                                        <div class="col-md-12">
+                                            <button type="button" ng-click="deleteTmpAddress(address)"
+                                                    class="btn btn-sm btn-danger">
+                                                <em class="fa fa-trash-o"></em>
+                                            </button>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Provincia</label>
+                                                <div class="controls">
+                                                    <input type="text" value="{{address.provinceName}}" class="form-control" disabled/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Cantón</label>
+                                                <div class="controls">
+                                                    <input type="text" value="{{address.provinceName}}" class="form-control" disabled/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Distrito</label>
+                                                <div class="controls">
+                                                    <input type="text" value="{{address.cantonName}}" class="form-control" disabled/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Dirección</label>
+                                                <div class="controls">
+                                                    <textarea style="resize: none" class="form-control" disabled>{{address.address}}
+                                                    </textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <span ng-show="formStep3.$submitted &amp;&amp; formStep3.addedProvince.$invalid"
+                                      class="text-danger">Es necesario al menos una dirección</span>
                             </fieldset>
                             <ul class="pager">
                                 <li class="previous">
