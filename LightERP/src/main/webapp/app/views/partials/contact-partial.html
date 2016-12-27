@@ -10,12 +10,13 @@
                    class="row-border hover">
                 <thead>
                 <tr>
-                    <th>Cliente</th>
+                    <th>Empresa / Cliente</th>
                     <th>Nombre</th>
-                    <th>Departamento</th>
                     <th>Puesto</th>
                     <th>Teléfono</th>
                     <th>Correo electrónico</th>
+                    <th>Opciones</th>
+
                 </tr>
                 </thead>
                 <tbody>
@@ -23,14 +24,19 @@
                     <td>{{ contactObj.customer.name }}</td>
                     <td>{{ contactObj.name + ' ' + contactObj.firstLastName + ' ' + contactObj.secondLastName}}
                     </td>
-                    <td>{{ contactObj.department }}</td>
                     <td>{{ contactObj.jobTitle }}</td>
                     <td>{{ contactObj.phoneNumber1 }}</td>
                     <td>{{ contactObj.email }}</td>
+                    <td>
+                        <button type="button" ng-click="controller.open('md', contactObj, '/detailContactModal.html')" class="btn btn-sm btn-toolbar">
+                            <em class="fa fa-search"></em>
+                        </button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
             </form>
         </div>
     </div>
+    <div ng-include="'app/views/modals/detail-contact-modal.html'"></div>
 </div>

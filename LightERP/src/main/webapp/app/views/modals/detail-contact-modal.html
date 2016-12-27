@@ -1,5 +1,5 @@
 <div>
-    <script type="text/ng-template" id="/editContactModal.html">
+    <script type="text/ng-template" id="/detailContactModal.html">
         <!-- START panel-->
 
         <div ng-controller="ContactController as contactController">
@@ -16,11 +16,11 @@
                            <div class="form-group">
                                <div class="col-sm-6">
                                <label for="inputContact1">Nombre</label>
-                                   <input id="inputContact1" type="text" placeholder="" ng-value="currentContact.name" ng-model="contactToUpdate.name" class="form-control" />
+                                   <input id="inputContact1" type="text" placeholder="" ng-value="currentContact.name" class="form-control" disabled />
                                </div>
                                <div class="col-sm-6">
                                <label for="inputContact2">Primer Apellido</label>
-                                   <input id="inputContact2" type="text" ng-value="currentContact.firstLastName" ng-model="contactToUpdate.firstLastName" class="form-control" />
+                                   <input id="inputContact2" type="text" ng-value="currentContact.firstLastName"  class="form-control" disabled/>
                                </div>
                            </div>
                        </div>
@@ -29,12 +29,12 @@
                             <div class="form-group">
                                 <div class="col-sm-6">
                                 <label for="inputContact3">Segundo Apellido</label>
-                                    <input id="inputContact3" type="text" ng-value="currentContact.secondLastName" ng-model="contactToUpdate.secondLastName" class="form-control" />
+                                    <input id="inputContact3" type="text" ng-value="currentContact.secondLastName"  class="form-control" disabled />
                                 </div>
 
                                 <div class="col-sm-6">
                                 <label for="inputContact4">Correo</label>
-                                    <input id="inputContact4" type="email" ng-value="currentContact.email" ng-model="contactToUpdate.email" class="form-control" />
+                                    <input id="inputContact4" type="email" ng-value="currentContact.email"  class="form-control" disabled />
                                 </div>
                             </div>
 
@@ -44,12 +44,12 @@
                             <div class="form-group">
                                 <div class="col-sm-6">
                                 <label for="inputContact5">Teléfono #1</label>
-                                    <input id="inputContact5" type="text" ng-value="currentContact.phoneNumber1" ng-model="contactToUpdate.phoneNumber1" class="form-control" />
+                                    <input id="inputContact5" type="text" ng-value="currentContact.phoneNumber1"  class="form-control" disabled />
                                 </div>
 
                                 <div class="col-sm-6">
                                 <label for="inputContact6">Teléfono #2</label>
-                                    <input id="inputContact6" type="text" ng-value="currentContact.phoneNumber2" ng-model="contactToUpdate.phoneNumber2" class="form-control" />
+                                    <input id="inputContact6" type="text" ng-value="currentContact.phoneNumber2"  class="form-control" disabled />
                                 </div>
                             </div>
                         </div>
@@ -59,12 +59,12 @@
                             <div class="form-group">
                                 <div class="col-sm-6">
                                 <label for="inputContact7">Celular</label>
-                                    <input id="inputContact7" type="text" ng-value="currentContact.mobile" ng-model="contactToUpdate.mobile" class="form-control" />
+                                    <input id="inputContact7" type="text" ng-value="currentContact.mobile"  class="form-control" disabled />
                                 </div>
 
                                 <div class="col-sm-6">
                                 <label for="inputContact8">Puesto</label>
-                                    <input id="inputContact8" type="text" ng-value="currentContact.jobTitle" ng-model="contactToUpdate.jobTitle" class="form-control" />
+                                    <input id="inputContact8" type="text" ng-value="currentContact.jobTitle"  class="form-control" disabled />
                                 </div>
                             </div>
                         </div>
@@ -76,14 +76,9 @@
                             <div class="form-group">
                                 <div class="col-sm-6">
                                 <label for="inputContact9">Departamento</label>
-                                    <input id="inputContact9" type="text" ng-value="currentContact.department" ng-model="contactToUpdate.department" class="form-control" />
+                                    <input id="inputContact9" type="text" ng-value="currentContact.department"  class="form-control" disabled />
                                 </div>
                             </div>
-                                <div class="form-group">
-                                <div class="col-sm-6">
-                                    <button type="submit" ng-click="updateContact()" class="btn btn-info">Actualizar</button>
-                                 </div>
-                                </div>
 
                           <!--  </form>-->
                         </div>
