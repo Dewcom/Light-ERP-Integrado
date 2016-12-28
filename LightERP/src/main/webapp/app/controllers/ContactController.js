@@ -8,8 +8,8 @@
         .controller('ContactController', ContactController);
 
     ContactController.$inject = ['$uibModal','$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder',
-        'contactService','$state', 'toaster', 'ngDialog'];
-    function ContactController($uibModal, $resource, DTOptionsBuilder, DTColumnDefBuilder, contactService, $state, toaster, ngDialog) {
+        'contactService','$state', 'toaster', 'ngDialog', '$timeout'];
+    function ContactController($uibModal, $resource, DTOptionsBuilder, DTColumnDefBuilder, contactService, $state, toaster, ngDialog, $timeout) {
         var vm = this;
 
         var language = {
@@ -52,6 +52,7 @@
 
             contactService.getAll().then(function(response) {
                 vm.contactList = response;
+                console.log(response);
             });
 
             vm.dtOptions = DTOptionsBuilder.newOptions()
@@ -71,13 +72,13 @@
          * Module: modals
          =========================================================*/
 
-        vm.open = function (size,contact) {
+        vm.open = function (size,object, template) {
             var modalInstance = $uibModal.open({
-                templateUrl: '/editContactModal.html',
+                templateUrl: template,
                 controller: ModalInstanceCtrl,
                 resolve: {
                     contact: function () {
-                        return contact;
+                        return object;
                     }
                 },
                 size: size,
@@ -217,8 +218,10 @@
                         };
 
                     }
-                   // pop(toasterdata);
+
+                    $timeout(function(){ pop(toasterdata); }, 1000);
                     $state.reload();
+
                     //activate contacts tab
                     $scope.infoTabActivated = false;
                     $scope.contactsTabActivated = true
@@ -228,49 +231,47 @@
                 $uibModalInstance.close('closed');
             };
 
-            /**=========================================================
-             * Eliminar contacto
-             =========================================================*/
-            $scope.disableContact = function (contactId) {
-                ngDialog.openConfirm({
-                    template: 'disableContactModal',
-                    className: 'ngdialog-theme-default',
-                    closeByDocument: false,
-                    closeByEscape: false
-                }).then(function (value) {
-                    contactService.disableContact(contactId).then(function (response) {
-                        var toasterdata;
-                        console.log(response);
 
-                        if(response.code == "0"){
-                            toasterdata = {
-                                type: 'success',
-                                title: 'Eliminar Contacto',
-                                text: response.message
-                            };
-                        }else{
-                            toasterdata = {
-                                type: 'warning',
-                                title: 'Contacto',
-                                text: response.message
-                            };
-
-                        }
-                        $state.reload();
-                        //activate contactsTab
-                        $scope.infoTabActivated = false;
-                        $scope.contactsTabActivated = true;
-                        //pop(toasterdata);
-
-                    },function (error) {
-                        console.log(error);
-                    });
-                }, function (reason) {
-                    console.log('Modal promise rejected. Reason: ', reason);
-                });
-                $uibModalInstance.close('closed');
-            };
         }
+
+        /**=========================================================
+         * Eliminar contacto
+         =========================================================*/
+        vm.disableContact = function (contactId) {
+            ngDialog.openConfirm({
+             template: 'disableContactModal',
+             className: 'ngdialog-theme-default',
+             closeByDocument: false,
+             closeByEscape: false
+             }).then(function (value) {
+             contactService.disableContact(contactId).then(function (response) {
+             var toasterdata;
+             console.log(response);
+
+             if(response.code == "0"){
+             toasterdata = {
+             type: 'success',
+             title: 'Eliminar Contacto',
+             text: response.message
+             };
+             }else{
+             toasterdata = {
+             type: 'warning',
+             title: 'Contacto',
+             text: response.message
+             };
+
+             }
+                 $timeout(function(){ pop(toasterdata); }, 1000);
+                 $state.reload();
+
+             },function (error) {
+             console.log(error);
+             });
+             }, function (reason) {
+             console.log('Modal promise rejected. Reason: ', reason);
+             });
+        };
 
         function pop(toasterdata){
             toaster.pop({
