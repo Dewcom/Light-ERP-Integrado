@@ -31,7 +31,8 @@
             'app.tables',
             'app.forms',
             'app.adminConfig',
-            'app.client'
+            'app.client',
+            'app.product'
         ]);
 })();
 
@@ -61,12 +62,19 @@
             'ui.utils',
         ]);
 })();
-
 (function() {
     'use strict';
 
     angular
         .module('app.client', [
+            'add.notify'
+        ]);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.product', [
             'add.notify'
         ]);
 })();
@@ -199,6 +207,12 @@
 
     angular
         .module('app.client', []);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.product', []);
 })();
 /**=========================================================
  * Module: colors.js
@@ -808,10 +822,11 @@
                 title: 'Usuarios',
                 templateUrl: helper.basepath('users.html')
             })
-            .state('app.inventory', {
-                url: '/inventory',
-                title: 'Inventario',
-                templateUrl: helper.basepath('inventory.html')
+            .state('app.warehouseMain', {
+                url: '/warehouseMain',
+                title: 'Almacén',
+                templateUrl: helper.basepath('warehouse-main.html'),
+                resolve: helper.resolveFor('datatables', 'ngDialog')
             })
             .state('app.configuration', {
                 url: '/configuration',

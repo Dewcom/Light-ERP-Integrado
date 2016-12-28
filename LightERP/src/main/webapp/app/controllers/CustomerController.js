@@ -9,12 +9,11 @@
         .directive('formWizard', formWizard);
 
     CustomerController.$inject = ['$uibModal','$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder',
-        'customerService', 'customerTypeService', 'identificationTypeService','toaster', '$state', '$http',
+        'customerService', 'customerTypeService', 'identificationTypeService','toaster', '$state',
         '$filter', '$timeout', 'ngDialog', '$scope'];
     function CustomerController($uibModal, $resource, DTOptionsBuilder, DTColumnDefBuilder, customerService,
-        customerTypeService, identificationTypeService, toaster, $state, $http, $filter, $timeout, ngDialog, $scope) {
+        customerTypeService, identificationTypeService, toaster, $state, $filter, $timeout, ngDialog, $scope) {
         var vm = this;
-        var customerToDeleteName;
 
         var addressList;
 

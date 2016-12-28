@@ -143,7 +143,7 @@ angular
             });
 
             return customerAddressList;
-        }
+        };
 
         return customerService;
     });
