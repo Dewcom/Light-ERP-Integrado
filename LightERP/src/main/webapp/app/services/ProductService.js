@@ -50,7 +50,7 @@ angular
                 method: 'POST',
                 url: 'http://localhost:8080/api/product/create',
                 data: {
-                    customer: newProduct
+                    product: newProduct
                 },
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'

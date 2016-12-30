@@ -123,90 +123,72 @@
                 });
             };
 
-        /**=========================================================
-         * Module: modals
-         =========================================================*/
+            /**=========================================================
+             * Module: modals
+             =========================================================*/
 
-        vm.open = function (size) {
+            vm.open = function (size) {
 
-            var modalInstance = $uibModal.open({
-                templateUrl: '/addProductModal.html',
-                controller: ModalInstanceCtrl,
-                size: size,
-                backdrop: 'static', // No cierra clickeando fuera
-                keyboard: false // No cierra con escape
-            });
+                var modalInstance = $uibModal.open({
+                    templateUrl: '/addProductModal.html',
+                    controller: ModalInstanceCtrl,
+                    size: size,
+                    backdrop: 'static', // No cierra clickeando fuera
+                    keyboard: false // No cierra con escape
+                });
 
-            var state = $('#modal-state');
-            modalInstance.result.then(function () {
-                state.text('Modal dismissed with OK status');
-            }, function () {
-                state.text('Modal dismissed with Cancel status');
-            });
-        };
-
-        // Please note that $uibModalInstance represents a modal window (instance) dependency.
-        // It is not the same as the $uibModal service used above.
-
-        ModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance'];
-        function ModalInstanceCtrl($scope, $uibModalInstance) {
-            $scope.addProductForm = {};
-
-
-            $scope.close = function () {
-                $uibModalInstance.close('closed');
+                var state = $('#modal-state');
+                modalInstance.result.then(function () {
+                    state.text('Modal dismissed with OK status');
+                }, function () {
+                    state.text('Modal dismissed with Cancel status');
+                });
             };
 
-            $scope.cancel = function () {
-                $uibModalInstance.dismiss('cancel');
+
+            /**=========================================================
+             * Validación de campos y patrones
+             =========================================================*/
+            vm.submitted = false;
+            vm.validateInput = function(name, type) {
+                var input = vm.productForm[name];
+                return (input.$dirty || vm.submitted) && input.$error[type];
+            };
+
+            // Submit form
+            vm.submitForm = function() {
+                vm.submitted = true;
+                if (vm.productForm.$valid) {
+                    addProduct();
+                } else {
+                    console.log('Not valid!!');
+                    return false;
+                }
             };
 
             /**=========================================================
              * Agregar productos
              =========================================================*/
 
-            $scope.addProduct = function() {
+            function addProduct() {
 
-
-                var newCustomer ={
-                    "name":$scope.addCustomerForm.name,
-                    "firstLastName":$scope.addCustomerForm.firstLastName ,
-                    "secondLastName":$scope.addCustomerForm.secondLastName,
-                    "identification":$scope.addCustomerForm.identification,
-                    "addresses": $scope.formatAddreses(),
-                    "phoneNumber1":$scope.addCustomerForm.phoneNumber1,
-                    "phoneNumber2":$scope.addCustomerForm.phoneNumber2 ,
-                    "mobile":$scope.addCustomerForm.mobile ,
-                    "website":$scope.addCustomerForm.website ,
-                    "email":$scope.addCustomerForm.email ,
-                    "discountPercentage":$scope.addCustomerForm.discountPercentage,
-                    "creditLimit":$scope.addCustomerForm.creditLimit,
-                    "identificationType":$scope.addCustomerForm.selectedIdentificationType,
-                    "customerType":$scope.addCustomerForm.selectedCustomerType,
-                    "contacts": [
-                        { "name": $scope.addCustomerForm.contactName1,
-                            "firstLastName": $scope.addCustomerForm.contactFirstLastName1,
-                            "secondLastName": $scope.addCustomerForm.contactSecondLastName1,
-                            "jobTitle": $scope.addCustomerForm.contactPosition1,
-                            "department": $scope.addCustomerForm.contactDepartment1,
-                            "phoneNumber1": $scope.addCustomerForm.contactPhoneNumber1,
-                            "email": $scope.addCustomerForm.contactEmail1,
-                            "mobile": $scope.addCustomerForm.contactMobile1
-                        },
-                        {
-                            "name": $scope.addCustomerForm.contactName2,
-                            "firstLastName": $scope.addCustomerForm.contactFirstLastName2,
-                            "secondLastName": $scope.addCustomerForm.contactSecondLastName2,
-                            "jobTitle": $scope.addCustomerForm.contactPosition2,
-                            "department": $scope.addCustomerForm.contactDepartment2,
-                            "phoneNumber1": $scope.addCustomerForm.contactPhoneNumber2,
-                            "email": $scope.addCustomerForm.contactEmail2,
-                            "mobile": $scope.addCustomerForm.contactMobile2
-                        }
-                    ]
+                var newProduct ={
+                    "productCode":$scope.addProductForm.productCode,
+                    "name":$scope.addProductForm.productName ,
+                    "commercialName":$scope.addProductForm.productCommercialName,
+                    "productType":$scope.addProductForm.productType,
+                    "presentationType":$scope.addProductForm.presentationType,
+                    "bulkQuantity": parseFloat($scope.addProductForm.bulkQuantity),
+                    "priceInDollars":parseFloat($scope.addProductForm.priceInDollars),
+                    "priceInColones":parseFloat($scope.addProductForm.priceInColones),
+                    "costInDollars":parseFloat($scope.addProductForm.costInDollars),
+                    "costInColones":parseFloat($scope.addProductForm.costInColones),
+                    "suggestedCost":parseFloat($scope.addProductForm.suggestedCost),
+                    "tariffHeading":$scope.addProductForm.tariffHeading,
+                    "utilityPercentage":parseInt($scope.addProductForm.utilityPercentage)
                 };
                 console.log(newProduct);
-                customerService.addCustomer(newProduct).then(function (response) {
+                productService.addProduct(newProduct).then(function (response) {
                     var toasterdata;
 
                     if(response.code == "0"){
@@ -229,9 +211,27 @@
                     console.log(error);
                 });
 
-                $uibModalInstance.close('closed');
+                $scope.cancel();
             };
-            };
+
+            // Please note that $uibModalInstance represents a modal window (instance) dependency.
+            // It is not the same as the $uibModal service used above.
+
+            ModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance'];
+            function ModalInstanceCtrl($scope, $uibModalInstance) {
+                var vm = this;
+
+                $scope.addProductForm = {};
+
+
+                $scope.close = function () {
+                    $uibModalInstance.close('closed');
+                };
+
+                $scope.cancel = function () {
+                    $uibModalInstance.dismiss('cancel');
+                };
+            }
         }
 
 
