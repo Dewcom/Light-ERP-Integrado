@@ -5,7 +5,7 @@
                 <div class="col-md-9">
                     <h3>Lista de productos</h3>
                 </div>
-                <div class="col-md-3" ng-click="controller.open('lg')">
+                <div class="col-md-3" ng-click="controller.openAddModal()">
                     <button type="submit" class="btn btn-labeled btn-success addButton">
                           <span class="btn-label">
                              <em class="fa fa-plus"></em>
@@ -31,7 +31,7 @@
                     <td>{{ productObj.productType.name }}</td>
                     <td>{{ productObj.presentationType.name }}</td>
                     <td>
-                        <button type="button" ui-sref="app.productDetail({productId: productObj.id})" class="btn btn-sm btn-toolbar">
+                        <button type="button" ng-click="controller.openUpdateModal(productObj)" class="btn btn-sm btn-toolbar">
                             <em class="fa fa-search"></em>
                         </button>
                         <button type="button" ng-click="controller.disableProduct(productObj.id)"
@@ -57,4 +57,5 @@
         </div>
     </script>
     <div ng-include="'app/views/modals/add-product-modal.html'"></div>
+    <div ng-include="'app/views/modals/update-product-modal.html'"></div>
 </div>

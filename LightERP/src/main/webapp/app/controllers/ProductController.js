@@ -127,12 +127,35 @@
              * Module: modals
              =========================================================*/
 
-            vm.open = function (size) {
+            vm.openAddModal = function () {
 
                 var modalInstance = $uibModal.open({
                     templateUrl: '/addProductModal.html',
-                    controller: ModalInstanceCtrl,
-                    size: size,
+                    controller: AddModalInstanceCtrl,
+                    size: 'lg',
+                    backdrop: 'static', // No cierra clickeando fuera
+                    keyboard: false // No cierra con escape
+                });
+
+                var state = $('#modal-state');
+                modalInstance.result.then(function () {
+                    state.text('Modal dismissed with OK status');
+                }, function () {
+                    state.text('Modal dismissed with Cancel status');
+                });
+            };
+
+            vm.openUpdateModal = function (productObj) {
+
+                var modalInstance = $uibModal.open({
+                    templateUrl: '/updateProductModal.html',
+                    controller: UpdateModalInstanceCtrl,
+                    size: 'lg',
+                    resolve: {
+                        product: function () {
+                            return productObj;
+                        }
+                    },
                     backdrop: 'static', // No cierra clickeando fuera
                     keyboard: false // No cierra con escape
                 });
@@ -150,19 +173,37 @@
              * Validación de campos y patrones
              =========================================================*/
             vm.submitted = false;
-            vm.validateInput = function(name, type) {
-                var input = vm.productForm[name];
-                return (input.$dirty || vm.submitted) && input.$error[type];
+            vm.validateInput = function(action , name, type) {
+                if(action == 'add'){
+                    var input = vm.productForm[name];
+                    return (input.$dirty || vm.submitted) && input.$error[type];
+
+                }else if(action == 'modify'){
+                    var input = vm.modifyProductForm[name];
+                    return (input.$dirty || vm.submitted) && input.$error[type];
+                }
             };
 
             // Submit form
-            vm.submitForm = function() {
+            vm.submitForm = function(action) {
                 vm.submitted = true;
-                if (vm.productForm.$valid) {
-                    addProduct();
-                } else {
-                    console.log('Not valid!!');
-                    return false;
+
+                if(action == 'add'){
+                    if (vm.productForm.$valid) {
+                        addProduct();
+                    } else {
+                        console.log('Not valid!!');
+                        return false;
+                    }
+
+                }else if(action == 'modify'){
+                    if (vm.modifyProductForm.$valid) {
+                        updateProduct();
+                    } else {
+                        console.log('Not valid!!');
+                        return false;
+                    }
+
                 }
             };
 
@@ -214,15 +255,79 @@
                 $scope.cancel();
             };
 
+            /**=========================================================
+             * Modificar productos
+             =========================================================*/
+
+            function updateProduct() {
+
+                var updatedProduct ={
+                    "id":$scope.currentProduct.id,
+                    "productCode":$scope.currentProduct.productCode,
+                    "name":$scope.currentProduct.name ,
+                    "commercialName":$scope.currentProduct.commercialName,
+                    "productType":$scope.currentProduct.productType.id,
+                    "presentationType":$scope.currentProduct.presentationType.id,
+                    "bulkQuantity": parseFloat($scope.currentProduct.bulkQuantity),
+                    "priceInDollars":parseFloat($scope.currentProduct.priceInDollars),
+                    "priceInColones":parseFloat($scope.currentProduct.priceInColones),
+                    "costInDollars":parseFloat($scope.currentProduct.costInDollars),
+                    "costInColones":parseFloat($scope.currentProduct.costInColones),
+                    "suggestedCost":parseFloat($scope.currentProduct.suggestedCost),
+                    "tariffHeading":$scope.currentProduct.tariffHeading,
+                    "utilityPercentage":parseInt($scope.currentProduct.utilityPercentage)
+                };
+                console.log(updatedProduct);
+                productService.updateProduct(updatedProduct).then(function (response) {
+                    var toasterdata;
+
+                    if(response.code == "0"){
+                        toasterdata = {
+                            type: 'success',
+                            title: 'Modificar producto',
+                            text: response.message
+                        };
+                    }else{
+                        toasterdata = {
+                            type: 'warning',
+                            title: 'Producto',
+                            text: response.message
+                        };
+
+                    }
+                    pop(toasterdata);
+                    $timeout(function(){ callAtTimeout(); }, 3000);
+                },function (error) {
+                    console.log(error);
+                });
+
+                $scope.cancel();
+            };
+
             // Please note that $uibModalInstance represents a modal window (instance) dependency.
             // It is not the same as the $uibModal service used above.
 
-            ModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance'];
-            function ModalInstanceCtrl($scope, $uibModalInstance) {
+            AddModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance'];
+            function AddModalInstanceCtrl($scope, $uibModalInstance) {
                 var vm = this;
 
-                $scope.addProductForm = {};
 
+                $scope.close = function () {
+                    $uibModalInstance.close('closed');
+                };
+
+                $scope.cancel = function () {
+                    $uibModalInstance.dismiss('cancel');
+                };
+            }
+
+            UpdateModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', 'product'];
+            function UpdateModalInstanceCtrl($scope, $uibModalInstance, product) {
+                var vm = this;
+
+                console.log(product);
+
+                $scope.currentProduct = JSON.parse(JSON.stringify(product));
 
                 $scope.close = function () {
                     $uibModalInstance.close('closed');

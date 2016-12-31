@@ -71,7 +71,7 @@ angular
             var updateProductResult = $http({
                 method: 'PUT',
                 url: 'http://localhost:8080/api/product/update',
-                data: updatedCustomer,
+                data: updatedProduct,
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
