@@ -325,8 +325,6 @@
             function UpdateModalInstanceCtrl($scope, $uibModalInstance, product) {
                 var vm = this;
 
-                console.log(product);
-
                 $scope.currentProduct = JSON.parse(JSON.stringify(product));
 
                 $scope.close = function () {
