@@ -1,10 +1,10 @@
 <div>
     <script type="text/ng-template" id="/editContactModal.html">
-
-        <form>
+        <div ng-controller="ContactController as contactController">
+        <form name="contactController.modifyContactForm" ng-submit="contactController.submitForm('modify')" novalidate="" class="form-validate">
         <!-- START panel-->
 
-        <div ng-controller="ContactController as contactController">
+
                 <div class="panel panel-default">
                     <div class="modal-header"><button type="button" data-dismiss="modal" aria-hidden="true" class="close"
                                                       ng-click="close()">×</button>
@@ -18,11 +18,13 @@
                            <div class="form-group">
                                <div class="col-sm-6">
                                <label for="inputContact1">Nombre</label>
-                                   <input id="inputContact1" type="text" placeholder="" ng-value="currentContact.name" ng-model="contactToUpdate.name" class="form-control" />
+                                   <input name="name" required="" id="inputContact1" type="text" placeholder="" ng-value="currentContact.name" ng-model="contactToUpdate.name" class="form-control" />
+                                   <span ng-show="contactController.validateInput('modify', 'name', 'required')" class="text-danger">Este campo es requerido</span>
                                </div>
                                <div class="col-sm-6">
                                <label for="inputContact2">Primer Apellido</label>
-                                   <input id="inputContact2" type="text" ng-value="currentContact.firstLastName" ng-model="contactToUpdate.firstLastName" class="form-control" />
+                                   <input name="firstLastName" required="" id="inputContact2" type="text" ng-value="currentContact.firstLastName" ng-model="contactToUpdate.firstLastName" class="form-control" />
+                                   <span ng-show="contactController.validateInput('modify', 'firstLastName', 'required')" class="text-danger">Este campo es requerido</span>
                                </div>
                            </div>
                        </div>
@@ -31,7 +33,8 @@
                             <div class="form-group">
                                 <div class="col-sm-6">
                                 <label for="inputContact3">Segundo Apellido</label>
-                                    <input id="inputContact3" type="text" ng-value="currentContact.secondLastName" ng-model="contactToUpdate.secondLastName" class="form-control" />
+                                    <input name="secondLastName" required="" id="inputContact3" type="text" ng-value="currentContact.secondLastName" ng-model="contactToUpdate.secondLastName" class="form-control" />
+                                    <span ng-show="contactController.validateInput('modify', 'secondLastName', 'required')" class="text-danger">Este campo es requerido</span>
                                 </div>
 
                                 <div class="col-sm-6">
@@ -46,7 +49,8 @@
                             <div class="form-group">
                                 <div class="col-sm-6">
                                 <label for="inputContact5">Teléfono #1</label>
-                                    <input id="inputContact5" type="text" ng-value="currentContact.phoneNumber1" ng-model="contactToUpdate.phoneNumber1" class="form-control" />
+                                    <input name="phoneNumber1" required="" id="inputContact5" type="text" ng-value="currentContact.phoneNumber1" ng-model="contactToUpdate.phoneNumber1" class="form-control" />
+                                    <span ng-show="contactController.validateInput('modify', 'phoneNumber1', 'required')" class="text-danger">Este campo es requerido</span>
                                 </div>
 
                                 <div class="col-sm-6">
@@ -83,7 +87,7 @@
                             </div>
                                 <div class="form-group">
                                 <div class="col-sm-6">
-                                    <button type="submit" ng-click="updateContact()" class="btn btn-info">Actualizar</button>
+                                    <button type="submit"  class="btn btn-info">Actualizar</button>
                                  </div>
                                 </div>
 

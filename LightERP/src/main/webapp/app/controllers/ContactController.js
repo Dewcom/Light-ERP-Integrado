@@ -8,8 +8,8 @@
         .controller('ContactController', ContactController);
 
     ContactController.$inject = ['$uibModal','$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder',
-        'contactService','$state', 'toaster', 'ngDialog', '$timeout'];
-    function ContactController($uibModal, $resource, DTOptionsBuilder, DTColumnDefBuilder, contactService, $state, toaster, ngDialog, $timeout) {
+        'contactService','$state', 'toaster', 'ngDialog', '$timeout', '$scope'];
+    function ContactController($uibModal, $resource, DTOptionsBuilder, DTColumnDefBuilder, contactService, $state, toaster, ngDialog, $timeout, $scope) {
         var vm = this;
 
         var language = {
@@ -65,11 +65,51 @@
                 DTColumnDefBuilder.newColumnDef(3),
                 DTColumnDefBuilder.newColumnDef(4)
             ];
-        }
+
+
+
+            /**=========================================================
+             * Validación de campos y patrones
+             =========================================================*/
+            vm.submitted = false;
+            vm.validateInput = function(action , name, type) {
+                if(action == 'add'){
+                    var input = vm.productForm[name];
+                    return (input.$dirty || vm.submitted) && input.$error[type];
+
+                }else if(action == 'modify'){
+                    var input = vm.modifyContactForm[name];
+                    return (input.$dirty || vm.submitted) && input.$error[type];
+                }
+            };
+
+            // Submit form
+            vm.submitForm = function(action) {
+                vm.submitted = true;
+
+                if(action == 'add'){
+                    if (vm.productForm.$valid) {
+                        addProduct();
+                    } else {
+                        console.log('Not valid!!');
+                        return false;
+                    }
+
+                }else if(action == 'modify'){
+                    if (vm.modifyContactForm.$valid) {
+                        updateContact();
+                    } else {
+                        console.log('Not valid!!');
+                        return false;
+                    }
+
+                }
+            }
+
 
 
         /**=========================================================
-         * Module: modals
+         * Module: EditContactModal
          =========================================================*/
 
         vm.open = function (size,object, template) {
@@ -101,8 +141,7 @@
         function ModalInstanceCtrl($scope, $uibModalInstance,contact) {
             $scope.currentContact = contact;
             $scope.contactToUpdate = new Contact(contact.name, contact.firstLastName, contact.secondLastName, contact.email, contact.phoneNumber1, contact.phoneNumber2, contact.jobTitle, contact.department, contact.mobile);
-            console.log('new contact');
-            console.log($scope.contactToUpdate);
+
 
             $scope.close = function () {
                 $uibModalInstance.close('closed');
@@ -111,58 +150,54 @@
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
             };
-
-            /**=========================================================
-             * modificar contacto
-             =========================================================*/
-            $scope.updateContact = function () {
-
-                var updatedContact = {
-                    "id" : $scope.currentContact.id,
-                    "name": $scope.contactToUpdate.name,
-                    "firstLastName": $scope.contactToUpdate.firstLastName,
-                    "secondLastName": $scope.contactToUpdate.secondLastName,
-                    "email": $scope.contactToUpdate.email,
-                    "phoneNumber1": $scope.contactToUpdate.phoneNumber1,
-                    "phoneNumber2": $scope.contactToUpdate.phoneNumber2,
-                    "jobTitle": $scope.contactToUpdate.jobTitle,
-                    "department": $scope.contactToUpdate.department,
-                    "mobile": $scope.contactToUpdate.mobile
-                };
-                console.log('CONTACTO A MODIFICAR');
-                console.log(updatedContact);
-                contactService.updateContact(updatedContact).then(function (response) {
-                    var toasterdata;
-
-                    if (response.code == "0") {
-                        toasterdata = {
-                            type: 'success',
-                            title: 'Contacto',
-                            text: response.message
-                        };
-                    } else {
-                        toasterdata = {
-                            type: 'warning',
-                            title: 'Contacto',
-                            text: response.message
-                        };
-
-                    }
-
-                    $timeout(function(){ pop(toasterdata); }, 1000);
-                    $state.reload();
-
-                    //activate contacts tab
-                    $scope.infoTabActivated = false;
-                    $scope.contactsTabActivated = true
-                }, function (error) {
-                    console.log(error);
-                });
-                $uibModalInstance.close('closed');
-            };
-
-
         }
+
+
+        /**=========================================================
+         * modificar contacto
+         =========================================================*/
+         function updateContact  () {
+
+            var updatedContact = {
+                "id" : $scope.currentContact.id,
+                "name": $scope.contactToUpdate.name,
+                "firstLastName": $scope.contactToUpdate.firstLastName,
+                "secondLastName": $scope.contactToUpdate.secondLastName,
+                "email": $scope.contactToUpdate.email,
+                "phoneNumber1": $scope.contactToUpdate.phoneNumber1,
+                "phoneNumber2": $scope.contactToUpdate.phoneNumber2,
+                "jobTitle": $scope.contactToUpdate.jobTitle,
+                "department": $scope.contactToUpdate.department,
+                "mobile": $scope.contactToUpdate.mobile
+            };
+            console.log('CONTACTO A MODIFICAR');
+            console.log(updatedContact);
+            contactService.updateContact(updatedContact).then(function (response) {
+                var toasterdata;
+
+                if (response.code == "0") {
+                    toasterdata = {
+                        type: 'success',
+                        title: 'Contacto',
+                        text: response.message
+                    };
+                } else {
+                    toasterdata = {
+                        type: 'warning',
+                        title: 'Contacto',
+                        text: response.message
+                    };
+
+                }
+
+                $timeout(function(){ pop(toasterdata); }, 1000);
+                $state.reload();
+
+            }, function (error) {
+                console.log(error);
+            });
+            $scope.close();
+        };
 
         /**=========================================================
          * Eliminar contacto
@@ -203,6 +238,7 @@
              });
         };
 
+        }
         function pop(toasterdata){
             toaster.pop({
                 type: toasterdata.type,
