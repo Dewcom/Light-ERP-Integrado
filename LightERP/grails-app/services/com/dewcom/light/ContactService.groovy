@@ -71,7 +71,6 @@ class ContactService {
             Contact tmpContactToUpdate = Contact.findByIdAndEnabled(argRestContact.id, Constants.ESTADO_ACTIVO)
             if (tmpContactToUpdate) {
                 tmpContactToUpdate.name = argRestContact.name;
-                log.info 'Nombre contacto' + argRestContact.name
                 tmpContactToUpdate.firstLastName = argRestContact.firstLastName;
                 tmpContactToUpdate.secondLastName = argRestContact.secondLastName;
                 tmpContactToUpdate.jobTitle = argRestContact.jobTitle;
@@ -81,7 +80,7 @@ class ContactService {
                 tmpContactToUpdate.mobile = argRestContact.mobile;
                 tmpContactToUpdate.email =  argRestContact.email;
 
-                tmpContactToUpdate.save(flush: true, failOnError:true);
+                tmpContactToUpdate.save(flush: true);
             } else {
                 throw new LightRuntimeException(messageSource.getMessage("update.contact.notFound.error", null, Locale.default));
             }
