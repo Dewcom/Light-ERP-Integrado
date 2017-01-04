@@ -9,14 +9,15 @@
         .directive('formWizard', formWizard);
 
     CustomerController.$inject = ['$uibModal','$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder',
-        'customerService', 'customerTypeService', 'identificationTypeService','toaster', '$state', '$http',
+        'customerService', 'customerTypeService', 'identificationTypeService','toaster', '$state',
         '$filter', '$timeout', 'ngDialog', '$scope'];
     function CustomerController($uibModal, $resource, DTOptionsBuilder, DTColumnDefBuilder, customerService,
-        customerTypeService, identificationTypeService, toaster, $state, $http, $filter, $timeout, ngDialog, $scope) {
+                                customerTypeService, identificationTypeService, toaster, $state, $filter, $timeout, ngDialog, $scope) {
         var vm = this;
-        var customerToDeleteName;
 
-        var addressList;
+        vm.addresses = [];
+
+        vm.addCustomerForm = {};
 
         var language = {
             "sProcessing":     "Procesando...",
@@ -78,10 +79,9 @@
             });
 
 
-
             vm.dtOptions = DTOptionsBuilder.newOptions()
                 .withPaginationType('full_numbers')
-                .withLanguage(language)
+                .withLanguage(language);
             vm.dtColumnDefs = [
                 DTColumnDefBuilder.newColumnDef(0),
                 DTColumnDefBuilder.newColumnDef(1),
@@ -89,32 +89,6 @@
                 DTColumnDefBuilder.newColumnDef(3),
                 DTColumnDefBuilder.newColumnDef(4).notSortable()
             ];
-
-            //Distribución territorial
-            vm.provinces= [];
-            vm.cantons= [];
-            vm.districts= [];
-
-            $resource('server/location/provincias.json').query().$promise.then(function(data) {
-                vm.provinces = data;
-            });
-
-            //Se carga la lista de cantones
-            vm.loadCantons = function(pidProvince){
-
-                $resource('server/location/cantones.json').query().$promise.then(function(data) {
-                    vm.cantons = $filter('filter')(data, {idProvince: pidProvince });
-                });
-            };
-
-            //Se carga la lista de distritos
-            vm.loadDistricts = function(pidCanton){
-
-                $resource('server/location/distritos.json').query().$promise.then(function(data) {
-
-                    vm.districts = $filter('filter')(data, {idCanton: pidCanton});
-                });
-            }
         }
 
     /**=========================================================
@@ -155,6 +129,96 @@
             });
         };
 
+
+
+
+        /**=========================================================
+         * Agregar clientes
+         =========================================================*/
+
+        vm.addCustomer = function(){
+
+            console.log(vm.addresses);
+
+
+            var newCustomer ={
+                "name":vm.name,
+                "firstLastName":vm.firstLastName ,
+                "secondLastName":vm.secondLastName,
+                "identification":vm.identification,
+                "addresses": formatAddreses(),
+                "phoneNumber1":vm.phoneNumber1,
+                "phoneNumber2":vm.phoneNumber2 ,
+                "mobile":vm.mobile ,
+                "website":vm.website ,
+                "email":vm.email ,
+                "discountPercentage":vm.discountPercentage,
+                "creditLimit":vm.creditLimit,
+                "identificationType":vm.selectedIdentificationType,
+                "customerType":vm.selectedCustomerType,
+                "contacts": [
+                    { "name": vm.contactName1,
+                        "firstLastName": vm.contactFirstLastName1,
+                        "secondLastName": vm.contactSecondLastName1,
+                        "jobTitle": vm.contactPosition1,
+                        "department": vm.contactDepartment1,
+                        "phoneNumber1": vm.contactPhoneNumber1,
+                        "email": vm.contactEmail1,
+                        "mobile": vm.contactMobile1
+                    },
+                    {
+                        "name": vm.contactName2,
+                        "firstLastName": vm.contactFirstLastName2,
+                        "secondLastName": vm.contactSecondLastName2,
+                        "jobTitle": vm.contactPosition2,
+                        "department": vm.contactDepartment2,
+                        "phoneNumber1": vm.contactPhoneNumber2,
+                        "email": vm.contactEmail2,
+                        "mobile": vm.contactMobile2
+                    }
+                ]
+            };
+            console.log(newCustomer);
+            customerService.addCustomer(newCustomer).then(function (response) {
+             var toasterdata;
+
+             if(response.code == "0"){
+             toasterdata = {
+                 type: 'success',
+                 title: 'Agregar cliente',
+                 text: response.message
+             };
+             }else{
+             toasterdata = {
+                 type: 'warning',
+                 title: 'Cliente',
+                 text: response.message
+             };
+
+             }
+             pop(toasterdata);
+             $timeout(function(){ callAtTimeout(); }, 3000);
+             },function (error) {
+             console.log(error);
+             });
+
+            //Se formatea la direccion para enviar al BE
+            function formatAddreses() {
+                var finalAddressList = [];
+
+                angular.forEach(vm.addresses, function (value, key) {
+                    console.log(value);
+                    var finalAddressObj = { "idDistrict": value.district.idDistrict, "address":value.address};
+                    finalAddressList.push(finalAddressObj);
+                });
+
+                return finalAddressList;
+
+            }
+
+            $scope.cancel();
+        };
+
         /**=========================================================
          * Module: modals
          =========================================================*/
@@ -182,9 +246,6 @@
 
         ModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance'];
         function ModalInstanceCtrl($scope, $uibModalInstance) {
-            $scope.addCustomerForm = {};
-
-            var tmpAddressList = [];
 
             $scope.close = function () {
                 $uibModalInstance.close('closed');
@@ -193,113 +254,6 @@
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
             };
-
-            /**=========================================================
-             * Agregar clientes
-             =========================================================*/
-
-            $scope.addCustomer = function() {
-
-
-                var newCustomer ={
-                    "name":$scope.addCustomerForm.name,
-                    "firstLastName":$scope.addCustomerForm.firstLastName ,
-                    "secondLastName":$scope.addCustomerForm.secondLastName,
-                    "identification":$scope.addCustomerForm.identification,
-                    "addresses": $scope.formatAddreses(),
-                    "phoneNumber1":$scope.addCustomerForm.phoneNumber1,
-                    "phoneNumber2":$scope.addCustomerForm.phoneNumber2 ,
-                    "mobile":$scope.addCustomerForm.mobile ,
-                    "website":$scope.addCustomerForm.website ,
-                    "email":$scope.addCustomerForm.email ,
-                    "discountPercentage":$scope.addCustomerForm.discountPercentage,
-                    "creditLimit":$scope.addCustomerForm.creditLimit,
-                    "identificationType":$scope.addCustomerForm.selectedIdentificationType,
-                    "customerType":$scope.addCustomerForm.selectedCustomerType,
-                    "contacts": [
-                        { "name": $scope.addCustomerForm.contactName1,
-                            "firstLastName": $scope.addCustomerForm.contactFirstLastName1,
-                            "secondLastName": $scope.addCustomerForm.contactSecondLastName1,
-                            "jobTitle": $scope.addCustomerForm.contactPosition1,
-                            "department": $scope.addCustomerForm.contactDepartment1,
-                            "phoneNumber1": $scope.addCustomerForm.contactPhoneNumber1,
-                            "email": $scope.addCustomerForm.contactEmail1,
-                            "mobile": $scope.addCustomerForm.contactMobile1
-                        },
-                        {
-                            "name": $scope.addCustomerForm.contactName2,
-                            "firstLastName": $scope.addCustomerForm.contactFirstLastName2,
-                            "secondLastName": $scope.addCustomerForm.contactSecondLastName2,
-                            "jobTitle": $scope.addCustomerForm.contactPosition2,
-                            "department": $scope.addCustomerForm.contactDepartment2,
-                            "phoneNumber1": $scope.addCustomerForm.contactPhoneNumber2,
-                            "email": $scope.addCustomerForm.contactEmail2,
-                            "mobile": $scope.addCustomerForm.contactMobile2
-                        }
-                    ]
-                };
-                console.log(newCustomer);
-                customerService.addCustomer(newCustomer).then(function (response) {
-                    var toasterdata;
-
-                    if(response.code == "0"){
-                        toasterdata = {
-                            type: 'success',
-                            title: 'Agregar cliente',
-                            text: response.message
-                        };
-                    }else{
-                        toasterdata = {
-                            type: 'warning',
-                            title: 'Cliente',
-                            text: response.message
-                        };
-
-                    }
-                    pop(toasterdata);
-                    $timeout(function(){ callAtTimeout(); }, 3000);
-                },function (error) {
-                    console.log(error);
-                });
-
-                $uibModalInstance.close('closed');
-            };
-
-            $scope.addAddress = function () {
-
-                var addressObj = { "idDistrict": $scope.addCustomerForm.selectedDistrict.idDistrict,
-                    "address":$scope.addCustomerForm.address, "provinceName" : $scope.addCustomerForm.selectedProvince.name,
-                    "cantonName" : $scope.addCustomerForm.selectedCanton.name, "districtName" : $scope.addCustomerForm.selectedCanton.name};
-
-                tmpAddressList.push(addressObj);
-
-                $scope.addressList = tmpAddressList;
-
-                $scope.addCustomerForm.selectedProvince = null;
-                $scope.addCustomerForm.selectedCanton = null;
-                $scope.addCustomerForm.selectedDistrict = null;
-                $scope.addCustomerForm.address = "";
-
-            };
-
-            //Se formatea la direccion para enviar al BE
-            $scope.formatAddreses = function () {
-                var finalAddressList = [];
-
-                angular.forEach(tmpAddressList, function (value, key) {
-                    var finalAddressObj = { "idDistrict": value.idDistrict, "address":value.address};
-                    finalAddressList.push(finalAddressObj);
-                });
-
-                return finalAddressList;
-
-            }
-
-            //Se elimina la direccion de la lista temporal de direcciones
-            $scope.deleteTmpAddress = function (paddress) {
-                var index = tmpAddressList.indexOf(paddress);
-                tmpAddressList.splice(index, 1);
-            }
         }
 
 

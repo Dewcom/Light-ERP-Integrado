@@ -1,14 +1,3 @@
-/*!
- * 
- * Angle - Bootstrap Admin App + AngularJS
- * 
- * Version: 3.4
- * Author: @themicon_co
- * Website: http://themicon.co
- * License: https://wrapbootstrap.com/help/licenses
- * 
- */
-
 // APP START
 // ----------------------------------- 
 
@@ -31,7 +20,8 @@
             'app.tables',
             'app.forms',
             'app.adminConfig',
-            'app.client'
+            'app.client',
+            'app.product'
         ]);
 })();
 
@@ -61,12 +51,19 @@
             'ui.utils',
         ]);
 })();
-
 (function() {
     'use strict';
 
     angular
         .module('app.client', [
+            'add.notify'
+        ]);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.product', [
             'add.notify'
         ]);
 })();
@@ -160,8 +157,8 @@
 
     angular
         .module('app.utils', [
-          'app.colors'
-          ]);
+            'app.colors'
+        ]);
 })();
 (function() {
     'use strict';
@@ -169,24 +166,24 @@
     angular
         .module('app.colors')
         .constant('APP_COLORS', {
-          'primary':                '#5d9cec',
-          'success':                '#27c24c',
-          'info':                   '#23b7e5',
-          'warning':                '#ff902b',
-          'danger':                 '#f05050',
-          'inverse':                '#131e26',
-          'green':                  '#37bc9b',
-          'pink':                   '#f532e5',
-          'purple':                 '#7266ba',
-          'dark':                   '#3a3f51',
-          'yellow':                 '#fad732',
-          'gray-darker':            '#232735',
-          'gray-dark':              '#3a3f51',
-          'gray':                   '#dde6e9',
-          'gray-light':             '#e4eaec',
-          'gray-lighter':           '#edf1f2'
+            'primary':                '#5d9cec',
+            'success':                '#27c24c',
+            'info':                   '#23b7e5',
+            'warning':                '#ff902b',
+            'danger':                 '#f05050',
+            'inverse':                '#131e26',
+            'green':                  '#37bc9b',
+            'pink':                   '#f532e5',
+            'purple':                 '#7266ba',
+            'dark':                   '#3a3f51',
+            'yellow':                 '#fad732',
+            'gray-darker':            '#232735',
+            'gray-dark':              '#3a3f51',
+            'gray':                   '#dde6e9',
+            'gray-light':             '#e4eaec',
+            'gray-lighter':           '#edf1f2'
         })
-        ;
+    ;
 })();
 (function() {
     'use strict';
@@ -199,6 +196,12 @@
 
     angular
         .module('app.client', []);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.product', []);
 })();
 /**=========================================================
  * Module: colors.js
@@ -219,7 +222,7 @@
         ////////////////
 
         function byName(name) {
-          return (APP_COLORS[name] || '#fff');
+            return (APP_COLORS[name] || '#fff');
         }
     }
 
@@ -235,21 +238,21 @@
     coreConfig.$inject = ['$controllerProvider', '$compileProvider', '$filterProvider', '$provide', '$animateProvider'];
     function coreConfig($controllerProvider, $compileProvider, $filterProvider, $provide, $animateProvider){
 
-      var core = angular.module('app.core');
-      // registering components after bootstrap
-      core.controller = $controllerProvider.register;
-      core.directive  = $compileProvider.directive;
-      core.filter     = $filterProvider.register;
-      core.factory    = $provide.factory;
-      core.service    = $provide.service;
-      core.constant   = $provide.constant;
-      core.value      = $provide.value;
+        var core = angular.module('app.core');
+        // registering components after bootstrap
+        core.controller = $controllerProvider.register;
+        core.directive  = $compileProvider.directive;
+        core.filter     = $filterProvider.register;
+        core.factory    = $provide.factory;
+        core.service    = $provide.service;
+        core.constant   = $provide.constant;
+        core.value      = $provide.value;
 
-      // Disables animation on items with class .ng-no-animation
-      $animateProvider.classNameFilter(/^((?!(ng-no-animation)).)*$/);
+        // Disables animation on items with class .ng-no-animation
+        $animateProvider.classNameFilter(/^((?!(ng-no-animation)).)*$/);
 
-      // Improve performance disabling debugging features
-      // $compileProvider.debugInfoEnabled(false);
+        // Improve performance disabling debugging features
+        // $compileProvider.debugInfoEnabled(false);
 
     }
 
@@ -266,12 +269,12 @@
     angular
         .module('app.core')
         .constant('APP_MEDIAQUERY', {
-          'desktopLG':             1200,
-          'desktop':                992,
-          'tablet':                 768,
-          'mobile':                 480
+            'desktopLG':             1200,
+            'desktop':                992,
+            'tablet':                 768,
+            'mobile':                 480
         })
-      ;
+    ;
 
 })();
 (function() {
@@ -285,69 +288,69 @@
 
     function appRun($rootScope, $state, $stateParams, $window, $templateCache, Colors) {
 
-      // Set reference to access them from any scope
-      $rootScope.$state = $state;
-      $rootScope.$stateParams = $stateParams;
-      $rootScope.$storage = $window.localStorage;
+        // Set reference to access them from any scope
+        $rootScope.$state = $state;
+        $rootScope.$stateParams = $stateParams;
+        $rootScope.$storage = $window.localStorage;
 
-      // Uncomment this to disable template cache
-      /*$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-          if (typeof(toState) !== 'undefined'){
-            $templateCache.remove(toState.templateUrl);
-          }
-      });*/
+        // Uncomment this to disable template cache
+        /*$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+         if (typeof(toState) !== 'undefined'){
+         $templateCache.remove(toState.templateUrl);
+         }
+         });*/
 
-      // Allows to use branding color with interpolation
-      // {{ colorByName('primary') }}
-      $rootScope.colorByName = Colors.byName;
+        // Allows to use branding color with interpolation
+        // {{ colorByName('primary') }}
+        $rootScope.colorByName = Colors.byName;
 
-      // cancel click event easily
-      $rootScope.cancel = function($event) {
-        $event.stopPropagation();
-      };
+        // cancel click event easily
+        $rootScope.cancel = function($event) {
+            $event.stopPropagation();
+        };
 
-      // Hooks Example
-      // -----------------------------------
+        // Hooks Example
+        // -----------------------------------
 
-      // Hook not found
-      $rootScope.$on('$stateNotFound',
-        function(event, unfoundState/*, fromState, fromParams*/) {
-            console.log(unfoundState.to); // "lazy.state"
-            console.log(unfoundState.toParams); // {a:1, b:2}
-            console.log(unfoundState.options); // {inherit:false} + default options
+        // Hook not found
+        $rootScope.$on('$stateNotFound',
+            function(event, unfoundState/*, fromState, fromParams*/) {
+                console.log(unfoundState.to); // "lazy.state"
+                console.log(unfoundState.toParams); // {a:1, b:2}
+                console.log(unfoundState.options); // {inherit:false} + default options
+            });
+        // Hook error
+        $rootScope.$on('$stateChangeError',
+            function(event, toState, toParams, fromState, fromParams, error){
+                console.log(error);
+            });
+        // Hook success
+        $rootScope.$on('$stateChangeSuccess',
+            function(/*event, toState, toParams, fromState, fromParams*/) {
+                // display new view from top
+                $window.scrollTo(0, 0);
+                // Save the route title
+                $rootScope.currTitle = $state.current.title;
+            });
+
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+
+            var requireLogin = toState.data != undefined ? toState.data.requireLogin : false;
+            var userInfo =  $window.sessionStorage["userInfo"];
+            if (requireLogin && typeof userInfo === 'undefined') {
+                $state.go("page.login");
+                event.preventDefault();
+
+            }
         });
-      // Hook error
-      $rootScope.$on('$stateChangeError',
-        function(event, toState, toParams, fromState, fromParams, error){
-          console.log(error);
-        });
-      // Hook success
-      $rootScope.$on('$stateChangeSuccess',
-        function(/*event, toState, toParams, fromState, fromParams*/) {
-          // display new view from top
-          $window.scrollTo(0, 0);
-          // Save the route title
-          $rootScope.currTitle = $state.current.title;
-        });
 
-       $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
-      
-    var requireLogin = toState.data != undefined ? toState.data.requireLogin : false;
-    var userInfo =  $window.sessionStorage["userInfo"];
-    if (requireLogin && typeof userInfo === 'undefined') {
-       $state.go("page.login");
-      event.preventDefault();
-      
-    }
-  });
-
-      // Load a title dynamically
-      $rootScope.currTitle = $state.current.title;
-      $rootScope.pageTitle = function() {
-        var title = $rootScope.app.name + ' - ' + ($rootScope.currTitle || $rootScope.app.description);
-        document.title = title;
-        return title;
-      };
+        // Load a title dynamically
+        $rootScope.currTitle = $state.current.title;
+        $rootScope.pageTitle = function() {
+            var title = $rootScope.app.name + ' - ' + ($rootScope.currTitle || $rootScope.app.description);
+            document.title = title;
+            return title;
+        };
 
     }
 
@@ -364,12 +367,12 @@
     lazyloadConfig.$inject = ['$ocLazyLoadProvider', 'APP_REQUIRES'];
     function lazyloadConfig($ocLazyLoadProvider, APP_REQUIRES){
 
-      // Lazy Load modules configuration
-      $ocLazyLoadProvider.config({
-        debug: false,
-        events: true,
-        modules: APP_REQUIRES.modules
-      });
+        // Lazy Load modules configuration
+        $ocLazyLoadProvider.config({
+            debug: false,
+            events: true,
+            modules: APP_REQUIRES.modules
+        });
 
     }
 })();
@@ -416,13 +419,13 @@
     angular
         .module('app.loadingbar')
         .config(loadingbarConfig)
-        ;
+    ;
     loadingbarConfig.$inject = ['cfpLoadingBarProvider'];
     function loadingbarConfig(cfpLoadingBarProvider){
-      cfpLoadingBarProvider.includeBar = true;
-      cfpLoadingBarProvider.includeSpinner = false;
-      cfpLoadingBarProvider.latencyThreshold = 500;
-      cfpLoadingBarProvider.parentSelector = '.wrapper > section';
+        cfpLoadingBarProvider.includeBar = true;
+        cfpLoadingBarProvider.includeSpinner = false;
+        cfpLoadingBarProvider.latencyThreshold = 500;
+        cfpLoadingBarProvider.parentSelector = '.wrapper > section';
     }
 })();
 (function() {
@@ -431,25 +434,25 @@
     angular
         .module('app.loadingbar')
         .run(loadingbarRun)
-        ;
+    ;
     loadingbarRun.$inject = ['$rootScope', '$timeout', 'cfpLoadingBar'];
     function loadingbarRun($rootScope, $timeout, cfpLoadingBar){
 
-      // Loading bar transition
-      // -----------------------------------
-      var thBar;
-      $rootScope.$on('$stateChangeStart', function() {
-          if($('.wrapper > section').length) // check if bar container exists
-            thBar = $timeout(function() {
-              cfpLoadingBar.start();
-            }, 0); // sets a latency Threshold
-      });
-      $rootScope.$on('$stateChangeSuccess', function(event) {
-          event.targetScope.$watch('$viewContentLoaded', function () {
-            $timeout.cancel(thBar);
-            cfpLoadingBar.complete();
-          });
-      });
+        // Loading bar transition
+        // -----------------------------------
+        var thBar;
+        $rootScope.$on('$stateChangeStart', function() {
+            if($('.wrapper > section').length) // check if bar container exists
+                thBar = $timeout(function() {
+                    cfpLoadingBar.start();
+                }, 0); // sets a latency Threshold
+        });
+        $rootScope.$on('$stateChangeSuccess', function(event) {
+            event.targetScope.$watch('$viewContentLoaded', function () {
+                $timeout.cancel(thBar);
+                cfpLoadingBar.complete();
+            });
+        });
 
     }
 
@@ -495,29 +498,29 @@
 
     searchOpenController.$inject = ['$scope', '$element', 'NavSearch'];
     function searchOpenController ($scope, $element, NavSearch) {
-      $element
-        .on('click', function (e) { e.stopPropagation(); })
-        .on('click', NavSearch.toggle);
+        $element
+            .on('click', function (e) { e.stopPropagation(); })
+            .on('click', NavSearch.toggle);
     }
 
     searchDismissController.$inject = ['$scope', '$element', 'NavSearch'];
     function searchDismissController ($scope, $element, NavSearch) {
 
-      var inputSelector = '.navbar-form input[type="text"]';
+        var inputSelector = '.navbar-form input[type="text"]';
 
-      $(inputSelector)
-        .on('click', function (e) { e.stopPropagation(); })
-        .on('keyup', function(e) {
-          if (e.keyCode === 27) // ESC
-            NavSearch.dismiss();
-        });
+        $(inputSelector)
+            .on('click', function (e) { e.stopPropagation(); })
+            .on('keyup', function(e) {
+                if (e.keyCode === 27) // ESC
+                    NavSearch.dismiss();
+            });
 
-      // click anywhere closes the search
-      $(document).on('click', NavSearch.dismiss);
-      // dismissable options
-      $element
-        .on('click', function (e) { e.stopPropagation(); })
-        .on('click', NavSearch.dismiss);
+        // click anywhere closes the search
+        $(document).on('click', NavSearch.dismiss);
+        // dismissable options
+        $element
+            .on('click', function (e) { e.stopPropagation(); })
+            .on('click', NavSearch.dismiss);
     }
 
 })();
@@ -544,19 +547,19 @@
         var navbarFormSelector = 'form.navbar-form';
 
         function toggle() {
-          var navbarForm = $(navbarFormSelector);
+            var navbarForm = $(navbarFormSelector);
 
-          navbarForm.toggleClass('open');
+            navbarForm.toggleClass('open');
 
-          var isOpen = navbarForm.hasClass('open');
+            var isOpen = navbarForm.hasClass('open');
 
-          navbarForm.find('input')[isOpen ? 'focus' : 'blur']();
+            navbarForm.find('input')[isOpen ? 'focus' : 'blur']();
         }
 
         function dismiss() {
-          $(navbarFormSelector)
-            .removeClass('open') // Close control
-            .find('input[type="text"]').blur() // remove focus
+            $(navbarFormSelector)
+                .removeClass('open') // Close control
+                .find('input[type="text"]').blur() // remove focus
             // .val('') // Empty input
             ;
         }
@@ -576,10 +579,10 @@
         var directive = {
             restrict: 'EAC',
             template:
-              '<div class="preloader-progress">' +
-                  '<div class="preloader-progress-bar" ' +
-                       'ng-style="{width: loadCounter + \'%\'}"></div>' +
-              '</div>'
+            '<div class="preloader-progress">' +
+            '<div class="preloader-progress-bar" ' +
+            'ng-style="{width: loadCounter + \'%\'}"></div>' +
+            '</div>'
             ,
             link: link
         };
@@ -589,68 +592,68 @@
 
         function link(scope, el) {
 
-          scope.loadCounter = 0;
+            scope.loadCounter = 0;
 
-          var counter  = 0,
-              timeout;
+            var counter  = 0,
+                timeout;
 
-          // disables scrollbar
-          angular.element('body').css('overflow', 'hidden');
-          // ensure class is present for styling
-          el.addClass('preloader');
+            // disables scrollbar
+            angular.element('body').css('overflow', 'hidden');
+            // ensure class is present for styling
+            el.addClass('preloader');
 
-          appReady().then(endCounter);
+            appReady().then(endCounter);
 
-          timeout = $timeout(startCounter);
+            timeout = $timeout(startCounter);
 
-          ///////
+            ///////
 
-          function startCounter() {
+            function startCounter() {
 
-            var remaining = 100 - counter;
-            counter = counter + (0.015 * Math.pow(1 - Math.sqrt(remaining), 2));
+                var remaining = 100 - counter;
+                counter = counter + (0.015 * Math.pow(1 - Math.sqrt(remaining), 2));
 
-            scope.loadCounter = parseInt(counter, 10);
+                scope.loadCounter = parseInt(counter, 10);
 
-            timeout = $timeout(startCounter, 20);
-          }
+                timeout = $timeout(startCounter, 20);
+            }
 
-          function endCounter() {
+            function endCounter() {
 
-            $timeout.cancel(timeout);
+                $timeout.cancel(timeout);
 
-            scope.loadCounter = 100;
+                scope.loadCounter = 100;
 
-            $timeout(function(){
-              // animate preloader hiding
-              $animate.addClass(el, 'preloader-hidden');
-              // retore scrollbar
-              angular.element('body').css('overflow', '');
-            }, 300);
-          }
-
-          function appReady() {
-            var deferred = $q.defer();
-            var viewsLoaded = 0;
-            // if this doesn't sync with the real app ready
-            // a custom event must be used instead
-            var off = scope.$on('$viewContentLoaded', function () {
-              viewsLoaded ++;
-              // we know there are at least two views to be loaded
-              // before the app is ready (1-index.html 2-app*.html)
-              if ( viewsLoaded === 2) {
-                // with resolve this fires only once
                 $timeout(function(){
-                  deferred.resolve();
-                }, 3000);
+                    // animate preloader hiding
+                    $animate.addClass(el, 'preloader-hidden');
+                    // retore scrollbar
+                    angular.element('body').css('overflow', '');
+                }, 300);
+            }
 
-                off();
-              }
+            function appReady() {
+                var deferred = $q.defer();
+                var viewsLoaded = 0;
+                // if this doesn't sync with the real app ready
+                // a custom event must be used instead
+                var off = scope.$on('$viewContentLoaded', function () {
+                    viewsLoaded ++;
+                    // we know there are at least two views to be loaded
+                    // before the app is ready (1-index.html 2-app*.html)
+                    if ( viewsLoaded === 2) {
+                        // with resolve this fires only once
+                        $timeout(function(){
+                            deferred.resolve();
+                        }, 3000);
 
-            });
+                        off();
+                    }
 
-            return deferred.promise;
-          }
+                });
+
+                return deferred.promise;
+            }
 
         } //link
     }
@@ -667,72 +670,72 @@
     angular
         .module('app.routes')
         .provider('RouteHelpers', RouteHelpersProvider)
-        ;
+    ;
 
     RouteHelpersProvider.$inject = ['APP_REQUIRES'];
     function RouteHelpersProvider(APP_REQUIRES) {
 
-      /* jshint validthis:true */
-      return {
-        // provider access level
-        basepath: basepath,
-        resolveFor: resolveFor,
-        // controller access level
-        $get: function() {
-          return {
-            basepath: basepath,
-            resolveFor: resolveFor
-          };
-        }
-      };
-
-      // Set here the base of the relative path
-      // for all app views
-      function basepath(uri) {
-        return 'app/views/' + uri;
-      }
-
-      // Generates a resolve object by passing script names
-      // previously configured in constant.APP_REQUIRES
-      function resolveFor() {
-        var _args = arguments;
+        /* jshint validthis:true */
         return {
-          deps: ['$ocLazyLoad','$q', function ($ocLL, $q) {
-            // Creates a promise chain for each argument
-            var promise = $q.when(1); // empty promise
-            for(var i=0, len=_args.length; i < len; i ++){
-              promise = andThen(_args[i]);
+            // provider access level
+            basepath: basepath,
+            resolveFor: resolveFor,
+            // controller access level
+            $get: function() {
+                return {
+                    basepath: basepath,
+                    resolveFor: resolveFor
+                };
             }
-            return promise;
+        };
 
-            // creates promise to chain dynamically
-            function andThen(_arg) {
-              // also support a function that returns a promise
-              if(typeof _arg === 'function')
-                  return promise.then(_arg);
-              else
-                  return promise.then(function() {
-                    // if is a module, pass the name. If not, pass the array
-                    var whatToLoad = getRequired(_arg);
-                    // simple error check
-                    if(!whatToLoad) return $.error('Route resolve: Bad resource name [' + _arg + ']');
-                    // finally, return a promise
-                    return $ocLL.load( whatToLoad );
-                  });
-            }
-            // check and returns required data
-            // analyze module items with the form [name: '', files: []]
-            // and also simple array of script files (for not angular js)
-            function getRequired(name) {
-              if (APP_REQUIRES.modules)
-                  for(var m in APP_REQUIRES.modules)
-                      if(APP_REQUIRES.modules[m].name && APP_REQUIRES.modules[m].name === name)
-                          return APP_REQUIRES.modules[m];
-              return APP_REQUIRES.scripts && APP_REQUIRES.scripts[name];
-            }
+        // Set here the base of the relative path
+        // for all app views
+        function basepath(uri) {
+            return 'app/views/' + uri;
+        }
 
-          }]};
-      } // resolveFor
+        // Generates a resolve object by passing script names
+        // previously configured in constant.APP_REQUIRES
+        function resolveFor() {
+            var _args = arguments;
+            return {
+                deps: ['$ocLazyLoad','$q', function ($ocLL, $q) {
+                    // Creates a promise chain for each argument
+                    var promise = $q.when(1); // empty promise
+                    for(var i=0, len=_args.length; i < len; i ++){
+                        promise = andThen(_args[i]);
+                    }
+                    return promise;
+
+                    // creates promise to chain dynamically
+                    function andThen(_arg) {
+                        // also support a function that returns a promise
+                        if(typeof _arg === 'function')
+                            return promise.then(_arg);
+                        else
+                            return promise.then(function() {
+                                // if is a module, pass the name. If not, pass the array
+                                var whatToLoad = getRequired(_arg);
+                                // simple error check
+                                if(!whatToLoad) return $.error('Route resolve: Bad resource name [' + _arg + ']');
+                                // finally, return a promise
+                                return $ocLL.load( whatToLoad );
+                            });
+                    }
+                    // check and returns required data
+                    // analyze module items with the form [name: '', files: []]
+                    // and also simple array of script files (for not angular js)
+                    function getRequired(name) {
+                        if (APP_REQUIRES.modules)
+                            for(var m in APP_REQUIRES.modules)
+                                if(APP_REQUIRES.modules[m].name && APP_REQUIRES.modules[m].name === name)
+                                    return APP_REQUIRES.modules[m];
+                        return APP_REQUIRES.scripts && APP_REQUIRES.scripts[name];
+                    }
+
+                }]};
+        } // resolveFor
 
     }
 
@@ -767,15 +770,15 @@
         // Application Routes
         // -----------------------------------
         $stateProvider
-          .state('app', {
-              url: '/app',
-              abstract: true,
-              templateUrl: helper.basepath('app.html'),
-              resolve: helper.resolveFor('modernizr', 'icons', 'toaster'),
-                   data: {
-                       requireLogin: true // this property will apply to all children of 'app'
-                   }
-          })
+            .state('app', {
+                url: '/app',
+                abstract: true,
+                templateUrl: helper.basepath('app.html'),
+                resolve: helper.resolveFor('modernizr', 'icons', 'toaster'),
+                data: {
+                    requireLogin: true // this property will apply to all children of 'app'
+                }
+            })
             .state('app.dashboard', {
                 url: '/dashboard',
                 title: 'Dashboard',
@@ -808,10 +811,11 @@
                 title: 'Usuarios',
                 templateUrl: helper.basepath('users.html')
             })
-            .state('app.inventory', {
-                url: '/inventory',
-                title: 'Inventario',
-                templateUrl: helper.basepath('inventory.html')
+            .state('app.warehouseMain', {
+                url: '/warehouseMain',
+                title: 'Almacén',
+                templateUrl: helper.basepath('warehouse-main.html'),
+                resolve: helper.resolveFor('datatables', 'ngDialog')
             })
             .state('app.configuration', {
                 url: '/configuration',
@@ -834,44 +838,44 @@
                 title: 'Contactos',
                 templateUrl: helper.basepath('contact.html')
             })
-          .state('app.submenu', {
-              url: '/submenu',
-              title: 'Submenu',
-              templateUrl: helper.basepath('submenu.html')
-          })
-           //
-          // Single Page Routes
-          // -----------------------------------
-          .state('page', {
-              url: '/page',
-              templateUrl: 'app/pages/page.html',
-              resolve: helper.resolveFor('modernizr', 'icons'),
-              controller: ['$rootScope', function($rootScope) {
-                  $rootScope.app.layout.isBoxed = false;
-              }]
-          })
-          .state('page.login', {
-              url: '/login',
-              title: 'Login',
-              templateUrl: 'app/pages/login.html'
-          })
-          //
-          // CUSTOM RESOLVES
-          //   Add your own resolves properties
-          //   following this object extend
-          //   method
-          // -----------------------------------
-          // .state('app.someroute', {
-          //   url: '/some_url',
-          //   templateUrl: 'path_to_template.html',
-          //   controller: 'someController',
-          //   resolve: angular.extend(
-          //     helper.resolveFor(), {
-          //     // YOUR RESOLVES GO HERE
-          //     }
-          //   )
-          // })
-          ;
+            .state('app.submenu', {
+                url: '/submenu',
+                title: 'Submenu',
+                templateUrl: helper.basepath('submenu.html')
+            })
+            //
+            // Single Page Routes
+            // -----------------------------------
+            .state('page', {
+                url: '/page',
+                templateUrl: 'app/pages/page.html',
+                resolve: helper.resolveFor('modernizr', 'icons'),
+                controller: ['$rootScope', function($rootScope) {
+                    $rootScope.app.layout.isBoxed = false;
+                }]
+            })
+            .state('page.login', {
+                url: '/login',
+                title: 'Login',
+                templateUrl: 'app/pages/login.html'
+            })
+        //
+        // CUSTOM RESOLVES
+        //   Add your own resolves properties
+        //   following this object extend
+        //   method
+        // -----------------------------------
+        // .state('app.someroute', {
+        //   url: '/some_url',
+        //   templateUrl: 'path_to_template.html',
+        //   controller: 'someController',
+        //   resolve: angular.extend(
+        //     helper.resolveFor(), {
+        //     // YOUR RESOLVES GO HERE
+        //     }
+        //   )
+        // })
+        ;
 
     } // routesConfig
 
@@ -890,62 +894,62 @@
     function settingsRun($rootScope, $localStorage){
 
 
-      // User Settings
-      // -----------------------------------
-      $rootScope.user = {
-        name:     'John',
-        job:      'ng-developer',
-        picture:  'app/img/user/02.jpg'
-      };
+        // User Settings
+        // -----------------------------------
+        $rootScope.user = {
+            name:     'John',
+            job:      'ng-developer',
+            picture:  'app/img/user/02.jpg'
+        };
 
-      // Hides/show user avatar on sidebar from any element
-      $rootScope.toggleUserBlock = function(){
-        $rootScope.$broadcast('toggleUserBlock');
-      };
+        // Hides/show user avatar on sidebar from any element
+        $rootScope.toggleUserBlock = function(){
+            $rootScope.$broadcast('toggleUserBlock');
+        };
 
-      // Global Settings
-      // -----------------------------------
-      $rootScope.app = {
-        name: 'Light-ERP',
-        description: 'Sistema administrativo',
-        year: ((new Date()).getFullYear()),
-        layout: {
-          isFixed: true,
-          isCollapsed: false,
-          isBoxed: false,
-          isRTL: false,
-          horizontal: false,
-          isFloat: false,
-          asideHover: false,
-          theme: null,
-          asideScrollbar: false,
-          isCollapsedText: false
-        },
-        useFullLayout: false,
-        hiddenFooter: false,
-        offsidebarOpen: false,
-        asideToggled: false,
-        viewAnimation: 'ng-fadeInUp'
-      };
+        // Global Settings
+        // -----------------------------------
+        $rootScope.app = {
+            name: 'Light-ERP',
+            description: 'Sistema administrativo',
+            year: ((new Date()).getFullYear()),
+            layout: {
+                isFixed: true,
+                isCollapsed: false,
+                isBoxed: false,
+                isRTL: false,
+                horizontal: false,
+                isFloat: false,
+                asideHover: false,
+                theme: null,
+                asideScrollbar: false,
+                isCollapsedText: false
+            },
+            useFullLayout: false,
+            hiddenFooter: false,
+            offsidebarOpen: false,
+            asideToggled: false,
+            viewAnimation: 'ng-fadeInUp'
+        };
 
-      // Setup the layout mode
-      $rootScope.app.layout.horizontal = ( $rootScope.$stateParams.layout === 'app-h') ;
+        // Setup the layout mode
+        $rootScope.app.layout.horizontal = ( $rootScope.$stateParams.layout === 'app-h') ;
 
-      // Restore layout settings [*** UNCOMMENT TO ENABLE ***]
-      // if( angular.isDefined($localStorage.layout) )
-      //   $rootScope.app.layout = $localStorage.layout;
-      // else
-      //   $localStorage.layout = $rootScope.app.layout;
-      //
-      // $rootScope.$watch('app.layout', function () {
-      //   $localStorage.layout = $rootScope.app.layout;
-      // }, true);
+        // Restore layout settings [*** UNCOMMENT TO ENABLE ***]
+        // if( angular.isDefined($localStorage.layout) )
+        //   $rootScope.app.layout = $localStorage.layout;
+        // else
+        //   $localStorage.layout = $rootScope.app.layout;
+        //
+        // $rootScope.$watch('app.layout', function () {
+        //   $localStorage.layout = $rootScope.app.layout;
+        // }, true);
 
-      // Close submenu when sidebar change from collapsed to normal
-      $rootScope.$watch('app.layout.isCollapsed', function(newValue) {
-        if( newValue === false )
-          $rootScope.$broadcast('closeSidebarMenu');
-      });
+        // Close submenu when sidebar change from collapsed to normal
+        $rootScope.$watch('app.layout.isCollapsed', function(newValue) {
+            if( newValue === false )
+                $rootScope.$broadcast('closeSidebarMenu');
+        });
 
     }
 
@@ -971,93 +975,93 @@
         ////////////////
 
         function activate() {
-          var collapseList = [];
+            var collapseList = [];
 
-          // demo: when switch from collapse to hover, close all items
-          var watchOff1 = $rootScope.$watch('app.layout.asideHover', function(oldVal, newVal){
-            if ( newVal === false && oldVal === true) {
-              closeAllBut(-1);
-            }
-          });
+            // demo: when switch from collapse to hover, close all items
+            var watchOff1 = $rootScope.$watch('app.layout.asideHover', function(oldVal, newVal){
+                if ( newVal === false && oldVal === true) {
+                    closeAllBut(-1);
+                }
+            });
 
 
-          // Load menu from json file
-          // -----------------------------------
+            // Load menu from json file
+            // -----------------------------------
 
-          SidebarLoader.getMenu(sidebarReady);
+            SidebarLoader.getMenu(sidebarReady);
 
-          function sidebarReady(items) {
-            $scope.menuItems = items;
-          }
-
-          // Handle sidebar and collapse items
-          // ----------------------------------
-
-          $scope.getMenuItemPropClasses = function(item) {
-            return (item.heading ? 'nav-heading' : '') +
-                   (isActive(item) ? ' active' : '') ;
-          };
-
-          $scope.addCollapse = function($index, item) {
-            collapseList[$index] = $rootScope.app.layout.asideHover ? true : !isActive(item);
-          };
-
-          $scope.isCollapse = function($index) {
-            return (collapseList[$index]);
-          };
-
-          $scope.toggleCollapse = function($index, isParentItem) {
-
-            // collapsed sidebar doesn't toggle drodopwn
-            if( Utils.isSidebarCollapsed() || $rootScope.app.layout.asideHover ) return true;
-
-            // make sure the item index exists
-            if( angular.isDefined( collapseList[$index] ) ) {
-              if ( ! $scope.lastEventFromChild ) {
-                collapseList[$index] = !collapseList[$index];
-                closeAllBut($index);
-              }
-            }
-            else if ( isParentItem ) {
-              closeAllBut(-1);
+            function sidebarReady(items) {
+                $scope.menuItems = items;
             }
 
-            $scope.lastEventFromChild = isChild($index);
+            // Handle sidebar and collapse items
+            // ----------------------------------
 
-            return true;
+            $scope.getMenuItemPropClasses = function(item) {
+                return (item.heading ? 'nav-heading' : '') +
+                    (isActive(item) ? ' active' : '') ;
+            };
 
-          };
+            $scope.addCollapse = function($index, item) {
+                collapseList[$index] = $rootScope.app.layout.asideHover ? true : !isActive(item);
+            };
 
-          // Controller helpers
-          // -----------------------------------
+            $scope.isCollapse = function($index) {
+                return (collapseList[$index]);
+            };
+
+            $scope.toggleCollapse = function($index, isParentItem) {
+
+                // collapsed sidebar doesn't toggle drodopwn
+                if( Utils.isSidebarCollapsed() || $rootScope.app.layout.asideHover ) return true;
+
+                // make sure the item index exists
+                if( angular.isDefined( collapseList[$index] ) ) {
+                    if ( ! $scope.lastEventFromChild ) {
+                        collapseList[$index] = !collapseList[$index];
+                        closeAllBut($index);
+                    }
+                }
+                else if ( isParentItem ) {
+                    closeAllBut(-1);
+                }
+
+                $scope.lastEventFromChild = isChild($index);
+
+                return true;
+
+            };
+
+            // Controller helpers
+            // -----------------------------------
 
             // Check item and children active state
             function isActive(item) {
 
-              if(!item) return;
+                if(!item) return;
 
-              if( !item.sref || item.sref === '#') {
-                var foundActive = false;
-                angular.forEach(item.submenu, function(value) {
-                  if(isActive(value)) foundActive = true;
-                });
-                return foundActive;
-              }
-              else
-                return $state.is(item.sref) || $state.includes(item.sref);
+                if( !item.sref || item.sref === '#') {
+                    var foundActive = false;
+                    angular.forEach(item.submenu, function(value) {
+                        if(isActive(value)) foundActive = true;
+                    });
+                    return foundActive;
+                }
+                else
+                    return $state.is(item.sref) || $state.includes(item.sref);
             }
 
             function closeAllBut(index) {
-              index += '';
-              for(var i in collapseList) {
-                if(index < 0 || index.indexOf(i) < 0)
-                  collapseList[i] = true;
-              }
+                index += '';
+                for(var i in collapseList) {
+                    if(index < 0 || index.indexOf(i) < 0)
+                        collapseList[i] = true;
+                }
             }
 
             function isChild($index) {
-              /*jshint -W018*/
-              return (typeof $index === 'string') && !($index.indexOf('-') < 0);
+                /*jshint -W018*/
+                return (typeof $index === 'string') && !($index.indexOf('-') < 0);
             }
 
             $scope.$on('$destroy', function() {
@@ -1099,157 +1103,157 @@
 
         function link(scope, element, attrs) {
 
-          var currentState = $rootScope.$state.current.name;
-          var $sidebar = element;
+            var currentState = $rootScope.$state.current.name;
+            var $sidebar = element;
 
-          var eventName = Utils.isTouch() ? 'click' : 'mouseenter' ;
-          var subNav = $();
+            var eventName = Utils.isTouch() ? 'click' : 'mouseenter' ;
+            var subNav = $();
 
-          $sidebar.on( eventName, '.nav > li', function() {
+            $sidebar.on( eventName, '.nav > li', function() {
 
-            if( Utils.isSidebarCollapsed() || $rootScope.app.layout.asideHover ) {
+                if( Utils.isSidebarCollapsed() || $rootScope.app.layout.asideHover ) {
 
-              subNav.trigger('mouseleave');
-              subNav = toggleMenuItem( $(this), $sidebar);
+                    subNav.trigger('mouseleave');
+                    subNav = toggleMenuItem( $(this), $sidebar);
 
-              // Used to detect click and touch events outside the sidebar
-              sidebarAddBackdrop();
+                    // Used to detect click and touch events outside the sidebar
+                    sidebarAddBackdrop();
 
-            }
+                }
 
-          });
+            });
 
-          var eventOff1 = scope.$on('closeSidebarMenu', function() {
-            removeFloatingNav();
-          });
+            var eventOff1 = scope.$on('closeSidebarMenu', function() {
+                removeFloatingNav();
+            });
 
-          // Normalize state when resize to mobile
-          $win.on('resize.sidebar', function() {
-            if( ! Utils.isMobile() )
-          	asideToggleOff();
-          });
-
-          // Adjustment on route changes
-          var eventOff2 = $rootScope.$on('$stateChangeStart', function(event, toState) {
-            currentState = toState.name;
-            // Hide sidebar automatically on mobile
-            asideToggleOff();
-
-            $rootScope.$broadcast('closeSidebarMenu');
-          });
-
-      	  // Autoclose when click outside the sidebar
-          if ( angular.isDefined(attrs.sidebarAnyclickClose) ) {
-
-            var wrapper = $('.wrapper');
-            var sbclickEvent = 'click.sidebar';
-
-            var watchOff1 = $rootScope.$watch('app.asideToggled', watchExternalClicks);
-
-          }
-
-          //////
-
-          function watchExternalClicks(newVal) {
-            // if sidebar becomes visible
-            if ( newVal === true ) {
-              $timeout(function(){ // render after current digest cycle
-                wrapper.on(sbclickEvent, function(e){
-                  // if not child of sidebar
-                  if( ! $(e.target).parents('.aside').length ) {
+            // Normalize state when resize to mobile
+            $win.on('resize.sidebar', function() {
+                if( ! Utils.isMobile() )
                     asideToggleOff();
-                  }
-                });
-              });
-            }
-            else {
-              // dettach event
-              wrapper.off(sbclickEvent);
-            }
-          }
+            });
 
-          function asideToggleOff() {
-            $rootScope.app.asideToggled = false;
-            if(!scope.$$phase) scope.$apply(); // anti-pattern but sometimes necessary
-      	  }
+            // Adjustment on route changes
+            var eventOff2 = $rootScope.$on('$stateChangeStart', function(event, toState) {
+                currentState = toState.name;
+                // Hide sidebar automatically on mobile
+                asideToggleOff();
 
-          scope.$on('$destroy', function() {
-            // detach scope events
-            eventOff1();
-            eventOff2();
-            watchOff1();
-            // detach dom events
-            $sidebar.off(eventName);
-            $win.off('resize.sidebar');
-            wrapper.off(sbclickEvent);
-          });
+                $rootScope.$broadcast('closeSidebarMenu');
+            });
+
+            // Autoclose when click outside the sidebar
+            if ( angular.isDefined(attrs.sidebarAnyclickClose) ) {
+
+                var wrapper = $('.wrapper');
+                var sbclickEvent = 'click.sidebar';
+
+                var watchOff1 = $rootScope.$watch('app.asideToggled', watchExternalClicks);
+
+            }
+
+            //////
+
+            function watchExternalClicks(newVal) {
+                // if sidebar becomes visible
+                if ( newVal === true ) {
+                    $timeout(function(){ // render after current digest cycle
+                        wrapper.on(sbclickEvent, function(e){
+                            // if not child of sidebar
+                            if( ! $(e.target).parents('.aside').length ) {
+                                asideToggleOff();
+                            }
+                        });
+                    });
+                }
+                else {
+                    // dettach event
+                    wrapper.off(sbclickEvent);
+                }
+            }
+
+            function asideToggleOff() {
+                $rootScope.app.asideToggled = false;
+                if(!scope.$$phase) scope.$apply(); // anti-pattern but sometimes necessary
+            }
+
+            scope.$on('$destroy', function() {
+                // detach scope events
+                eventOff1();
+                eventOff2();
+                watchOff1();
+                // detach dom events
+                $sidebar.off(eventName);
+                $win.off('resize.sidebar');
+                wrapper.off(sbclickEvent);
+            });
 
         }
 
         ///////
 
         function sidebarAddBackdrop() {
-          var $backdrop = $('<div/>', { 'class': 'dropdown-backdrop'} );
-          $backdrop.insertAfter('.aside-inner').on('click mouseenter', function () {
-            removeFloatingNav();
-          });
+            var $backdrop = $('<div/>', { 'class': 'dropdown-backdrop'} );
+            $backdrop.insertAfter('.aside-inner').on('click mouseenter', function () {
+                removeFloatingNav();
+            });
         }
 
         // Open the collapse sidebar submenu items when on touch devices
         // - desktop only opens on hover
         function toggleTouchItem($element){
-          $element
-            .siblings('li')
-            .removeClass('open')
-            .end()
-            .toggleClass('open');
+            $element
+                .siblings('li')
+                .removeClass('open')
+                .end()
+                .toggleClass('open');
         }
 
         // Handles hover to open items under collapsed menu
         // -----------------------------------
         function toggleMenuItem($listItem, $sidebar) {
 
-          removeFloatingNav();
+            removeFloatingNav();
 
-          var ul = $listItem.children('ul');
+            var ul = $listItem.children('ul');
 
-          if( !ul.length ) return $();
-          if( $listItem.hasClass('open') ) {
+            if( !ul.length ) return $();
+            if( $listItem.hasClass('open') ) {
+                toggleTouchItem($listItem);
+                return $();
+            }
+
+            var $aside = $('.aside');
+            var $asideInner = $('.aside-inner'); // for top offset calculation
+            // float aside uses extra padding on aside
+            var mar = parseInt( $asideInner.css('padding-top'), 0) + parseInt( $aside.css('padding-top'), 0);
+            var subNav = ul.clone().appendTo( $aside );
+
             toggleTouchItem($listItem);
-            return $();
-          }
 
-          var $aside = $('.aside');
-          var $asideInner = $('.aside-inner'); // for top offset calculation
-          // float aside uses extra padding on aside
-          var mar = parseInt( $asideInner.css('padding-top'), 0) + parseInt( $aside.css('padding-top'), 0);
-          var subNav = ul.clone().appendTo( $aside );
+            var itemTop = ($listItem.position().top + mar) - $sidebar.scrollTop();
+            var vwHeight = $win.height();
 
-          toggleTouchItem($listItem);
+            subNav
+                .addClass('nav-floating')
+                .css({
+                    position: $rootScope.app.layout.isFixed ? 'fixed' : 'absolute',
+                    top:      itemTop,
+                    bottom:   (subNav.outerHeight(true) + itemTop > vwHeight) ? 0 : 'auto'
+                });
 
-          var itemTop = ($listItem.position().top + mar) - $sidebar.scrollTop();
-          var vwHeight = $win.height();
-
-          subNav
-            .addClass('nav-floating')
-            .css({
-              position: $rootScope.app.layout.isFixed ? 'fixed' : 'absolute',
-              top:      itemTop,
-              bottom:   (subNav.outerHeight(true) + itemTop > vwHeight) ? 0 : 'auto'
+            subNav.on('mouseleave', function() {
+                toggleTouchItem($listItem);
+                subNav.remove();
             });
 
-          subNav.on('mouseleave', function() {
-            toggleTouchItem($listItem);
-            subNav.remove();
-          });
-
-          return subNav;
+            return subNav;
         }
 
         function removeFloatingNav() {
-          $('.dropdown-backdrop').remove();
-          $('.sidebar-subnav.nav-floating').remove();
-          $('.sidebar li.open').removeClass('open');
+            $('.dropdown-backdrop').remove();
+            $('.sidebar-subnav.nav-floating').remove();
+            $('.sidebar li.open').removeClass('open');
         }
     }
 
@@ -1271,15 +1275,15 @@
         ////////////////
 
         function getMenu(onReady, onError) {
-          var menuJson = 'server/sidebar-menu.json',
-              menuURL  = menuJson + '?v=' + (new Date().getTime()); // jumps cache
+            var menuJson = 'server/sidebar-menu.json',
+                menuURL  = menuJson + '?v=' + (new Date().getTime()); // jumps cache
 
-          onError = onError || function() { alert('Failure loading menu'); };
+            onError = onError || function() { alert('Failure loading menu'); };
 
-          $http
-            .get(menuURL)
-            .success(onReady)
-            .error(onError);
+            $http
+                .get(menuURL)
+                .success(onReady)
+                .error(onError);
         }
     }
 })();
@@ -1299,15 +1303,15 @@
 
         function activate() {
 
-          $scope.userBlockVisible = true;
+            $scope.userBlockVisible = true;
 
-          var detach = $scope.$on('toggleUserBlock', function(/*event, args*/) {
+            var detach = $scope.$on('toggleUserBlock', function(/*event, args*/) {
 
-            $scope.userBlockVisible = ! $scope.userBlockVisible;
+                $scope.userBlockVisible = ! $scope.userBlockVisible;
 
-          });
+            });
 
-          $scope.$on('$destroy', detach);
+            $scope.$on('$destroy', detach);
         }
     }
 })();
@@ -1318,19 +1322,19 @@
     angular
         .module('app.translate')
         .config(translateConfig)
-        ;
+    ;
     translateConfig.$inject = ['$translateProvider'];
     function translateConfig($translateProvider){
 
-      $translateProvider.useStaticFilesLoader({
-          prefix : 'app/i18n/',
-          suffix : '.json'
-      });
+        $translateProvider.useStaticFilesLoader({
+            prefix : 'app/i18n/',
+            suffix : '.json'
+        });
 
-      $translateProvider.preferredLanguage('es');
-      $translateProvider.useLocalStorage();
-      $translateProvider.usePostCompiling(true);
-      $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
+        $translateProvider.preferredLanguage('es');
+        $translateProvider.useLocalStorage();
+        $translateProvider.usePostCompiling(true);
+        $translateProvider.useSanitizeValueStrategy('sanitizeParameters');
 
     }
 })();
@@ -1340,39 +1344,39 @@
     angular
         .module('app.translate')
         .run(translateRun)
-        ;
+    ;
     translateRun.$inject = ['$rootScope', '$translate'];
 
     function translateRun($rootScope, $translate){
 
-      // Internationalization
-      // ----------------------
+        // Internationalization
+        // ----------------------
 
-      $rootScope.language = {
-        // Handles language dropdown
-        listIsOpen: false,
-        // list of available languages
-        available: {
-          'en':       'English',
-          'es_AR':    'Español'
-        },
-        // display always the current ui language
-        init: function () {
-          var proposedLanguage = $translate.proposedLanguage() || $translate.use();
-          var preferredLanguage = $translate.preferredLanguage(); // we know we have set a preferred one in app.config
-          $rootScope.language.selected = $rootScope.language.available[ (proposedLanguage || preferredLanguage) ];
-        },
-        set: function (localeId) {
-          // Set the new idiom
-          $translate.use(localeId);
-          // save a reference for the current language
-          $rootScope.language.selected = $rootScope.language.available[localeId];
-          // finally toggle dropdown
-          $rootScope.language.listIsOpen = ! $rootScope.language.listIsOpen;
-        }
-      };
+        $rootScope.language = {
+            // Handles language dropdown
+            listIsOpen: false,
+            // list of available languages
+            available: {
+                'en':       'English',
+                'es_AR':    'Español'
+            },
+            // display always the current ui language
+            init: function () {
+                var proposedLanguage = $translate.proposedLanguage() || $translate.use();
+                var preferredLanguage = $translate.preferredLanguage(); // we know we have set a preferred one in app.config
+                $rootScope.language.selected = $rootScope.language.available[ (proposedLanguage || preferredLanguage) ];
+            },
+            set: function (localeId) {
+                // Set the new idiom
+                $translate.use(localeId);
+                // save a reference for the current language
+                $rootScope.language.selected = $rootScope.language.available[localeId];
+                // finally toggle dropdown
+                $rootScope.language.listIsOpen = ! $rootScope.language.listIsOpen;
+            }
+        };
 
-      $rootScope.language.init();
+        $rootScope.language.init();
 
     }
 })();
@@ -1397,11 +1401,11 @@
         return directive;
 
         function link(scope, element, attrs) {
-          scope.$watch(function () {
-            return scope.$eval(attrs.animateEnabled, scope);
-          }, function (newValue) {
-            $animate.enabled(!!newValue, element);
-          });
+            scope.$watch(function () {
+                return scope.$eval(attrs.animateEnabled, scope);
+            }, function (newValue) {
+                $animate.enabled(!!newValue, element);
+            });
         }
     }
 
@@ -1421,7 +1425,7 @@
 
     Browser.$inject = ['$window'];
     function Browser($window) {
-      return $window.jQBrowser;
+        return $window.jQBrowser;
     }
 
 })();
@@ -1444,23 +1448,23 @@
             link: link,
             restrict: 'A',
             scope: {
-              resetKey: '@'
+                resetKey: '@'
             }
         };
         return directive;
 
         function link(scope, element) {
-          element.on('click', function (e) {
-              e.preventDefault();
+            element.on('click', function (e) {
+                e.preventDefault();
 
-              if(scope.resetKey) {
-                delete $localStorage[scope.resetKey];
-                $state.go($state.current, {}, {reload: true});
-              }
-              else {
-                $.error('No storage key specified for reset.');
-              }
-          });
+                if(scope.resetKey) {
+                    delete $localStorage[scope.resetKey];
+                    $state.go($state.current, {}, {reload: true});
+                }
+                else {
+                    $.error('No storage key specified for reset.');
+                }
+            });
         }
     }
 
@@ -1487,30 +1491,30 @@
         return directive;
 
         function link(scope, element) {
-          // Not supported under IE
-          if( Browser.msie ) {
-            element.addClass('hide');
-          }
-          else {
-            element.on('click', function (e) {
-                e.preventDefault();
+            // Not supported under IE
+            if( Browser.msie ) {
+                element.addClass('hide');
+            }
+            else {
+                element.on('click', function (e) {
+                    e.preventDefault();
 
-                if (screenfull.enabled) {
+                    if (screenfull.enabled) {
 
-                  screenfull.toggle();
+                        screenfull.toggle();
 
-                  // Switch icon indicator
-                  if(screenfull.isFullscreen)
-                    $(this).children('em').removeClass('fa-expand').addClass('fa-compress');
-                  else
-                    $(this).children('em').removeClass('fa-compress').addClass('fa-expand');
+                        // Switch icon indicator
+                        if(screenfull.isFullscreen)
+                            $(this).children('em').removeClass('fa-expand').addClass('fa-compress');
+                        else
+                            $(this).children('em').removeClass('fa-compress').addClass('fa-expand');
 
-                } else {
-                  $.error('Fullscreen not enabled');
-                }
+                    } else {
+                        $.error('Fullscreen not enabled');
+                    }
 
-            });
-          }
+                });
+            }
         }
     }
 
@@ -1537,39 +1541,39 @@
         return directive;
 
         function link(scope, element, attrs) {
-          element.on('click', function (e) {
-              if(element.is('a')) e.preventDefault();
-              var uri = attrs.loadCss,
-                  link;
+            element.on('click', function (e) {
+                if(element.is('a')) e.preventDefault();
+                var uri = attrs.loadCss,
+                    link;
 
-              if(uri) {
-                link = createLink(uri);
-                if ( !link ) {
-                  $.error('Error creating stylesheet link element.');
+                if(uri) {
+                    link = createLink(uri);
+                    if ( !link ) {
+                        $.error('Error creating stylesheet link element.');
+                    }
                 }
-              }
-              else {
-                $.error('No stylesheet location defined.');
-              }
+                else {
+                    $.error('No stylesheet location defined.');
+                }
 
-          });
+            });
         }
 
         function createLink(uri) {
-          var linkId = 'autoloaded-stylesheet',
-              oldLink = $('#'+linkId).attr('id', linkId + '-old');
+            var linkId = 'autoloaded-stylesheet',
+                oldLink = $('#'+linkId).attr('id', linkId + '-old');
 
-          $('head').append($('<link/>').attr({
-            'id':   linkId,
-            'rel':  'stylesheet',
-            'href': uri
-          }));
+            $('head').append($('<link/>').attr({
+                'id':   linkId,
+                'rel':  'stylesheet',
+                'href': uri
+            }));
 
-          if( oldLink.length ) {
-            oldLink.remove();
-          }
+            if( oldLink.length ) {
+                oldLink.remove();
+            }
 
-          return $('#'+linkId);
+            return $('#'+linkId);
         }
     }
 
@@ -1596,19 +1600,19 @@
         return directive;
 
         function link(scope, element, attrs) {
-          var format = attrs.format;
+            var format = attrs.format;
 
-          function updateTime() {
-            var dt = dateFilter(new Date(), format);
-            element.text(dt);
-          }
+            function updateTime() {
+                var dt = dateFilter(new Date(), format);
+                element.text(dt);
+            }
 
-          updateTime();
-          var intervalPromise = $interval(updateTime, 1000);
+            updateTime();
+            var intervalPromise = $interval(updateTime, 1000);
 
-          scope.$on('$destroy', function(){
-            $interval.cancel(intervalPromise);
-          });
+            scope.$on('$destroy', function(){
+                $interval.cancel(intervalPromise);
+            });
 
         }
     }
@@ -1634,16 +1638,16 @@
         return directive;
 
         function link(scope, element) {
-          element.on('change', function() {
-            var $this = $(this),
-                index= $this.index() + 1,
-                checkbox = $this.find('input[type="checkbox"]'),
-                table = $this.parents('table');
-            // Make sure to affect only the correct checkbox column
-            table.find('tbody > tr > td:nth-child('+index+') input[type="checkbox"]')
-              .prop('checked', checkbox[0].checked);
+            element.on('change', function() {
+                var $this = $(this),
+                    index= $this.index() + 1,
+                    checkbox = $this.find('input[type="checkbox"]'),
+                    table = $this.parents('table');
+                // Make sure to affect only the correct checkbox column
+                table.find('tbody > tr > td:nth-child('+index+') input[type="checkbox"]')
+                    .prop('checked', checkbox[0].checked);
 
-          });
+            });
         }
     }
 
@@ -1669,16 +1673,16 @@
         return directive;
 
         function link(scope, element, attributes) {
-          element.on('click', function(){
-            $timeout(function(){
-              // all IE friendly dispatchEvent
-              var evt = document.createEvent('UIEvents');
-              evt.initUIEvent('resize', true, false, $window, 0);
-              $window.dispatchEvent(evt);
-              // modern dispatchEvent way
-              // $window.dispatchEvent(new Event('resize'));
-            }, attributes.triggerResize || 300);
-          });
+            element.on('click', function(){
+                $timeout(function(){
+                    // all IE friendly dispatchEvent
+                    var evt = document.createEvent('UIEvents');
+                    evt.initUIEvent('resize', true, false, $window, 0);
+                    $window.dispatchEvent(evt);
+                    // modern dispatchEvent way
+                    // $window.dispatchEvent(new Event('resize'));
+                }, attributes.triggerResize || 300);
+            });
         }
     }
 
@@ -1704,9 +1708,9 @@
             $body = angular.element('body');
 
         return {
-          // DETECTION
-          support: {
-            transition: (function() {
+            // DETECTION
+            support: {
+                transition: (function() {
                     var transitionEnd = (function() {
 
                         var element = document.body || document.documentElement,
@@ -1724,83 +1728,83 @@
 
                     return transitionEnd && { end: transitionEnd };
                 })(),
-            animation: (function() {
+                animation: (function() {
 
-                var animationEnd = (function() {
+                    var animationEnd = (function() {
 
-                    var element = document.body || document.documentElement,
-                        animEndEventNames = {
-                            WebkitAnimation: 'webkitAnimationEnd',
-                            MozAnimation: 'animationend',
-                            OAnimation: 'oAnimationEnd oanimationend',
-                            animation: 'animationend'
-                        }, name;
+                        var element = document.body || document.documentElement,
+                            animEndEventNames = {
+                                WebkitAnimation: 'webkitAnimationEnd',
+                                MozAnimation: 'animationend',
+                                OAnimation: 'oAnimationEnd oanimationend',
+                                animation: 'animationend'
+                            }, name;
 
-                    for (name in animEndEventNames) {
-                        if (element.style[name] !== undefined) return animEndEventNames[name];
-                    }
-                }());
+                        for (name in animEndEventNames) {
+                            if (element.style[name] !== undefined) return animEndEventNames[name];
+                        }
+                    }());
 
-                return animationEnd && { end: animationEnd };
-            })(),
-            requestAnimationFrame: window.requestAnimationFrame ||
-                                   window.webkitRequestAnimationFrame ||
-                                   window.mozRequestAnimationFrame ||
-                                   window.msRequestAnimationFrame ||
-                                   window.oRequestAnimationFrame ||
-                                   function(callback){ window.setTimeout(callback, 1000/60); },
-            /*jshint -W069*/
-            touch: (
-                ('ontouchstart' in window && navigator.userAgent.toLowerCase().match(/mobile|tablet/)) ||
-                (window.DocumentTouch && document instanceof window.DocumentTouch)  ||
-                (window.navigator['msPointerEnabled'] && window.navigator['msMaxTouchPoints'] > 0) || //IE 10
-                (window.navigator['pointerEnabled'] && window.navigator['maxTouchPoints'] > 0) || //IE >=11
-                false
-            ),
-            mutationobserver: (window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver || null)
-          },
-          // UTILITIES
-          isInView: function(element, options) {
-              /*jshint -W106*/
-              var $element = $(element);
+                    return animationEnd && { end: animationEnd };
+                })(),
+                requestAnimationFrame: window.requestAnimationFrame ||
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame ||
+                window.msRequestAnimationFrame ||
+                window.oRequestAnimationFrame ||
+                function(callback){ window.setTimeout(callback, 1000/60); },
+                /*jshint -W069*/
+                touch: (
+                    ('ontouchstart' in window && navigator.userAgent.toLowerCase().match(/mobile|tablet/)) ||
+                    (window.DocumentTouch && document instanceof window.DocumentTouch)  ||
+                    (window.navigator['msPointerEnabled'] && window.navigator['msMaxTouchPoints'] > 0) || //IE 10
+                    (window.navigator['pointerEnabled'] && window.navigator['maxTouchPoints'] > 0) || //IE >=11
+                    false
+                ),
+                mutationobserver: (window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver || null)
+            },
+            // UTILITIES
+            isInView: function(element, options) {
+                /*jshint -W106*/
+                var $element = $(element);
 
-              if (!$element.is(':visible')) {
-                  return false;
-              }
+                if (!$element.is(':visible')) {
+                    return false;
+                }
 
-              var window_left = $win.scrollLeft(),
-                  window_top  = $win.scrollTop(),
-                  offset      = $element.offset(),
-                  left        = offset.left,
-                  top         = offset.top;
+                var window_left = $win.scrollLeft(),
+                    window_top  = $win.scrollTop(),
+                    offset      = $element.offset(),
+                    left        = offset.left,
+                    top         = offset.top;
 
-              options = $.extend({topoffset:0, leftoffset:0}, options);
+                options = $.extend({topoffset:0, leftoffset:0}, options);
 
-              if (top + $element.height() >= window_top && top - options.topoffset <= window_top + $win.height() &&
-                  left + $element.width() >= window_left && left - options.leftoffset <= window_left + $win.width()) {
-                return true;
-              } else {
-                return false;
-              }
-          },
+                if (top + $element.height() >= window_top && top - options.topoffset <= window_top + $win.height() &&
+                    left + $element.width() >= window_left && left - options.leftoffset <= window_left + $win.width()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
 
-          langdirection: $html.attr('dir') === 'rtl' ? 'right' : 'left',
+            langdirection: $html.attr('dir') === 'rtl' ? 'right' : 'left',
 
-          isTouch: function () {
-            return $html.hasClass('touch');
-          },
+            isTouch: function () {
+                return $html.hasClass('touch');
+            },
 
-          isSidebarCollapsed: function () {
-            return $body.hasClass('aside-collapsed') || $body.hasClass('aside-collapsed-text');
-          },
+            isSidebarCollapsed: function () {
+                return $body.hasClass('aside-collapsed') || $body.hasClass('aside-collapsed-text');
+            },
 
-          isSidebarToggled: function () {
-            return $body.hasClass('aside-toggled');
-          },
+            isSidebarToggled: function () {
+                return $body.hasClass('aside-toggled');
+            },
 
-          isMobile: function () {
-            return $win.width() < APP_MEDIAQUERY.tablet;
-          }
+            isMobile: function () {
+                return $win.width() < APP_MEDIAQUERY.tablet;
+            }
 
         };
     }
@@ -1841,7 +1845,7 @@
         ////////////////
 
         function activate() {
-          $log.log('I\'m a line from custom.js');
+            $log.log('I\'m a line from custom.js');
         }
     }
 })();
@@ -1852,7 +1856,7 @@
  * Module: datatable,js
  * Angular Datatable controller
  =========================================================*/
-
+/*
 (function() {
     'use strict';
 
@@ -1916,7 +1920,7 @@
 
         }
     }
-})();
+})();*/
 
 (function() {
     'use strict';

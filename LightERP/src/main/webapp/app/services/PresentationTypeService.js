@@ -2,15 +2,15 @@
 
 angular
     .module('app.services')
-    .factory("identificationTypeService", function ($http, $state) {
+    .factory("presentationTypeService", function ($http, $state) {
 
-        var identificationTypeService = {};
+        var presentationTypeService = {};
 
-        identificationTypeService.getAll = function() {
+        presentationTypeService.getAll = function() {
 
-            var identificationTypeList = $http({
+            var presentationTypeList = $http({
                 method: 'GET',
-                url: 'http://localhost:8080/api/identificationType/get',
+                url: 'http://localhost:8080/api/presentationType/get',
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
@@ -21,16 +21,16 @@ angular
                 return error.status;
             });
 
-            return identificationTypeList;
+            return presentationTypeList;
         };
 
-        identificationTypeService.disableIdentificationType = function(identificationTypeId) {
+        presentationTypeService.disablePresentationType = function(presentationTypeId) {
 
-            var disableIdentificationTypeResult = $http({
+            var disablePresentationTypeResult = $http({
                 method: 'DELETE',
-                url: 'http://localhost:8080/api/identificationType/delete',
+                url: 'http://localhost:8080/api/presentationType/delete',
                 data: {
-                    id: identificationTypeId
+                    id: presentationTypeId
                 },
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
@@ -43,13 +43,8 @@ angular
                 return error.status;
             });
 
-            return disableIdentificationTypeResult;
+            return disablePresentationTypeResult;
         };
 
-        return identificationTypeService;
+        return presentationTypeService;
     });
-
-
-
-
-

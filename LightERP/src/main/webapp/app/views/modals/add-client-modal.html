@@ -48,7 +48,7 @@
                                         <div class="form-group">
                                             <label>Tipo de cliente</label>
                                             <div class="controls">
-                                                <select name="selectedCustomerType" ng-model="addCustomerForm.selectedCustomerType"
+                                                <select name="selectedCustomerType" ng-model="modalCtrl.selectedCustomerType"
                                                         ng-options="item.id as item.name for item in modalCtrl.customerTypeList"
                                                         class="form-control" required="required">
                                                 </select>
@@ -61,7 +61,7 @@
                                         <div class="form-group">
                                             <label>Tipo de identificación</label>
                                             <div class="controls">
-                                                <select name="selectedIdentificationType" ng-model="addCustomerForm.selectedIdentificationType"
+                                                <select name="selectedIdentificationType" ng-model="modalCtrl.selectedIdentificationType"
                                                         ng-options="item.id as item.name for item in modalCtrl.identificationTypeList"
                                                         class="form-control" required="required">
                                                 </select>
@@ -74,7 +74,7 @@
                                         <div class="form-group">
                                             <label>Identificación</label>
                                             <div class="controls">
-                                                <input type="text" name="identification" ng-model="addCustomerForm.identification"
+                                                <input type="text" name="identification" ng-model="modalCtrl.identification"
                                                        placeholder="110102020" required="required" class="form-control" maxlength="20"/>
                                                 <span ng-show="formStep1.$submitted &amp;&amp; formStep1.identification.$invalid"
                                                       class="text-danger">Este campo es inválido</span>
@@ -84,30 +84,30 @@
                                     <div class="col-md-4" >
                                         <div class="form-group">
                                             <!--Asegurar que los id's finales sirvan para esta validación-->
-                                            <label ng-show="addCustomerForm.selectedIdentificationType == 1">Nombre del cliente</label>
-                                            <label ng-show="addCustomerForm.selectedIdentificationType == 2">Nombre de la empresa</label>
+                                            <label ng-show="modalCtrl.selectedIdentificationType == 1">Nombre del cliente</label>
+                                            <label ng-show="modalCtrl.selectedIdentificationType == 2">Nombre de la empresa</label>
                                             <div class="controls">
-                                                <input ng-show="addCustomerForm.selectedIdentificationType != null" type="text" name="name" ng-model="addCustomerForm.name" required="required"
+                                                <input ng-show="modalCtrl.selectedIdentificationType != null" type="text" name="name" ng-model="modalCtrl.name" required="required"
                                                        class="form-control" maxlength="50" replace="[^a-zA-Z]" with=""/>
-                                                <span ng-show="formStep1.$submitted &amp;&amp; formStep1.name.$invalid && addCustomerForm.name != null"
+                                                <span ng-show="formStep1.$submitted &amp;&amp; formStep1.name.$invalid && modalCtrl.name != null"
                                                       class="text-danger">Este campo es inválido</span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4" ng-show="addCustomerForm.selectedIdentificationType == 1">
+                                    <div class="col-md-4" ng-show="modalCtrl.selectedIdentificationType == 1">
                                         <div class="form-group">
                                             <label>Primer apellido</label>
                                             <div class="controls">
-                                                <input type="text" name="firstLastName" ng-model="addCustomerForm.firstLastName"
+                                                <input type="text" name="firstLastName" ng-model="modalCtrl.firstLastName"
                                                        class="form-control" maxlength="50" replace="[^a-zA-Z]" with=""/>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4" ng-show="addCustomerForm.selectedIdentificationType == 1">
+                                    <div class="col-md-4" ng-show="modalCtrl.selectedIdentificationType == 1">
                                         <div class="form-group">
                                             <label>Segundo apellido</label>
                                             <div class="controls">
-                                                <input type="text" name="secondLastName" ng-model="addCustomerForm.secondLastName"
+                                                <input type="text" name="secondLastName" ng-model="modalCtrl.secondLastName"
                                                        class="form-control" maxlength="50" replace="[^a-zA-Z]" with=""/>
                                             </div>
                                         </div>
@@ -132,7 +132,7 @@
                                         <div class="form-group">
                                             <label>Teléfono #1</label>
                                             <div class="controls">
-                                                <input type="tel" name="phoneNumber1" ng-model="addCustomerForm.phoneNumber1"
+                                                <input type="tel" name="phoneNumber1" ng-model="modalCtrl.phoneNumber1"
                                                        required="required" class="form-control" ui-mask="9999-9999"/>
                                                 <span ng-show="formStep2.$submitted &amp;&amp; formStep2.phoneNumber1.$invalid"
                                                       class="text-danger">Este campo es inválido</span>
@@ -143,7 +143,7 @@
                                         <div class="form-group">
                                             <label>Teléfono #2</label>
                                             <div class="controls">
-                                                <input type="tel" name="phoneNumber2" ng-model="addCustomerForm.phoneNumber2"
+                                                <input type="tel" name="phoneNumber2" ng-model="modalCtrl.phoneNumber2"
                                                        class="form-control" ui-mask="9999-9999"/>
                                             </div>
                                         </div>
@@ -152,7 +152,7 @@
                                         <div class="form-group">
                                             <label>Teléfono móvil</label>
                                             <div class="controls">
-                                                <input type="tel" name="mobile" ng-model="addCustomerForm.mobile" class="form-control"
+                                                <input type="tel" name="mobile" ng-model="modalCtrl.mobile" class="form-control"
                                                        ui-mask="9999-9999" />
                                             </div>
                                         </div>
@@ -164,7 +164,7 @@
                                         <div class="form-group">
                                             <label>Correo electrónico</label>
                                             <div class="controls">
-                                                <input type="email" name="email" ng-model="addCustomerForm.email" placeholder="cliente@empresa.com"
+                                                <input type="email" name="email" ng-model="modalCtrl.email" placeholder="cliente@empresa.com"
                                                        class="form-control" />
                                             </div>
                                         </div>
@@ -173,7 +173,7 @@
                                         <div class="form-group">
                                             <label>Website</label>
                                             <div class="controls">
-                                                <input type="text" name="website" ng-model="addCustomerForm.website" placeholder="www.website.com"
+                                                <input type="text" name="website" ng-model="modalCtrl.website" placeholder="www.website.com"
                                                        class="form-control" />
                                             </div>
                                         </div>
@@ -196,107 +196,100 @@
                         <div id="step3" ng-show="wizard.active(3)">
                             <!-- Wizard with validation require inner forms to group step inputs to be validated-->
                             <fieldset ng-form="formStep3">
-                                <legend>Direcciones</legend>
-                                <!-- START row-->
-                                <h4>Dirección</h4>
-                                <div ng-show="addCustomerForm.selectedProvince != null">
-                                    <button type="button" class="btn btn-labeled btn-success" ng-click="addAddress()">
-                                        <span class="btn-label">
-                                        <em class="fa fa-plus"></em>
-                                        </span>Agregar dirección
-                                    </button>
+                                <!-- Chaning data-->
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div ng-controller="AddressController as addressTable">
+                                            <form class="form-inline">
+                                                <table datatable="ng" dt-options="addressTable.dtOptions" dt-column-defs="addressTable.dtColumnDefs" class="row-border hover">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>
+                                                            <div>
+                                                                <div class="form-group">
+                                                                    <label>Provincia</label>
+                                                                    <div class="controls">
+                                                                        <select name="selectedProvince" ng-model="addressTable.address2Add.province"
+                                                                                ng-options="item.name for item in addressTable.provinces" class="form-control"
+                                                                                ng-change="addressTable.loadCantons(addressTable.address2Add.province.idProvince)">
+                                                                            <option value="?"></option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th>
+                                                            <div>
+                                                                <div class="form-group">
+                                                                    <label>Cantón</label>
+                                                                    <div class="controls">
+                                                                        <select name="selectedCanton" ng-model="addressTable.address2Add.canton"
+                                                                                ng-options="item.name for item in addressTable.cantons" class="form-control"
+                                                                                ng-change="addressTable.loadDistricts(addressTable.address2Add.canton.idCanton)">
+                                                                            <option value="?"></option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th>
+                                                            <div>
+                                                                <div class="form-group">
+                                                                    <label>Distrito</label>
+                                                                    <div class="controls">
+                                                                        <select name="selectedDistrict" ng-model="addressTable.address2Add.district"
+                                                                                ng-options="item.name for item in addressTable.districts"class="form-control">
+                                                                            <option value="?"></option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th>
+                                                            <div>
+                                                                <div class="form-group">
+                                                                    <label>Dirección</label>
+                                                                    <div class="controls">
+                                                                        <textarea style="resize: none" name="address" ng-model="addressTable.address2Add.address" class="form-control"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                        <th>
+                                                            <div class="form-group">
+                                                                <button type="button" ng-click="addressTable.addAddress2Table()" class="btn btn-labeled btn-success">
+                                                                    <span class="btn-label"><em class="fa fa-plus"></em>
+                                                                    </span>Agregar
+                                                                </button>
+                                                            </div>
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Provincia</th>
+                                                        <th>Cantón</th>
+                                                        <th>Distrito</th>
+                                                        <th>Dirección</th>
+                                                        <th>Opciones</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr ng-repeat="address in addressTable.tmpAddresses">
+                                                        <td>{{ address.province.name }}</td>
+                                                        <td>{{ address.canton.name }}</td>
+                                                        <td>{{ address.district.name }}</td>
+                                                        <td>{{ address.address }}</td>
+                                                        <td>
+                                                            <button type="button" ng-click="addressTable.removeTmpAddress($index)" class="btn btn-sm btn-danger">
+                                                                <em class="fa fa-trash-o"></em>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </form>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label>Provincia</label>
-                                            <div class="controls">
-                                                <select name="selectedProvince" ng-model="addCustomerForm.selectedProvince"
-                                                        ng-options="item.name for item in modalCtrl.provinces" class="form-control"
-                                                        ng-change="modalCtrl.loadCantons(addCustomerForm.selectedProvince.idProvince)">
-                                                    <option value="?"></option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label>Cantón</label>
-                                            <div class="controls">
-                                                <select name="selectedCanton" ng-model="addCustomerForm.selectedCanton"
-                                                        ng-options="item.name for item in modalCtrl.cantons" class="form-control"
-                                                        ng-change="modalCtrl.loadDistricts(addCustomerForm.selectedCanton.idCanton)">
-                                                    <option value="?"></option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label>Distrito</label>
-                                            <div class="controls">
-                                                <select name="selectedDistrict" ng-model="addCustomerForm.selectedDistrict"
-                                                        ng-options="item.name for item in modalCtrl.districts"class="form-control">
-                                                    <option value="?"></option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <div class="controls">
-                                                <textarea style="resize: none" name="address" ng-model="addCustomerForm.address"
-                                                    class="form-control">
-                                                </textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- END row-->
-                                <fieldset>
-                                    <h4 ng-show="addressList != null">Lista de direcciones</h4>
-                                    <div ng-repeat="address in addressList" class="row">
-                                        <div class="col-md-12">
-                                            <button type="button" ng-click="deleteTmpAddress(address)"
-                                                    class="btn btn-sm btn-danger">
-                                                <em class="fa fa-trash-o"></em>
-                                            </button>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label>Provincia</label>
-                                                <div class="controls">
-                                                    <input type="text" value="{{address.provinceName}}" class="form-control" disabled/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label>Cantón</label>
-                                                <div class="controls">
-                                                    <input type="text" value="{{address.provinceName}}" class="form-control" disabled/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label>Distrito</label>
-                                                <div class="controls">
-                                                    <input type="text" value="{{address.cantonName}}" class="form-control" disabled/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label>Dirección</label>
-                                                <div class="controls">
-                                                    <textarea style="resize: none" class="form-control" disabled>{{address.address}}
-                                                    </textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </fieldset>
                                 <span ng-show="formStep3.$submitted &amp;&amp; formStep3.addedProvince.$invalid"
                                       class="text-danger">Es necesario al menos una dirección</span>
                             </fieldset>
@@ -322,7 +315,7 @@
                                         <div class="form-group">
                                             <label>Límite de crédito</label>
                                             <div class="controls">
-                                                <input type="number" name="creditLimit" ng-model="addCustomerForm.creditLimit"
+                                                <input type="number" name="creditLimit" ng-model="modalCtrl.creditLimit"
                                                        placeholder="₡" required="required" class="form-control" min="0"/>
                                                 <span ng-show="formStep4.$submitted &amp;&amp; formStep4.creditLimit.$invalid"
                                                       class="text-danger">Este campo es inválido</span>
@@ -333,7 +326,7 @@
                                         <div class="form-group">
                                             <label>Porcentaje de descuento</label>
                                             <div class="controls">
-                                                <input type="number" name="discountPorcentage" ng-model="addCustomerForm.discountPercentage"
+                                                <input type="number" name="discountPorcentage" ng-model="modalCtrl.discountPercentage"
                                                        placeholder="%" required="required" class="form-control" min="0" max="99"/>
                                                 <span ng-show="formStep4.$submitted &amp;&amp; formStep4.discountPorcentage.$invalid"
                                                       class="text-danger">Este campo es inválido</span>
@@ -372,7 +365,7 @@
                                                         <div class="form-group">
                                                             <label>Nombre</label>
                                                             <div class="controls">
-                                                                <input type="text" name="contactName1" ng-model="addCustomerForm.contactName1"
+                                                                <input type="text" name="contactName1" ng-model="modalCtrl.contactName1"
                                                                        placeholder="Juan" required="required" class="form-control" replace="[^a-zA-Z]" with=""/>
                                                                 <span ng-show="formStep5.$submitted &amp;&amp; formStep5.contactName1.$invalid"
                                                                       class="text-danger">Este campo es inválido</span>
@@ -383,7 +376,7 @@
                                                         <div class="form-group">
                                                             <label>Primer apellido</label>
                                                             <div class="controls">
-                                                                <input type="text" name="contactFirstLastName1" ng-model="addCustomerForm.contactFirstLastName1"
+                                                                <input type="text" name="contactFirstLastName1" ng-model="modalCtrl.contactFirstLastName1"
                                                                        placeholder="Perez" required="required" class="form-control" replace="[^a-zA-Z]" with=""/>
                                                                 <span ng-show="formStep5.$submitted &amp;&amp; formStep5.contactFirstLastName1.$invalid"
                                                                       class="text-danger">Este campo es inválido</span>
@@ -394,7 +387,7 @@
                                                         <div class="form-group">
                                                             <label>Segundo apellido</label>
                                                             <div class="controls">
-                                                                <input type="text" name="contactSecondLastName1" ng-model="addCustomerForm.contactSecondLastName1"
+                                                                <input type="text" name="contactSecondLastName1" ng-model="modalCtrl.contactSecondLastName1"
                                                                        placeholder="Perez" required="required" class="form-control" replace="[^a-zA-Z]" with=""/>
                                                                 <span ng-show="formStep5.$submitted &amp;&amp; formStep5.contactSecondLastName1.$invalid"
                                                                       class="text-danger">Este campo es inválido</span>
@@ -405,7 +398,7 @@
                                                         <div class="form-group">
                                                             <label>Puesto</label>
                                                             <div class="controls">
-                                                                <input type="text" name="contactPosition1" ng-model="addCustomerForm.contactPosition1"
+                                                                <input type="text" name="contactPosition1" ng-model="modalCtrl.contactPosition1"
                                                                        placeholder="Director" required="required" class="form-control" />
                                                                 <span ng-show="formStep5.$submitted &amp;&amp; formStep5.contactPosition1.$invalid"
                                                                       class="text-danger">Este campo es inválido</span>
@@ -416,7 +409,7 @@
                                                         <div class="form-group">
                                                             <label>Departamento</label>
                                                             <div class="controls">
-                                                                <input type="text" name="contactDepartment1" ng-model="addCustomerForm.contactDepartment1"
+                                                                <input type="text" name="contactDepartment1" ng-model="modalCtrl.contactDepartment1"
                                                                        placeholder="Ventas" required="required" class="form-control" />
                                                                 <span ng-show="formStep5.$submitted &amp;&amp; formStep5.contactDepartment1.$invalid"
                                                                       class="text-danger">Este campo es inválido</span>
@@ -427,7 +420,7 @@
                                                         <div class="form-group">
                                                             <label>Teléfono</label>
                                                             <div class="controls">
-                                                                <input type="text" name="contactPhoneNumber1" ng-model="addCustomerForm.contactPhoneNumber1"
+                                                                <input type="text" name="contactPhoneNumber1" ng-model="modalCtrl.contactPhoneNumber1"
                                                                        ui-mask="9999-9999" required="required" class="form-control" />
                                                                 <span ng-show="formStep5.$submitted &amp;&amp; formStep5.contactPhoneNumber1.$invalid"
                                                                       class="text-danger">Este campo es inválido</span>
@@ -438,7 +431,7 @@
                                                         <div class="form-group">
                                                             <label>Extensión</label>
                                                             <div class="controls">
-                                                                <input type="text" name="contactExtention1" ng-model="addCustomerForm.contactExtention1"
+                                                                <input type="text" name="contactExtention1" ng-model="modalCtrl.contactExtention1"
                                                                        placeholder="100" class="form-control" maxlength="5"/>
                                                             </div>
                                                         </div>
@@ -447,7 +440,7 @@
                                                         <div class="form-group">
                                                             <label>Teléfono móvil</label>
                                                             <div class="controls">
-                                                                <input type="text" name="contactMobile1" ng-model="addCustomerForm.contactMobile1"
+                                                                <input type="text" name="contactMobile1" ng-model="modalCtrl.contactMobile1"
                                                                        ui-mask="9999-9999" required="required" class="form-control" />
                                                                 <span ng-show="formStep5.$submitted &amp;&amp; formStep5.contactMobile1.$invalid"
                                                                       class="text-danger">Este campo es inválido</span>
@@ -458,7 +451,7 @@
                                                         <div class="form-group">
                                                             <label>Email</label>
                                                             <div class="controls">
-                                                                <input type="email" name="contactEmail1" ng-model="addCustomerForm.contactEmail1"
+                                                                <input type="email" name="contactEmail1" ng-model="modalCtrl.contactEmail1"
                                                                        placeholder="contact@dominio.com" required="required" class="form-control" />
                                                                 <span ng-show="formStep5.$submitted &amp;&amp; formStep5.contactEmail1.$invalid"
                                                                       class="text-danger">Este campo es inválido</span>
@@ -481,7 +474,7 @@
                                                         <div class="form-group">
                                                             <label>Nombre</label>
                                                             <div class="controls">
-                                                                <input type="text" name="contactName2" ng-model="addCustomerForm.contactName2"
+                                                                <input type="text" name="contactName2" ng-model="modalCtrl.contactName2"
                                                                        placeholder="Juan" class="form-control" replace="[^a-zA-Z]" with=""/>
                                                             </div>
                                                         </div>
@@ -490,7 +483,7 @@
                                                         <div class="form-group">
                                                             <label>Primer apellido</label>
                                                             <div class="controls">
-                                                                <input type="text" name="contactFirstLastName2" ng-model="addCustomerForm.contactFirstLastName2"
+                                                                <input type="text" name="contactFirstLastName2" ng-model="modalCtrl.contactFirstLastName2"
                                                                        placeholder="Perez" class="form-control" replace="[^a-zA-Z]" with=""/>
                                                             </div>
                                                         </div>
@@ -499,7 +492,7 @@
                                                         <div class="form-group">
                                                             <label>Segundo apellido</label>
                                                             <div class="controls">
-                                                                <input type="text" name="contactSecondLastName2" ng-model="addCustomerForm.contactSecondLastName2"
+                                                                <input type="text" name="contactSecondLastName2" ng-model="modalCtrl.contactSecondLastName2"
                                                                        placeholder="Perez" class="form-control" replace="[^a-zA-Z]" with=""/>
                                                             </div>
                                                         </div>
@@ -508,7 +501,7 @@
                                                         <div class="form-group">
                                                             <label>Puesto</label>
                                                             <div class="controls">
-                                                                <input type="text" name="contactPosition2" ng-model="addCustomerForm.contactPosition2"
+                                                                <input type="text" name="contactPosition2" ng-model="modalCtrl.contactPosition2"
                                                                        placeholder="Director" class="form-control" />
                                                             </div>
                                                         </div>
@@ -517,7 +510,7 @@
                                                         <div class="form-group">
                                                             <label>Departamento</label>
                                                             <div class="controls">
-                                                                <input type="text" name="contactDepartment2" ng-model="addCustomerForm.contactDepartment2"
+                                                                <input type="text" name="contactDepartment2" ng-model="modalCtrl.contactDepartment2"
                                                                        placeholder="Ventas" class="form-control" />
                                                             </div>
                                                         </div>
@@ -526,7 +519,7 @@
                                                         <div class="form-group">
                                                             <label>Teléfono</label>
                                                             <div class="controls">
-                                                                <input type="text" name="contactPhoneNumber2" ng-model="addCustomerForm.contactPhoneNumber2"
+                                                                <input type="text" name="contactPhoneNumber2" ng-model="modalCtrl.contactPhoneNumber2"
                                                                        ui-mask="9999-9999" class="form-control" />
                                                             </div>
                                                         </div>
@@ -535,7 +528,7 @@
                                                         <div class="form-group">
                                                             <label>Extensión</label>
                                                             <div class="controls">
-                                                                <input type="text" name="contactExtention2" ng-model="addCustomerForm.contactExtention2"
+                                                                <input type="text" name="contactExtention2" ng-model="modalCtrl.contactExtention2"
                                                                        placeholder="100" class="form-control" maxlength="5" />
                                                             </div>
                                                         </div>
@@ -544,7 +537,7 @@
                                                         <div class="form-group">
                                                             <label>Teléfono móvil</label>
                                                             <div class="controls">
-                                                                <input type="text" name="contactMobile2" ng-model="addCustomerForm.contactMobile2"
+                                                                <input type="text" name="contactMobile2" ng-model="modalCtrl.contactMobile2"
                                                                        ui-mask="9999-9999" class="form-control" />
                                                             </div>
                                                         </div>
@@ -553,7 +546,7 @@
                                                         <div class="form-group">
                                                             <label>Email</label>
                                                             <div class="controls">
-                                                                <input type="email" name="contactEmail2" ng-model="addCustomerForm.contactEmail2"
+                                                                <input type="email" name="contactEmail2" ng-model="modalCtrl.contactEmail2"
                                                                        placeholder="contact@dominio.com" class="form-control" />
                                                             </div>
                                                         </div>
@@ -586,7 +579,7 @@
                                     las pestañas superiores.
                                 </p>
                                 <p class="text-right">
-                                    <button type="button" ng-click="addCustomer()" class="btn btn-success btn-lg">Agregar cliente</button>
+                                    <button type="button" ng-click="modalCtrl.addCustomer()" class="btn btn-success btn-lg">Agregar cliente</button>
                                     <button type="button" ng-click="cancel()" class="btn btn-danger btn-lg">Cancelar</button>
                                 </p>
                             </div>

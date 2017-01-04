@@ -19,8 +19,8 @@
     "icon": "fa fa-pencil-square-o"
   },
   {
-    "text": "Inventario",
-    "sref": "app.inventory",
+    "text": "Almacén",
+    "sref": "app.warehouseMain",
     "icon": "fa fa-book"
   },
   {

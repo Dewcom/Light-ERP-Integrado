@@ -1,0 +1,61 @@
+<div class="panel panel-default" ng-controller="ProductController as controller">
+    <div class="panel-body">
+        <div>
+            <div class="col-md-12 dataTableTop">
+                <div class="col-md-9">
+                    <h3>Lista de productos</h3>
+                </div>
+                <div class="col-md-3" ng-click="controller.openAddModal()">
+                    <button type="submit" class="btn btn-labeled btn-success addButton">
+                          <span class="btn-label">
+                             <em class="fa fa-plus"></em>
+                          </span>Agregar
+                    </button>
+                </div>
+            </div>
+            <table datatable="ng" dt-options="controller.dtOptions" dt-column-defs="controller.dtColumnDefs"
+                   class="row-border hover">
+                <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Tipo de producto</th>
+                    <th>Tipo de presentación</th>
+                    <th>Opciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="productObj in controller.productList">
+                    <td>{{ productObj.productCode }}</td>
+                    <td>{{ productObj.name }}</td>
+                    <td>{{ productObj.productType.name }}</td>
+                    <td>{{ productObj.presentationType.name }}</td>
+                    <td>
+                        <button type="button" ng-click="controller.openUpdateModal(productObj)" class="btn btn-sm btn-toolbar">
+                            <em class="fa fa-search"></em>
+                        </button>
+                        <button type="button" ng-click="controller.disableProduct(productObj.id)"
+                                class="btn btn-sm btn-danger">
+                            <em class="fa fa-trash-o"></em>
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            </form>
+        </div>
+    </div>
+    <toaster-container toaster-options="{'position-class': 'toast-bottom-right', 'close-button':true}"></toaster-container>
+    <script type="text/ng-template" id="disableProductModal">
+        <div class="ngdialog-message text-center">
+            <h3>Eliminar producto</h3>
+            <p>¿Está seguro que desea eliminar el producto?</p>
+            <div>
+                <button type="button" ng-click="confirm(confirmValue)" class="btn btn-primary mr">Confirmar</button>
+                <button type="button" ng-click="closeThisDialog('button')" class="btn btn-default">Cancelar</button>
+            </div>
+        </div>
+    </script>
+    <div ng-include="'app/views/modals/add-product-modal.html'"></div>
+    <div ng-include="'app/views/modals/update-product-modal.html'"></div>
+</div>
