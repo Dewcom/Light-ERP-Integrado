@@ -100,7 +100,9 @@
         ModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', 'contact'];
         function ModalInstanceCtrl($scope, $uibModalInstance,contact) {
             $scope.currentContact = contact;
-            $scope.contactToUpdate = {};
+            $scope.contactToUpdate = new Contact(contact.name, contact.firstLastName, contact.secondLastName, contact.email, contact.phoneNumber1, contact.phoneNumber2, contact.jobTitle, contact.department, contact.mobile);
+            console.log('new contact');
+            console.log($scope.contactToUpdate);
 
             $scope.close = function () {
                 $uibModalInstance.close('closed');
@@ -200,6 +202,7 @@
                     "department": $scope.contactToUpdate.department,
                     "mobile": $scope.contactToUpdate.mobile
                 };
+                console.log('CONTACTO A MODIFICAR');
                 console.log(updatedContact);
                 contactService.updateContact(updatedContact).then(function (response) {
                     var toasterdata;
@@ -284,5 +287,32 @@
         function callAtTimeout(){
             $state.reload();
         }
+
+        //defaultContructor
+       /* var Contact = function(){
+            this.name = "";
+            this.firstLastName = "";
+            this.secondLastName = "";
+            this.email = "";
+            this.phoneNumber1 = "";
+            this.phoneNumber2 = "";
+            this.jobTitle = "";
+            this.department = "";
+            this.mobile = "";
+        }*/
+
+        //defaultContructor
+        var Contact = function(name, firstLastName, secondLastName, email, phoneNumber1, phoneNumber2, jobTitle, department, mobile){
+            this.name = name;
+            this.firstLastName = firstLastName;
+            this.secondLastName = secondLastName;
+            this.email = email;
+            this.phoneNumber1 = phoneNumber1;
+            this.phoneNumber2 = phoneNumber2;
+            this.jobTitle = jobTitle;
+            this.department = department;
+            this.mobile = mobile;
+        }
+
     }
 })();

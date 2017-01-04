@@ -8,7 +8,7 @@ import grails.validation.Validateable
  */
 class UpdateContactRequestREST implements Validateable {
     Integer id
-    String name
+    String name = ""
     String firstLastName
     String secondLastName
     String jobTitle
@@ -21,15 +21,14 @@ class UpdateContactRequestREST implements Validateable {
 
     static constraints = {
         id  nullable: false
-        name  blank: true, nullable: true
-        firstLastName  blank: true, nullable: true
-        secondLastName  blank: true, nullable: true
-        jobTitle  blank: true, nullable: true
-        department  blank: true, nullable: true
-        phoneNumber1  blank: true, nullable: true
-        phoneNumber2  blank: true, nullable: true
-        mobile  blank: true, nullable: true
-        email  blank: true, nullable: true
-
+        name blank: false
+        firstLastName blank: false
+        secondLastName blank: false
+        jobTitle nullable: true, blank: true
+        department nullable: true, blank: true
+        phoneNumber1 blank: false
+        phoneNumber2 nullable: true, blank: true
+        mobile nullable: true, blank: true
+        email nullable: true, blank: true
     }
 }

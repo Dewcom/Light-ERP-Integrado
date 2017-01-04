@@ -70,17 +70,18 @@ class ContactService {
         try {
             Contact tmpContactToUpdate = Contact.findByIdAndEnabled(argRestContact.id, Constants.ESTADO_ACTIVO)
             if (tmpContactToUpdate) {
-                tmpContactToUpdate.name = argRestContact.name == null ? tmpContactToUpdate.name : argRestContact.name;
-                tmpContactToUpdate.firstLastName = argRestContact.firstLastName == null ? tmpContactToUpdate.firstLastName : argRestContact.firstLastName;
-                tmpContactToUpdate.secondLastName = argRestContact.secondLastName == null ? tmpContactToUpdate.secondLastName : argRestContact.secondLastName;
-                tmpContactToUpdate.jobTitle = argRestContact.jobTitle == null ? tmpContactToUpdate.jobTitle : argRestContact.jobTitle;
-                tmpContactToUpdate.department = argRestContact.department == null ? tmpContactToUpdate.department : argRestContact.department;
-                tmpContactToUpdate.phoneNumber1 = argRestContact.phoneNumber1 == null ? tmpContactToUpdate.phoneNumber1 : argRestContact.phoneNumber1;
-                tmpContactToUpdate.phoneNumber2 = argRestContact.phoneNumber2 == null ? tmpContactToUpdate.phoneNumber2 : argRestContact.phoneNumber2;
-                tmpContactToUpdate.mobile = argRestContact.mobile == null ? tmpContactToUpdate.mobile : argRestContact.mobile;
-                tmpContactToUpdate.email = argRestContact.email == null ? tmpContactToUpdate.email : argRestContact.email;
+                tmpContactToUpdate.name = argRestContact.name;
+                log.info 'Nombre contacto' + argRestContact.name
+                tmpContactToUpdate.firstLastName = argRestContact.firstLastName;
+                tmpContactToUpdate.secondLastName = argRestContact.secondLastName;
+                tmpContactToUpdate.jobTitle = argRestContact.jobTitle;
+                tmpContactToUpdate.department = argRestContact.department;
+                tmpContactToUpdate.phoneNumber1 = argRestContact.phoneNumber1;
+                tmpContactToUpdate.phoneNumber2 = argRestContact.phoneNumber2;
+                tmpContactToUpdate.mobile = argRestContact.mobile;
+                tmpContactToUpdate.email =  argRestContact.email;
 
-                tmpContactToUpdate.save(flush: true);
+                tmpContactToUpdate.save(flush: true, failOnError:true);
             } else {
                 throw new LightRuntimeException(messageSource.getMessage("update.contact.notFound.error", null, Locale.default));
             }

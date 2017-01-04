@@ -155,6 +155,7 @@ class ContactController extends RestController {
 
         ResponseREST tmpResponse = new ResponseREST();
         UpdateContactRequestREST tmpContactRest = new UpdateContactRequestREST(request.JSON);
+        log.info request.JSON
         try {
             tmpContactRest.validate();
             if (tmpContactRest.hasErrors()) {
