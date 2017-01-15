@@ -75,19 +75,24 @@ class CustomerService {
                 tmpCustomerToUpdate.creditLimit = argRestCustomer.creditLimit;
                 tmpCustomerToUpdate.identification = argRestCustomer.identification;
 
-                argRestCustomer.addresses.each {
+                //Se desactivan las direcciones que fueron eliminadas en el FE
+                tmpCustomerToUpdate.addresses.each {
 
                     def tmpIt = it;
+                    tmpIt.enabled = Constants.ESTADO_INACTIVO;
 
-                    tmpCustomerToUpdate.addresses.each {
+                    argRestCustomer.addresses.each {
                         if(tmpIt.id == it.id){
-                            tmpIt.address = it.address;
-                            tmpIt.idDistrict = it.idDistrict;
+                            tmpIt.enabled = Constants.ESTADO_ACTIVO;
                         }
                     }
+                }
 
-                    if(tmpIt.id == null){
-                        tmpCustomerToUpdate.addToAddresses(tmpIt);
+                //Se agregan las direcciones nuevas
+                argRestCustomer.addresses.each {
+
+                    if(it.id == null){
+                        tmpCustomerToUpdate.addToAddresses(it);
                     }
                 }
 

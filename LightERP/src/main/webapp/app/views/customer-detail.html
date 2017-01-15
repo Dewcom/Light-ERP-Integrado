@@ -1,20 +1,20 @@
-<div ng-controller="CustomerDetailController as controller">
+<div ng-controller="CustomerDetailController as parentController">
     <div class="row">
         <div class="col-md-7">
             <h3>Detalle del cliente</h3>
         </div>
         <div class="col-md-5 customButtonGroup">
-            <button type="submit" class="btn btn-labeled btn-info" ng-click="controller.goBack()">
+            <button type="submit" class="btn btn-labeled btn-info" ng-click="parentController.goBack()">
                 <span class="btn-label">
                     <em class="fa fa-mail-reply"></em>
                 </span>Regresar
             </button>
-            <button type="submit" class="btn btn-labeled btn-success" ng-click="controller.updateCustomer()">
+            <button type="submit" class="btn btn-labeled btn-success" ng-click="parentController.updateCustomer()">
                 <span class="btn-label">
                     <em class="fa fa-plus"></em>
                 </span>Guardar
             </button>
-            <button type="button" class="btn btn-labeled btn-danger" ng-click="controller.cancel()">
+            <button type="button" class="btn btn-labeled btn-danger" ng-click="parentController.cancel()">
                    <span class="btn-label"><i class="fa fa-times"></i>
                    </span>Cancelar
             </button>
@@ -35,7 +35,7 @@
                                         <label>Tipo de cliente</label>
                                         <div class="controls">
                                             <select name="selectedCustomerType" ng-model="currentCustomer.selectedCustomerType"
-                                                    ng-options="item.id as item.name for item in controller.customerTypeList"
+                                                    ng-options="item.id as item.name for item in parentController.customerTypeList"
                                                     class="form-control" required="required">
                                                 <option value="?"></option>
                                             </select>
@@ -49,7 +49,7 @@
                                         <label>Tipo de identificación</label>
                                         <div class="controls">
                                             <select name="selectedIdentificationType" ng-model="currentCustomer.selectedIdentificationType"
-                                                    ng-options="item.id as item.name for item in controller.identificationTypeList"
+                                                    ng-options="item.id as item.name for item in parentController.identificationTypeList"
                                                     class="form-control" required="required">
                                                 <option value="?"></option>
                                             </select>
@@ -149,60 +149,95 @@
                         </fieldset>
                         <fieldset>
                             <legend>Direcciones</legend>
-
-                            <!-- START row-->
-                            <div ng-repeat="address in controller.addresses">
-                                <h4>Dirección</h4>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>Provincia</label>
-                                        <div class="controls">
-                                            <select name="selectedProvince" ng-model="currentCustomer.selectedProvince"
-                                                    ng-options="item.idProvince as item.name for item in controller.provinces"
-                                                    class="form-control" required="required" ng-change="controller.loadCantons(currentCustomer.selectedProvince)">
-                                                <option value="?"></option>
-                                            </select>
-                                            <span ng-show="form.$submitted &amp;&amp; form.selectedProvince.$invalid" class="text-danger">Este campo es inválido</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>Cantón</label>
-                                        <div class="controls">
-                                            <select name="selectedCanton" ng-model="currentCustomer.selectedCanton"
-                                                    ng-options="item.idCanton as item.name for item in controller.cantons"
-                                                    class="form-control" required="required" ng-change="controller.loadDistricts(currentCustomer.selectedCanton)">
-                                                <option value="?"></option>
-                                            </select>
-                                            <span ng-show="form.$submitted &amp;&amp; form.selectedCanton.$invalid" class="text-danger">Este campo es inválido</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>Distrito</label>
-                                        <div class="controls">
-                                            <select name="selectedDistrict" ng-model="currentCustomer.selectedDistrict"
-                                                    ng-options="item.idDistrict as item.name for item in controller.districts"
-                                                    class="form-control" required="required">
-                                                <option value="?"></option>
-                                            </select>
-                                            <span ng-show="form.$submitted &amp;&amp; form.selectedDistrict.$invalid" class="text-danger">Este campo es inválido</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label>Dirección</label>
-                                        <div class="controls">
-                                            <textarea style="resize: none" name="address" ng-model="currentCustomer.address" class="form-control" required="required" />
-                                            <span ng-show="form.$submitted &amp;&amp; form.address.$invalid" class="text-danger">Este campo es inválido</span>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div ng-controller="AddressController as addressTable">
+                                <form class="form-inline">
+                                    <table datatable=" " dt-options="addressTable.dtOptions" dt-column-defs="addressTable.dtColumnDefs" class="row-border hover">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                <div>
+                                                    <div class="form-group">
+                                                        <label>Provincia</label>
+                                                        <div class="controls">
+                                                            <select name="selectedProvince" ng-model="addressTable.address2Add.province"
+                                                                    ng-options="item.name for item in addressTable.provinces" class="form-control"
+                                                                    ng-change="addressTable.loadCantons(addressTable.address2Add.province.idProvince)">
+                                                                <option value="?"></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                            <th>
+                                                <div>
+                                                    <div class="form-group">
+                                                        <label>Cantón</label>
+                                                        <div class="controls">
+                                                            <select name="selectedCanton" ng-model="addressTable.address2Add.canton"
+                                                                    ng-options="item.name for item in addressTable.cantons" class="form-control"
+                                                                    ng-change="addressTable.loadDistricts(addressTable.address2Add.canton.idCanton)">
+                                                                <option value="?"></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                            <th>
+                                                <div>
+                                                    <div class="form-group">
+                                                        <label>Distrito</label>
+                                                        <div class="controls">
+                                                            <select name="selectedDistrict" ng-model="addressTable.address2Add.district"
+                                                                    ng-options="item.name for item in addressTable.districts"class="form-control">
+                                                                <option value="?"></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                            <th>
+                                                <div>
+                                                    <div class="form-group">
+                                                        <label>Dirección</label>
+                                                        <div class="controls">
+                                                            <textarea style="resize: none" name="address" ng-model="addressTable.address2Add.address" class="form-control"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                            <th>
+                                                <div class="form-group">
+                                                    <button type="button" ng-click="addressTable.addAddress2Table()" class="btn btn-labeled btn-success">
+                                                                    <span class="btn-label"><em class="fa fa-plus"></em>
+                                                                    </span>Agregar
+                                                    </button>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>Provincia</th>
+                                            <th>Cantón</th>
+                                            <th>Distrito</th>
+                                            <th>Dirección</th>
+                                            <th>Opciones</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="address in parentController.addresses">
+                                            <td>{{ address.province.name }}</td>
+                                            <td>{{ address.canton.name }}</td>
+                                            <td>{{ address.district.name }}</td>
+                                            <td>{{ address.address }}</td>
+                                            <td>
+                                                <button type="button" ng-click="addressTable.removeTmpAddress($index)" class="btn btn-sm btn-danger">
+                                                    <em class="fa fa-trash-o"></em>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </form>
                             </div>
-                            <!-- END row-->
                         </fieldset>
                         <fieldset>
                             <legend>Crédito</legend>

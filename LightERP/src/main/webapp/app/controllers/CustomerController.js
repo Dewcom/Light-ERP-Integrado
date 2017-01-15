@@ -138,9 +138,6 @@
 
         vm.addCustomer = function(){
 
-            console.log(vm.addresses);
-
-
             var newCustomer ={
                 "name":vm.name,
                 "firstLastName":vm.firstLastName ,

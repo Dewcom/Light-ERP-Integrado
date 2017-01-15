@@ -14,7 +14,31 @@
     function AddressController($resource, DTOptionsBuilder, DTColumnDefBuilder, $filter, $scope) {
         var vm = this;
 
-        vm.addressesInParent = $scope.modalCtrl.addresses;
+        var language = {
+            "sProcessing":     "Procesando...",
+            "sLengthMenu":     "Mostrar _MENU_ registros",
+            "sZeroRecords":    "", //Se deja en blanco para que no muestre el label de datos vacios
+            "sEmptyTable":     "", //Se deja en blanco para que no muestre el label de tabla vacia
+            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix":    "",
+            "sSearch":         "Buscar:",
+            "sUrl":            "",
+            "sInfoThousands":  ",",
+            "sLoadingRecords": "Cargando...",
+            "oPaginate": {
+                "sFirst":    "Primero",
+                "sLast":     "Último",
+                "sNext":     "Siguiente",
+                "sPrevious": "Anterior"
+            },
+            "oAria": {
+                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+            }
+        };
+
 
         activate();
 
@@ -22,23 +46,20 @@
 
         function activate() {
 
-            // Ajax
-
-            // Changing data
-
-            vm.tmpAddresses = [];
-
             vm.dtOptions = DTOptionsBuilder.newOptions()
                 .withOption('bFilter', false)
                 .withOption('bInfo', false)
-                .withOption('bPaginate', false);
+                .withOption('bPaginate', false)
+                .withOption('bLengthChange', false)
+                .withLanguage(language);
             vm.dtColumnDefs = [
-                DTColumnDefBuilder.newColumnDef(0).notSortable(),
-                DTColumnDefBuilder.newColumnDef(1).notSortable(),
-                DTColumnDefBuilder.newColumnDef(2).notSortable(),
-                DTColumnDefBuilder.newColumnDef(3).notSortable(),
-                DTColumnDefBuilder.newColumnDef(4).notSortable()
+                DTColumnDefBuilder.newColumnDef(0).notSortable().withOption('width', '20%').withOption('className', 'dt-body-center'),
+                DTColumnDefBuilder.newColumnDef(1).notSortable().withOption('width', '20%').withOption('className', 'dt-body-center'),
+                DTColumnDefBuilder.newColumnDef(2).notSortable().withOption('width', '20%').withOption('className', 'dt-body-center'),
+                DTColumnDefBuilder.newColumnDef(3).notSortable().withOption('width', '30%').withOption('className', 'dt-body-center'),
+                DTColumnDefBuilder.newColumnDef(4).notSortable().withOption('width', '10%').withOption('className', 'dt-body-center')
             ];
+
             vm.address2Add = _buildAddress2Add(1);
             vm.addAddress2Table = addAddress2Table;
             vm.removeTmpAddress = removeTmpAddress;
@@ -53,9 +74,8 @@
             }
 
             function addAddress2Table() {
-                vm.tmpAddresses.push(angular.copy(vm.address2Add));
+                vm.addressesInParent = $scope.parentController.addresses;
                 vm.addressesInParent.push(angular.copy(vm.address2Add));
-
                 vm.address2Add = _buildAddress2Add(vm.address2Add.province, vm.address2Add.canton, vm.address2Add.district, vm.address2Add.address);
 
                 vm.address2Add.province = null;
@@ -63,11 +83,11 @@
                 vm.address2Add.district = null;
                 vm.address2Add.address = "";
 
-                console.log($scope.modalCtrl.addresses);
+                console.log($scope.parentController.addresses);
             }
 
             function removeTmpAddress(index) {
-                vm.tmpAddresses.splice(index, 1);
+                vm.addressesInParent = $scope.parentController.addresses;
 
                 vm.addressesInParent.splice(index, 1);
                 vm.address2Add.province = null;
@@ -101,8 +121,7 @@
 
                     vm.districts = $filter('filter')(data, {idCanton: pidCanton});
                 });
-            }
-
+            };
         }
     }
 })();

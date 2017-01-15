@@ -29,6 +29,8 @@ class UpdateCustomerRequestREST implements Validateable {
 
     static constraints = {
         id nullable: false
+        firstLastName blank: true, nullable: true
+        secondLastName blank: true, nullable: true
         creditLimit nullable: true
         discountPercentage nullable: true
         email nullable: true

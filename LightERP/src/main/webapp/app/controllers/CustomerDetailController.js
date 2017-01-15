@@ -11,14 +11,14 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
                                   identificationTypeService, customerService, toaster, $resource, $timeout, $filter) {
     var vm = this;
 
+    vm.addresses = [];
+
+
     ////////////////
     init();
 
     function init() {
-        var customer;
-        var locationList = [];
-
-        customerService.get($stateParams.customerId).then(function (response) {
+        var customer; customerService.get($stateParams.customerId).then(function (response) {
             console.log(response);
 
             if (response.code == '0') {
@@ -31,15 +31,13 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
                 $scope.currentCustomer.selectedIdentificationType = customer.identificationType.id;
 
                 customerService.getAllAddresses($stateParams.customerId).then(function (response) {
-
                     console.log(response);
 
-                    angular.forEach(response, function (value) {
-                        vm.getDistrictsFromCustomer(value.idDistrict);
-                    });
+                    vm.addresses = response;
                 });
 
-            }
+
+     }
         });
 
         /**=========================================================
@@ -58,46 +56,11 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
             vm.identificationTypeList = response;
         });
 
-        vm.getDistrictsFromCustomer = function(pidDistrict){
-
-            $resource('server/location/distritos.json').query().$promise.then(function (data) {
-                var districtObjList = $filter('filter')(data, {idDistrict: pidDistrict});
-
-                var notFound = true;
-                do {
-                    angular.forEach(districtObjList, function (value) {
-                        if (parseInt(value.idDistrict) === pidDistrict) {
-
-                            locationList.push(value);
-
-                            /*$scope.currentCustomer.selectedProvince1 = parseInt(value.idProvince);
-
-                            vm.loadCantons(parseInt(value.idProvince));
-                            $scope.currentCustomer.selectedCanton1 = value.idCanton;
-
-                            vm.loadDistricts(parseInt(value.idCanton));
-                            $scope.currentCustomer.selectedDistrict1 = value.idDistrict;*/
-
-                            notFound = false;
-                        }
-                    });
-
-                } while (notFound);
-
-                vm.addresses = locationList;
-
-            });
-
-        };
 
         //Distribución territorial
         vm.provinces = [];
         vm.cantons = [];
         vm.districts = [];
-
-        $resource('server/location/provincias.json').query().$promise.then(function (data) {
-            vm.provinces = data;
-        });
 
         $resource('server/location/provincias.json').query().$promise.then(function (data) {
             vm.provinces = data;
@@ -141,8 +104,6 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
             vm.customerContacts = response;
         });
 
-        console.log(locationList);
-
     }
 
     //REGRESA A LA PANTALLA DE LISTA DE CLIENTES
@@ -171,16 +132,13 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
      =========================================================*/
 
     vm.updateCustomer = function () {
-
         var updatedCustomer = {
             "id" : $scope.currentCustomer.id,
             "name": $scope.currentCustomer.name,
             "firstLastName": $scope.currentCustomer.firstLastName,
             "secondLastName": $scope.currentCustomer.secondLastName,
             "identification": $scope.currentCustomer.identification,
-            "idDistrict": parseInt($scope.currentCustomer.selectedDistrict1),
-
-
+            "addresses": formatAddreses(),
             "phoneNumber1": $scope.currentCustomer.phoneNumber1,
             "phoneNumber2": $scope.currentCustomer.phoneNumber2,
             "mobile": $scope.currentCustomer.mobile,
@@ -226,4 +184,20 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
     $scope.callAtTimeout = function(){
         $state.reload();
     };
+
+
+
+    //Se formatea la direccion para enviar al BE
+    function formatAddreses() {
+        var finalAddressList = [];
+
+        angular.forEach(vm.addresses, function (value, key) {
+            console.log(value);
+            var finalAddressObj = { "id" : value.id, "idDistrict": value.district.idDistrict, "address":value.address};
+            finalAddressList.push(finalAddressObj);
+        });
+
+        return finalAddressList;
+
+    }
 }

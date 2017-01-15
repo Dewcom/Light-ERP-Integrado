@@ -2,9 +2,10 @@
 
 angular
     .module('app.services')
-    .factory("customerService", function ($http, $state) {
+    .factory("customerService", function ($http, $state, $resource, $filter) {
 
         var customerService = {};
+        var tmpAddressList = [];
 
         customerService.getAll = function() {
 
@@ -127,6 +128,7 @@ angular
         };
 
         customerService.getAllAddresses = function(customerId) {
+            tmpAddressList = [];
 
             var customerAddressList = $http({
                 method: 'GET',
@@ -135,8 +137,11 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response.data)
-                return response.data.data;
+                console.log(response.data);
+
+                getAddressesFromCustomer(response.data);
+                console.log(tmpAddressList);
+                return tmpAddressList
             },function (error) {
                 console.log(error);
                 return error.status;
@@ -144,6 +149,98 @@ angular
 
             return customerAddressList;
         };
+
+
+        function getAddressesFromCustomer(addressesFromCustomer){
+            console.log(addressesFromCustomer);
+
+            angular.forEach(addressesFromCustomer.data, function (value) {
+
+                var tmpIdAddress = value.id;
+                var tmpAddress = value.address;
+
+                var tmpIdDistrict = parseInt(value.idDistrict);
+
+                var tmpDistrict = null;
+                var tmpProvince = null;
+                var tmpCanton = null;
+
+                console.log(tmpIdDistrict);
+
+                $resource('server/location/distritos.json').query().$promise.then(function (data) {
+                    var districtObjList = $filter('filter')(data, {idDistrict: tmpIdDistrict});
+
+                    var districtNotFound = true;
+                    do {
+                        angular.forEach(districtObjList, function (value) {
+                            if (parseInt(value.idDistrict) === tmpIdDistrict) {
+
+                                tmpDistrict = value;
+
+                                districtNotFound = false;
+                            }
+                        });
+
+                    } while (districtNotFound);
+
+                    console.log(tmpDistrict);
+
+                    var tmpIdProvince = parseInt(tmpDistrict.idProvince);
+
+                    var tmpIdCanton = parseInt(tmpDistrict.idCanton);
+
+                    $resource('server/location/provincias.json').query().$promise.then(function (data) {
+                        var provinceObjList = $filter('filter')(data, {idProvince: tmpIdProvince});
+
+                        var provinceNotFound = true;
+                        do {
+                            angular.forEach(provinceObjList, function (value) {
+                                if (parseInt(value.idProvince) === tmpIdProvince) {
+
+                                    tmpProvince = value;
+
+                                    provinceNotFound = false;
+                                }
+                            });
+
+                        } while (provinceNotFound);
+
+                    });
+
+
+                    $resource('server/location/cantones.json').query().$promise.then(function (data) {
+                        var cantonObjList = $filter('filter')(data, {idCanton: tmpIdCanton});
+
+                        var cantonNotFound = true;
+                        do {
+                            angular.forEach(cantonObjList, function (value) {
+                                if (parseInt(value.idCanton) === tmpIdCanton) {
+
+                                    tmpCanton = value;
+
+                                    cantonNotFound = false;
+                                }
+                            });
+
+                        } while (cantonNotFound);
+
+                        tmpAddressList.push(_buildAddress2AddFromCustomer(tmpIdAddress, tmpProvince, tmpCanton, tmpDistrict, tmpAddress));
+                    });
+
+                });
+
+            });
+        }
+
+        function _buildAddress2AddFromCustomer(idAddress, province, canton, district, address) {
+            return {
+                id: idAddress,
+                province: province,
+                canton: canton,
+                district: district,
+                address: address
+            };
+        }
 
         return customerService;
     });
