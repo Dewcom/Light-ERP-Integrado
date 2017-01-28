@@ -37,7 +37,6 @@ class Customer {
         creditLimit nullable: true
     }
 
-
     def static fromRestCustomer(CustomerREST argRestCustomer){
 
         Customer tmpCustomer = new Customer();
