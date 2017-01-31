@@ -1,15 +1,19 @@
 package com.dewcom.light.rest
 
+import com.dewcom.light.AgentType
 import com.dewcom.light.Constants
+import com.dewcom.light.Customer
+import com.dewcom.light.Supplier
 import grails.validation.Validateable
 
 /**
  * Created by Mauricio Fernández Mora on 28/01/17.
  */
-class UpdateAgentRequestREST implements Validateable {
+class UserREST implements Validateable {
 
-    Integer id
-    String agentCode
+    String username
+    String password
+    String userCode
     String name
     String firstLastName
     String secondLastName
@@ -23,7 +27,9 @@ class UpdateAgentRequestREST implements Validateable {
     Integer agentType
 
     static constraints = {
-        agentCode blank: false, nullable: false, maxSize: 5
+        password blank: false, password: true
+        username blank: false, unique: true
+        userCode blank: false, nullable: false, maxSize: 5
         name blank: false
         firstLastName blank: true, nullable: true
         secondLastName blank: true, nullable: true

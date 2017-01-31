@@ -19,8 +19,7 @@ class Supplier {
     IdentificationType identificationType
     SupplierType supplierType
 
-    static hasMany = [contacts: Contact, agents: Agent]
-    static belongsTo = [Agent]
+    static hasMany = [contacts: Contact]
 
     static constraints = {
         name blank: false

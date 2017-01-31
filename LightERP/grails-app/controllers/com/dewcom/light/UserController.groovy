@@ -1,25 +1,23 @@
 package com.dewcom.light
 
-import com.dewcom.light.rest.AgentREST
-import com.dewcom.light.rest.CustomerREST
+import com.dewcom.light.rest.UserREST
 import com.dewcom.light.rest.ResponseREST
-import com.dewcom.light.rest.UpdateAgentRequestREST
+import com.dewcom.light.rest.UpdateUserRequestREST
 import grails.plugin.springsecurity.annotation.Secured
-import grails.rest.*
 import grails.converters.*
 
-class AgentController extends RestController{
+class UserController extends RestController{
     static allowedMethods = [get: "GET", create: "POST", update: "PUT", delete: "DELETE"]
     def messageSource
-    def agentService
+    def userService
 
     /**
-     * Este método se encarga de obtener una lista de agentes o uno específico por medio del ID
+     * Este método se encarga de obtener una lista de usuarios o uno específico por medio del ID
      * @author Mauricio Fernández Mora
      */
     @Secured(['ROLE_ANONYMOUS'])
     def get() {
-        log.info "========== Get agent request =========="
+        log.info "========== Get user request =========="
 
         ResponseREST tmpResponse = new ResponseREST();
 
@@ -27,23 +25,23 @@ class AgentController extends RestController{
             def tmpId = params.id
 
             if(tmpId){
-                Agent agentFromDB = agentService.getAgent(tmpId);
+                User userFromDB = userService.getUser(tmpId);
 
-                if(agentFromDB){
+                if(userFromDB){
                     tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
-                    tmpResponse.data = agentFromDB
+                    tmpResponse.data = userFromDB
                 }else{
                     tmpResponse.message = messageSource.getMessage("agent.not.found", null, Locale.default);
                     tmpResponse.code = Constants.REGISTER_NOT_FOUND
                 }
             }else{
-                def agentsFromDB = agentService.getAllAgents();
+                def usersFromDB = userService.getAllUsers();
                 tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
-                tmpResponse.data = agentsFromDB
+                tmpResponse.data = usersFromDB
             }
-            log.info "====== Get agent response ======"
+            log.info "====== Get user response ======"
             JSON.use('deep')
             log.info tmpResponse as JSON
             render tmpResponse as JSON
@@ -53,38 +51,38 @@ class AgentController extends RestController{
     }
 
     /**
-     * Este método se encarga de crear un nuevo agente
+     * Este método se encarga de crear un nuevo usuario
      * @author Mauricio Fernández Mora
-     * @param agent
+     * @param user
      */
     @Secured(['ROLE_ANONYMOUS'])
     def create() {
-        log.info "==========  Create agent request =========="
+        log.info "==========  Create user request =========="
         log.info request.JSON
 
         ResponseREST tmpResponse = new ResponseREST();
-        Agent tmpAgent;
-        AgentREST restAgent = new AgentREST(request.JSON.agent);
+        User tmpUser;
+        UserREST restUser = new UserREST(request.JSON.user);
         try {
-            def tmpAgentToCheck = Agent.findByAgentCodeAndEnabled(restAgent.agentCode, Constants.ESTADO_ACTIVO)
-            if(tmpAgentToCheck){
+            def tmpUserToCheck = User.findByUserCodeAndUsernameAndEnabled(restUser.userCode, restUser.username, Constants.ESTADO_ACTIVO)
+            if(tmpUserToCheck){
                 tmpResponse.code = Constants.ERROR_UNDECLARED_EXCEPTION
                 tmpResponse.message =  messageSource.getMessage("create.agent.id.nonUnique", null, Locale.default)
                 render tmpResponse as JSON
                 return
             }
 
-            restAgent.validate();
-            if (restAgent.hasErrors()) {
-                this.handleDataErrorsREST(messageSource, restAgent.errors);
+            restUser.validate();
+            if (restUser.hasErrors()) {
+                this.handleDataErrorsREST(messageSource, restUser.errors);
             } else {
-                tmpAgent = Agent.fromRestAgent(restAgent);
-                agentService.createAgent(tmpAgent);
+                tmpUser = User.fromRestAgent(restUser);
+                userService.createUser(tmpUser);
 
-                tmpResponse.message = messageSource.getMessage("create.agent.success", null, Locale.default)
+                tmpResponse.message = messageSource.getMessage("create.user.success", null, Locale.default)
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
             }
-            log.info "====== Create agent response ======"
+            log.info "====== Create user response ======"
             log.info tmpResponse as JSON
             render tmpResponse as JSON
         } catch (Exception e) {
@@ -99,27 +97,27 @@ class AgentController extends RestController{
      */
     @Secured(['ROLE_ANONYMOUS'])
     def delete() {
-        log.info "==========  Delete agent request =========="
+        log.info "==========  Delete user request =========="
         log.info request.JSON
 
         ResponseREST tmpResponse = new ResponseREST();
         try {
             if (request.JSON && request.JSON != null &&  request.JSON.id != null ) {
-                Agent tmpAgent = agentService.getAgent(request.JSON.id);
+                User tmpUser = userService.getUser(request.JSON.id);
 
-                if(tmpAgent) {
-                    agentService.deleteAgent(tmpAgent);
-                    tmpResponse.message = messageSource.getMessage("delete.agent.success", null, Locale.default);
+                if(tmpUser) {
+                    userService.deleteUser(tmpUser);
+                    tmpResponse.message = messageSource.getMessage("delete.user.success", null, Locale.default);
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
                 }else {
-                    tmpResponse.message = messageSource.getMessage("agent.not.found", null, Locale.default);
+                    tmpResponse.message = messageSource.getMessage("user.not.found", null, Locale.default);
                     tmpResponse.code = Constants.REGISTER_NOT_FOUND
                 }
             }else{
                 tmpResponse.message = messageSource.getMessage("generic.request.error.missing.parameters", null, Locale.default);
                 tmpResponse.code = Constants.ERROR_VALIDACION_DE_CAMPOS
             }
-            log.info "====== Delete agent response ======"
+            log.info "====== Delete user response ======"
             log.info tmpResponse as JSON
             render tmpResponse as JSON
         } catch (Exception e) {
@@ -134,22 +132,22 @@ class AgentController extends RestController{
      */
     @Secured(['ROLE_ANONYMOUS'])
     def update() {
-        log.info "==========  Update agent request =========="
+        log.info "==========  Update user request =========="
         log.info request.JSON
 
         ResponseREST tmpResponse = new ResponseREST();
-        UpdateAgentRequestREST tmpAgent = new UpdateAgentRequestREST(request.JSON);
+        UpdateUserRequestREST tmpUser = new UpdateUserRequestREST(request.JSON);
         try {
-            tmpAgent.validate();
-            if (tmpAgent.hasErrors()) {
-                this.handleDataErrorsREST(messageSource, tmpAgent.errors);
+            tmpUser.validate();
+            if (tmpUser.hasErrors()) {
+                this.handleDataErrorsREST(messageSource, tmpUser.errors);
             } else {
-                agentService.updateAgent(tmpAgent);
-                tmpResponse.message = messageSource.getMessage("update.agent.success", null, Locale.default)
+                userService.updateUser(tmpUser);
+                tmpResponse.message = messageSource.getMessage("update.user.success", null, Locale.default)
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
 
             }
-            log.info "====== Update agent response ======"
+            log.info "====== Update user response ======"
             log.info tmpResponse as JSON
             render tmpResponse as JSON
         }catch (Exception e) {
