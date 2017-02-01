@@ -31,8 +31,6 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
                 $scope.currentCustomer.selectedIdentificationType = customer.identificationType.id;
 
                 customerService.getAllAddresses($stateParams.customerId).then(function (response) {
-                    console.log(response);
-
                     vm.addresses = response;
                 });
 
@@ -101,6 +99,8 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
          =========================================================*/
 
         customerService.getAllContacts($stateParams.customerId).then(function (response) {
+            console.log('SE TRAE LOS CONTACTOS***************************');
+            console.log(response);
             vm.customerContacts = response;
         });
 
