@@ -17,7 +17,7 @@ class AgentTypeController extends RestController{
      */
     @Secured(['ROLE_ANONYMOUS'])
     def get() {
-        log.info "========== Get agent type request =========="
+        log.info "========== Get user type request =========="
 
         ResponseREST tmpResponse = new ResponseREST();
 
@@ -42,7 +42,7 @@ class AgentTypeController extends RestController{
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
                 tmpResponse.data = agentTypesFromDB
             }
-            log.info "====== Get agent types response ======"
+            log.info "====== Get user types response ======"
             log.info tmpResponse as JSON
             render tmpResponse as JSON
         } catch (Exception e) {
@@ -57,7 +57,7 @@ class AgentTypeController extends RestController{
      */
     @Secured(['ROLE_ANONYMOUS'])
     def create() {
-        log.info "==========  Create agent type request =========="
+        log.info "==========  Create user type request =========="
         log.info request.JSON
 
         ResponseREST tmpResponse = new ResponseREST();
@@ -72,7 +72,7 @@ class AgentTypeController extends RestController{
                 tmpResponse.message = messageSource.getMessage("create.agent.type.success", null, Locale.default)
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
             }
-            log.info "====== Create agent type response ======"
+            log.info "====== Create user type response ======"
             log.info tmpResponse as JSON
             render tmpResponse as JSON
         } catch (Exception e) {
@@ -87,7 +87,7 @@ class AgentTypeController extends RestController{
      */
     @Secured(['ROLE_ANONYMOUS'])
     def delete() {
-        log.info "==========  Delete agent type request =========="
+        log.info "==========  Delete user type request =========="
         log.info request.JSON
 
         ResponseREST tmpResponse = new ResponseREST();
@@ -107,7 +107,7 @@ class AgentTypeController extends RestController{
                 tmpResponse.message = messageSource.getMessage("generic.request.error.missing.parameters", null, Locale.default);
                 tmpResponse.code = Constants.ERROR_VALIDACION_DE_CAMPOS
             }
-            log.info "====== Delete agent type response ======"
+            log.info "====== Delete user type response ======"
             log.info tmpResponse as JSON
             render tmpResponse as JSON
         } catch (Exception e) {
@@ -122,7 +122,7 @@ class AgentTypeController extends RestController{
      */
     @Secured(['ROLE_ANONYMOUS'])
     def update() {
-        log.info "==========  Update agent type request =========="
+        log.info "==========  Update user type request =========="
         log.info request.JSON
 
         ResponseREST tmpResponse = new ResponseREST();
@@ -145,7 +145,7 @@ class AgentTypeController extends RestController{
                     tmpResponse.code = Constants.REGISTER_NOT_FOUND
                 }
             }
-            log.info "====== Update agent type response ======"
+            log.info "====== Update user type response ======"
             log.info tmpResponse as JSON
             render tmpResponse as JSON
         }catch (Exception e) {

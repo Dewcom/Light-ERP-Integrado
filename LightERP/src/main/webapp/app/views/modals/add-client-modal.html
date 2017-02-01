@@ -31,10 +31,6 @@
                                 <h4>Contactos</h4>
                                 <small class="text-muted">Información del contacto responsable</small>
                             </li>
-                            <li ng-class="{'active':wizard.active(6)}" ng-click="wizard.go(6)" class="col-md-2">
-                                <h4>Confirmarción</h4>
-                                <small class="text-muted">Revise la información y confirme su ingreso</small>
-                            </li>
                         </ol>
                         <!-- END wizard steps indicator-->
                         <!-- START Wizard Step inputs-->
@@ -53,7 +49,7 @@
                                                         class="form-control" required="required">
                                                 </select>
                                                 <span ng-show="formStep1.$submitted &amp;&amp; formStep1.selectedCustomerType.$invalid"
-                                                      class="text-danger">Este campo es inválido</span>
+                                                      class="text-danger">Este campo no puede ser vacío</span>
                                             </div>
                                         </div>
                                     </div>
@@ -66,7 +62,7 @@
                                                         class="form-control" required="required">
                                                 </select>
                                                 <span ng-show="formStep1.$submitted &amp;&amp; formStep1.selectedIdentificationType.$invalid"
-                                                      class="text-danger">Este campo es inválido</span>
+                                                      class="text-danger">Este campo no puede ser vacío</span>
                                             </div>
                                         </div>
                                     </div>
@@ -77,7 +73,7 @@
                                                 <input type="text" name="identification" ng-model="parentController.identification"
                                                        placeholder="110102020" required="required" class="form-control" maxlength="20"/>
                                                 <span ng-show="formStep1.$submitted &amp;&amp; formStep1.identification.$invalid"
-                                                      class="text-danger">Este campo es inválido</span>
+                                                      class="text-danger">Este campo no puede ser vacío</span>
                                             </div>
                                         </div>
                                     </div>
@@ -89,8 +85,8 @@
                                             <div class="controls">
                                                 <input ng-show="parentController.selectedIdentificationType != null" type="text" name="name" ng-model="parentController.name" required="required"
                                                        class="form-control" maxlength="50" replace="[^a-zA-Z]" with=""/>
-                                                <span ng-show="formStep1.$submitted &amp;&amp; formStep1.name.$invalid && parentController.name != null"
-                                                      class="text-danger">Este campo es inválido</span>
+                                                <span ng-show="formStep1.$submitted &amp;&amp; formStep1.name.$invalid"
+                                                      class="text-danger">Este campo no puede ser vacío</span>
                                             </div>
                                         </div>
                                     </div>
@@ -135,7 +131,7 @@
                                                 <input type="tel" name="phoneNumber1" ng-model="parentController.phoneNumber1"
                                                        required="required" class="form-control" ui-mask="9999-9999"/>
                                                 <span ng-show="formStep2.$submitted &amp;&amp; formStep2.phoneNumber1.$invalid"
-                                                      class="text-danger">Este campo es inválido</span>
+                                                      class="text-danger">Este campo no puede ser vacío</span>
                                             </div>
                                         </div>
                                     </div>
@@ -316,9 +312,7 @@
                                             <label>Límite de crédito</label>
                                             <div class="controls">
                                                 <input type="number" name="creditLimit" ng-model="parentController.creditLimit"
-                                                       placeholder="₡" required="required" class="form-control" min="0"/>
-                                                <span ng-show="formStep4.$submitted &amp;&amp; formStep4.creditLimit.$invalid"
-                                                      class="text-danger">Este campo es inválido</span>
+                                                       placeholder="₡" class="form-control" min="0"/>
                                             </div>
                                         </div>
                                     </div>
@@ -327,9 +321,7 @@
                                             <label>Porcentaje de descuento</label>
                                             <div class="controls">
                                                 <input type="number" name="discountPorcentage" ng-model="parentController.discountPercentage"
-                                                       placeholder="%" required="required" class="form-control" min="0" max="99"/>
-                                                <span ng-show="formStep4.$submitted &amp;&amp; formStep4.discountPorcentage.$invalid"
-                                                      class="text-danger">Este campo es inválido</span>
+                                                       placeholder="%" class="form-control" min="0" max="99"/>
                                             </div>
                                         </div>
                                     </div>
@@ -555,6 +547,12 @@
                                             </div>
                                         </div>
                                         <!-- END panel-->
+                                        <div>
+                                            <p class="text-right">
+                                                <button type="button" ng-click="parentController.addCustomer()" class="btn btn-success btn-lg">Agregar</button>
+                                                <button type="button" ng-click="cancel()" class="btn btn-danger btn-lg">Cancelar</button>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- END row-->
@@ -562,30 +560,6 @@
                             <ul class="pager">
                                 <li class="previous">
                                     <a href="" ng-click="wizard.go(4)">
-                                        <span>&larr; Anterior</span>
-                                    </a>
-                                </li>
-                                <li class="next"><a href="" ng-click="wizard.go(6)">Siguiente<span>&rarr;</span></a>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- END Wizard Step inputs-->
-                        <!-- START Wizard Step inputs-->
-                        <div id="step6" ng-show="wizard.active(6)">
-                            <div class="jumbotron">
-                                <h1>Confirmación</h1>
-                                <p>Revise cuidadosamente la información ingresada antes de confirmar, usted puede usar las botones de
-                                    de "Anterior" y "Siguiente" para movilizarse sin perder la información ingresada, o si lo prefiere
-                                    las pestañas superiores.
-                                </p>
-                                <p class="text-right">
-                                    <button type="button" ng-click="parentController.addCustomer()" class="btn btn-success btn-lg">Agregar cliente</button>
-                                    <button type="button" ng-click="cancel()" class="btn btn-danger btn-lg">Cancelar</button>
-                                </p>
-                            </div>
-                            <ul class="pager">
-                                <li class="previous">
-                                    <a href="" ng-click="wizard.go(5)">
                                         <span>&larr; Anterior</span>
                                     </a>
                                 </li>

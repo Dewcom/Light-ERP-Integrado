@@ -37,6 +37,7 @@ class CustomerService {
     }
 
     def createCustomer(Customer pcustomer) {
+        log.info "====== Creating customer ======"
         try {
             pcustomer.save(flush: true, failOnError: true)
         } catch (Exception e) {
@@ -46,6 +47,7 @@ class CustomerService {
     }
 
     def deleteCustomer(Customer pcustomer) {
+        log.info "====== Deleting customer ======"
         try {
             pcustomer.addresses.each {
                 it.enabled = Constants.ESTADO_INACTIVO
@@ -59,6 +61,7 @@ class CustomerService {
     }
 
     def updateCustomer(UpdateCustomerRequestREST argRestCustomer) {
+        log.info "====== Updating customer ======"
         try {
             Customer tmpCustomerToUpdate = Customer.findByIdAndEnabled(argRestCustomer.id, Constants.ESTADO_ACTIVO)
             if (tmpCustomerToUpdate) {

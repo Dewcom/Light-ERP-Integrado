@@ -20,8 +20,9 @@ class Customer {
     IdentificationType identificationType
     CustomerType customerType
 
-    static hasMany = [contacts: Contact, agents: Agent, addresses: Address, bills:Bill]
-    static belongsTo = [Agent]
+    static hasMany = [contacts: Contact, agents: User, addresses: Address, bills:Bill]
+
+    static belongsTo = [User]
 
     static constraints = {
         name blank: false
@@ -36,7 +37,6 @@ class Customer {
         discountPercentage nullable: true
         creditLimit nullable: true
     }
-
 
     def static fromRestCustomer(CustomerREST argRestCustomer){
 

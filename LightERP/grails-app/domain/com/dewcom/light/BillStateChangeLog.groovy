@@ -6,6 +6,7 @@ class BillStateChangeLog {
     Bill modifiedBill
     BillStateType newState
 
+
     static constraints = {
     }
 }
