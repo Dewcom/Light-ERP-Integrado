@@ -20,6 +20,9 @@ class User implements Serializable {
 	boolean accountLocked
 	boolean passwordExpired
 
+
+	static hasMany = [bills: Bill]
+
 	String userCode
 	String name
 	String firstLastName
@@ -29,6 +32,7 @@ class User implements Serializable {
 	String phoneNumber
 	String extension
 	Double commissionPercentage
+
 
 	Set<Role> getAuthorities() {
 		UserRole.findAllByUser(this)*.role

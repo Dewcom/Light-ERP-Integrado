@@ -20,7 +20,8 @@ class Customer {
     IdentificationType identificationType
     CustomerType customerType
 
-    static hasMany = [contacts: Contact, agents: User, addresses: Address]
+    static hasMany = [contacts: Contact, agents: User, addresses: Address, bills:Bill]
+
     static belongsTo = [User]
 
     static constraints = {
