@@ -22,7 +22,6 @@ class UpdateUserRequestREST implements Validateable {
     Double commissionPercentage
     Byte enabled = Constants.ESTADO_ACTIVO
     Date registrationDate = new Date()
-    Integer agentType
 
     static constraints = {
         password blank: false, password: true
@@ -35,6 +34,5 @@ class UpdateUserRequestREST implements Validateable {
         extension blank: true, nullable: true
         mobile nullable: true, blank: true
         email nullable: true, blank: true
-        commissionPercentage nullable: true
     }
 }

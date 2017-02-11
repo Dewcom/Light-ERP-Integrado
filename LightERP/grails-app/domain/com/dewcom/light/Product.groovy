@@ -25,14 +25,8 @@ class Product {
     static constraints = {
         productCode blank: false
         name blank: false
-        bulkQuantity nullable: true
-        costInDollars nullable: true
-        costInColones nullable: true
-        suggestedCost nullable: true
         tariffHeading blank: false
         commercialName null: true, blank: true
-        priceInDollars nullable: true
-        priceInColones nullable: true
         utilityPercentage nullable: true
     }
 

@@ -15,7 +15,7 @@ class User implements Serializable {
 	String username
 	String password
 	Byte enabled = Constants.ESTADO_ACTIVO
-	Date regitrationDate = new Date()
+	Date registrationDate = new Date()
 	boolean accountExpired
 	boolean accountLocked
 	boolean passwordExpired
@@ -69,21 +69,21 @@ class User implements Serializable {
 	}
 
 
-    def static fromRestAgent(UserREST prestCustomer){
+    def static fromRestUser(UserREST prestUser){
 
         User tmpUser = new User();
 
-		tmpUser.username = prestCustomer.username;
-        tmpUser.password = prestCustomer.password;
-		tmpUser.userCode = prestCustomer.userCode;
-        tmpUser.name = prestCustomer.name;
-        tmpUser.firstLastName = prestCustomer.firstLastName;
-        tmpUser.secondLastName = prestCustomer.secondLastName;
-        tmpUser.email = prestCustomer.email;
-        tmpUser.mobile = prestCustomer.mobile;
-        tmpUser.phoneNumber = prestCustomer.phoneNumber;
-        tmpUser.extension = prestCustomer.extension;
-        tmpUser.commissionPercentage = prestCustomer.commissionPercentage;
+		tmpUser.username = prestUser.username;
+        tmpUser.password = prestUser.password;
+		tmpUser.userCode = prestUser.userCode;
+        tmpUser.name = prestUser.name;
+        tmpUser.firstLastName = prestUser.firstLastName;
+        tmpUser.secondLastName = prestUser.secondLastName;
+        tmpUser.email = prestUser.email;
+        tmpUser.mobile = prestUser.mobile;
+        tmpUser.phoneNumber = prestUser.phoneNumber;
+        tmpUser.extension = prestUser.extension;
+        tmpUser.commissionPercentage = prestUser.commissionPercentage;
 
         return tmpUser;
     }

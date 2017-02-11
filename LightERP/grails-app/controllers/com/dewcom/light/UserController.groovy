@@ -32,7 +32,7 @@ class UserController extends RestController{
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
                     tmpResponse.data = userFromDB
                 }else{
-                    tmpResponse.message = messageSource.getMessage("agent.not.found", null, Locale.default);
+                    tmpResponse.message = messageSource.getMessage("user.not.found", null, Locale.default);
                     tmpResponse.code = Constants.REGISTER_NOT_FOUND
                 }
             }else{
@@ -64,10 +64,18 @@ class UserController extends RestController{
         User tmpUser;
         UserREST restUser = new UserREST(request.JSON.user);
         try {
-            def tmpUserToCheck = User.findByUserCodeAndUsernameAndEnabled(restUser.userCode, restUser.username, Constants.ESTADO_ACTIVO)
-            if(tmpUserToCheck){
+            def tmpUsernameToCheck = User.findByUsernameAndEnabled(restUser.username, Constants.ESTADO_ACTIVO)
+            if(tmpUsernameToCheck){
                 tmpResponse.code = Constants.ERROR_UNDECLARED_EXCEPTION
-                tmpResponse.message =  messageSource.getMessage("create.agent.id.nonUnique", null, Locale.default)
+                tmpResponse.message =  messageSource.getMessage("create.user.username.nonUnique", null, Locale.default)
+                render tmpResponse as JSON
+                return
+            }
+
+            def tmpUserCodeToCheck = User.findByUserCodeAndEnabled(restUser.userCode, Constants.ESTADO_ACTIVO)
+            if(tmpUserCodeToCheck){
+                tmpResponse.code = Constants.ERROR_UNDECLARED_EXCEPTION
+                tmpResponse.message =  messageSource.getMessage("create.user.userCode.nonUnique", null, Locale.default)
                 render tmpResponse as JSON
                 return
             }
@@ -76,7 +84,7 @@ class UserController extends RestController{
             if (restUser.hasErrors()) {
                 this.handleDataErrorsREST(messageSource, restUser.errors);
             } else {
-                tmpUser = User.fromRestAgent(restUser);
+                tmpUser = User.fromRestUser(restUser);
                 userService.createUser(tmpUser);
 
                 tmpResponse.message = messageSource.getMessage("create.user.success", null, Locale.default)
@@ -91,7 +99,7 @@ class UserController extends RestController{
     }
 
     /**
-     * Este método se encarga de borrar (Borrado lógico) un agente
+     * Este método se encarga de borrar (Borrado lógico) un usuario
      * @author Mauricio Fernández Mora
      * @param id
      */
@@ -126,7 +134,7 @@ class UserController extends RestController{
     }
 
     /**
-     * Este método se encarga de modificar un agente
+     * Este método se encarga de modificar un usuario
      * @author Mauricio Fernández Mora
      * @param request
      */

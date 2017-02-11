@@ -272,7 +272,7 @@
                 <div ng-controller="ContactController as contactController">
                     <legend>Contactos</legend>
                     <div class="row">
-                        <div ng-repeat="customerContact in controller.customerContacts" class="col-md-4">
+                        <div ng-repeat="customerContact in parentController.customerContacts" class="col-md-4">
                             <div class="panel panel-default">
                                 <div class="panel-body text-left">
                                     <h4>{{customerContact.name + ' '+ customerContact.firstLastName + ' ' +customerContact.secondLastName}}</h4>

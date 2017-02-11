@@ -25,7 +25,7 @@
   },
   {
     "text": "Usuarios",
-    "sref": "app.users",
+    "sref": "app.usersMain",
     "icon": "fa fa-group"
   },
   {

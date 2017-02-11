@@ -1,6 +1,5 @@
 package com.dewcom.light.rest
 
-import com.dewcom.light.AgentType
 import com.dewcom.light.Constants
 import com.dewcom.light.Customer
 import com.dewcom.light.Supplier
@@ -24,7 +23,6 @@ class UserREST implements Validateable {
     Double commissionPercentage
     Byte enabled = Constants.ESTADO_ACTIVO
     Date registrationDate = new Date()
-    Integer agentType
 
     static constraints = {
         password blank: false, password: true

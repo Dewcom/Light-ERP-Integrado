@@ -21,7 +21,8 @@
             'app.forms',
             'app.adminConfig',
             'app.client',
-            'app.product'
+            'app.product',
+            'app.user'
         ]);
 })();
 
@@ -64,6 +65,14 @@
 
     angular
         .module('app.product', [
+            'add.notify'
+        ]);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.user', [
             'add.notify'
         ]);
 })();
@@ -202,6 +211,12 @@
 
     angular
         .module('app.product', []);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.user', []);
 })();
 /**=========================================================
  * Module: colors.js
@@ -806,10 +821,11 @@
                 title: 'Facturas',
                 templateUrl: helper.basepath('billing.html')
             })
-            .state('app.users', {
-                url: '/users',
+            .state('app.usersMain', {
+                url: '/usersMain',
                 title: 'Usuarios',
-                templateUrl: helper.basepath('users.html')
+                templateUrl: helper.basepath('users-main.html'),
+                resolve: helper.resolveFor('datatables', 'ngDialog')
             })
             .state('app.warehouseMain', {
                 url: '/warehouseMain',
