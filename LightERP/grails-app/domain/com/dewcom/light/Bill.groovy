@@ -10,8 +10,8 @@ class Bill {
     BillStateType billState
     Double subTotalAmount
     Double totalAmount
-    //el descuento se toma en cuenta antes del impuest, se suma el total, se aplica descuento y finalmente el impuesto
-    // q viene a ser el subtotal.
+    //el descuento se toma en cuenta antes del impuesto, se suma el total, se aplica descuento y finalmente el impuesto
+    // que viene a ser el subtotal.
     Double TotalDiscount
     Double exchangeRate
     BillPaymentType billPaymentType

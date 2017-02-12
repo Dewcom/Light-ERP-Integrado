@@ -4,13 +4,11 @@
     'use strict';
 
     angular
-        .module('app.user')
-        .controller('UserController', UserController);
+        .module('app.bill')
+        .controller('BillController', BillController);
 
-    UserController.$inject = ['$uibModal','$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder','userService'
-        ,'toaster', '$state', '$filter', '$timeout', 'ngDialog', '$scope'];
-    function UserController($uibModal, $resource, DTOptionsBuilder, DTColumnDefBuilder, userService,
-                            toaster, $state, $filter, $timeout, ngDialog, $scope) {
+    BillController.$inject = ['DTOptionsBuilder', 'DTColumnDefBuilder', 'billService', 'customerService', 'productService', '$scope'];
+    function BillController(DTOptionsBuilder, DTColumnDefBuilder, billService, customerService, productService, $scope) {
         var vm = this;
 
         var language = {
@@ -45,54 +43,98 @@
         function init() {
 
             /**=========================================================
-             * Usuarios
+             * Facturas
              =========================================================*/
 
-            userService.getAll().then(function(response) {
+            billService.getAll().then(function(response) {
                 console.log(response);
-                vm.userList = response;
+                vm.billList = response;
             });
 
             /**=========================================================
-             * Datatables
+             * Clientes
              =========================================================*/
 
-            vm.dtOptions = DTOptionsBuilder.newOptions()
-                .withPaginationType('full_numbers')
-                .withLanguage(language)
-            vm.dtColumnDefs = [
+            customerService.getAll().then(function(response) {
+                console.log(response);
+                vm.customerList = response;
+            });
+
+            /**=========================================================
+             * Productos
+             =========================================================*/
+
+            productService.getAll().then(function(response) {
+                vm.productList = response;
+            });
+
+
+            /**=========================================================
+             * Datatable clientes
+             =========================================================*/
+
+            vm.dtOptionsCustomers = DTOptionsBuilder.newOptions()
+                .withOption('bFilter', true)
+                .withOption('bInfo', false)
+                .withOption('bPaginate', false)
+                .withOption('bLengthChange', false)
+                .withLanguage(language);
+            vm.dtColumnDefsCustomers = [
                 DTColumnDefBuilder.newColumnDef(0),
                 DTColumnDefBuilder.newColumnDef(1),
-                DTColumnDefBuilder.newColumnDef(2),
-                DTColumnDefBuilder.newColumnDef(3),
-                DTColumnDefBuilder.newColumnDef(4).notSortable()
+                DTColumnDefBuilder.newColumnDef(2).notSortable()
             ];
 
 
             /**=========================================================
-             * Eliminar usuarios
+             * Datatable productos
              =========================================================*/
-            vm.disableUser = function (userId) {
+
+            vm.dtOptionsProducts = DTOptionsBuilder.newOptions()
+                .withOption('bFilter', true)
+                .withOption('bInfo', false)
+                .withOption('bPaginate', false)
+                .withOption('bLengthChange', false)
+                .withLanguage(language);
+            vm.dtColumnDefsProducts = [
+                DTColumnDefBuilder.newColumnDef(0),
+                DTColumnDefBuilder.newColumnDef(1),
+                DTColumnDefBuilder.newColumnDef(2).notSortable()
+            ];
+
+            /**=========================================================
+             * Escoger el cliente de la factura
+             =========================================================*/
+
+            vm.chooseCustomer = function (chosenCustomer) {
+                console.log(chosenCustomer);
+                $scope.chosenCustomer = JSON.parse(JSON.stringify(chosenCustomer));
+            };
+
+            /**=========================================================
+             * Eliminar facturas
+             =========================================================*/
+            vm.disableBill = function (billId) {
                 ngDialog.openConfirm({
-                    template: 'disableUserModal',
+                    template: 'disableBillModal',
                     className: 'ngdialog-theme-default',
                     closeByDocument: false,
                     closeByEscape: false
                 }).then(function (value) {
-                    userService.disableUser(userId).then(function (response) {
+                    billService.disableBill(billId).then(function (response) {
                         var toasterdata;
                         console.log(response);
 
                         if(response.code == "0"){
                             toasterdata = {
                                 type: 'success',
-                                title: 'Eliminar usuario',
+                                title: 'Eliminar factura',
                                 text: response.message
                             };
                         }else{
                             toasterdata = {
                                 type: 'warning',
-                                title: 'Usuario',
+                                title: 'Factura',
                                 text: response.message
                             };
 
@@ -114,7 +156,7 @@
             vm.openAddModal = function () {
 
                 var modalInstance = $uibModal.open({
-                    templateUrl: '/addUserModal.html',
+                    templateUrl: '/addBillModal.html',
                     controller: AddModalInstanceCtrl,
                     size: 'md',
                     backdrop: 'static', // No cierra clickeando fuera
@@ -129,16 +171,15 @@
                 });
             };
 
-            vm.openUpdateModal = function (userObj) {
+            vm.openUpdateModal = function (billObj) {
 
                 var modalInstance = $uibModal.open({
-                    templateUrl: '/updateUserModal.html',
+                    templateUrl: '/updateBillModal.html',
                     controller: UpdateModalInstanceCtrl,
                     size: 'md',
                     resolve: {
                         user: function () {
-                            userObj.passwordConfirm = userObj.password
-                            return userObj;
+                            return billObj;
                         }
                     },
                     backdrop: 'static', // No cierra clickeando fuera
@@ -154,9 +195,9 @@
             };
 
 
-            /**=========================================================
+           /* /!**=========================================================
              * Validación de campos y patrones
-             =========================================================*/
+             =========================================================*!/
             vm.submitted = false;
             vm.validateInput = function(action , name, type) {
                 if(action == 'add'){
@@ -190,15 +231,15 @@
                     }
 
                 }
-            };
+            };*/
 
             /**=========================================================
-             * Agregar usuarios
+             * Agregar facturas
              =========================================================*/
 
-            function addUser() {
+            function addBill() {
 
-                var newUser ={
+                /*var newUser ={
                     "username":$scope.addUserForm.username,
                     "password":$scope.addUserForm.password,
                     "userCode":$scope.addUserForm.userCode,
@@ -212,7 +253,7 @@
                     "commissionPercentage":parseFloat($scope.addUserForm.commissionPercentage)
                 };
                 console.log(newUser);
-                userService.addUser(newUser).then(function (response) {
+                billService.addUser(newUser).then(function (response) {
                     var toasterdata;
 
                     if(response.code == "0"){
@@ -235,16 +276,16 @@
                     console.log(error);
                 });
 
-                $scope.cancel();
-            };
+                $scope.cancel();*/
+            }
 
             /**=========================================================
-             * Modificar usuarios
+             * Modificar facturas
              =========================================================*/
 
-            function updateUser() {
+            function updateBill() {
 
-                var updatedUser={
+               /* var updatedUser={
                     "id":$scope.currentUser.id,
                     "username":$scope.currentUser.username,
                     "password":$scope.currentUser.password,
@@ -259,7 +300,7 @@
                     "commissionPercentage":$scope.currentUser.commissionPercentage
                 };
                 console.log(updatedUser);
-                userService.updateUser(updatedUser).then(function (response) {
+                billService.updateUser(updatedUser).then(function (response) {
                     var toasterdata;
 
                     if(response.code == "0"){
@@ -282,8 +323,8 @@
                     console.log(error);
                 });
 
-                $scope.cancel();
-            };
+                $scope.cancel();*/
+            }
 
             // Please note that $uibModalInstance represents a modal window (instance) dependency.
             // It is not the same as the $uibModal service used above.
