@@ -1,3 +1,6 @@
+import com.dewcom.light.BillDetail
+import com.dewcom.light.BillPaymentType
+import com.dewcom.light.BillStateType
 import com.dewcom.light.PresentationType
 import com.dewcom.light.ProductType
 import grails.converters.JSON
@@ -66,6 +69,52 @@ class BootStrap {
             def returnArray = [:]
             returnArray['id'] = it.id
             returnArray['name'] = it.name
+            return returnArray
+        }
+
+        JSON.registerObjectMarshaller(BillDetail) {
+            def returnArray = [:]
+            returnArray['quantity'] = it.quantity
+            returnArray['linePrice'] = it.linePrice
+            returnArray['discountPercentage'] = it.discountPercentage
+            returnArray['totalDiscount'] = it.totalDiscount
+            returnArray['taxPercentage'] = it.taxPercentage
+            returnArray['subTotal'] = it.subTotal
+            returnArray['total'] = it.total
+            returnArray['productId'] = it.product.id
+            return returnArray
+        }
+
+        JSON.registerObjectMarshaller(Currency) {
+            def returnArray = [:]
+            returnArray['id'] = it.id
+            returnArray['description'] = it.description
+
+            return returnArray
+        }
+
+        JSON.registerObjectMarshaller(BillPaymentType) {
+            def returnArray = [:]
+            returnArray['id'] = it.id
+            returnArray['description'] = it.description
+
+            return returnArray
+        }
+
+        JSON.registerObjectMarshaller(BillStateType) {
+            def returnArray = [:]
+            returnArray['id'] = it.id
+            returnArray['description'] = it.description
+
+            return returnArray
+        }
+
+
+        JSON.registerObjectMarshaller(User) {
+            def returnArray = [:]
+            returnArray['id'] = it.id
+            returnArray['username'] = it.username
+
             return returnArray
         }
 

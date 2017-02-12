@@ -6,5 +6,7 @@ package com.dewcom.light
 class Currency {
     String description
     Integer currencyCode
-    ExchangeRate exchangeRate
+
+    static constraints = {
+    }
 }

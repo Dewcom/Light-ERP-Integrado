@@ -7,4 +7,6 @@ class Taxes {
     Integer taxCode
     String description
     Double percentage
-}
+    static constraints = {
+    }
+    }
