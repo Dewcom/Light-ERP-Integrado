@@ -21,7 +21,9 @@
             'app.forms',
             'app.adminConfig',
             'app.client',
-            'app.product'
+            'app.product',
+            'app.user',
+            'app.bill'
         ]);
 })();
 
@@ -56,7 +58,7 @@
 
     angular
         .module('app.client', [
-            'add.notify'
+           // 'add.notify'
         ]);
 })();
 (function() {
@@ -64,7 +66,23 @@
 
     angular
         .module('app.product', [
-            'add.notify'
+            //'add.notify'
+        ]);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.user', [
+            //'add.notify'
+        ]);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.bill', [
+            //'add.notify'
         ]);
 })();
 (function() {
@@ -202,6 +220,18 @@
 
     angular
         .module('app.product', []);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.user', []);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.bill', []);
 })();
 /**=========================================================
  * Module: colors.js
@@ -493,7 +523,7 @@
     }
 
     //
-    // Contrller definition
+    // Controller definition
     //
 
     searchOpenController.$inject = ['$scope', '$element', 'NavSearch'];
@@ -801,15 +831,17 @@
                 title: 'Comercial',
                 templateUrl: helper.basepath('commerce.html')
             })
-            .state('app.billing', {
+            .state('app.billingMain', {
                 url: '/billing',
                 title: 'Facturas',
-                templateUrl: helper.basepath('billing.html')
+                templateUrl: helper.basepath('billing-main.html'),
+                resolve: helper.resolveFor('datatables', 'ngDialog')
             })
-            .state('app.users', {
-                url: '/users',
+            .state('app.usersMain', {
+                url: '/usersMain',
                 title: 'Usuarios',
-                templateUrl: helper.basepath('users.html')
+                templateUrl: helper.basepath('users-main.html'),
+                resolve: helper.resolveFor('datatables', 'ngDialog')
             })
             .state('app.warehouseMain', {
                 url: '/warehouseMain',
@@ -1849,78 +1881,6 @@
         }
     }
 })();
-
-
-
-/**=========================================================
- * Module: datatable,js
- * Angular Datatable controller
- =========================================================*/
-/*
-(function() {
-    'use strict';
-
-    angular
-        .module('app.tables')
-        .controller('DataTableController', DataTableController);
-
-    DataTableController.$inject = ['$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder'];
-    function DataTableController($resource, DTOptionsBuilder, DTColumnDefBuilder) {
-        var vm = this;
-
-        activate();
-
-        ////////////////
-
-        function activate() {
-
-            // Ajax
-
-            $resource('server/datatable.json').query().$promise.then(function(persons) {
-                vm.persons = persons;
-            });
-
-            // Changing data
-
-            vm.heroes = [{
-                'id': 860,
-                'firstName': 'Superman',
-                'lastName': 'Yoda'
-            }, {
-                'id': 870,
-                'firstName': 'Ace',
-                'lastName': 'Ventura'
-            }, {
-                'id': 590,
-                'firstName': 'Flash',
-                'lastName': 'Gordon'
-            }, {
-                'id': 803,
-                'firstName': 'Luke',
-                'lastName': 'Skywalker'
-            }
-            ];
-
-            vm.dtOptions = DTOptionsBuilder.newOptions().withPaginationType('full_numbers');
-            vm.dtColumnDefs = [
-                DTColumnDefBuilder.newColumnDef(0),
-                DTColumnDefBuilder.newColumnDef(1),
-                DTColumnDefBuilder.newColumnDef(2),
-                DTColumnDefBuilder.newColumnDef(3).notSortable()
-            ];
-            vm.person2Add = _buildPerson2Add(1);
-
-            function _buildPerson2Add(id) {
-                return {
-                    id: id,
-                    firstName: 'Foo' + id,
-                    lastName: 'Bar' + id
-                };
-            }
-
-        }
-    }
-})();*/
 
 (function() {
     'use strict';

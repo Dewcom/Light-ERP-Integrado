@@ -1,9 +1,9 @@
-<div class="panel panel-default" ng-controller="CustomerController as controller">
+<div class="panel panel-default" ng-controller="BillController as controller">
     <div class="panel-body">
         <div>
             <div class="col-md-12 dataTableTop">
                 <div class="col-md-9">
-                    <h3>Lista de clientes</h3>
+                    <h3>Lista de facturas</h3>
                 </div>
                 <div class="col-md-3" ng-click="controller.open('lg')">
                     <button type="submit" class="btn btn-labeled btn-success addButton">
@@ -44,6 +44,7 @@
                 </tr>
                 </tbody>
             </table>
+            </form>
         </div>
     </div>
     <toaster-container toaster-options="{'position-class': 'toast-bottom-right', 'close-button':true}"></toaster-container>

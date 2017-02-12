@@ -15,7 +15,7 @@
   },
   {
     "text": "Facturas",
-    "sref": "app.billing",
+    "sref": "app.billingMain",
     "icon": "fa fa-pencil-square-o"
   },
   {
@@ -25,7 +25,7 @@
   },
   {
     "text": "Usuarios",
-    "sref": "app.users",
+    "sref": "app.usersMain",
     "icon": "fa fa-group"
   },
   {

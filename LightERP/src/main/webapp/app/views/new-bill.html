@@ -1,0 +1,208 @@
+<div class="row" ng-controller="BillController as controller">
+    <div class="col-md-3">
+        <div class="panel b">
+            <div class="panel-heading bb">
+                <h4 class="panel-title">Detalle de factura</h4>
+            </div>
+            <div class="panel-body bt">
+                <h4 class="b0">Order #65487</h4>
+            </div>
+            <table class="table">
+                <tbody>
+                <tr>
+                    <td>Subtotal</td>
+                    <td>
+                        <div class="text-right text-bold">$400</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Impuestos</td>
+                    <td>
+                        <div class="text-right text-bold">$1.44</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Costo de envío</td>
+                    <td>
+                        <div class="text-right text-bold">$5</div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="panel-body">
+                <div class="clearfix">
+                    <div class="pull-right text-right">
+                        <div class="text-bold">$406.44</div>
+                    </div>
+                    <div class="pull-left text-bold text-dark">TOTAL</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="container-md">
+            <!-- Información del cliente-->
+            <form name="controller.newBillForm" ng-submit="controller.submitForm('add')" action="" method="post" novalidate="novalidate">
+                <uib-accordion close-others="true">
+                    <uib-accordion-group is-open="chk.step1" ng-init="chk.step1 = true" panel-class="b">
+                        <uib-accordion-heading>1. Buscar cliente</uib-accordion-heading>
+                        <div id="collapse01">
+                            <div>
+                                <table datatable="ng" dt-options="controller.dtOptionsCustomers"
+                                       dt-column-defs="controller.dtColumnDefsCustomers"
+                                       class="row-border hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Identificación</th>
+                                        <th>Opciones</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="customerObj in controller.customerList">
+                                        <td ng-if="customerObj.firstLastName == null">{{ customerObj.name }}</td>
+                                        <td ng-if="customerObj.firstLastName != null">{{ customerObj.name + ' ' +
+                                            customerObj.firstLastName + ' ' + customerObj.secondLastName}}
+                                        </td>
+                                        <td>{{ customerObj.identification }}</td>
+                                        <td>
+                                            <button type="button" ng-click="controller.chooseCustomer(customerObj); chk.step2 = true"
+                                                    class="btn btn-sm btn-info">
+                                                <em class="fa fa-share"></em>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="pt clearfix">
+                                <div class="pull-left">
+                                    <button type="button" ng-click="chk.step2 = true" class="btn btn-primary">Siguiente</button>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-accordion-group>
+                    <!-- Informacion del cliente-->
+                    <uib-accordion-group is-open="chk.step2" panel-class="b">
+                        <uib-accordion-heading>2. Información del cliente</uib-accordion-heading>
+                        <div id="collapse02">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Nombre</label>
+                                        <input type="text" name="name" ng-model="chosenCustomer.name" required="" class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Identificación</label>
+                                        <input type="text" name="identification" ng-model="chosenCustomer.identification" class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Cantón</label>
+                                        <input type="text" name="canton" ng-model="chosenCustomer.canton" required="" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Primer apellido</label>
+                                        <input type="text" name="name" ng-model="chosenCustomer.firstLastName" required="" class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Teléfono</label>
+                                        <input type="text" name="phone" ng-model="chosenCustomer.phoneNumber1" required="" class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Distrito</label>
+                                        <input type="text" name="district" ng-model="chosenCustomer.district" required="" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Segundo apellido</label>
+                                        <input type="text" name="name" ng-model="chosenCustomer.secondLastName" required="" class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Provincia</label>
+                                        <input type="text" name="province" ng-model="chosenCustomer.province" required="" class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Dirección</label>
+                                        <input type="text" name="address" ng-model="chosenCustomer.address" required="" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pt clearfix">
+                                <div class="pull-left">
+                                    <button type="button" ng-click="chk.step3 = true" class="btn btn-primary">Siguiente</button>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-accordion-group>
+                    <!-- Detalles de pago -->
+                    <uib-accordion-group is-open="chk.step3" panel-class="b">
+                        <uib-accordion-heading>3. Detalles de pago</uib-accordion-heading>
+                        <div id="collapse03">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Tipo de pago</label>
+                                        <input type="text" name="paymentType" required="" class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Moneda</label>
+                                        <input type="text" name="currency" required="" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Condición de crédito</label>
+                                        <input type="text" name="creditCondition" required="" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pt clearfix">
+                                <div class="pull-left">
+                                    <button type="button" ng-click="chk.step4 = true" class="btn btn-primary">Siguiente</button>
+                                </div>
+                            </div>
+                        </div>
+                    </uib-accordion-group>
+                    <!-- Lista de productos -->
+                    <uib-accordion-group is-open="chk.step4" panel-class="b">
+                        <uib-accordion-heading>4. Lista de productos</uib-accordion-heading>
+                        <div id="collapse04">
+                            <table datatable="ng" dt-options="controller.dtOptionsProducts" dt-column-defs="controller.dtColumnDefsProducts"
+                                   class="row-border hover">
+                                <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Nombre</th>
+                                    <th>Tipo de producto</th>
+                                    <th>Tipo de presentación</th>
+                                    <th>Opciones</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="productObj in controller.productList">
+                                    <td>{{ productObj.productCode }}</td>
+                                    <td>{{ productObj.name }}</td>
+                                    <td>{{ productObj.productType.name }}</td>
+                                    <td>{{ productObj.presentationType.name }}</td>
+                                    <td>
+                                        <button type="button" ng-click="controller.openUpdateModal(productObj)" class="btn btn-sm btn-toolbar">
+                                            <em class="fa fa-search"></em>
+                                        </button>
+                                        <button type="button" ng-click="controller.disableProduct(productObj.id)"
+                                                class="btn btn-sm btn-danger">
+                                            <em class="fa fa-trash-o"></em>
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </uib-accordion-group>
+                </uib-accordion>
+            </form>
+        </div>
+    </div>
+</div>

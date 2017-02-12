@@ -17,7 +17,7 @@ class BootStrap {
         def adminRole = new Role(authority: 'ROLE_ADMIN').save()
         def userRole = new Role(authority: 'ROLE_USER').save()
 
-        def testUser = new User(username: 'admin', password: 'admin', userCode: 'A100', name: 'AgenteTest', phoneNumber: '2222-2222').save()
+        def testUser = new User(username: 'admin', password: 'admin', userCode: 'A100', name: 'admin', phoneNumber: '2222-2222').save()
 
         UserRole.create testUser, adminRole
 
@@ -26,9 +26,9 @@ class BootStrap {
             it.clear()
         }
 
-        assert User.count() == 1
+       /* assert User.count() == 2
         assert Role.count() == 2
-        assert UserRole.count() == 1
+        assert UserRole.count() == 1*/
 
         JSON.registerObjectMarshaller(IdentificationType) {
             def returnArray = [:]

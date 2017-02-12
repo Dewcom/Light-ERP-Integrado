@@ -11,23 +11,23 @@
                     <div class="panel-body col-lg-4">
                         <div class="form-group">
                             <label class="control-label">Código</label>
-                            <input type="text" name="productCode" required="" ng-model="addProductForm.productCode" class="form-control" />
+                            <input tabindex="1" type="text" name="productCode" required="" ng-model="addProductForm.productCode" class="form-control" />
                             <span ng-show="modalCtrl.validateInput('add', 'productCode', 'required')" class="text-danger">Este campo es requerido</span>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Nombre</label>
-                            <input type="text" name="productName" required="" ng-model="addProductForm.productName" class="form-control"/>
+                            <input tabindex="4" type="text" name="productName" required="" ng-model="addProductForm.productName" class="form-control"/>
                             <span ng-show="modalCtrl.validateInput('add', 'productName', 'required')" class="text-danger">Este campo es requerido</span>
 
                         </div>
                         <div class="form-group">
                             <label class="control-label">Nombre comercial</label>
-                            <input type="text" name="productCommercialName" ng-model="addProductForm.productCommercialName"
+                            <input tabindex="7" type="text" name="productCommercialName" ng-model="addProductForm.productCommercialName"
                                    class="form-control"/>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Tipo de producto</label>
-                            <select name="productType" ng-model="addProductForm.productType"
+                            <select tabindex="10" name="productType" ng-model="addProductForm.productType"
                                     ng-options="item.id as item.name for item in modalCtrl.productTypeList"
                                     class="form-control" required="">
                             </select>
@@ -35,7 +35,7 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label">Tipo de presentación</label>
-                            <select name="presentationType" ng-model="addProductForm.presentationType"
+                            <select tabindex="12" name="presentationType" ng-model="addProductForm.presentationType"
                                     ng-options="item.id as item.name for item in modalCtrl.presentationTypeList"
                                     class="form-control" required="required">
                             </select>
@@ -45,31 +45,31 @@
                     <div class="panel-body col-lg-4">
                         <div class="form-group">
                             <label class="control-label">Cantidad por bulto</label>
-                            <input type="text" name="bulkQuantity" ng-model="addProductForm.bulkQuantity" ng-pattern="/^[0-9.,]+$/"
+                            <input tabindex="2" type="text" name="bulkQuantity" ng-model="addProductForm.bulkQuantity" ng-pattern="/^[0-9.,]+$/"
                                    class="form-control" />
                             <span ng-show="modalCtrl.validateInput('add', 'bulkQuantity', 'pattern')" class="text-danger">Solamente números permitidos</span>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Precio en dólares</label>
-                            <input type="text" name="priceInDollars" ng-model="addProductForm.priceInDollars" ng-pattern="/^[0-9.,]+$/"
+                            <input tabindex="5" type="text" name="priceInDollars" ng-model="addProductForm.priceInDollars" ng-pattern="/^[0-9.,]+$/"
                                    class="form-control" />
                             <span ng-show="modalCtrl.validateInput('add', 'priceInDollars', 'pattern')" class="text-danger">Solamente números permitidos</span>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Precio en colones</label>
-                            <input type="text" name="priceInColones" ng-model="addProductForm.priceInColones" ng-pattern="/^[0-9.,]+$/"
+                            <input tabindex="8" type="text" name="priceInColones" ng-model="addProductForm.priceInColones" ng-pattern="/^[0-9.,]+$/"
                                    class="form-control" />
                             <span ng-show="modalCtrl.validateInput('add', 'priceInColones', 'pattern')" class="text-danger">Solamente números permitidos</span>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Costo en dólares</label>
-                            <input type="text" name="costInDollars" ng-model="addProductForm.costInDollars" ng-pattern="/^[0-9.,]+$/"
+                            <input tabindex="11" type="text" name="costInDollars" ng-model="addProductForm.costInDollars" ng-pattern="/^[0-9.,]+$/"
                                    class="form-control" />
                             <span ng-show="modalCtrl.validateInput('add', 'costInDollars', 'pattern')" class="text-danger">Solamente números permitidos</span>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Costo en colones</label>
-                            <input type="text" name="costInColones" ng-model="addProductForm.costInColones" ng-pattern="/^[0-9.,]+$/"
+                            <input tabindex="13" type="text" name="costInColones" ng-model="addProductForm.costInColones" ng-pattern="/^[0-9.,]+$/"
                                    class="form-control" />
                             <span ng-show="modalCtrl.validateInput('add', 'costInColones', 'pattern')" class="text-danger">Solamente números permitidos</span>
                         </div>
@@ -77,17 +77,17 @@
                     <div class="panel-body col-lg-4">
                         <div class="form-group">
                             <label class="control-label">Costo sugerido</label>
-                            <input type="text" name="suggestedCost" ng-model="addProductForm.suggestedCost" ng-pattern="/^[0-9.,]+$/"
+                            <input tabindex="3" type="text" name="suggestedCost" ng-model="addProductForm.suggestedCost" ng-pattern="/^[0-9.,]+$/"
                                    class="form-control" />
                             <span ng-show="modalCtrl.validateInput('add', 'suggestedCost', 'pattern')" class="text-danger">Solamente números permitidos</span>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Partida arancelaria</label>
-                            <input type="text" name="tariffHeading" ng-model="addProductForm.tariffHeading" class="form-control"/>
+                            <input tabindex="6" type="text" name="tariffHeading" ng-model="addProductForm.tariffHeading" class="form-control"/>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Utilidad</label>
-                            <input type="text" name="utilityPercentage" ng-model="addProductForm.utilityPercentage"
+                            <input tabindex="9" type="text" name="utilityPercentage" ng-model="addProductForm.utilityPercentage"
                                    class="form-control"/>
                             <span ng-show="modalCtrl.validateInput('add', 'suggestedCost', 'pattern')" class="text-danger">Solamente números permitidos</span>
                         </div>
