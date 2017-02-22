@@ -49,15 +49,15 @@ class BillService {
 
     def createBill(BillRest argRestBill) {
         try {
-            def billUser = User.findByUsernameAndEnabled(argRestBill.userName)
-            def customer = Customer.findByIdAndEnabled(argRestBill.customerId)
+            def billUser = User.findByUsername(argRestBill.userName)
+            def customer = Customer.findById(argRestBill.customerId)
             def paymentType = BillPaymentType.findById(argRestBill.billPaymentTypeId)
             def creditCondition = CreditCondition.findById(argRestBill.creditConditionId)
             def billStateType = BillStateType.findByCode(Constants.FACTURA_CREADA)
             def currency = Currency.findById(argRestBill.currencyId)
             //TODO definir logica para calcular el dueDate en caso de que se tenga una condicion de credito
             Bill tmpBill = new Bill();
-            tmpBill.billNumber = LightUtils.randInt() as Long
+            tmpBill.billNumber = generateBillNumber()//LightUtils.randInt() as Long
             tmpBill.user = billUser
             tmpBill.customer = customer
             tmpBill.billPaymentType = paymentType
@@ -186,6 +186,33 @@ class BillService {
             throw e
         }
         return tmpAmount
+    }
+
+    /**
+     * Este método se encarga de procesar revisar de la base de datos
+     * cual es el numero de factura mas reciente secuencialmente generar uno nuevo.
+     * @author Leo Chen
+     */
+    def private  generateBillNumber(){
+        def billNumber = 0L
+        try {
+         def tmpMaxBillNumber = Bill.createCriteria().get {
+                projections {
+                    max "billNumber"
+                }
+            } as Long
+
+            if(tmpMaxBillNumber != null){
+                billNumber = tmpMaxBillNumber+1
+            }
+            else{
+                billNumber =1;
+            }
+        } catch (Exception e) {
+            log.error "Ha ocurrido un error calculando los totales " + e.message
+            throw e
+        }
+        return billNumber
     }
 }
 
