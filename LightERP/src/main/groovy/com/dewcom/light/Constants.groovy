@@ -40,4 +40,30 @@ class Constants {
     //Contantes de negocio
     public static final double SALES_TAX = 13;
 
+    //codigo de estados facturas
+    public static final Integer FACTURA_CREADA = 1;
+
+    //codigos de tipos de monedas
+    public static final Integer MONEDA_COLONES = 1;
+    public static final Integer MONEDA_DOLARES = 2;
+
+    //codigos de tipos de condiciones de credito
+    public static final Integer CREDITO_TREINTA_DIAS = 1;
+
+    //codigos de tipos de pago
+    public static final Integer PAGO_CONTADO = 1;
+    public static final Integer PAGO_CREDITO = 2;
+
+    //codigos de tipos de impuestos
+    public static final Integer IMPUESTO_VENTAS = 1;
+
+    //codigos de tipos de impuestos
+    public static final Integer TIPO_CAMBIO_DOLARES = 1;
+
+    //codigos de tipos de calculos SUMATORIOS
+    public static final Integer FACTURA_SUBTOTAL = 1;
+    public static final Integer FACTURA_TOTAL = 2;
+    public static final Integer FACTURA_TOTAL_DESCUENTOS = 3;
+    public static final Integer FACTURA_TOTAL_IMPUESTOS = 4;
+
 }

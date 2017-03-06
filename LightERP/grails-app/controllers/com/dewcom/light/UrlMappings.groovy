@@ -15,5 +15,6 @@ class UrlMappings {
 
         get "/api/customer/contacts"(controller: 'customer', action: 'getCustomerContacts')
         get "/api/customer/addresses"(controller: 'customer', action: 'getCustomerAddresses')
+        post "/api/bill"(controller: 'bill', action: 'create')
     }
 }

@@ -5,6 +5,9 @@ package com.dewcom.light
  */
 class BillStateType {
     //borrador, validada, pagada parcialmente, pagada, anulada.
-    Integer code;
-    String description;
+    Integer code
+    String description
+
+    static constraints = {
+    }
 }

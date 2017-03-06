@@ -7,4 +7,8 @@ class ExchangeRate {
     Integer code
     String description
     Double value
+    Currency currency
+
+    static constraints = {
+    }
 }

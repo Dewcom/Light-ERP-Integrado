@@ -1,5 +1,6 @@
 package com.dewcom.light
 
+import com.dewcom.light.rest.BillRest
 import com.dewcom.light.rest.ResponseREST
 import grails.plugin.springsecurity.annotation.Secured
 import grails.converters.*
@@ -7,7 +8,7 @@ import grails.converters.*
 class BillController extends RestController {
 
     def messageSource
-    def BillService
+    def billService
 
     /**
      * Este método se encarga de obtener una lista de facturas o una especifico por medio del ID
@@ -78,32 +79,32 @@ class BillController extends RestController {
      * @author Leonardo Chen
      * @param name
      */
-  /*  @Secured(['ROLE_ANONYMOUS'])
+    @Secured(['ROLE_ANONYMOUS'])
     def create() {
-        log.info "==========  Create contact  request =========="
+        log.info "==========  Create  bill requester =========="
         log.info request.JSON
 
         ResponseREST tmpResponse = new ResponseREST();
-        Contact  tmpContact = new Contact(request.JSON);
+        BillRest tmpBill = new BillRest(request.JSON);
         try {
-
-
-            tmpContact.validate();
-            if (tmpContact.hasErrors()) {
-                this.handleDataErrorsREST(messageSource, tmpContact.errors);
+            tmpBill.validate();
+            if (tmpBill.hasErrors()) {
+                this.handleDataErrorsREST(messageSource, tmpBill.errors);
             } else {
-                contactService.createContact(tmpContact);
+              def newBill =  billService.createBill(tmpBill);
 
-                tmpResponse.message = messageSource.getMessage("create.contact.success", null, Locale.default)
+                tmpResponse.message = messageSource.getMessage("create.bill.success", null, Locale.default)
+                tmpResponse.data = newBill
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
             }
-            log.info "====== Create contact response ======"
+            log.info "====== Create bill response ======"
             log.info tmpResponse as JSON
+            JSON.use('deep');
             render tmpResponse as JSON
         } catch (Exception e) {
             this.handleRESTExceptions(messageSource, e)
         }
-    }*/
+    }
 
     /**
      * Este método se encarga de borrar (Borrado lógico) un contacto

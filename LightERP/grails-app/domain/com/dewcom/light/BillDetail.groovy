@@ -12,6 +12,8 @@ class BillDetail {
     Double totalDiscount
     Double totalTaxAmount
     Double taxPercentage
+    Double subTotal
+    Double total
 
     static belongsTo = [Bill]
     static constraints = {
