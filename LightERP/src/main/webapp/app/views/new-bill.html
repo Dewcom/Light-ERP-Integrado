@@ -1,52 +1,13 @@
 <div class="row" ng-controller="BillController as controller">
-    <div class="col-md-3">
-        <div class="panel b">
-            <div class="panel-heading bb">
-                <h4 class="panel-title">Detalle de factura</h4>
-            </div>
-            <div class="panel-body bt">
-                <h4 class="b0">Order #65487</h4>
-            </div>
-            <table class="table">
-                <tbody>
-                <tr>
-                    <td>Subtotal</td>
-                    <td>
-                        <div class="text-right text-bold">$400</div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Impuestos</td>
-                    <td>
-                        <div class="text-right text-bold">$1.44</div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Costo de envío</td>
-                    <td>
-                        <div class="text-right text-bold">$5</div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <div class="panel-body">
-                <div class="clearfix">
-                    <div class="pull-right text-right">
-                        <div class="text-bold">$406.44</div>
-                    </div>
-                    <div class="pull-left text-bold text-dark">TOTAL</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-9">
+    <div class="col-md-12">
         <div class="container-md">
             <!-- Información del cliente-->
             <form name="controller.newBillForm" ng-submit="controller.submitForm('add')" action="" method="post" novalidate="novalidate">
                 <uib-accordion close-others="true">
                     <uib-accordion-group is-open="chk.step1" ng-init="chk.step1 = true" panel-class="b">
-                        <uib-accordion-heading>1. Buscar cliente</uib-accordion-heading>
+                        <uib-accordion-heading>1. Información del cliente</uib-accordion-heading>
                         <div id="collapse01">
+                            <h4>Buscar cliente</h4>
                             <div>
                                 <table datatable="ng" dt-options="controller.dtOptionsCustomers"
                                        dt-column-defs="controller.dtColumnDefsCustomers"
@@ -55,7 +16,7 @@
                                     <tr>
                                         <th>Nombre</th>
                                         <th>Identificación</th>
-                                        <th>Opciones</th>
+                                        <th>Escoger</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -66,14 +27,117 @@
                                         </td>
                                         <td>{{ customerObj.identification }}</td>
                                         <td>
-                                            <button type="button" ng-click="controller.chooseCustomer(customerObj); chk.step2 = true"
-                                                    class="btn btn-sm btn-info">
-                                                <em class="fa fa-share"></em>
+                                            <button type="button" ng-click="controller.chooseCustomer(customerObj)"
+                                                    class="btn btn-sm btn-success">
+                                                <em class="fa fa-check"></em>
                                             </button>
                                         </td>
                                     </tr>
                                     </tbody>
                                 </table>
+                            </div>
+                            <!-- Informacion del cliente-->
+                            <div ng-show="chosenCustomer != null">
+                                <h4>Información general</h4>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label>Nombre</label>
+                                            <input type="text" name="name" ng-model="chosenCustomer.name" required=""
+                                                   class="form-control" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Identificación</label>
+                                            <input type="text" name="identification" ng-model="chosenCustomer.identification"
+                                                   class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label>Primer apellido</label>
+                                            <input type="text" name="name" ng-model="chosenCustomer.firstLastName" required=""
+                                                   class="form-control" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Teléfono</label>
+                                            <input type="text" name="phone" ng-model="chosenCustomer.phoneNumber1" required=""
+                                                   class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label>Segundo apellido</label>
+                                            <input type="text" name="name" ng-model="chosenCustomer.secondLastName" required=""
+                                                   class="form-control" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Teléfono celular</label>
+                                            <input type="text" name="mobile" ng-model="chosenCustomer.mobile" required=""
+                                                   class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Dirección del cliente-->
+                            <div ng-show="chosenCustomer != null">
+                                <h4>Escoger dirección</h4>
+                                <div>
+                                    <table datatable="" dt-options="controller.dtOptionsAddresses"
+                                           dt-column-defs="controller.dtColumnDefsAddresses"
+                                           class="row-border hover">
+                                        <thead>
+                                        <tr>
+                                            <th>Provincia</th>
+                                            <th>Cantón</th>
+                                            <th>Distrito</th>
+                                            <th>Dirección</th>
+                                            <th>Escoger</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="addressObj in customerAddresses">
+                                            <td>{{ addressObj.province.name }}</td>
+                                            <td>{{ addressObj.canton.name }}</td>
+                                            <td>{{ addressObj.district.name }}</td>
+                                            <td>{{ addressObj.address }}</td>
+                                            <td>
+                                                <button type="button" ng-click="controller.chooseAddress(addressObj)"
+                                                        class="btn btn-sm btn-success">
+                                                    <em class="fa fa-check"></em>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row" ng-show="chosenAddress != null">
+                                <div class="col-lg-12">
+                                    <h4>Dirección escogida</h4>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Provincia</label>
+                                        <input type="text" name="province" ng-model="chosenAddress.province.name" required=""
+                                               class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Distrito</label>
+                                        <input type="text" name="district" ng-model="chosenAddress.district.name" required=""
+                                               class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Cantón</label>
+                                        <input type="text" name="canton" ng-model="chosenAddress.canton.name" required=""
+                                               class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Dirección</label>
+                                        <textarea style="resize: none" name="address" ng-model="chosenAddress.address" class="form-control"></textarea>
+                                    </div>
+                                </div>
                             </div>
                             <div class="pt clearfix">
                                 <div class="pull-left">
@@ -82,65 +146,10 @@
                             </div>
                         </div>
                     </uib-accordion-group>
-                    <!-- Informacion del cliente-->
-                    <uib-accordion-group is-open="chk.step2" panel-class="b">
-                        <uib-accordion-heading>2. Información del cliente</uib-accordion-heading>
-                        <div id="collapse02">
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label>Nombre</label>
-                                        <input type="text" name="name" ng-model="chosenCustomer.name" required="" class="form-control" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Identificación</label>
-                                        <input type="text" name="identification" ng-model="chosenCustomer.identification" class="form-control" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Cantón</label>
-                                        <input type="text" name="canton" ng-model="chosenCustomer.canton" required="" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label>Primer apellido</label>
-                                        <input type="text" name="name" ng-model="chosenCustomer.firstLastName" required="" class="form-control" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Teléfono</label>
-                                        <input type="text" name="phone" ng-model="chosenCustomer.phoneNumber1" required="" class="form-control" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Distrito</label>
-                                        <input type="text" name="district" ng-model="chosenCustomer.district" required="" class="form-control" />
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label>Segundo apellido</label>
-                                        <input type="text" name="name" ng-model="chosenCustomer.secondLastName" required="" class="form-control" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Provincia</label>
-                                        <input type="text" name="province" ng-model="chosenCustomer.province" required="" class="form-control" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Dirección</label>
-                                        <input type="text" name="address" ng-model="chosenCustomer.address" required="" class="form-control" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="pt clearfix">
-                                <div class="pull-left">
-                                    <button type="button" ng-click="chk.step3 = true" class="btn btn-primary">Siguiente</button>
-                                </div>
-                            </div>
-                        </div>
-                    </uib-accordion-group>
                     <!-- Detalles de pago -->
-                    <uib-accordion-group is-open="chk.step3" panel-class="b">
-                        <uib-accordion-heading>3. Detalles de pago</uib-accordion-heading>
-                        <div id="collapse03">
+                    <uib-accordion-group is-open="chk.step2" panel-class="b">
+                        <uib-accordion-heading>2. Detalles de pago</uib-accordion-heading>
+                        <div id="collapse02">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="form-group">
@@ -157,19 +166,24 @@
                                         <label>Condición de crédito</label>
                                         <input type="text" name="creditCondition" required="" class="form-control" />
                                     </div>
+                                    <div class="form-group">
+                                        <label>Tipo de cambio</label>
+                                        <input type="text" name="creditCondition" required="" class="form-control" />
+                                    </div>
                                 </div>
                             </div>
                             <div class="pt clearfix">
                                 <div class="pull-left">
-                                    <button type="button" ng-click="chk.step4 = true" class="btn btn-primary">Siguiente</button>
+                                    <button type="button" ng-click="chk.step3 = true" class="btn btn-primary">Siguiente</button>
                                 </div>
                             </div>
                         </div>
                     </uib-accordion-group>
                     <!-- Lista de productos -->
-                    <uib-accordion-group is-open="chk.step4" panel-class="b">
-                        <uib-accordion-heading>4. Lista de productos</uib-accordion-heading>
-                        <div id="collapse04">
+                    <uib-accordion-group is-open="chk.step3" panel-class="b">
+                        <uib-accordion-heading>3. Lista de productos</uib-accordion-heading>
+                        <div id="collapse03">
+                            <h4>Productos</h4>
                             <table datatable="ng" dt-options="controller.dtOptionsProducts" dt-column-defs="controller.dtColumnDefsProducts"
                                    class="row-border hover">
                                 <thead>
@@ -178,7 +192,7 @@
                                     <th>Nombre</th>
                                     <th>Tipo de producto</th>
                                     <th>Tipo de presentación</th>
-                                    <th>Opciones</th>
+                                    <th>Escoger</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -188,21 +202,79 @@
                                     <td>{{ productObj.productType.name }}</td>
                                     <td>{{ productObj.presentationType.name }}</td>
                                     <td>
-                                        <button type="button" ng-click="controller.openUpdateModal(productObj)" class="btn btn-sm btn-toolbar">
-                                            <em class="fa fa-search"></em>
+                                        <button type="button" ng-click="controller.openAddProductModal(productObj)"
+                                                class="btn btn-sm btn-success">
+                                            <em class="fa fa-check"></em>
                                         </button>
-                                        <button type="button" ng-click="controller.disableProduct(productObj.id)"
-                                                class="btn btn-sm btn-danger">
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <h4>Productos escogidos</h4>
+                            <table datatable="ng" dt-options="controller.dtOptionsAddedProductos" dt-column-defs="controller.dtColumnDefsAddedProductos"
+                                   class="row-border hover">
+                                <thead>
+                                <tr>
+                                    <th>Cantidad</th>
+                                    <th>Código</th>
+                                    <th>Nombre</th>
+                                    <th>Precio unitario</th>
+                                    <th>Descuento</th>
+                                    <th>Impuestos</th>
+                                    <th>Subtotal</th>
+                                    <th>Eliminar</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="addedProductObj in controller.addedProductList">
+                                    <td>{{ addedProductObj.quantity }}</td>
+                                    <td>{{ addedProductObj.productCode }}</td>
+                                    <td>{{ addedProductObj.name }}</td>
+                                    <td>{{ addedProductObj.linePrice }}</td>
+                                    <td>{{ addedProductObj.discountPercentage}} %</td>
+                                    <td>{{ addedProductObj.taxPercentage}} %</td>
+                                    <td>{{ addedProductObj.subtotal }}</td>
+                                    <td>
+                                        <button type="button" ng-click="addressTable.removeTmpAddress($index)" class="btn btn-sm btn-danger">
                                             <em class="fa fa-trash-o"></em>
                                         </button>
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
+                            <h4>Totales</h4>
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Total de impuestos</label>
+                                        <input type="number" name="taxTotal" ng-model="controller.taxTotal" required="" class="form-control" disabled="true"/>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Total de descuentos</label>
+                                        <input type="number" name="discountTotal" ng-model="controller.discountTotal" required="" class="form-control" disabled="true"/>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Monto total</label>
+                                        <input type="number" name="billTotal" ng-model="controller.billTotal" required="" class="form-control" disabled="true"/>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="pull-right">
+                                        <br>
+                                        <button type="submit" class="btn btn-success btn-lg">Agregar</button>
+                                        <button type="button" ng-click="cancel()" class="btn btn-danger btn-lg">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </uib-accordion-group>
                 </uib-accordion>
             </form>
         </div>
     </div>
+    <div ng-include="'app/views/modals/add-product-to-bill-modal.html'"></div>
 </div>

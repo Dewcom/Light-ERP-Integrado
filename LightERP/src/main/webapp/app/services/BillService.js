@@ -5,7 +5,21 @@ angular
     .factory("billService", function ($http, $state) {
 
         var billService = {};
+        var addedProductList = [];
+        // var totalTax = 0;
 
+        billService.getAddedProductList = function () {
+            return addedProductList;
+        };
+
+       /* billService.getTaxTotal = function () {
+            return totalTax;
+        };
+
+        billService.setTaxTotal = function(value) {
+            totalTax = value;
+        };
+*/
         billService.getAll = function() {
 
             var billList = $http({
@@ -105,7 +119,7 @@ angular
                 return error.status;
             });
 
-            return disableBill;
+            return disablebillResult;
         };
 
         return billService;
