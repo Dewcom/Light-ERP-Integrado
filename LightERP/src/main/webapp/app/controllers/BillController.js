@@ -123,6 +123,10 @@
 
         vm.removeProduct = function (index) {
             billService.removeProduct(index);
+            var addedProductList = billService.getAddedProductList();
+            vm.billTotal = calculateTotalAmmount(addedProductList);
+            vm.taxTotal = calculateTotalTaxes(addedProductList);
+            vm.discountTotal = calculateTotalDiscount(addedProductList);
         };
 
         /**=========================================================
