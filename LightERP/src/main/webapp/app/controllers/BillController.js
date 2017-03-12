@@ -8,9 +8,9 @@
         .controller('BillController', BillController);
 
     BillController.$inject = ['DTOptionsBuilder', 'DTColumnDefBuilder', 'billService', 'customerService', 'productService', '$scope',
-        '$uibModal', 'productTypeService', 'presentationTypeService'];
+        '$uibModal', 'productTypeService', 'presentationTypeService', '$state', 'toaster', '$timeout' , '$filter'];
     function BillController(DTOptionsBuilder, DTColumnDefBuilder, billService, customerService, productService, $scope, $uibModal,
-                            productTypeService, presentationTypeService) {
+                            productTypeService, presentationTypeService, $state, toaster, $timeout, $filter) {
         var vm = this;
 
         vm.taxTotal = 0;
@@ -69,7 +69,8 @@
              =========================================================*/
 
             productService.getAll().then(function (response) {
-                vm.productList = response;
+                var sortedProducts =  $filter('orderBy')(response, 'productCode');
+                vm.productList = sortedProducts;
             });
 
             /**=========================================================
@@ -89,61 +90,6 @@
             });
 
             /**=========================================================
-             * Lista de productos por agregar
-             =========================================================*/
-
-            vm.addedProductList = billService.getAddedProductList();
-
-            /**=========================================================
-             * Datatable clientes
-             =========================================================*/
-
-            vm.dtOptionsCustomers = DTOptionsBuilder.newOptions()
-                .withOption('bInfo', true)
-                .withOption('bPaginate', true)
-                .withOption('bLengthChange', false)
-                .withOption('iDisplayLength', 2)
-                .withLanguage(language);
-            vm.dtColumnDefsCustomers = [
-                DTColumnDefBuilder.newColumnDef(0),
-                DTColumnDefBuilder.newColumnDef(1),
-                DTColumnDefBuilder.newColumnDef(2).notSortable()
-            ];
-
-            /**=========================================================
-             * Datatable productos
-             =========================================================*/
-
-            vm.dtOptionsProducts = DTOptionsBuilder.newOptions()
-                .withOption('bInfo', true)
-                .withOption('bPaginate', true)
-                .withOption('bLengthChange', false)
-                .withOption('iDisplayLength', 2)
-                .withLanguage(language);
-            vm.dtColumnDefsProducts = [
-                DTColumnDefBuilder.newColumnDef(0),
-                DTColumnDefBuilder.newColumnDef(1),
-                DTColumnDefBuilder.newColumnDef(2).notSortable()
-            ];
-
-            /**=========================================================
-             * Datatable direcciones
-             =========================================================*/
-
-            vm.dtOptionsAddresses = DTOptionsBuilder.newOptions()
-                .withOption('bFilter', false)
-                .withOption('bInfo', false)
-                .withOption('bPaginate', false)
-                .withOption('bLengthChange', false)
-                .withLanguage(language);
-            vm.dtColumnDefsAddresses = [
-                DTColumnDefBuilder.newColumnDef(0),
-                DTColumnDefBuilder.newColumnDef(1),
-                DTColumnDefBuilder.newColumnDef(2),
-                DTColumnDefBuilder.newColumnDef(3).notSortable()
-            ];
-
-            /**=========================================================
              * Datatable productos agregados
              =========================================================*/
 
@@ -161,44 +107,37 @@
             ];
         }
 
-
-
-        /**=========================================================
-         * Escoger el cliente de la factura
-         =========================================================*/
-
-        vm.chooseCustomer = function (chosenCustomer) {
-            console.log(chosenCustomer);
-            $scope.chosenCustomer = JSON.parse(JSON.stringify(chosenCustomer));
-
-            customerService.getAllAddresses(chosenCustomer.id).then(function (response) {
-                $scope.customerAddresses = response;
-                console.log($scope.customerAddresses);
+        vm.getCustomerAddresses = function (customerId) {
+            console.log(customerId);
+            vm.customerAddresses = [];
+            customerService.getAllAddresses(customerId).then(function (response) {
+                vm.customerAddresses = response;
             });
+
         };
 
+
         /**=========================================================
-         * Escoger la dirección del cliente de la factura
+         * Eliminar un producto de la factura
          =========================================================*/
 
-        vm.chooseAddress = function (chosenAddress) {
-            console.log(chosenAddress);
-            $scope.chosenAddress = JSON.parse(JSON.stringify(chosenAddress));
+        vm.removeProduct = function (index) {
+            billService.removeProduct(index);
         };
 
         /**=========================================================
          * Module: modals
          =========================================================*/
 
-        vm.openAddProductModal = function (product) {
+        vm.openAddProductModal = function () {
 
             var modalInstance = $uibModal.open({
                 templateUrl: '/addProductToBillModal.html',
                 controller: AddModalInstanceCtrl,
                 size: 'lg',
                 resolve: {
-                    product: function () {
-                        return product;
+                    productList: function () {
+                        return vm.productList;
                     },
                     taxTotal: function () {
                         return vm.taxTotal;
@@ -269,7 +208,7 @@
             vm.submitted = true;
 
             if (action == 'add') {
-                if (vm.addProductToBillForm.$valid) {
+                if (vm.newBillForm.$valid) {
                     //HACE ALGO CON LA VALIDACION
                 } else {
                     console.log('Not valid!!');
@@ -291,46 +230,74 @@
          * Agregar facturas
          =========================================================*/
 
-        function addBill() {
+        vm.addBill = function () {
 
-            /*var newUser ={
-             "username":$scope.addUserForm.username,
-             "password":$scope.addUserForm.password,
-             "userCode":$scope.addUserForm.userCode,
-             "name":$scope.addUserForm.name ,
-             "firstLastName":$scope.addUserForm.firstLastName,
-             "secondLastName":$scope.addUserForm.secondLastName,
-             "phoneNumber":$scope.addUserForm.phoneNumber,
-             "extension":$scope.addUserForm.extension,
-             "mobile":$scope.addUserForm.mobile,
-             "email":$scope.addUserForm.email,
-             "commissionPercentage":parseFloat($scope.addUserForm.commissionPercentage)
-             };
-             console.log(newUser);
-             billService.addUser(newUser).then(function (response) {
-             var toasterdata;
+            var userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
 
-             if(response.code == "0"){
-             toasterdata = {
-             type: 'success',
-             title: 'Agregar usuario',
-             text: response.message
-             };
-             }else{
-             toasterdata = {
-             type: 'warning',
-             title: 'Usuario',
-             text: response.message
-             };
+            var newBill = {
+                "username": userInfo.userName,
+                "customerId": $scope.chosenCustomer.id,
+                "exchangeRate": 561,
+                "billPaymentTypeId": 1,
+                "creditConditionId": 1,
+                "currencyId": 1,
+                "billDetails": formatBillDetails(vm.addedProductList)
 
-             }
-             pop(toasterdata);
-             $timeout(function(){ callAtTimeout(); }, 3000);
-             },function (error) {
-             console.log(error);
-             });
+            };
+            console.log(newBill);
 
-             $scope.cancel();*/
+            billService.resetAddedProductList();
+
+            billService.addBill(newBill).then(function (response) {
+                var toasterdata;
+
+                if (response.code == "0") {
+                    toasterdata = {
+                        type: 'success',
+                        title: 'Agregar usuario',
+                        text: response.message
+                    };
+                } else {
+                    toasterdata = {
+                        type: 'warning',
+                        title: 'Usuario',
+                        text: response.message
+                    };
+
+                }
+                pop(toasterdata);
+                $timeout(function () {
+                    callAtTimeout();
+                }, 3000);
+            }, function (error) {
+                console.log(error);
+            });
+
+
+            $state.reload();
+        };
+
+        /**=========================================================
+         * Modificar facturas
+         =========================================================*/
+
+        function formatBillDetails(list) {
+            var formattedList = [];
+
+            angular.forEach(list, function (value, key) {
+
+                var item = {
+                    'productId': value.productId,
+                    'quantity': value.quantity,
+                    'linePrice': value.linePrice,
+                    'discountPercentage': value.discountPercentage,
+                    'taxPercentage': value.taxPercentage
+                };
+                formattedList.push(item);
+            });
+
+            return formattedList;
+
         }
 
         /**=========================================================
@@ -422,17 +389,24 @@
         // Please note that $uibModalInstance represents a modal window (instance) dependency.
         // It is not the same as the $uibModal service used above.
 
-        AddModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', 'product', 'taxTotal', 'discountTotal'];
-        function AddModalInstanceCtrl($scope, $uibModalInstance, product, taxTotal, discountTotal) {
+        AddModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', 'productList', 'discountTotal', 'taxTotal'];
+        function AddModalInstanceCtrl($scope, $uibModalInstance, productList, discountTotal, taxTotal) {
             var vm = this;
+            vm.selectedProduct = {};
 
-            $scope.currentProduct = JSON.parse(JSON.stringify(product));
-            $scope.currentProduct.quantity = 1;
-            $scope.currentProduct.discount = 0;
-            $scope.currentProduct.tax = 0;
+            vm.productList = productList;
+
+            $scope.selectProduct = function (product) {
+                vm.selectedProduct = product;
+                vm.selectedProduct.quantity = 1;
+                vm.selectedProduct.discount = 0;
+                vm.selectedProduct.tax = 0;
+            };
 
             $scope.ok = function () {
-                var result = addProductToBill($scope, taxTotal, discountTotal);
+
+                console.log(vm.selectedProduct);
+                var result = addProductToBill(vm.selectedProduct);
                 $uibModalInstance.close(result);
             };
 
@@ -456,18 +430,20 @@
             };
         }
 
-        function addProductToBill($scope, taxTotal, discountTotal) {
+        function addProductToBill(selectedProduct) {
+
+            console.log(selectedProduct);
 
             var productToAdd = {
-                "productId": $scope.currentProduct.id,
-                "productCode": $scope.currentProduct.productCode,
-                "name": $scope.currentProduct.name,
-                "quantity": $scope.currentProduct.quantity,
-                "linePrice": $scope.currentProduct.priceInColones,
-                "discountPercentage": $scope.currentProduct.discount,
-                "taxPercentage": $scope.currentProduct.tax,
-                "subtotal": calculateSubtotal($scope.currentProduct.quantity, $scope.currentProduct.priceInColones,
-                   $scope.currentProduct.discount,$scope.currentProduct.tax)
+                "productId": selectedProduct.id,
+                "productCode": selectedProduct.productCode,
+                "name": selectedProduct.name,
+                "quantity": selectedProduct.quantity,
+                "linePrice": selectedProduct.priceInColones,
+                "discountPercentage": selectedProduct.discount,
+                "taxPercentage": selectedProduct.tax,
+                "subtotal": calculateSubtotal(selectedProduct.quantity, selectedProduct.priceInColones,
+                    selectedProduct.discount, selectedProduct.tax)
             };
 
             var tmpList = billService.getAddedProductList();
@@ -483,17 +459,18 @@
             var result = {
                 'taxTotal': tmpTaxes,
                 'discountTotal': tmpDiscount,
-                'totalAmmount' : totalAmmount
+                'totalAmmount': totalAmmount
             };
+
             return result;
         }
 
-        function calculateSubtotal(quantity, price, discount, tax ){
+        function calculateSubtotal(quantity, price, discount, tax) {
             var tmpSubTotal = price * quantity;
 
-            var totalAfterDiscount = tmpSubTotal - (tmpSubTotal * (discount/100));
+            var totalAfterDiscount = tmpSubTotal - (tmpSubTotal * (discount / 100));
 
-            var subtotal = totalAfterDiscount + (totalAfterDiscount * (tax/100));
+            var subtotal = totalAfterDiscount + (totalAfterDiscount * (tax / 100));
 
             return subtotal;
         }
@@ -501,7 +478,7 @@
         function calculateTotalTaxes(addedProductList) {
             var taxTotal = 0;
 
-            angular.forEach(addedProductList, function(value, key) {
+            angular.forEach(addedProductList, function (value, key) {
                 taxTotal += parseFloat(value.taxPercentage) / 100 * parseFloat(value.linePrice);
             });
 
@@ -511,7 +488,7 @@
         function calculateTotalDiscount(addedProductList) {
             var totalDiscount = 0;
 
-            angular.forEach(addedProductList, function(value, key) {
+            angular.forEach(addedProductList, function (value, key) {
                 totalDiscount += parseFloat(value.discountPercentage) / 100 * parseFloat(value.linePrice);
             });
 
@@ -521,13 +498,12 @@
         function calculateTotalAmmount(addedProductList) {
             var totalAmmount = 0;
 
-            angular.forEach(addedProductList, function(value, key) {
+            angular.forEach(addedProductList, function (value, key) {
                 totalAmmount += parseFloat(value.subtotal);
             });
 
             return totalAmmount;
         }
-
 
 
         function pop(toasterdata) {
@@ -542,5 +518,57 @@
             $state.reload();
         }
     }
+
+
+
+    /**
+     * AngularJS default filter with the following expression:
+     * "person in people | filter: {name: $select.search, age: $select.search}"
+     * performs a AND between 'name: $select.search' and 'age: $select.search'.
+     * We want to perform a OR.
+     */
+
+    (function() {
+        'use strict';
+
+        angular
+            .module('app.forms')
+            .filter('propsFilter', propsFilter);
+
+        function propsFilter() {
+            return filterFilter;
+
+            ////////////////
+            function filterFilter(items, props) {
+                var out = [];
+
+                if (angular.isArray(items)) {
+                    items.forEach(function(item) {
+                        var itemMatches = false;
+
+                        var keys = Object.keys(props);
+                        for (var i = 0; i < keys.length; i++) {
+                            var prop = keys[i];
+                            var text = props[prop].toLowerCase();
+                            if (item[prop].toString().toLowerCase().indexOf(text) !== -1) {
+                                itemMatches = true;
+                                break;
+                            }
+                        }
+
+                        if (itemMatches) {
+                            out.push(item);
+                        }
+                    });
+                } else {
+                    // Let the output be the input untouched
+                    out = items;
+                }
+
+                return out;
+            }
+        }
+
+    })();
 
 })();

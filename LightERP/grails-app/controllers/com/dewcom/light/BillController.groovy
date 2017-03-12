@@ -16,7 +16,7 @@ class BillController extends RestController {
      */
     @Secured(['ROLE_ANONYMOUS'])
     def get() {
-        log.info "========== Get bill  request =========="
+        log.info "========== Get bill request =========="
 
         ResponseREST tmpResponse = new ResponseREST();
 
@@ -81,7 +81,7 @@ class BillController extends RestController {
      */
     @Secured(['ROLE_ANONYMOUS'])
     def create() {
-        log.info "==========  Create  bill requester =========="
+        log.info "==========  Create  bill request =========="
         log.info request.JSON
 
         ResponseREST tmpResponse = new ResponseREST();

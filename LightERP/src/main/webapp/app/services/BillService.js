@@ -12,14 +12,16 @@ angular
             return addedProductList;
         };
 
-       /* billService.getTaxTotal = function () {
-            return totalTax;
+        billService.resetAddedProductList = function () {
+            addedProductList = [];
         };
 
-        billService.setTaxTotal = function(value) {
-            totalTax = value;
+        billService.removeProduct = function (index) {
+
+            console.log(index);
+            addedProductList.splice(index, 1);
         };
-*/
+
         billService.getAll = function() {
 
             var billList = $http({

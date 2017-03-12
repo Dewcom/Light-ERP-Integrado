@@ -50,7 +50,7 @@
             'cfp.loadingBar',
             'ngSanitize',
             'ngResource',
-            'ui.utils',
+            'ui.utils'
         ]);
 })();
 (function() {
@@ -416,7 +416,7 @@
             scripts: {
                 'modernizr': ['vendor/modernizr/modernizr.custom.js'],
                 'icons': ['vendor/fontawesome/css/font-awesome.min.css',
-                    'vendor/simple-line-icons/css/simple-line-icons.css'],
+                    'vendor/simple-line-icons/css/simple-line-icons.css']
 
             },
             // Angular based script (use the right module name)
@@ -435,6 +435,10 @@
                 {
                     name: 'toaster', files: ['vendor/angularjs-toaster/toaster.js',
                     'vendor/angularjs-toaster/toaster.css']
+                },
+                {
+                    name: 'ui.select', files: ['vendor/angular-ui-select/dist/select.js',
+                    'vendor/angular-ui-select/dist/select.css']
                 }
 
             ]
@@ -835,7 +839,7 @@
                 url: '/billing',
                 title: 'Facturas',
                 templateUrl: helper.basepath('billing-main.html'),
-                resolve: helper.resolveFor('datatables', 'ngDialog')
+                resolve: helper.resolveFor('datatables', 'ngDialog', 'ui.select')
             })
             .state('app.usersMain', {
                 url: '/usersMain',
