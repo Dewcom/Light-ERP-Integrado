@@ -9,6 +9,7 @@ import grails.transaction.Transactional
 class BillService {
 
     def messageSource
+    def adminService
 
     Bill getBill(def billId) {
         log.info "====== Getting bill from DB ======"
@@ -48,16 +49,38 @@ class BillService {
     }
 
     def createBill(BillRest argRestBill) {
+        def savedBill;
         try {
+            def configConsecFactura
+            Bill tmpBill = new Bill()
             def billUser = User.findByUsername(argRestBill.userName)
             def customer = Customer.findById(argRestBill.customerId)
             def paymentType = BillPaymentType.findById(argRestBill.billPaymentTypeId)
-            def creditCondition = CreditCondition.findById(argRestBill.creditConditionId)
-            def billStateType = BillStateType.findByCode(Constants.FACTURA_CREADA)
+            def creditCondition;
+            def creationDate = LightUtils.stringToDate(argRestBill.creationDate,"dd-MM-yyyy")
+
+            if(argRestBill.billPaymentTypeId != null && paymentType.code == Constants.PAGO_CREDITO){
+                if(argRestBill.creditConditionId != null && creationDate != null){
+                    creditCondition= CreditCondition.findById(argRestBill.creditConditionId)
+                    tmpBill.dueDate = LightUtils.plusDaysToDate(creationDate, creditCondition.days)
+                }
+            }
             def currency = Currency.findById(argRestBill.currencyId)
-            //TODO definir logica para calcular el dueDate en caso de que se tenga una condicion de credito
-            Bill tmpBill = new Bill();
-            tmpBill.billNumber = generateBillNumber()//LightUtils.randInt() as Long
+
+            def billStateType
+            if(argRestBill.registrationType == Constants.CREADA_BORRADOR){
+                billStateType = BillStateType.findByCode(Constants.FACTURA_CREADA)
+            }
+            else{
+                configConsecFactura = Configuration.findByCode(Constants.CONFIG_CONSECUTIVO_FACTURA)
+                if (!configConsecFactura) {
+                    Configuration tmpConfig = new Configuration(value: generateBillNumber().toString(), description: "consecutivo factura", code: Constants.CONFIG_CONSECUTIVO_FACTURA)
+                    configConsecFactura = adminService.createConfiguration(tmpConfig)
+                }
+                billStateType = BillStateType.findByCode(Constants.FACTURA_VALIDADA)
+                tmpBill.billNumber = configConsecFactura.value as Long
+            }
+
             tmpBill.user = billUser
             tmpBill.customer = customer
             tmpBill.billPaymentType = paymentType
@@ -65,19 +88,35 @@ class BillService {
             tmpBill.billState = billStateType
             tmpBill.currency = currency
             tmpBill.exchangeRate = argRestBill.exchangeRate
-            processRestBillDetails(argRestBill.billDetails, tmpBill)
-            //calculo de totales
-            tmpBill.totalAmount = calculateBillAmount(tmpBill, Constants.FACTURA_TOTAL)
-            tmpBill.subTotalAmount = calculateBillAmount(tmpBill, Constants.FACTURA_SUBTOTAL)
-            tmpBill.totalTaxAmount = calculateBillAmount(tmpBill, Constants.FACTURA_TOTAL_IMPUESTOS)
-            tmpBill.totalDiscount = calculateBillAmount(tmpBill, Constants.FACTURA_TOTAL_DESCUENTOS)
-            //TODO SE NESECITA LOGICA PARA CALCULAR EL DUE DATE A PARTIR DEL CREDIT CONDITION...UNDER CONSTRUCT
+            tmpBill.creationDate = creationDate
 
-           return tmpBill.save(flush: true, failOnError:true)
+            if(argRestBill.billDetails != null && argRestBill.billDetails.size() > 0 ){
+                processRestBillDetails(argRestBill.billDetails, tmpBill)
+                //calculo de totales
+                tmpBill.totalAmount = calculateBillAmount(tmpBill, Constants.FACTURA_TOTAL)
+                tmpBill.subTotalAmount = calculateBillAmount(tmpBill, Constants.FACTURA_SUBTOTAL)
+                tmpBill.totalTaxAmount = calculateBillAmount(tmpBill, Constants.FACTURA_TOTAL_IMPUESTOS)
+                tmpBill.totalDiscount = calculateBillAmount(tmpBill, Constants.FACTURA_TOTAL_DESCUENTOS)
+            }
+
+            savedBill = tmpBill.save(flush: true, failOnError:true)
+
+            //se actualiza el numero de consecutivo en caso de haberse almacenado  correctamente la factura
+            if(argRestBill.registrationType == Constants.CREADA_VALIDADA){
+                configConsecFactura.value = ((configConsecFactura.value as Long) + 1).toString();
+                adminService.updateConfiguration(configConsecFactura)
+            }
         } catch (Exception e) {
             log.error(e);
-            throw new LightRuntimeException(messageSource.getMessage("create.bill.error", null, Locale.default));
+
+            if(e instanceof LightRuntimeException){
+                throw e;
+            }
+            else{
+                throw new LightRuntimeException(messageSource.getMessage("create.bill.error", null, Locale.default));
+            }
         }
+        return savedBill;
     }
 
     def deleteBill(Bill bill) {
@@ -156,7 +195,7 @@ class BillService {
      * desde el cliente calculando los montos total indicado por parametro.
      * @author Leo Chen
      */
-    def private  calculateBillAmount(Bill argBill, def calculationTypeCode){
+    def private calculateBillAmount(Bill argBill, def calculationTypeCode){
         def tmpAmount = 0.0D
         try {
             switch (calculationTypeCode) {
@@ -193,7 +232,7 @@ class BillService {
      * cual es el numero de factura mas reciente secuencialmente generar uno nuevo.
      * @author Leo Chen
      */
-    def private  generateBillNumber(){
+    def generateBillNumber(){
         def billNumber = 0L
         try {
          def tmpMaxBillNumber = Bill.createCriteria().get {
@@ -213,6 +252,35 @@ class BillService {
             throw e
         }
         return billNumber
+    }
+
+    /**
+     * Este método se encarga de validar que el numero de factura que el cliente
+     * envia al backend para almacenar cumpla con ciertos criterios
+     * @author Leo Chen
+     */
+    def  validateBillNumber(def argBillNumber){
+        try {
+            def lastBillNumber = Bill.createCriteria().get {
+                projections {
+                    max "billNumber"
+                }
+            } as Long
+
+            def totalBills = Bill.countByBillNumber(argBillNumber)
+            log.info 'totalBills'+totalBills
+
+            if(totalBills > 0){
+                throw new LightException(messageSource.getMessage("billNumber.nonUnique.error", null, Locale.default))
+            }
+            else if(argBillNumber <= 0 || (lastBillNumber != null &&  argBillNumber < lastBillNumber)){
+                log.info 'totalBills'+totalBills
+                throw new LightException(messageSource.getMessage("billNumber.invalid.error", null, Locale.default))
+            }
+        } catch (Exception e) {
+            log.error "Ha ocurrido un error validando el numero de factura " + e.message
+            throw e
+        }
     }
 }
 

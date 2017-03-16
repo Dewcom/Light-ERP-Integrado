@@ -81,7 +81,7 @@ class BillController extends RestController {
      */
     @Secured(['ROLE_ANONYMOUS'])
     def create() {
-        log.info "==========  Create  bill requester =========="
+        log.info "==========  Create  bill request =========="
         log.info request.JSON
 
         ResponseREST tmpResponse = new ResponseREST();
@@ -138,6 +138,27 @@ class BillController extends RestController {
             render tmpResponse as JSON
         } catch (Exception e) {
             this.handleRESTExceptions(messageSource, e);
+        }
+    }
+
+    /**
+     * Este método se encarga de generar un numero de factura
+     * @author Leonardo Chen
+     * @param name
+     */
+    @Secured(['ROLE_ANONYMOUS'])
+    def generateBillNumber(){
+        ResponseREST tmpResponse = new ResponseREST();
+        try {
+                tmpResponse.message = messageSource.getMessage("generate.billNumber.success", null, Locale.default)
+                tmpResponse.data = billService.generateBillNumber()
+                tmpResponse.code = Constants.SUCCESS_RESPONSE
+
+            log.info "====== generate bill number response ======"
+            log.info tmpResponse as JSON
+            render tmpResponse as JSON
+        } catch (Exception e) {
+            this.handleRESTExceptions(messageSource, e)
         }
     }
 
