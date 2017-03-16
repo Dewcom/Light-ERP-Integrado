@@ -18,5 +18,11 @@ class UrlMappings {
         get "/api/bill/billNumber"(controller: 'bill', action: 'generateBillNumber')
         post "/api/bill"(controller: 'bill', action: 'create')
 
+        //mantenimientos catalogo
+        get "/api/billPaymentType"(controller: 'billPaymentType', action: 'getAll')
+        get "/api/billStateType"(controller: 'billStateType', action: 'getAll')
+        get "/api/creditCondition"(controller: 'creditCondition', action: 'getAll')
+        get "/api/currency"(controller: 'currency', action: 'getAll')
+        get "/api/exchangeRate"(controller: 'exchangeRate', action: 'getAll')
     }
 }

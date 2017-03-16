@@ -2,7 +2,6 @@ package com.dewcom.light
 
 import com.dewcom.light.rest.BillDetailRest
 import com.dewcom.light.rest.BillRest
-import com.dewcom.light.rest.UpdateContactRequestREST
 import grails.transaction.Transactional
 
 @Transactional
@@ -60,9 +59,11 @@ class BillService {
             def creationDate = LightUtils.stringToDate(argRestBill.creationDate,"dd-MM-yyyy")
 
             if(argRestBill.billPaymentTypeId != null && paymentType.code == Constants.PAGO_CREDITO){
-                if(argRestBill.creditConditionId != null && creationDate != null){
+                if(argRestBill.creditConditionId != null ){
                     creditCondition= CreditCondition.findById(argRestBill.creditConditionId)
-                    tmpBill.dueDate = LightUtils.plusDaysToDate(creationDate, creditCondition.days)
+                    if(creationDate != null){
+                        tmpBill.dueDate = LightUtils.plusDaysToDate(creationDate, creditCondition.days)
+                    }
                 }
             }
             def currency = Currency.findById(argRestBill.currencyId)

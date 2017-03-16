@@ -336,4 +336,59 @@ class AdminService {
             throw new LightRuntimeException(messageSource.getMessage("update.configuration.error", null, Locale.default));
         }
     }
+
+
+    //mantenimientos varios generales de catalogo
+
+    def getAllPaymentTypes() {
+        try{
+            def paymentTypes = BillPaymentType.findAll()
+            return paymentTypes
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("get.all.configuration.error", null, Locale.default));
+        }
+    }
+
+
+    def getAllStates() {
+        try{
+            def states = BillStateType.findAll()
+            return states
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("get.all.configuration.error", null, Locale.default));
+        }
+    }
+
+
+    def getAllCreditConditions() {
+        try{
+            def creditConditions = CreditCondition.findAll()
+            return creditConditions
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("get.all.configuration.error", null, Locale.default));
+        }
+    }
+
+    def getAllCurrencies() {
+        try{
+            def currencies = Currency.findAll()
+            return currencies
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("get.all.configuration.error", null, Locale.default));
+        }
+    }
+
+    def getAllExchangeRates() {
+        try{
+            def exchanges = ExchangeRate.findAll()
+            return exchanges
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("get.all.configuration.error", null, Locale.default));
+        }
+    }
 }
