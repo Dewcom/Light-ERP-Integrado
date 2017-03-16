@@ -1,0 +1,119 @@
+<div class="form-group">
+    <script type="text/ng-template" id="/addProductToBillModal.html">
+        <div ng-controller="BillController as modalCtrl">
+            <div class="modal-header"><button type="button" data-dismiss="modal" aria-hidden="true" class="close"
+                                              ng-click="close()">×</button>
+                <h4 id="myModalLabel" class="modal-title">Agregar producto</h4>
+            </div>
+            <form name="modalCtrl.addProductToBillForm" novalidate="" class="form-validate">
+                <!-- START panel-->
+                <div class="panel panel-default">
+                    <div class="panel-body col-lg-12">
+                        <h4>Buscar productos</h4>
+                        <div class="form-group">
+                            <div class="col-lg-6">
+                                <ui-select ng-model="modalCtrl.selectedProduct" theme="bootstrap">
+                                    <ui-select-match placeholder="Buscar por nombre o código...">{{modalCtrl.selectedProduct.productCode + ' ' + modalCtrl.selectedProduct.name}}</ui-select-match>
+                                    <ui-select-choices repeat="product in modalCtrl.productList | propsFilter: {name: $select.search, productCode: $select.search}">
+                                        <div ng-click="selectProduct(product)">
+                                            <div ng-bind-html="product.productCode | highlight: $select.search"></div>
+                                            <small>Nombre: {{product.name}} Código:
+                                                <span ng-bind-html="''+product.productCode | highlight: $select.search"></span>
+                                            </small>
+                                        </div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body col-lg-3">
+                        <div class="form-group">
+                            <label class="control-label">Código</label>
+                            <input tabindex="1" type="text" name="productCode" required="" ng-model="modalCtrl.selectedProduct.productCode"
+                                   class="form-control" disabled="true"/>
+                            <span ng-show="modalCtrl.validateInput('add', 'productCode', 'required')" class="text-danger">Este campo es requerido</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Tipo de presentación</label>
+                            <select tabindex="5" name="presentationType" ng-model="modalCtrl.selectedProduct.presentationType.id"
+                                    ng-options="item.id as item.name for item in modalCtrl.presentationTypeList"
+                                    class="form-control" required="required" disabled="true">
+                            </select>
+                            <span ng-show="modalCtrl.validateInput('add', 'presentationType', 'required')" class="text-danger">Este campo es requerido</span>
+                        </div>
+                        <div class="form-group" ng-show="modalCtrl.selectedProduct != null">
+                            <label class="control-label">Cantidad</label>
+                            <input tabindex="9" type="number" name="quantity" required="" ng-model="modalCtrl.selectedProduct.quantity"
+                                   class="form-control" min="1"/>
+                            <span ng-show="modalCtrl.validateInput('add', 'quantity', 'required')" class="text-danger">Este campo es requerido</span>
+                        </div>
+                    </div>
+                    <div class="panel-body col-lg-3">
+                        <div class="form-group">
+                            <label class="control-label">Nombre</label>
+                            <input tabindex="2" type="text" name="productName" required="" ng-model="modalCtrl.selectedProduct.name"
+                                   class="form-control" disabled="true"/>
+                            <span ng-show="modalCtrl.validateInput('add', 'productName', 'required')" class="text-danger">Este campo es requerido</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Cantidad por bulto</label>
+                            <input tabindex="6" type="text" name="bulkQuantity" ng-model="modalCtrl.selectedProduct.bulkQuantity" ng-pattern="/^[0-9,.]+$/"
+                                   class="form-control" disabled="true"/>
+                            <span ng-show="modalCtrl.validateInput('add', 'bulkQuantity', 'pattern')" class="text-danger">Solamente números permitidos</span>
+                        </div>
+                        <div class="form-group" ng-show="modalCtrl.selectedProduct">
+                            <label class="control-label">Descuento</label>
+                            <input tabindex="10" type="number" name="discount" required="" ng-model="modalCtrl.selectedProduct.discount"
+                                   class="form-control" min="0" max="100" maxlength="2"/>
+                            <span ng-show="modalCtrl.validateInput('add', 'discount', 'required')" class="text-danger">Este campo es requerido</span>
+                        </div>
+                    </div>
+                    <div class="panel-body col-lg-3">
+                        <div class="form-group">
+                            <label class="control-label">Nombre comercial</label>
+                            <input tabindex="3" type="text" name="productCommercialName" ng-model="modalCtrl.selectedProduct.commercialName"
+                                   class="form-control" disabled="true"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Precio en dólares</label>
+                            <input tabindex="7" type="text" name="priceInDollars" ng-model="modalCtrl.selectedProduct.priceInDollars" ng-pattern="/^[0-9,.]+$/"
+                                   class="form-control" disabled="true"/>
+                            <span ng-show="modalCtrl.validateInput('add', 'priceInDollars', 'pattern')" class="text-danger">Solamente números permitidos</span>
+                        </div>
+                        <div class="form-group" ng-show="modalCtrl.selectedProduct">
+                            <label class="control-label">Impuestos</label>
+                            <input tabindex="11" type="number" name="tax" required="" ng-model="modalCtrl.selectedProduct.tax"
+                                   class="form-control" min="0" max="100"/>
+                            <span ng-show="modalCtrl.validateInput('add', 'tax', 'required')" class="text-danger">Este campo es requerido</span>
+                        </div>
+                    </div>
+                    <div class="panel-body col-lg-3">
+                        <div class="form-group">
+                            <label class="control-label">Tipo de producto</label>
+                            <select tabindex="4" name="productType" ng-model="modalCtrl.selectedProduct.productType.id"
+                                    ng-options="item.id as item.name for item in modalCtrl.productTypeList"
+                                    class="form-control" required="" disabled="true">
+                            </select>
+                            <span ng-show="modalCtrl.validateInput('add', 'productType', 'required')" class="text-danger">Este campo es requerido</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Precio en colones</label>
+                            <input tabindex="8" type="text" name="priceInColones" ng-model="modalCtrl.selectedProduct.priceInColones" ng-pattern="/^[0-9,.]+$/"
+                                   class="form-control" disabled="true"/>
+                            <span ng-show="modalCtrl.validateInput('add', 'priceInColones', 'pattern')" class="text-danger">Solamente números permitidos</span>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="clearfix">
+                            <div class="pull-right">
+                                <button type="submit" ng-click="ok()" class="btn btn-success btn-lg">Agregar</button>
+                                <button type="button" ng-click="cancel()" class="btn btn-danger btn-lg">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END panel-->
+            </form>
+        </div>
+    </script>
+</div>

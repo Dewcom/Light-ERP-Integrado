@@ -5,6 +5,22 @@ angular
     .factory("billService", function ($http, $state) {
 
         var billService = {};
+        var addedProductList = [];
+        // var totalTax = 0;
+
+        billService.getAddedProductList = function () {
+            return addedProductList;
+        };
+
+        billService.resetAddedProductList = function () {
+            addedProductList = [];
+        };
+
+        billService.removeProduct = function (index) {
+
+            console.log(index);
+            addedProductList.splice(index, 1);
+        };
 
         billService.getAll = function() {
 
@@ -105,7 +121,7 @@ angular
                 return error.status;
             });
 
-            return disableBill;
+            return disablebillResult;
         };
 
         return billService;

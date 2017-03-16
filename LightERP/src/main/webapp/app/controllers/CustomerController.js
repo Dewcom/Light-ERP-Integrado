@@ -1,6 +1,6 @@
 'use strict';
 
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -8,8 +8,8 @@
         .controller('CustomerController', CustomerController)
         .directive('formWizard', formWizard);
 
-    CustomerController.$inject = ['$uibModal','$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder',
-        'customerService', 'customerTypeService', 'identificationTypeService','toaster', '$state',
+    CustomerController.$inject = ['$uibModal', '$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder',
+        'customerService', 'customerTypeService', 'identificationTypeService', 'toaster', '$state',
         '$filter', '$timeout', 'ngDialog', '$scope'];
     function CustomerController($uibModal, $resource, DTOptionsBuilder, DTColumnDefBuilder, customerService,
                                 customerTypeService, identificationTypeService, toaster, $state, $filter, $timeout, ngDialog, $scope) {
@@ -20,26 +20,26 @@
         vm.addCustomerForm = {};
 
         var language = {
-            "sProcessing":     "Procesando...",
-            "sLengthMenu":     "Mostrar _MENU_ registros",
-            "sZeroRecords":    "No se encontraron resultados",
-            "sEmptyTable":     "Ningún dato disponible en esta tabla",
-            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
-            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-            "sInfoPostFix":    "",
-            "sSearch":         "Buscar:",
-            "sUrl":            "",
-            "sInfoThousands":  ",",
+            "sProcessing": "Procesando...",
+            "sLengthMenu": "Mostrar _MENU_ registros",
+            "sZeroRecords": "No se encontraron resultados",
+            "sEmptyTable": "Ningún dato disponible en esta tabla",
+            "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix": "",
+            "sSearch": "Buscar:",
+            "sUrl": "",
+            "sInfoThousands": ",",
             "sLoadingRecords": "Cargando...",
             "oPaginate": {
-                "sFirst":    "Primero",
-                "sLast":     "Último",
-                "sNext":     "Siguiente",
+                "sFirst": "Primero",
+                "sLast": "Último",
+                "sNext": "Siguiente",
                 "sPrevious": "Anterior"
             },
             "oAria": {
-                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
                 "sSortDescending": ": Activar para ordenar la columna de manera descendente"
             }
         };
@@ -54,7 +54,7 @@
              * Tipos de cliente
              =========================================================*/
 
-            customerTypeService.getAll().then(function(response) {
+            customerTypeService.getAll().then(function (response) {
                 vm.customerTypeList = response;
             });
 
@@ -62,10 +62,9 @@
              * Tipos de identificacion
              =========================================================*/
 
-            identificationTypeService.getAll().then(function(response) {
+            identificationTypeService.getAll().then(function (response) {
                 vm.identificationTypeList = response;
             });
-
 
 
             /**=========================================================
@@ -74,7 +73,7 @@
 
             // Ajax
 
-            customerService.getAll().then(function(response) {
+            customerService.getAll().then(function (response) {
                 vm.customerList = response;
             });
 
@@ -91,9 +90,9 @@
             ];
         }
 
-    /**=========================================================
-     * Eliminar clientes
-     =========================================================*/
+        /**=========================================================
+         * Eliminar clientes
+         =========================================================*/
         vm.disableCustomer = function (customerId) {
             ngDialog.openConfirm({
                 template: 'disableCustomerModal',
@@ -105,13 +104,13 @@
                     var toasterdata;
                     console.log(response);
 
-                    if(response.code == "0"){
+                    if (response.code == "0") {
                         toasterdata = {
                             type: 'success',
                             title: 'Eliminar cliente',
                             text: response.message
                         };
-                    }else{
+                    } else {
                         toasterdata = {
                             type: 'warning',
                             title: 'Cliente',
@@ -121,7 +120,7 @@
                     }
                     pop(toasterdata);
                     init();
-                },function (error) {
+                }, function (error) {
                     console.log(error);
                 });
             }, function (reason) {
@@ -130,31 +129,30 @@
         };
 
 
-
-
         /**=========================================================
          * Agregar clientes
          =========================================================*/
 
-        vm.addCustomer = function(){
+        vm.addCustomer = function () {
 
-            var newCustomer ={
-                "name":vm.name,
-                "firstLastName":vm.firstLastName ,
-                "secondLastName":vm.secondLastName,
-                "identification":vm.identification,
+            var newCustomer = {
+                "name": vm.name,
+                "firstLastName": vm.firstLastName,
+                "secondLastName": vm.secondLastName,
+                "identification": vm.identification,
                 "addresses": formatAddreses(),
-                "phoneNumber1":vm.phoneNumber1,
-                "phoneNumber2":vm.phoneNumber2 ,
-                "mobile":vm.mobile ,
-                "website":vm.website ,
-                "email":vm.email ,
-                "discountPercentage":vm.discountPercentage,
-                "creditLimit":vm.creditLimit,
-                "identificationType":vm.selectedIdentificationType,
-                "customerType":vm.selectedCustomerType,
+                "phoneNumber1": vm.phoneNumber1,
+                "phoneNumber2": vm.phoneNumber2,
+                "mobile": vm.mobile,
+                "website": vm.website,
+                "email": vm.email,
+                "discountPercentage": vm.discountPercentage,
+                "creditLimit": vm.creditLimit,
+                "identificationType": vm.selectedIdentificationType,
+                "customerType": vm.selectedCustomerType,
                 "contacts": [
-                    { "name": vm.contactName1,
+                    {
+                        "name": vm.contactName1,
                         "firstLastName": vm.contactFirstLastName1,
                         "secondLastName": vm.contactSecondLastName1,
                         "jobTitle": vm.contactPosition1,
@@ -177,27 +175,29 @@
             };
             console.log(newCustomer);
             customerService.addCustomer(newCustomer).then(function (response) {
-             var toasterdata;
+                var toasterdata;
 
-             if(response.code == "0"){
-             toasterdata = {
-                 type: 'success',
-                 title: 'Agregar cliente',
-                 text: response.message
-             };
-             }else{
-             toasterdata = {
-                 type: 'warning',
-                 title: 'Cliente',
-                 text: response.message
-             };
+                if (response.code == "0") {
+                    toasterdata = {
+                        type: 'success',
+                        title: 'Agregar cliente',
+                        text: response.message
+                    };
+                } else {
+                    toasterdata = {
+                        type: 'warning',
+                        title: 'Cliente',
+                        text: response.message
+                    };
 
-             }
-             pop(toasterdata);
-             $timeout(function(){ callAtTimeout(); }, 3000);
-             },function (error) {
-             console.log(error);
-             });
+                }
+                pop(toasterdata);
+                $timeout(function () {
+                    callAtTimeout();
+                }, 3000);
+            }, function (error) {
+                console.log(error);
+            });
 
             //Se formatea la direccion para enviar al BE
             function formatAddreses() {
@@ -205,7 +205,7 @@
 
                 angular.forEach(vm.addresses, function (value, key) {
                     console.log(value);
-                    var finalAddressObj = { "idDistrict": value.district.idDistrict, "address":value.address};
+                    var finalAddressObj = {"idDistrict": value.district.idDistrict, "address": value.address};
                     finalAddressList.push(finalAddressObj);
                 });
 
@@ -254,15 +254,15 @@
         }
 
 
-        function pop(toasterdata){
+        function pop(toasterdata) {
             toaster.pop({
                 type: toasterdata.type,
-                title : toasterdata.title,
+                title: toasterdata.title,
                 body: toasterdata.text
             });
         }
 
-        function callAtTimeout(){
+        function callAtTimeout() {
             $state.reload();
         }
     }
