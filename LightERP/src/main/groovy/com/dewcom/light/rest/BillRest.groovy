@@ -16,14 +16,13 @@ class BillRest implements Validateable {
     List<BillDetailRest>billDetails;
     Integer registrationType;
 
-
     static constraints = {
-        userName  nullable: true
+        userName blank:true, nullable: true
         customerId nullable: true
         billPaymentTypeId  nullable: true
         creditConditionId  nullable: true
         currencyId nullable: true
-        creationDate nullable: true
+        creationDate blank:true, nullable: true
         registrationType nullable: true
         exchangeRate nullable: true
         billDetails nullable: true

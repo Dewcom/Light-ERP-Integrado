@@ -29,11 +29,12 @@ class Bill {
         subTotalAmount  nullable: true
         totalAmount nullable: true
         totalDiscount nullable: true
-        exchangeRatenullable: true
+        exchangeRate nullable: true
         billPaymentType nullable: true
         currency nullable: true
         creditCondition nullable: true
         totalTaxAmount nullable: true
         exchangeRate nullable: true
+        creationDate nullable: true
     }
 }
