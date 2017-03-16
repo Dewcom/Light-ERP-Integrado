@@ -5,7 +5,6 @@ class Bill {
     Byte enabled = Constants.ESTADO_ACTIVO
     Long billNumber
     Date creationDate = new Date()
-    //Date invoiceDate = new Date() se setea cuando la factura entra en estado de validacion.
     Date dueDate = new Date()
     Customer customer
     BillStateType billState
