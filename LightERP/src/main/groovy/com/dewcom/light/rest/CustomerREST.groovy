@@ -29,8 +29,8 @@ class CustomerREST implements Validateable {
 
     static constraints = {
         name blank: false
-        firstLastName blank: false, nullable: true
-        secondLastName blank: false, nullable: true
+        firstLastName blank: true, nullable: true
+        secondLastName blank: true, nullable: true
         identification blank: false, nullable: false
         phoneNumber1 blank: false, nullable: false
         phoneNumber2 nullable: true, blank: true

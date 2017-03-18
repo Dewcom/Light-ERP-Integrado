@@ -12,5 +12,5 @@ class BillRest implements Validateable {
     Long billPaymentTypeId
     Long creditConditionId
     Long currencyId
-    List<BillDetailRest>billDetails;
+    List<BillDetailRest> billDetails;
 }

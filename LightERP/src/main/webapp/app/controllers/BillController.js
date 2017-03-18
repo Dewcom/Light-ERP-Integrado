@@ -195,7 +195,7 @@
         vm.submitted = false;
         vm.validateInput = function (action, name, type) {
             if (action == 'add') {
-                var input = vm.addProductToBillForm[name];
+                var input = vm.newBillForm[name];
                 return (input.$dirty || vm.submitted) && input.$error[type];
 
             } else if (action == 'modify') {
@@ -213,7 +213,7 @@
 
             if (action == 'add') {
                 if (vm.newBillForm.$valid) {
-                    //HACE ALGO CON LA VALIDACION
+                    vm.addBill();
                 } else {
                     console.log('Not valid!!');
                     return false;
@@ -239,8 +239,8 @@
             var userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
 
             var newBill = {
-                "username": userInfo.userName,
-                "customerId": $scope.chosenCustomer.id,
+                "userName": userInfo.userName,
+                "customerId": vm.chosenCustomer.id,
                 "exchangeRate": 561,
                 "billPaymentTypeId": 1,
                 "creditConditionId": 1,
@@ -258,13 +258,13 @@
                 if (response.code == "0") {
                     toasterdata = {
                         type: 'success',
-                        title: 'Agregar usuario',
+                        title: 'Factura guardada',
                         text: response.message
                     };
                 } else {
                     toasterdata = {
                         type: 'warning',
-                        title: 'Usuario',
+                        title: 'Factura',
                         text: response.message
                     };
 
@@ -278,7 +278,6 @@
             });
 
 
-            $state.reload();
         };
 
         /**=========================================================

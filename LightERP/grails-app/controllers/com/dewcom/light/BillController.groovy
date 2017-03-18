@@ -85,7 +85,7 @@ class BillController extends RestController {
         log.info request.JSON
 
         ResponseREST tmpResponse = new ResponseREST();
-        BillRest tmpBill = new BillRest(request.JSON);
+        BillRest tmpBill = new BillRest(request.JSON.bill);
         try {
             tmpBill.validate();
             if (tmpBill.hasErrors()) {

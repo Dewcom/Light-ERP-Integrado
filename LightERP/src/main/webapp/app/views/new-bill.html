@@ -39,7 +39,12 @@
             </div>
             <div class="panel-body">
                 <p>
-                    <button type="button" class="btn btn-primary btn-block">Guardar factura</button>
+                    <button type="button" class="btn btn-primary btn-block" ng-click="controller.submitForm('add', 'save')">
+                        Guardar factura
+                    </button>
+                    <button type="button" class="btn btn-primary btn-block" ng-click="controller.submitForm('add', 'submit')">
+                        Aplicar factura
+                    </button>
                 </p>
             </div>
         </div>
@@ -47,7 +52,7 @@
     <div class="col-md-10">
         <div class="container-md">
             <!-- Información del cliente-->
-            <form name="controller.newBillForm" ng-submit="controller.submitForm('add')" action="" method="post" novalidate="novalidate">
+            <form name="controller.newBillForm" action="" method="post" novalidate="novalidate">
                 <uib-accordion close-others="true">
                     <uib-accordion-group is-open="chk.step1" ng-init="chk.step1 = true" panel-class="b">
                         <uib-accordion-heading>1. Información del cliente</uib-accordion-heading>
@@ -57,11 +62,14 @@
                                 <div class="form-group">
                                     <div class="col-lg-6">
                                         <ui-select ng-model="controller.chosenCustomer" theme="bootstrap">
-                                            <ui-select-match placeholder="Buscar por nombre o identificación..."></ui-select-match>
-                                            <ui-select-choices repeat="customer in controller.customerList | propsFilter: {name: $select.search, identification: $select.search}">
+                                            <ui-select-match
+                                                    placeholder="Buscar por nombre o identificación..."></ui-select-match>
+                                            <ui-select-choices
+                                                    repeat="customer in controller.customerList | propsFilter: {name: $select.search, identification: $select.search}">
                                                 <div ng-click="controller.getCustomerAddresses(customer.id)">
                                                     <div ng-bind-html="customer.name + ' ' + customer.firstLastName + ' ' + customer.secondLastName  | highlight: $select.search"></div>
-                                                    <small>email: {{customer.email === null ? '*SIN CORREO*' : customer.email}} identificación:
+                                                    <small>email: {{customer.email === null ? '*SIN CORREO*' :
+                                                        customer.email}} identificación:
                                                         <span ng-bind-html="''+customer.identification | highlight: $select.search"></span>
                                                     </small>
                                                 </div>
@@ -77,37 +85,40 @@
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label>Nombre</label>
-                                            <input type="text" name="name" ng-model="controller.chosenCustomer.name" required=""
-                                                   class="form-control" />
+                                            <input type="text" name="name" ng-model="controller.chosenCustomer.name" class="form-control"/>
                                         </div>
                                         <div class="form-group">
                                             <label>Identificación</label>
-                                            <input type="text" name="identification" ng-model="controller.chosenCustomer.identification"
-                                                   class="form-control" />
+                                            <input type="text" name="identification"
+                                                   ng-model="controller.chosenCustomer.identification"
+                                                   class="form-control"/>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label>Primer apellido</label>
-                                            <input type="text" name="name" ng-model="controller.chosenCustomer.firstLastName" required=""
-                                                   class="form-control" />
+                                            <input type="text" name="name"
+                                                   ng-model="controller.chosenCustomer.firstLastName"
+                                                   class="form-control"/>
                                         </div>
                                         <div class="form-group">
                                             <label>Teléfono</label>
-                                            <input type="text" name="phone" ng-model="controller.chosenCustomer.phoneNumber1" required=""
-                                                   class="form-control" />
+                                            <input type="text" name="phone"
+                                                   ng-model="controller.chosenCustomer.phoneNumber1"
+                                                   class="form-control"/>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="form-group">
                                             <label>Segundo apellido</label>
-                                            <input type="text" name="name" ng-model="controller.chosenCustomer.secondLastName" required=""
-                                                   class="form-control" />
+                                            <input type="text" name="name"
+                                                   ng-model="controller.chosenCustomer.secondLastName"
+                                                   class="form-control"/>
                                         </div>
                                         <div class="form-group">
                                             <label>Teléfono celular</label>
-                                            <input type="text" name="mobile" ng-model="controller.chosenCustomer.mobile" required=""
-                                                   class="form-control" />
+                                            <input type="text" name="mobile" ng-model="controller.chosenCustomer.mobile"
+                                                   class="form-control"/>
                                         </div>
                                     </div>
                                 </div>
@@ -118,9 +129,13 @@
                                 <div class="row">
                                     <div class="form-group">
                                         <div class="col-lg-6">
-                                            <ui-select ng-model="controller.chosenCustomer.chosenAddress" theme="bootstrap">
-                                                <ui-select-match placeholder="Buscar provincia o dirección...">{{$select.chosenAddress.provincia}}</ui-select-match>
-                                                <ui-select-choices repeat="address in controller.customerAddresses | propsFilter: {address: $select.search, address: $select.search}">
+                                            <ui-select ng-model="controller.chosenCustomer.chosenAddress"
+                                                       theme="bootstrap">
+                                                <ui-select-match placeholder="Buscar provincia o dirección...">
+                                                    {{$select.chosenAddress.provincia}}
+                                                </ui-select-match>
+                                                <ui-select-choices
+                                                        repeat="address in controller.customerAddresses | propsFilter: {address: $select.search, address: $select.search}">
                                                     <div ng-bind-html="address.province.name | highlight: $select.search"></div>
                                                     <small>Cantón: {{address.canton.name}} Dirección:
                                                         <span ng-bind-html="''+address.address | highlight: $select.search"></span>
@@ -138,30 +153,40 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>Provincia</label>
-                                        <input type="text" name="province" ng-model="controller.chosenCustomer.chosenAddress.province.name" required=""
-                                               class="form-control" />
+                                        <input type="text" name="province"
+                                               ng-model="controller.chosenCustomer.chosenAddress.province.name"
+                                               required=""
+                                               class="form-control"/>
                                     </div>
                                     <div class="form-group">
                                         <label>Distrito</label>
-                                        <input type="text" name="district" ng-model="controller.chosenCustomer.chosenAddress.district.name" required=""
-                                               class="form-control" />
+                                        <input type="text" name="district"
+                                               ng-model="controller.chosenCustomer.chosenAddress.district.name"
+                                               required=""
+                                               class="form-control"/>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label>Cantón</label>
-                                        <input type="text" name="canton" ng-model="controller.chosenCustomer.chosenAddress.canton.name" required=""
-                                               class="form-control" />
+                                        <input type="text" name="canton"
+                                               ng-model="controller.chosenCustomer.chosenAddress.canton.name"
+                                               required=""
+                                               class="form-control"/>
                                     </div>
                                     <div class="form-group">
                                         <label>Dirección</label>
-                                        <textarea style="resize: none" name="address" ng-model="controller.chosenCustomer.chosenAddress.address" class="form-control"></textarea>
+                                        <textarea style="resize: none" name="address"
+                                                  ng-model="controller.chosenCustomer.chosenAddress.address"
+                                                  class="form-control"></textarea>
                                     </div>
                                 </div>
                             </div>
                             <div class="pt clearfix">
                                 <div class="pull-left">
-                                    <button type="button" ng-click="chk.step2 = true" class="btn btn-primary">Siguiente</button>
+                                    <button type="button" ng-click="chk.step2 = true" class="btn btn-primary">
+                                        Siguiente
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -174,31 +199,36 @@
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label>Tipo de pago</label>
-                                        <input type="text" name="controller.paymentType" required="" class="form-control" />
+                                        <input type="text" name="controller.paymentType" required=""
+                                               class="form-control"/>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label>Moneda</label>
-                                        <input type="text" name="controller.currency" required="" class="form-control" />
+                                        <input type="text" name="controller.currency" required="" class="form-control"/>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label>Condición de crédito</label>
-                                        <input type="text" name="controller.creditCondition" required="" class="form-control" />
+                                        <input type="text" name="controller.creditCondition" required=""
+                                               class="form-control"/>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label>Tipo de cambio</label>
-                                        <input type="text" name="controller.creditCondition" required="" class="form-control" />
+                                        <input type="text" name="controller.creditCondition" required=""
+                                               class="form-control"/>
                                     </div>
                                 </div>
                             </div>
                             <div class="pt clearfix">
                                 <div class="pull-left">
-                                    <button type="button" ng-click="chk.step3 = true" class="btn btn-primary">Siguiente</button>
+                                    <button type="button" ng-click="chk.step3 = true" class="btn btn-primary">
+                                        Siguiente
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -210,7 +240,8 @@
                             <h4>Productos</h4>
                             <div class="col-lg-12">
                                 <div class="pull-right">
-                                    <button type="button" ng-click="controller.openAddProductModal()" class="btn btn-labeled btn-success addButton">
+                                    <button type="button" ng-click="controller.openAddProductModal()"
+                                            class="btn btn-labeled btn-success addButton">
                                       <span class="btn-label">
                                          <em class="fa fa-plus"></em>
                                       </span>Agregar producto
@@ -218,7 +249,8 @@
                                 </div>
                             </div>
                             <h4>Productos escogidos</h4>
-                            <table datatable="ng" dt-options="controller.dtOptionsAddedProductos" dt-column-defs="controller.dtColumnDefsAddedProductos"
+                            <table datatable="ng" dt-options="controller.dtOptionsAddedProductos"
+                                   dt-column-defs="controller.dtColumnDefsAddedProductos"
                                    class="row-border hover">
                                 <thead>
                                 <tr>
@@ -242,7 +274,8 @@
                                     <td>{{ addedProductObj.taxPercentage}} %</td>
                                     <td>{{ addedProductObj.subtotal }}</td>
                                     <td>
-                                        <button type="button" ng-click="controller.removeProduct($index)" class="btn btn-sm btn-danger">
+                                        <button type="button" ng-click="controller.removeProduct($index)"
+                                                class="btn btn-sm btn-danger">
                                             <em class="fa fa-trash-o"></em>
                                         </button>
                                     </td>
@@ -253,7 +286,8 @@
                     </uib-accordion-group>
                 </uib-accordion>
             </form>
-            <toaster-container toaster-options="{'position-class': 'toast-bottom-right', 'close-button':true}"></toaster-container>
+            <toaster-container
+                    toaster-options="{'position-class': 'toast-bottom-right', 'close-button':true}"></toaster-container>
         </div>
     </div>
     <div ng-include="'app/views/modals/add-product-to-bill-modal.html'"></div>
