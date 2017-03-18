@@ -9,9 +9,8 @@ import grails.transaction.Transactional
 
 @Transactional
 class AdminService {
-
     //Identification type
-
+    def messageSource
     IdentificationType getIdentificationType(def pid) {
         log.info "====== Getting identification type from DB ======"
         log.info pid
@@ -20,7 +19,7 @@ class AdminService {
             return idTypeFromDB
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException("get.identification.type.error");
+            throw new LightRuntimeException(messageSource.getMessage("get.identification.type.error", null, Locale.default));
         }
     }
 
@@ -31,7 +30,7 @@ class AdminService {
             return idTypesFromDB
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException("get.all.identification.types.error");
+            throw new LightRuntimeException(messageSource.getMessage("get.all.identification.types.error", null, Locale.default));
         }
     }
 
@@ -40,7 +39,7 @@ class AdminService {
             pidentificationType.save(flush: true)
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException("create.identification.type.error");
+            throw new LightRuntimeException(messageSource.getMessage("create.identification.type.error", null, Locale.default));
         }
     }
 
@@ -50,7 +49,7 @@ class AdminService {
             pidentificationType.save(flush: true)
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException("delete.identification.type.error");
+            throw new LightRuntimeException(messageSource.getMessage("delete.identification.type.error", null, Locale.default));
         }
     }
 
@@ -60,7 +59,7 @@ class AdminService {
             pidentificationType.save(flush: true)
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException("update.identification.type.error");
+            throw new LightRuntimeException(messageSource.getMessage("update.identification.type.error", null, Locale.default));
         }
     }
 
@@ -75,7 +74,7 @@ class AdminService {
             return agentTypeFromDB
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException("get.agent.type.error");
+            throw new LightRuntimeException(messageSource.getMessage("get.agent.type.error", null, Locale.default));
         }
     }
 
@@ -86,7 +85,7 @@ class AdminService {
             return agentTypesFromDB
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException("get.all.agent.types.error");
+            throw new LightRuntimeException(messageSource.getMessage("get.all.agent.types.error", null, Locale.default));
         }
     }
 
@@ -95,7 +94,7 @@ class AdminService {
             pagentType.save(flush: true)
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException("create.agent.type.error");
+            throw new LightRuntimeException(messageSource.getMessage("create.agent.type.error", null, Locale.default));
         }
     }
 
@@ -105,7 +104,7 @@ class AdminService {
             pagentType.save(flush: true)
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException("delete.agent.type.error");
+            throw new LightRuntimeException(messageSource.getMessage("delete.agent.type.error", null, Locale.default));
         }
     }
 
@@ -115,7 +114,7 @@ class AdminService {
             pagentType.save(flush: true)
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException("update.agent.type.error");
+            throw new LightRuntimeException(messageSource.getMessage("update.agent.type.error", null, Locale.default));
         }
     }
 
@@ -129,7 +128,7 @@ class AdminService {
             return customerTypeFromDB
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException("get.customer.type.error");
+            throw new LightRuntimeException(messageSource.getMessage("get.customer.type.error", null, Locale.default));
         }
     }
 
@@ -140,7 +139,7 @@ class AdminService {
             return customerTypesFromDB
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException("get.all.customer.types.error");
+            throw new LightRuntimeException(messageSource.getMessage("get.all.customer.types.error", null, Locale.default));
         }
     }
 
@@ -149,7 +148,7 @@ class AdminService {
             pcustomerType.save(flush: true)
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException("create.customer.type.error");
+            throw new LightRuntimeException(messageSource.getMessage("create.customer.type.error", null, Locale.default));
         }
     }
 
@@ -159,7 +158,7 @@ class AdminService {
             pcustomerType.save(flush: true)
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException("delete.customer.type.error");
+            throw new LightRuntimeException(messageSource.getMessage("delete.customer.type.error", null, Locale.default));
         }
     }
 
@@ -169,7 +168,7 @@ class AdminService {
             pcustomerType.save(flush: true)
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException("update.customer.type.error");
+            throw new LightRuntimeException(messageSource.getMessage("update.customer.type.error", null, Locale.default));
         }
     }
 
@@ -183,7 +182,7 @@ class AdminService {
             return productTypeFromDB
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException("get.product.type.error");
+            throw new LightRuntimeException(messageSource.getMessage("get.product.type.error", null, Locale.default));
         }
     }
 
@@ -194,7 +193,7 @@ class AdminService {
             return productTypesFromDB
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException("get.all.product.types.error");
+            throw new LightRuntimeException(messageSource.getMessage("get.all.product.types.error", null, Locale.default));
         }
     }
 
@@ -203,7 +202,7 @@ class AdminService {
             pproductType.save(flush: true)
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException("create.product.type.error");
+            throw new LightRuntimeException(messageSource.getMessage("create.product.type.error", null, Locale.default));
         }
     }
 
@@ -213,7 +212,7 @@ class AdminService {
             pproductType.save(flush: true)
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException("delete.product.type.error");
+            throw new LightRuntimeException(messageSource.getMessage("delete.product.type.error", null, Locale.default));
         }
     }
 
@@ -223,7 +222,7 @@ class AdminService {
             pproductType.save(flush: true)
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException("update.product.type.error");
+            throw new LightRuntimeException(messageSource.getMessage("update.product.type.error", null, Locale.default));
         }
     }
 
@@ -238,7 +237,7 @@ class AdminService {
             return presentationTypeFromDB
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException("get.presentation.type.error");
+            throw new LightRuntimeException(messageSource.getMessage("get.presentation.type.error", null, Locale.default));
         }
     }
 
@@ -249,7 +248,7 @@ class AdminService {
             return presentationTypesFromDB
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException("get.all.presentation.types.error");
+            throw new LightRuntimeException(messageSource.getMessage("get.all.presentation.types.error", null, Locale.default));
         }
     }
 
@@ -258,7 +257,7 @@ class AdminService {
             ppresentationType.save(flush: true)
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException("create.presentation.type.error");
+            throw new LightRuntimeException(messageSource.getMessage("create.presentation.type.error", null, Locale.default));
         }
     }
 
@@ -268,7 +267,7 @@ class AdminService {
             ppresentationType.save(flush: true)
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException("delete.presentation.type.error");
+            throw new LightRuntimeException(messageSource.getMessage("delete.presentation.type.error", null, Locale.default));
         }
     }
 
@@ -278,7 +277,63 @@ class AdminService {
             ppresentationType.save(flush: true)
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException("update.presentation.type.error");
+            throw new LightRuntimeException(messageSource.getMessage("update.presentation.type.error", null, Locale.default));
+        }
+    }
+
+    //configurations
+
+    def Configuration createConfiguration(Configuration argConfiguration) {
+        def config
+        try {
+            config = argConfiguration.save(flush: true)
+        } catch (Exception e) {
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("create.configuration.error", null, Locale.default));
+        }
+        return config
+    }
+
+    def deleteConfiguration(Configuration argConfiguration) {
+        try {
+            argConfiguration.enabled = Constants.ESTADO_INACTIVO;
+            argConfiguration.save(flush: true)
+        } catch (Exception e) {
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("delete.configuration.error", null, Locale.default));
+        }
+    }
+
+
+        def getConfiguration(def argConfigId) {
+        log.info "====== Getting configuration from db ======"
+        log.info argConfigId
+        try{
+            Configuration config = Configuration.findById(argConfigId);
+            return config
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("get.configuration.error", null, Locale.default));
+        }
+    }
+
+    def getAllConfigurations() {
+        log.info "====== Getting all configurations  from DB ======"
+        try{
+            def customerTypesFromDB = Configuration.findAllByEnabled(Constants.ESTADO_ACTIVO);
+            return customerTypesFromDB
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("get.all.configuration.error", null, Locale.default));
+        }
+    }
+
+    def updateConfiguration(Configuration argConfiguration) {
+        try{
+            argConfiguration.save(flush: true)
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("update.configuration.error", null, Locale.default));
         }
     }
 }

@@ -60,6 +60,7 @@ node_modules/
 .idea_modules
 .gradle
 bin/
+test/
 tmp/
 build/
 .idea/gradle.xml

@@ -12,5 +12,19 @@ class BillRest implements Validateable {
     Long billPaymentTypeId
     Long creditConditionId
     Long currencyId
+    String creationDate
     List<BillDetailRest> billDetails;
+    Integer registrationType;
+
+    static constraints = {
+        userName blank:true, nullable: true
+        customerId nullable: true
+        billPaymentTypeId  nullable: true
+        creditConditionId  nullable: true
+        currencyId nullable: true
+        creationDate blank:true, nullable: true
+        registrationType nullable: true
+        exchangeRate nullable: true
+        billDetails nullable: true
+    }
 }

@@ -20,6 +20,21 @@ class Bill {
     Double totalTaxAmount
     static hasMany = [billDetails: BillDetail]
     static belongsTo = [Customer]
+
     static constraints = {
+        user  nullable: true
+        billNumber nullable: true
+        creationDate  nullable: true
+        customer  nullable: true
+        subTotalAmount  nullable: true
+        totalAmount nullable: true
+        totalDiscount nullable: true
+        exchangeRate nullable: true
+        billPaymentType nullable: true
+        currency nullable: true
+        creditCondition nullable: true
+        totalTaxAmount nullable: true
+        exchangeRate nullable: true
+        creationDate nullable: true
     }
 }
