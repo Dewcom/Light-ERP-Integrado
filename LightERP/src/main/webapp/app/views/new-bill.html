@@ -38,6 +38,22 @@
                 </div>
             </div>
             <div class="panel-body">
+                <div class="panel-body">
+                    <div class="pull-left text-bold text-dark"class="col-md-6">FECHA</div>
+                    <div class="pull-right col-md-6">
+                        <button type="button" ng-click="controller.open($event)" class="btn btn-default">
+                            <em class="fa fa-calendar"></em>
+                        </button>
+                    </div>
+                </div>
+                <p class="input-group">
+                    <input type="text" uib-datepicker-popup="{{controller.format}}" ng-model="controller.creationDate"
+                           is-open="controller.opened" min-date="controller.minDate" max-date="'2020-12-31'"
+                           datepicker-options="controller.dateOptions"popup-placement="top" ng-required="true"
+                           close-text="Close" class="form-control" />
+                </p>
+            </div>
+            <div class="panel-body">
                 <p>
                     <button type="button" class="btn btn-primary btn-block" ng-click="controller.submitForm('add', 'save')">
                         Guardar factura
@@ -199,6 +215,14 @@
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label>Tipo de pago</label>
+                                        <div class="controls">
+                                            <select name="controller.paymentType" ng-model="controller.paymentType"
+                                                    ng-options="item.id as item.name for item in controller.paymentTypeList"
+                                                    class="form-control" required="required">
+                                            </select>
+                                            <span ng-show="formStep1.$submitted &amp;&amp; formStep1.selectedIdentificationType.$invalid"
+                                                  class="text-danger">Este campo no puede ser vacío</span>
+                                        </div>
                                         <input type="text" name="controller.paymentType" required=""
                                                class="form-control"/>
                                     </div>
