@@ -24,7 +24,7 @@ class BillController extends RestController {
             def tmpId = params.id
 
             if(tmpId){
-                Bill billFromBd = BillService.getBill(tmpId);
+                Bill billFromBd = billService.getBill(tmpId);
 
                 if(billFromBd){
                     tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
@@ -43,7 +43,6 @@ class BillController extends RestController {
             }
             log.info "====== Get bill response ======"
             log.info tmpResponse as JSON
-            JSON.use('deep');
             render tmpResponse as JSON
         } catch (Exception e) {
             this.handleRESTExceptions(messageSource, e)

@@ -5,6 +5,7 @@ class Bill {
     Byte enabled = Constants.ESTADO_ACTIVO
     Long billNumber
     Date creationDate = new Date()
+    Date billDate = new Date()
     Date dueDate = new Date()
     Customer customer
     BillStateType billState
@@ -22,6 +23,7 @@ class Bill {
     static belongsTo = [Customer]
 
     static constraints = {
+        billDate  nullable: true
         user  nullable: true
         billNumber nullable: true
         creationDate  nullable: true

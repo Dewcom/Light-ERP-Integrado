@@ -1,3 +1,4 @@
+import com.dewcom.light.Bill
 import com.dewcom.light.BillDetail
 import com.dewcom.light.BillPaymentType
 import com.dewcom.light.BillStateType
@@ -52,12 +53,6 @@ class BootStrap {
             return returnArray
         }
 
-        JSON.registerObjectMarshaller(CustomerType) {
-            def returnArray = [:]
-            returnArray['id'] = it.id
-            returnArray['name'] = it.name
-            return returnArray
-        }
 
         JSON.registerObjectMarshaller(ProductType) {
             def returnArray = [:]
@@ -73,6 +68,28 @@ class BootStrap {
             return returnArray
         }
 
+
+        JSON.registerObjectMarshaller(Bill) {
+            def returnArray = [:]
+            returnArray['id'] = it.id
+            returnArray['billDate'] = it.billDate
+            returnArray['billNumber'] = it.billNumber
+            returnArray['dueDate'] = it.dueDate
+            returnArray['customer'] = ["id": it.user.id, "identification": it.customer.identification, "name":it.customer.name, "firstLastName:":it.customer.firstLastName, "secondLastName":it.customer.secondLastName]
+            returnArray['subTotalAmount'] = it.subTotalAmount
+            returnArray['creationDate'] = it.creationDate
+            returnArray['totalAmount'] = it.totalAmount
+            returnArray['totalDiscount'] = it.totalDiscount
+            returnArray['exchangeRate'] = it.exchangeRate
+            returnArray['totalTaxAmount'] = it.totalTaxAmount
+            returnArray['creationDate'] = it.creationDate
+            returnArray['billState'] = it.billState
+            returnArray['billDetails'] = it.billDetails
+            returnArray['billPaymentType'] = it.billPaymentType
+            returnArray['currency'] = it.currency
+            return returnArray
+        }
+
         JSON.registerObjectMarshaller(BillDetail) {
             def returnArray = [:]
             returnArray['quantity'] = it.quantity
@@ -80,9 +97,11 @@ class BootStrap {
             returnArray['discountPercentage'] = it.discountPercentage
             returnArray['totalDiscount'] = it.totalDiscount
             returnArray['taxPercentage'] = it.taxPercentage
+            returnArray['totalTaxAmount'] = it.totalTaxAmount
             returnArray['subTotal'] = it.subTotal
             returnArray['total'] = it.total
-            returnArray['productId'] = it.product.id
+            returnArray['productId'] = ["id": it.product.id,"productCode":it.product.productCode,"productName":it.product.name]
+
             return returnArray
         }
 

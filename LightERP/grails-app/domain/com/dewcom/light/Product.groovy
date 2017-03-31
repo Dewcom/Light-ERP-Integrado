@@ -1,10 +1,9 @@
 package com.dewcom.light
 
-import com.dewcom.light.rest.CustomerREST
+
 import com.dewcom.light.rest.ProductRest
 
 class Product {
-
     String productCode
     String name
     PresentationType presentationType
@@ -21,7 +20,6 @@ class Product {
     double utilityPercentage
     Byte enabled = Constants.ESTADO_ACTIVO
     Date registrationDate = new Date()
-    static hasMany = [billDetails: BillDetail]
     static constraints = {
         productCode blank: false
         name blank: false
