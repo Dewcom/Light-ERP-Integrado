@@ -21,7 +21,7 @@ class Product {
     double utilityPercentage
     Byte enabled = Constants.ESTADO_ACTIVO
     Date registrationDate = new Date()
-    static hasMany = [billDetails: BillDetail]
+
     static constraints = {
         productCode blank: false
         name blank: false

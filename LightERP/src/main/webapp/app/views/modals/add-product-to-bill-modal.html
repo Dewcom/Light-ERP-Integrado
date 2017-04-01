@@ -29,17 +29,15 @@
                     <div class="panel-body col-lg-3">
                         <div class="form-group">
                             <label class="control-label">Código</label>
-                            <input tabindex="1" type="text" name="productCode" required="" ng-model="modalCtrl.selectedProduct.productCode"
+                            <input tabindex="1" type="text" name="productCode" ng-model="modalCtrl.selectedProduct.productCode"
                                    class="form-control" disabled="true"/>
-                            <span ng-show="modalCtrl.validateInput('add', 'productCode', 'required')" class="text-danger">Este campo es requerido</span>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Tipo de presentación</label>
                             <select tabindex="5" name="presentationType" ng-model="modalCtrl.selectedProduct.presentationType.id"
                                     ng-options="item.id as item.name for item in modalCtrl.presentationTypeList"
-                                    class="form-control" required="required" disabled="true">
+                                    class="form-control" disabled="true">
                             </select>
-                            <span ng-show="modalCtrl.validateInput('add', 'presentationType', 'required')" class="text-danger">Este campo es requerido</span>
                         </div>
                         <div class="form-group" ng-show="modalCtrl.selectedProduct != null">
                             <label class="control-label">Cantidad</label>
@@ -51,15 +49,12 @@
                     <div class="panel-body col-lg-3">
                         <div class="form-group">
                             <label class="control-label">Nombre</label>
-                            <input tabindex="2" type="text" name="productName" required="" ng-model="modalCtrl.selectedProduct.name"
+                            <input tabindex="2" type="text" name="productName" ng-model="modalCtrl.selectedProduct.name"
                                    class="form-control" disabled="true"/>
-                            <span ng-show="modalCtrl.validateInput('add', 'productName', 'required')" class="text-danger">Este campo es requerido</span>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Cantidad por bulto</label>
-                            <input tabindex="6" type="text" name="bulkQuantity" ng-model="modalCtrl.selectedProduct.bulkQuantity" ng-pattern="/^[0-9,.]+$/"
-                                   class="form-control" disabled="true"/>
-                            <span ng-show="modalCtrl.validateInput('add', 'bulkQuantity', 'pattern')" class="text-danger">Solamente números permitidos</span>
+                            <input tabindex="6" type="text" name="bulkQuantity" ng-model="modalCtrl.selectedProduct.bulkQuantity" class="form-control" disabled="true"/>
                         </div>
                         <div class="form-group" ng-show="modalCtrl.selectedProduct">
                             <label class="control-label">Descuento</label>
@@ -76,9 +71,7 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label">Precio en dólares</label>
-                            <input tabindex="7" type="text" name="priceInDollars" ng-model="modalCtrl.selectedProduct.priceInDollars" ng-pattern="/^[0-9,.]+$/"
-                                   class="form-control" disabled="true"/>
-                            <span ng-show="modalCtrl.validateInput('add', 'priceInDollars', 'pattern')" class="text-danger">Solamente números permitidos</span>
+                            <input tabindex="7" type="text" name="priceInDollars" ng-model="modalCtrl.selectedProduct.priceInDollars" class="form-control" disabled="true"/>
                         </div>
                         <div class="form-group" ng-show="modalCtrl.selectedProduct">
                             <label class="control-label">Impuestos</label>
@@ -92,15 +85,12 @@
                             <label class="control-label">Tipo de producto</label>
                             <select tabindex="4" name="productType" ng-model="modalCtrl.selectedProduct.productType.id"
                                     ng-options="item.id as item.name for item in modalCtrl.productTypeList"
-                                    class="form-control" required="" disabled="true">
+                                    class="form-control" disabled="true">
                             </select>
-                            <span ng-show="modalCtrl.validateInput('add', 'productType', 'required')" class="text-danger">Este campo es requerido</span>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Precio en colones</label>
-                            <input tabindex="8" type="text" name="priceInColones" ng-model="modalCtrl.selectedProduct.priceInColones" ng-pattern="/^[0-9,.]+$/"
-                                   class="form-control" disabled="true"/>
-                            <span ng-show="modalCtrl.validateInput('add', 'priceInColones', 'pattern')" class="text-danger">Solamente números permitidos</span>
+                            <input tabindex="8" type="text" name="priceInColones" ng-model="modalCtrl.selectedProduct.priceInColones" class="form-control" disabled="true"/>
                         </div>
                     </div>
                     <div class="panel-footer">

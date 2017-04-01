@@ -124,5 +124,24 @@ angular
             return disablebillResult;
         };
 
+        billService.getAllPaymentTypes = function() {
+
+            var paymentTypeList = $http({
+                method: 'GET',
+                url: 'http://localhost:8080/api/bill/get',
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            }).then(function (response) {
+                console.log(response);
+                return response.data.data;
+            },function (error) {
+                console.log(error);
+                return error.status;
+            });
+
+            return billList;
+        };
+
         return billService;
     });

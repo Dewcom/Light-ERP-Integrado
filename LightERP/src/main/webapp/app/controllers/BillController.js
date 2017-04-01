@@ -13,6 +13,46 @@
                             productTypeService, presentationTypeService, $state, toaster, $timeout, $filter) {
         var vm = this;
 
+        activate();
+
+        ////////////////
+
+        function activate() {
+            vm.today = function() {
+                vm.dt = new Date();
+            };
+            vm.today();
+
+            vm.clear = function () {
+                vm.dt = null;
+            };
+
+            // Disable weekend selection
+            vm.disabled = function(date, mode) {
+                return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+            };
+
+            vm.toggleMin = function() {
+                vm.minDate = vm.minDate ? null : new Date();
+            };
+            vm.toggleMin();
+
+            vm.open = function($event) {
+                $event.preventDefault();
+                $event.stopPropagation();
+
+                vm.opened = true;
+            };
+
+            vm.dateOptions = {
+                formatYear: 'yy',
+                startingDay: 1
+            };
+
+            vm.initDate = new Date('2019-10-20');
+            vm.format = 'dd-MM-yyyy'
+        }
+
         vm.taxTotal = 0;
         vm.discountTotal = 0;
         vm.billTotal = 0;
@@ -90,6 +130,14 @@
             });
 
             /**=========================================================
+             * Tipos de pago
+             =========================================================*/
+
+            presentationTypeService.getAll().then(function (response) {
+                vm.presentationTypeList = response;
+            });
+
+            /**=========================================================
              * Datatable productos agregados
              =========================================================*/
 
@@ -108,7 +156,6 @@
         }
 
         vm.getCustomerAddresses = function (customerId) {
-            console.log(customerId);
             vm.customerAddresses = [];
             customerService.getAllAddresses(customerId).then(function (response) {
                 vm.customerAddresses = response;
@@ -195,7 +242,7 @@
         vm.submitted = false;
         vm.validateInput = function (action, name, type) {
             if (action == 'add') {
-                var input = vm.newBillForm[name];
+                var input = vm.addProductToBillForm[name];
                 return (input.$dirty || vm.submitted) && input.$error[type];
 
             } else if (action == 'modify') {
@@ -205,7 +252,7 @@
         };
 
         // Submit form
-        vm.submitForm = function (action) {
+        vm.submitForm = function (action, registationType) {
 
             var vm = this;
 
@@ -213,7 +260,7 @@
 
             if (action == 'add') {
                 if (vm.newBillForm.$valid) {
-                    vm.addBill();
+                    vm.addBill(registationType);
                 } else {
                     console.log('Not valid!!');
                     return false;
@@ -234,17 +281,25 @@
          * Agregar facturas
          =========================================================*/
 
-        vm.addBill = function () {
+        vm.addBill = function (registationType) {
 
             var userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
+            var registrationType;
+            if(registationType == 'save'){
+                registrationType = 0;
+            }else if(registrationType = 'submit'){
+                registrationType = 1;
+            }
 
             var newBill = {
                 "userName": userInfo.userName,
                 "customerId": vm.chosenCustomer.id,
                 "exchangeRate": 561,
-                "billPaymentTypeId": 1,
+                "billPaymentTypeId": vm.paymentType,
                 "creditConditionId": 1,
                 "currencyId": 1,
+                "registrationType" : registrationType,
+                "creationDate" : "01-01-2017",
                 "billDetails": formatBillDetails(vm.addedProductList)
 
             };
@@ -521,8 +576,6 @@
             $state.reload();
         }
     }
-
-
 
     /**
      * AngularJS default filter with the following expression:
