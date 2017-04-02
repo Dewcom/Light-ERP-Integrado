@@ -13,25 +13,25 @@
                     </button>
                 </div>
             </div>
-            <table datatable="ng" dt-options="controller.dtOptions" dt-column-defs="controller.dtColumnDefs"
+            <table datatable="ng" dt-options="controller.dtOptionsBills" dt-column-defs="controller.dtColumnDefsBills"
                    class="row-border hover">
                 <thead>
                 <tr>
-                    <th>Nombre</th>
-                    <th>Identificación</th>
-                    <th>Teléfono</th>
-                    <th>Correo electrónico</th>
+                    <th>Número de factura</th>
+                    <th>Estado</th>
+                    <th>Fecha creación</th>
+                    <th>Fecha vencimiento</th>
+                    <th>Total</th>
                     <th>Opciones</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="customerObj in controller.customerList">
-                    <td ng-if="customerObj.firstLastName == null" >{{ customerObj.name }}</td>
-                    <td ng-if="customerObj.firstLastName != null" >{{ customerObj.name + ' ' + customerObj.firstLastName + ' ' + customerObj.secondLastName}}</td>
-                    <td>{{ customerObj.identification }}</td>
-                    <td>{{ customerObj.phoneNumber1 }}</td>
-                    <td ng-if="customerObj.email == null" >**SIN CORREO**</td>
-                    <td ng-if="customerObj.email != null" >{{ customerObj.email }}</td>
+                <tr ng-repeat="billObj in controller.billList">
+                    <td>{{ billObj.billNumber }}</td>
+                    <td>{{ billObj.billState.description }}</td>
+                    <td>{{ billObj.creationDate | date :  "mm/dd/yyyy" }}</td>
+                    <td>{{ billObj.dueDate | date :  "mm/dd/yyyy" }}</td>
+                    <td>{{ billObj.totalAmount }}</td>
                     <td>
                         <button type="button" ui-sref="app.customerDetail({customerId: customerObj.id})" class="btn btn-sm btn-toolbar">
                             <em class="fa fa-search"></em>

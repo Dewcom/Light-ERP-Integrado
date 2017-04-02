@@ -12,7 +12,7 @@ class BillRest implements Validateable {
     Long billPaymentTypeId
     Long creditConditionId
     Long currencyId
-    String creationDate
+    String creationDate = new Date()
     List<BillDetailRest> billDetails;
     Integer registrationType;
 

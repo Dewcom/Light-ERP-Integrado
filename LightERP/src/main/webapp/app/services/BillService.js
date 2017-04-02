@@ -128,7 +128,7 @@ angular
 
             var paymentTypeList = $http({
                 method: 'GET',
-                url: 'http://localhost:8080/api/bill/get',
+                url: 'http://localhost:8080/api/billPaymentType/get',
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
@@ -140,7 +140,64 @@ angular
                 return error.status;
             });
 
-            return billList;
+            return paymentTypeList;
+        };
+
+        billService.getAllCurrency = function() {
+
+            var currencyList = $http({
+                method: 'GET',
+                url: 'http://localhost:8080/api/currency/get',
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            }).then(function (response) {
+                console.log(response);
+                return response.data.data;
+            },function (error) {
+                console.log(error);
+                return error.status;
+            });
+
+            return currencyList;
+        };
+
+        billService.getAllCreditCondition = function() {
+
+            var creditConditionList = $http({
+                method: 'GET',
+                url: 'http://localhost:8080/api/creditCondition/get',
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            }).then(function (response) {
+                console.log(response);
+                return response.data.data;
+            },function (error) {
+                console.log(error);
+                return error.status;
+            });
+
+            return creditConditionList;
+        };
+
+        billService.getAllExchangeRates = function() {
+
+            var exchangeRateList = $http({
+                method: 'GET',
+                url: 'http://localhost:8080/api/exchangeRate/get',
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            }).then(function (response) {
+                console.log(response);
+                return response.data.data;
+            },function (error) {
+                console.log(error);
+                return error.status;
+            });
+
+            return exchangeRateList;
         };
 
         return billService;

@@ -6,13 +6,13 @@ import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 
 class BillPaymentTypeController extends RestController {
-    static allowedMethods = [getAll: "GET"]
+    static allowedMethods = [get: "GET"]
     def messageSource
     def adminService
 
 
     @Secured(['ROLE_ANONYMOUS'])
-    def getAll() {
+    def get() {
         ResponseREST tmpResponse = new ResponseREST();
         try {
                 def paymentTypes = adminService.getAllPaymentTypes();

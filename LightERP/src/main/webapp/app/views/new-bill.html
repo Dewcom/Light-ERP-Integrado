@@ -49,7 +49,7 @@
                 <p class="input-group">
                     <input type="text" uib-datepicker-popup="{{controller.format}}" ng-model="controller.creationDate"
                            is-open="controller.opened" min-date="controller.minDate" max-date="'2020-12-31'"
-                           datepicker-options="controller.dateOptions"popup-placement="top" ng-required="true"
+                           datepicker-options="controller.dateOptions" popup-placement="top" ng-required="true"
                            close-text="Close" class="form-control" />
                 </p>
             </div>
@@ -217,34 +217,38 @@
                                         <label>Tipo de pago</label>
                                         <div class="controls">
                                             <select name="controller.paymentType" ng-model="controller.paymentType"
-                                                    ng-options="item.id as item.name for item in controller.paymentTypeList"
-                                                    class="form-control" required="required">
+                                                    ng-options="item.id as item.description for item in controller.paymentTypeList"
+                                                    class="form-control" >
                                             </select>
-                                            <span ng-show="formStep1.$submitted &amp;&amp; formStep1.selectedIdentificationType.$invalid"
-                                                  class="text-danger">Este campo no puede ser vacío</span>
                                         </div>
-                                        <input type="text" name="controller.paymentType" required=""
-                                               class="form-control"/>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label>Moneda</label>
-                                        <input type="text" name="controller.currency" required="" class="form-control"/>
+                                        <div class="controls">
+                                            <select name="controller.currency" ng-model="controller.currency"
+                                                    ng-options="item.id as item.description for item in controller.currencyList"
+                                                    class="form-control" ng-change="controller.changeExchangeRate(controller.currency)" >
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label>Condición de crédito</label>
-                                        <input type="text" name="controller.creditCondition" required=""
-                                               class="form-control"/>
+                                        <div class="controls">
+                                            <select name="controller.creditCondition" ng-model="controller.creditCondition"
+                                                    ng-options="item.id as item.description for item in controller.creditConditionList"
+                                                    class="form-control" >
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
                                     <div class="form-group">
                                         <label>Tipo de cambio</label>
-                                        <input type="text" name="controller.creditCondition" required=""
-                                               class="form-control"/>
+                                        <input type="text" name="controller.exchangeRate" ng-model="controller.exchangeRate" required="" class="form-control"/>
                                     </div>
                                 </div>
                             </div>

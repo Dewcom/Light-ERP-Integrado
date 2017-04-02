@@ -93,6 +93,7 @@
              =========================================================*/
 
             billService.getAll().then(function (response) {
+                console.log(response);
                 vm.billList = response;
             });
 
@@ -133,8 +134,32 @@
              * Tipos de pago
              =========================================================*/
 
-            presentationTypeService.getAll().then(function (response) {
-                vm.presentationTypeList = response;
+            billService.getAllPaymentTypes().then(function (response) {
+                vm.paymentTypeList = response;
+            });
+
+            /**=========================================================
+             * Tipos de monedas
+             =========================================================*/
+
+            billService.getAllCurrency().then(function (response) {
+                vm.currencyList = response;
+            });
+
+            /**=========================================================
+             * Tipos de condiciones de credito
+             =========================================================*/
+
+            billService.getAllCreditCondition().then(function (response) {
+                vm.creditConditionList = response;
+            });
+
+            /**=========================================================
+             * Tipos de cambio
+             =========================================================*/
+
+            billService.getAllExchangeRates().then(function (response) {
+                vm.exchangeRateList = response;
             });
 
             /**=========================================================
@@ -152,14 +177,51 @@
                 DTColumnDefBuilder.newColumnDef(1),
                 DTColumnDefBuilder.newColumnDef(2),
                 DTColumnDefBuilder.newColumnDef(3).notSortable()
+
+            ];
+
+            /**=========================================================
+             * Datatable productos agregados
+             =========================================================*/
+
+            vm.dtOptionsBills = DTOptionsBuilder.newOptions()
+                .withOption('bFilter', false)
+                .withOption('bInfo', false)
+                .withOption('bPaginate', false)
+                .withOption('bLengthChange', false)
+                .withLanguage(language);
+            vm.dtColumnDefsBills = [
+                DTColumnDefBuilder.newColumnDef(0),
+                DTColumnDefBuilder.newColumnDef(1),
+                DTColumnDefBuilder.newColumnDef(2),
+                DTColumnDefBuilder.newColumnDef(3)
             ];
         }
+
+
+        /**=========================================================
+         * Obtiene las direcciones del cliente de la factura
+         =========================================================*/
 
         vm.getCustomerAddresses = function (customerId) {
             vm.customerAddresses = [];
             customerService.getAllAddresses(customerId).then(function (response) {
                 vm.customerAddresses = response;
             });
+
+        };
+
+
+        /**=========================================================
+         * Ajusta el tipo de cambio de acuerdo a la moneda seleccionada
+         =========================================================*/
+
+
+        vm.changeExchangeRate = function (currencyId) {
+
+            var rate = $filter("filter")(vm.exchangeRateList, {currency : {id: currencyId}});
+
+            vm.exchangeRate = rate[0].value;
 
         };
 
@@ -294,13 +356,13 @@
             var newBill = {
                 "userName": userInfo.userName,
                 "customerId": vm.chosenCustomer.id,
-                "exchangeRate": 561,
+                "exchangeRate": vm.exchangeRate,
                 "billPaymentTypeId": vm.paymentType,
-                "creditConditionId": 1,
-                "currencyId": 1,
+                "creditConditionId": vm.creditCondition,
+                "currencyId": vm.currency,
                 "registrationType" : registrationType,
-                "creationDate" : "01-01-2017",
-                "billDetails": formatBillDetails(vm.addedProductList)
+                //"creationDate" : $filter('date')(vm.creationDate, "dd/MM/yyyy"),
+            "billDetails": formatBillDetails(vm.addedProductList)
 
             };
             console.log(newBill);
@@ -322,8 +384,8 @@
                         title: 'Factura',
                         text: response.message
                     };
-
                 }
+
                 pop(toasterdata);
                 $timeout(function () {
                     callAtTimeout();

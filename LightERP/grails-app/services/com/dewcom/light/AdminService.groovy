@@ -11,6 +11,7 @@ import grails.transaction.Transactional
 class AdminService {
     //Identification type
     def messageSource
+
     IdentificationType getIdentificationType(def pid) {
         log.info "====== Getting identification type from DB ======"
         log.info pid
@@ -324,7 +325,7 @@ class AdminService {
             return customerTypesFromDB
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException(messageSource.getMessage("get.all.configuration.error", null, Locale.default));
+            throw new LightRuntimeException(messageSource.getMessage("get.all.configurations.error", null, Locale.default));
         }
     }
 
@@ -346,7 +347,7 @@ class AdminService {
             return paymentTypes
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException(messageSource.getMessage("get.all.configuration.error", null, Locale.default));
+            throw new LightRuntimeException(messageSource.getMessage("get.all.payment.types.error", null, Locale.default));
         }
     }
 
@@ -357,7 +358,7 @@ class AdminService {
             return states
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException(messageSource.getMessage("get.all.configuration.error", null, Locale.default));
+            throw new LightRuntimeException(messageSource.getMessage("get.all.bill.states.error", null, Locale.default));
         }
     }
 
@@ -368,7 +369,7 @@ class AdminService {
             return creditConditions
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException(messageSource.getMessage("get.all.configuration.error", null, Locale.default));
+            throw new LightRuntimeException(messageSource.getMessage("get.all.credit.conditions.error", null, Locale.default));
         }
     }
 
@@ -378,17 +379,31 @@ class AdminService {
             return currencies
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException(messageSource.getMessage("get.all.configuration.error", null, Locale.default));
+            throw new LightRuntimeException(messageSource.getMessage("get.all.currencies.error", null, Locale.default));
         }
     }
 
     def getAllExchangeRates() {
+        log.info "====== Getting all exchange rates from DB ======"
         try{
             def exchanges = ExchangeRate.findAll()
             return exchanges
         }catch(Exception e){
             log.error(e);
-            throw new LightRuntimeException(messageSource.getMessage("get.all.configuration.error", null, Locale.default));
+            throw new LightRuntimeException(messageSource.getMessage("get.all.exchange.rates.error", null, Locale.default));
         }
     }
+
+    ExchangeRate getExchangeRate(def pid) {
+        log.info "====== Getting exchange rate from DB ======"
+        log.info pid
+        try{
+            ExchangeRate exchangeRateFromDB = ExchangeRate.findByIdAndEnabled(pid, Constants.ESTADO_ACTIVO);
+            return exchangeRateFromDB
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("get.exchange.rate.error", null, Locale.default));
+        }
+    }
+
 }
