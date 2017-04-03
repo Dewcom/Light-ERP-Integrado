@@ -1,10 +1,9 @@
 package com.dewcom.light
 
-import com.dewcom.light.rest.CustomerREST
+
 import com.dewcom.light.rest.ProductRest
 
 class Product {
-
     String productCode
     String name
     PresentationType presentationType

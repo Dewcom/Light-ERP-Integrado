@@ -24,7 +24,7 @@ class BillController extends RestController {
             def tmpId = params.id
 
             if(tmpId){
-                Bill billFromBd = BillService.getBill(tmpId);
+                Bill billFromBd = billService.getBill(tmpId);
 
                 if(billFromBd){
                     tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
@@ -43,7 +43,6 @@ class BillController extends RestController {
             }
             log.info "====== Get bill response ======"
             log.info tmpResponse as JSON
-            JSON.use('deep');
             render tmpResponse as JSON
         } catch (Exception e) {
             this.handleRESTExceptions(messageSource, e)
@@ -84,7 +83,7 @@ class BillController extends RestController {
         log.info "==========  Create  bill request =========="
         log.info request.JSON
 
-        ResponseREST tmpResponse = new ResponseREST();
+        /*ResponseREST tmpResponse = new ResponseREST();
         BillRest tmpBill = new BillRest(request.JSON.bill);
         try {
             tmpBill.validate();
@@ -103,7 +102,7 @@ class BillController extends RestController {
             render tmpResponse as JSON
         } catch (Exception e) {
             this.handleRESTExceptions(messageSource, e)
-        }
+        }*/
     }
 
     /**

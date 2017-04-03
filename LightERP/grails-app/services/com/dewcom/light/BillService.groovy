@@ -56,13 +56,13 @@ class BillService {
             def customer = Customer.findById(argRestBill.customerId)
             def paymentType = BillPaymentType.findById(argRestBill.billPaymentTypeId)
             def creditCondition;
-            def creationDate = LightUtils.stringToDate(argRestBill.creationDate,"dd-MM-yyyy")
+            def billDate = LightUtils.stringToDate(argRestBill.billDate,"dd-MM-yyyy")
 
             if(argRestBill.billPaymentTypeId != null && paymentType.code == Constants.PAGO_CREDITO){
                 if(argRestBill.creditConditionId != null ){
                     creditCondition= CreditCondition.findById(argRestBill.creditConditionId)
-                    if(creationDate != null){
-                        tmpBill.dueDate = LightUtils.plusDaysToDate(creationDate, creditCondition.days)
+                    if(billDate != null){
+                        tmpBill.dueDate = LightUtils.plusDaysToDate(billDate, creditCondition.days)
                     }
                 }
             }
@@ -89,7 +89,7 @@ class BillService {
             tmpBill.billState = billStateType
             tmpBill.currency = currency
             tmpBill.exchangeRate = argRestBill.exchangeRate
-            tmpBill.creationDate = creationDate
+            tmpBill.billDate = billDate
 
             if(argRestBill.billDetails != null && argRestBill.billDetails.size() > 0 ){
                 processRestBillDetails(argRestBill.billDetails, tmpBill)
