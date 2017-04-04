@@ -98,7 +98,6 @@ class BillController extends RestController {
             }
             log.info "====== Create bill response ======"
             log.info tmpResponse as JSON
-            JSON.use('deep');
             render tmpResponse as JSON
         } catch (Exception e) {
             this.handleRESTExceptions(messageSource, e)
