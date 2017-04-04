@@ -361,10 +361,11 @@
                 "creditConditionId": vm.creditCondition,
                 "currencyId": vm.currency,
                 "registrationType" : registrationType,
-                //"creationDate" : $filter('date')(vm.creationDate, "dd/MM/yyyy"),
-            "billDetails": formatBillDetails(vm.addedProductList)
+                "billDate" : vm.creationDate,//$filter('date')(vm.creationDate, "dd/MM/yyyy"),
+                "billDetails": formatBillDetails(vm.addedProductList)
 
             };
+
             console.log(newBill);
 
             billService.resetAddedProductList();

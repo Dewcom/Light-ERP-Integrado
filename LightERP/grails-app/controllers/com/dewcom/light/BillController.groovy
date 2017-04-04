@@ -83,7 +83,7 @@ class BillController extends RestController {
         log.info "==========  Create  bill request =========="
         log.info request.JSON
 
-        /*ResponseREST tmpResponse = new ResponseREST();
+        ResponseREST tmpResponse = new ResponseREST();
         BillRest tmpBill = new BillRest(request.JSON.bill);
         try {
             tmpBill.validate();
@@ -102,7 +102,7 @@ class BillController extends RestController {
             render tmpResponse as JSON
         } catch (Exception e) {
             this.handleRESTExceptions(messageSource, e)
-        }*/
+        }
     }
 
     /**
