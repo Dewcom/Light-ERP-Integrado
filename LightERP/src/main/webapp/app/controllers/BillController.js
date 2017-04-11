@@ -631,7 +631,8 @@
             toaster.pop({
                 type: toasterdata.type,
                 title: toasterdata.title,
-                body: toasterdata.text
+                body: toasterdata.text,
+                bodyOutputType: 'trustedHtml'
             });
         }
 

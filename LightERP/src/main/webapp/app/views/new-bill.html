@@ -30,9 +30,6 @@
                         <div class="text-bold">
                             {{controller.billTotal}}
                         </div>
-                        <div class="text-sm">
-                            {{controller.currency}}
-                        </div>
                     </div>
                     <div class="pull-left text-bold text-dark">TOTAL</div>
                 </div>
@@ -314,8 +311,8 @@
                     </uib-accordion-group>
                 </uib-accordion>
             </form>
-            <toaster-container
-                    toaster-options="{'position-class': 'toast-bottom-right', 'close-button':true}"></toaster-container>
+            <toaster-container toaster-options="{'position-class': 'toast-bottom-right', 'close-button':true, 'body-output-type': 'trustedHtml'}"></toaster-container>
+
         </div>
     </div>
     <div ng-include="'app/views/modals/add-product-to-bill-modal.html'"></div>
