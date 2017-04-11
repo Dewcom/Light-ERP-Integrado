@@ -27,16 +27,17 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="billObj in controller.billList">
-                    <td>{{ billObj.billNumber }}</td>
+                    <td ng-if="billObj.billNumber == null" >**Creada-Borrador**</td>
+                    <td ng-if="billObj.billNumber != null" >{{ billObj.billNumber }}</td>
                     <td>{{ billObj.billState.description }}</td>
-                    <td>{{ billObj.creationDate | date :  "mm/dd/yyyy" }}</td>
-                    <td>{{ billObj.dueDate | date :  "mm/dd/yyyy" }}</td>
+                    <td>{{ billObj.creationDate | date :  "dd-MM-yyyy" }}</td>
+                    <td>{{ billObj.dueDate | date :  "dd-MM-yyyy" }}</td>
                     <td>{{ billObj.totalAmount }}</td>
                     <td>
                         <button type="button" ui-sref="app.customerDetail({customerId: customerObj.id})" class="btn btn-sm btn-toolbar">
                             <em class="fa fa-search"></em>
                         </button>
-                        <button type="button" ng-click="controller.disableCustomer(customerObj.id)"
+                        <button ng-disabled="billObj.billNumber == null" type="button" ng-click="controller.disableCustomer(customerObj.id)"
                                 class="btn btn-sm btn-danger">
                             <em class="fa fa-trash-o"></em>
                         </button>
@@ -47,7 +48,7 @@
             </form>
         </div>
     </div>
-    <toaster-container toaster-options="{'position-class': 'toast-bottom-right', 'close-button':true}"></toaster-container>
+    <toaster-container toaster-options="{'position-class': 'toast-bottom-right', 'close-button':true, 'body-output-type': 'trustedHtml'}"></toaster-container>
     <script type="text/ng-template" id="disableCustomerModal">
         <div class="ngdialog-message text-center">
             <h3>Eliminar cliente</h3>

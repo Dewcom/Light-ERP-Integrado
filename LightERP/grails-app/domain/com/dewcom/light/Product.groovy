@@ -26,7 +26,6 @@ class Product {
         name blank: false
         tariffHeading blank: false
         commercialName null: true, blank: true
-        utilityPercentage nullable: true
     }
 
     def static fromRestProduct(ProductRest pRestProduct){

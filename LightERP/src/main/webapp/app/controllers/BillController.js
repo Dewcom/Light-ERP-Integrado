@@ -343,13 +343,13 @@
          * Agregar facturas
          =========================================================*/
 
-        vm.addBill = function (registationType) {
+        vm.addBill = function (regType) {
 
             var userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
             var registrationType;
-            if(registationType == 'save'){
+            if(regType == 'created'){
                 registrationType = 0;
-            }else if(registrationType = 'submit'){
+            }else if(regType = 'validated'){
                 registrationType = 1;
             }
 
@@ -361,7 +361,7 @@
                 "creditConditionId": vm.creditCondition,
                 "currencyId": vm.currency,
                 "registrationType" : registrationType,
-                "billDate" : vm.creationDate,//$filter('date')(vm.creationDate, "dd/MM/yyyy"),
+                "billDate" : $filter('date')(vm.creationDate, "dd-MM-yyyy"),
                 "billDetails": formatBillDetails(vm.addedProductList)
 
             };
@@ -634,6 +634,7 @@
                 body: toasterdata.text
             });
         }
+
 
         function callAtTimeout() {
             $state.reload();
