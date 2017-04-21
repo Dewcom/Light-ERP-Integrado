@@ -1,7 +1,7 @@
 'use strict';
 
 angular
-    .module('app.adminConfig')
+    .module('app.client')
     .controller('CustomerDetailController', CustomerDetailController);
 
 CustomerDetailController.$inject = ['$http', '$state', '$stateParams', '$scope', 'customerTypeService',

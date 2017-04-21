@@ -8,9 +8,9 @@
         .controller('BillController', BillController);
 
     BillController.$inject = ['DTOptionsBuilder', 'DTColumnDefBuilder', 'billService', 'customerService', 'productService', '$scope',
-        '$uibModal', 'productTypeService', 'presentationTypeService', '$state', 'toaster', '$timeout' , '$filter'];
+        '$uibModal', 'productTypeService', 'presentationTypeService', '$state', 'toaster', '$timeout' , '$filter', 'ngDialog'];
     function BillController(DTOptionsBuilder, DTColumnDefBuilder, billService, customerService, productService, $scope, $uibModal,
-                            productTypeService, presentationTypeService, $state, toaster, $timeout, $filter) {
+                            productTypeService, presentationTypeService, $state, toaster, $timeout, $filter, ngDialog) {
         var vm = this;
 
         activate();
@@ -185,10 +185,7 @@
              =========================================================*/
 
             vm.dtOptionsBills = DTOptionsBuilder.newOptions()
-                .withOption('bFilter', false)
-                .withOption('bInfo', false)
-                .withOption('bPaginate', false)
-                .withOption('bLengthChange', false)
+                .withPaginationType('full_numbers')
                 .withLanguage(language);
             vm.dtColumnDefsBills = [
                 DTColumnDefBuilder.newColumnDef(0),
@@ -469,43 +466,43 @@
         }
 
 
-        /* /!**=========================================================
+        /**=========================================================
          * Eliminar facturas
-         =========================================================*!/
-         vm.disableBill = function (billId) {
-         ngDialog.openConfirm({
-         template: 'disableBillModal',
-         className: 'ngdialog-theme-default',
-         closeByDocument: false,
-         closeByEscape: false
-         }).then(function (value) {
-         billService.disableBill(billId).then(function (response) {
-         var toasterdata;
-         console.log(response);
+         =========================================================*/
+        vm.disableBill = function (billId) {
+            ngDialog.openConfirm({
+                template: 'disableBillModal',
+                className: 'ngdialog-theme-default',
+                closeByDocument: false,
+                closeByEscape: false
+            }).then(function (value) {
+                billService.disableBill(billId).then(function (response) {
+                    var toasterdata;
+                    console.log(response);
 
-         if(response.code == "0"){
-         toasterdata = {
-         type: 'success',
-         title: 'Eliminar factura',
-         text: response.message
-         };
-         }else{
-         toasterdata = {
-         type: 'warning',
-         title: 'Factura',
-         text: response.message
-         };
+                    if (response.code == "0") {
+                        toasterdata = {
+                            type: 'success',
+                            title: 'Eliminar factura',
+                            text: response.message
+                        };
+                    } else {
+                        toasterdata = {
+                            type: 'warning',
+                            title: 'Factura',
+                            text: response.message
+                        };
 
-         }
-         pop(toasterdata);
-         init();
-         },function (error) {
-         console.log(error);
-         });
-         }, function (reason) {
-         console.log('Modal promise rejected. Reason: ', reason);
-         });
-         };*/
+                    }
+                    pop(toasterdata);
+                    init();
+                }, function (error) {
+                    console.log(error);
+                });
+            }, function (reason) {
+                console.log('Modal promise rejected. Reason: ', reason);
+            });
+        };
 
         // Please note that $uibModalInstance represents a modal window (instance) dependency.
         // It is not the same as the $uibModal service used above.

@@ -75,7 +75,7 @@
 
             vm.dtOptions = DTOptionsBuilder.newOptions()
                 .withPaginationType('full_numbers')
-                .withLanguage(language)
+                .withLanguage(language);
             vm.dtColumnDefs = [
                 DTColumnDefBuilder.newColumnDef(0),
                 DTColumnDefBuilder.newColumnDef(1),

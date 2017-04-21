@@ -841,6 +841,12 @@
                 templateUrl: helper.basepath('billing-main.html'),
                 resolve: helper.resolveFor('datatables', 'ngDialog', 'ui.select')
             })
+            .state('app.billDetail', {
+                url: '/billDetail',
+                title: 'Detalle factura',
+                templateUrl: helper.basepath('bill-detail.html'),
+                params : { billId: null }
+            })
             .state('app.usersMain', {
                 url: '/usersMain',
                 title: 'Usuarios',

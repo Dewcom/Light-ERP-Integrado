@@ -104,6 +104,7 @@ angular
 
         billService.disableBill= function(billId) {
 
+
             var disablebillResult = $http({
                 method: 'DELETE',
                 url: 'http://localhost:8080/api/bill/delete',
