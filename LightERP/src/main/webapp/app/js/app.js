@@ -845,6 +845,7 @@
                 url: '/billDetail',
                 title: 'Detalle factura',
                 templateUrl: helper.basepath('bill-detail.html'),
+                resolve: helper.resolveFor('ngDialog'),
                 params : { billId: null }
             })
             .state('app.usersMain', {

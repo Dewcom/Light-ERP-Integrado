@@ -623,7 +623,6 @@
             return totalAmmount;
         }
 
-
         function pop(toasterdata) {
             toaster.pop({
                 type: toasterdata.type,

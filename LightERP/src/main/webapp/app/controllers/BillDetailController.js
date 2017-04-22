@@ -4,8 +4,8 @@ angular
     .module('app.bill')
     .controller('BillDetailController', BillDetailController);
 
-BillDetailController.$inject = ['$http', '$state', '$stateParams', '$scope', 'billService'];
-function BillDetailController($http, $state, $stateParams, $scope, billService) {
+BillDetailController.$inject = ['$http', '$state', '$stateParams', '$scope', 'billService', '$timeout', 'ngDialog', 'toaster'];
+function BillDetailController($http, $state, $stateParams, $scope, billService, $timeout, ngDialog, toaster) {
     var vm = this;
 
 
@@ -16,7 +16,7 @@ function BillDetailController($http, $state, $stateParams, $scope, billService) 
         console.log($stateParams.billId);
         var bill;
         billService.get($stateParams.billId).then(function (response) {
-            console.log(response);
+            console.log(response.data);
 
             if (response.code == '0') {
 
@@ -96,15 +96,57 @@ function BillDetailController($http, $state, $stateParams, $scope, billService) 
 
     };
 
-    $scope.pop = function (toasterdata) {
-        toaster.pop({
-            type: toasterdata.type,
-            title: toasterdata.title,
-            body: toasterdata.text
+
+    /**=========================================================
+     * Eliminar facturas
+     =========================================================*/
+    vm.disableBill = function (billId) {
+        console.log(billId);
+        ngDialog.openConfirm({
+            template: 'disableBillModal',
+            className: 'ngdialog-theme-default',
+            closeByDocument: false,
+            closeByEscape: false
+        }).then(function (value) {
+            billService.disableBill(billId).then(function (response) {
+                var toasterdata;
+                console.log(response);
+
+                if (response.code == "0") {
+                    toasterdata = {
+                        type: 'success',
+                        title: 'Eliminar factura',
+                        text: response.message
+                    };
+                } else {
+                    toasterdata = {
+                        type: 'warning',
+                        title: 'Factura',
+                        text: response.message
+                    };
+
+                }
+
+                pop(toasterdata);
+
+                $timeout(function() {
+                    $state.go('app.billingMain');
+                }, 3000);
+
+            }, function (error) {
+                console.log(error);
+            });
+        }, function (reason) {
+            console.log('Modal promise rejected. Reason: ', reason);
         });
     };
 
-    $scope.callAtTimeout = function () {
-        $state.reload();
-    };
+    function pop(toasterdata) {
+        toaster.pop({
+            type: toasterdata.type,
+            title: toasterdata.title,
+            body: toasterdata.text,
+            bodyOutputType: 'trustedHtml'
+        });
+    }
 }
