@@ -2,6 +2,7 @@ package com.dewcom.light
 
 import com.dewcom.light.rest.BillDetailRest
 import com.dewcom.light.rest.BillRest
+import com.dewcom.light.rest.UpdateBillRequestREST
 import grails.transaction.Transactional
 
 @Transactional
@@ -130,23 +131,77 @@ class BillService {
         }
     }
 
-    /*def updateBill(UpdateContactRequestREST argRestContact) {
+    def updateBill(UpdateBillRequestREST argUpdateBillRequest) {
         try {
-            Contact tmpContactToUpdate = Contact.findByIdAndEnabled(argRestContact.id, Constants.ESTADO_ACTIVO)
-            if (tmpContactToUpdate) {
-                tmpContactToUpdate.name = argRestContact.name;
-                tmpContactToUpdate.firstLastName = argRestContact.firstLastName;
-                tmpContactToUpdate.secondLastName = argRestContact.secondLastName;
-                tmpContactToUpdate.jobTitle = argRestContact.jobTitle;
-                tmpContactToUpdate.department = argRestContact.department;
-                tmpContactToUpdate.phoneNumber1 = argRestContact.phoneNumber1;
-                tmpContactToUpdate.phoneNumber2 = argRestContact.phoneNumber2;
-                tmpContactToUpdate.mobile = argRestContact.mobile;
-                tmpContactToUpdate.email =  argRestContact.email;
+            Bill tmpBillToUpdate = Contact.findByIdAndEnabled(argUpdateBillRequest.billId, Constants.ESTADO_ACTIVO)
+            if (tmpBillToUpdate) {
 
-                tmpContactToUpdate.save(flush: true);
+                tmpBillToUpdate.currency = argUpdateBillRequest.currencyId != null ?  Currency.get(argUpdateBillRequest.currencyId) : tmpBillToUpdate.currency
+                tmpBillToUpdate.exchangeRate = argUpdateBillRequest.exchangeRate != null ?  argUpdateBillRequest.exchangeRate : tmpBillToUpdate.exchangeRate
+                tmpBillToUpdate.billDate = argUpdateBillRequest.billDate != null ?  LightUtils.stringToDate(argUpdateBillRequest.billDate,"dd-MM-yyyy") : tmpBillToUpdate.billDate
+                tmpBillToUpdate.customer = argUpdateBillRequest.customerId != null ?  Customer.get(argUpdateBillRequest.customerId) : tmpBillToUpdate.customer
+
+                if(argUpdateBillRequest.billPaymentTypeId != null){
+                    def tmpBillPaymentType = BillPaymentType.get(argUpdateBillRequest.billPaymentTypeId)
+                    tmpBillToUpdate.billPaymentType = tmpBillPaymentType
+                    if(tmpBillPaymentType.code == Constants.PAGO_CONTADO){
+                        tmpBillToUpdate.dueDate = new Date()
+                        tmpBillToUpdate.creditCondition = null
+                    }
+                }
+
+                if(argUpdateBillRequest.creditConditionId != null){
+                    def tmpCreditCondition = CreditCondition.get(argUpdateBillRequest.creditConditionId)
+                    tmpBillToUpdate.creditCondition = tmpCreditCondition
+                    if(tmpBillToUpdate.billDate != null){
+                        tmpBillToUpdate.dueDate = LightUtils.plusDaysToDate(tmpBillToUpdate, tmpCreditCondition.days)
+                    }
+                }
+
+                if(argUpdateBillRequest.billStateId != null){
+                    def tmpState = BillStateType.get(argUpdateBillRequest.billStateId)
+                    tmpBillToUpdate.billState = tmpState
+                    if(tmpState.code == Constants.FACTURA_VALIDADA){
+                        if(tmpBillToUpdate.billNumber == null){
+                          def  configConsecFactura = Configuration.findByCode(Constants.CONFIG_CONSECUTIVO_FACTURA)
+                            if (!configConsecFactura) {
+                                Configuration tmpConfig = new Configuration(value: generateBillNumber().toString(), description: "consecutivo factura", code: Constants.CONFIG_CONSECUTIVO_FACTURA)
+                                configConsecFactura = adminService.createConfiguration(tmpConfig)
+                            }
+                            tmpBillToUpdate.billNumber = configConsecFactura.value as Long
+                        }
+
+                    }
+                }
+
+                if(argUpdateBillRequest.billDetails != null && !argUpdateBillRequest.billDetails.isEmpty()){
+                    //Se desactivan las direcciones que fueron eliminadas en el FE
+                    tmpBillToUpdate.billDetails.each {
+
+                        def tmpIt = it;
+                        tmpIt.enabled = Constants.ESTADO_INACTIVO;
+
+                        argUpdateBillRequest.billDetails.each {
+                            if(tmpIt.id == it.id){
+                                tmpIt.enabled = Constants.ESTADO_ACTIVO;
+                            }
+                        }
+                    }
+
+                    //Se agregan las direcciones nuevas
+                    argUpdateBillRequest.billDetails.each {
+
+                        if(it.id == null){
+                            tmpBillToUpdate.addToBillDetails(it);
+                        }
+                    }
+                }
+
+
+
+                tmpBillToUpdate.save(flush: true);
             } else {
-                throw new LightRuntimeException(messageSource.getMessage("update.contact.notFound.error", null, Locale.default));
+                throw new LightRuntimeException(messageSource.getMessage("update.bill.notFound.error", null, Locale.default));
             }
         }
 
@@ -159,7 +214,7 @@ class BillService {
                 throw new LightRuntimeException(messageSource.getMessage("update.contact.error", null, Locale.default));
             }
         }
-    }*/
+    }
 
 /**
  * Este método se encarga de procesar todos los detalles de factura que vienen
