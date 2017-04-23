@@ -7,7 +7,7 @@ angular
         var customerService = {};
         var tmpAddressList = [];
 
-        customerService.getAll = function() {
+        customerService.getAll = function () {
 
             var customerList = $http({
                 method: 'GET',
@@ -17,7 +17,7 @@ angular
                 }
             }).then(function (response) {
                 return response.data.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });
@@ -25,7 +25,7 @@ angular
             return customerList;
         };
 
-        customerService.get = function(customerId) {
+        customerService.get = function (customerId) {
 
             var customer = $http({
                 method: 'GET',
@@ -34,9 +34,8 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response);
                 return response.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });
@@ -44,8 +43,7 @@ angular
             return customer;
         };
 
-        customerService.addCustomer = function(newCustomer) {
-            console.log(newCustomer);
+        customerService.addCustomer = function (newCustomer) {
             var addCustomerResult = $http({
                 method: 'POST',
                 url: 'http://localhost:8080/api/customer/create',
@@ -56,9 +54,8 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response.data.message);
                 return response.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });
@@ -66,8 +63,7 @@ angular
             return addCustomerResult;
         };
 
-        customerService.updateCustomer = function(updatedCustomer) {
-            console.log(updatedCustomer);
+        customerService.updateCustomer = function (updatedCustomer) {
             var updateCustomerResult = $http({
                 method: 'PUT',
                 url: 'http://localhost:8080/api/customer/update',
@@ -76,9 +72,8 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response.data.message);
                 return response.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });
@@ -86,7 +81,7 @@ angular
             return updateCustomerResult;
         };
 
-        customerService.disableCustomer = function(customerId) {
+        customerService.disableCustomer = function (customerId) {
 
             var disableCustomerResult = $http({
                 method: 'DELETE',
@@ -98,9 +93,8 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response);
                 return response.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });
@@ -108,18 +102,17 @@ angular
             return disableCustomerResult;
         };
 
-        customerService.getAllContacts = function(customerId) {
+        customerService.getAllContacts = function (customerId) {
 
             var customerContactsList = $http({
                 method: 'GET',
-                url: 'http://localhost:8080/api/customer/contacts?id='+customerId,
+                url: 'http://localhost:8080/api/customer/contacts?id=' + customerId,
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response.data)
                 return response.data.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });
@@ -127,22 +120,19 @@ angular
             return customerContactsList;
         };
 
-        customerService.getAllAddresses = function(customerId) {
+        customerService.getAllAddresses = function (customerId) {
             tmpAddressList = [];
 
             var customerAddressList = $http({
                 method: 'GET',
-                url: 'http://localhost:8080/api/customer/addresses?id='+customerId,
+                url: 'http://localhost:8080/api/customer/addresses?id=' + customerId,
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response.data);
-
                 getAddressesFromCustomer(response.data);
-                console.log(tmpAddressList);
                 return tmpAddressList
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });
@@ -151,21 +141,16 @@ angular
         };
 
 
-        function getAddressesFromCustomer(addressesFromCustomer){
-            console.log(addressesFromCustomer);
+        function getAddressesFromCustomer(addressesFromCustomer) {
 
             angular.forEach(addressesFromCustomer.data, function (value) {
 
                 var tmpIdAddress = value.id;
                 var tmpAddress = value.address;
-
                 var tmpIdDistrict = parseInt(value.idDistrict);
-
                 var tmpDistrict = null;
                 var tmpProvince = null;
                 var tmpCanton = null;
-
-                console.log(tmpIdDistrict);
 
                 $resource('server/location/distritos.json').query().$promise.then(function (data) {
                     var districtObjList = $filter('filter')(data, {idDistrict: tmpIdDistrict});
@@ -174,16 +159,12 @@ angular
                     do {
                         angular.forEach(districtObjList, function (value) {
                             if (parseInt(value.idDistrict) === tmpIdDistrict) {
-
                                 tmpDistrict = value;
-
                                 districtNotFound = false;
                             }
                         });
 
                     } while (districtNotFound);
-
-                    console.log(tmpDistrict);
 
                     var tmpIdProvince = parseInt(tmpDistrict.idProvince);
 
@@ -196,9 +177,7 @@ angular
                         do {
                             angular.forEach(provinceObjList, function (value) {
                                 if (parseInt(value.idProvince) === tmpIdProvince) {
-
                                     tmpProvince = value;
-
                                     provinceNotFound = false;
                                 }
                             });

@@ -6,7 +6,7 @@ angular
 
         var contactService = {};
 
-        contactService.getAll = function() {
+        contactService.getAll = function () {
 
             var contactList = $http({
                 method: 'GET',
@@ -16,16 +16,15 @@ angular
                 }
             }).then(function (response) {
                 return response.data.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });
 
             return contactList;
-        }
+        };
 
-        contactService.updateContact = function(updatedContact) {
-            console.log(updatedContact);
+        contactService.updateContact = function (updatedContact) {
             var updateContactResult = $http({
                 method: 'PUT',
                 url: 'http://localhost:8080/api/contact/update',
@@ -34,9 +33,8 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response.data.message);
                 return response.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });
@@ -44,7 +42,7 @@ angular
             return updateContactResult;
         }
 
-        contactService.disableContact = function(contactId) {
+        contactService.disableContact = function (contactId) {
 
             var disableContactResutl = $http({
                 method: 'DELETE',
@@ -56,15 +54,14 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response);
                 return response.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });
 
             return disableContactResutl;
-        }
+        };
 
         return contactService;
     });

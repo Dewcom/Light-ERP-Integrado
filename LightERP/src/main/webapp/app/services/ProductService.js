@@ -6,7 +6,7 @@ angular
 
         var productService = {};
 
-        productService.getAll = function() {
+        productService.getAll = function () {
 
             var productList = $http({
                 method: 'GET',
@@ -15,9 +15,8 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response);
                 return response.data.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });
@@ -25,7 +24,7 @@ angular
             return productList;
         };
 
-        productService.get = function(productId) {
+        productService.get = function (productId) {
 
             var product = $http({
                 method: 'GET',
@@ -34,9 +33,8 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response);
                 return response.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });
@@ -44,8 +42,7 @@ angular
             return product;
         };
 
-        productService.addProduct = function(newProduct) {
-            console.log(newProduct);
+        productService.addProduct = function (newProduct) {
             var addProductResult = $http({
                 method: 'POST',
                 url: 'http://localhost:8080/api/product/create',
@@ -56,9 +53,8 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response.data.message);
                 return response.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });
@@ -66,8 +62,7 @@ angular
             return addProductResult;
         };
 
-        productService.updateProduct= function(updatedProduct) {
-            console.log(updatedProduct);
+        productService.updateProduct = function (updatedProduct) {
             var updateProductResult = $http({
                 method: 'PUT',
                 url: 'http://localhost:8080/api/product/update',
@@ -76,9 +71,8 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response.data.message);
                 return response.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });
@@ -86,7 +80,7 @@ angular
             return updateProductResult;
         };
 
-        productService.disableProduct= function(productId) {
+        productService.disableProduct = function (productId) {
 
             var disableProductResult = $http({
                 method: 'DELETE',
@@ -98,9 +92,8 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response);
                 return response.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });

@@ -17,12 +17,10 @@ angular
         };
 
         billService.removeProduct = function (index) {
-
-            console.log(index);
             addedProductList.splice(index, 1);
         };
 
-        billService.getAll = function() {
+        billService.getAll = function () {
 
             var billList = $http({
                 method: 'GET',
@@ -31,9 +29,8 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response);
                 return response.data.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });
@@ -41,7 +38,7 @@ angular
             return billList;
         };
 
-        billService.get = function(billId) {
+        billService.get = function (billId) {
 
             var bill = $http({
                 method: 'GET',
@@ -50,9 +47,8 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response);
                 return response.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });
@@ -60,8 +56,7 @@ angular
             return bill;
         };
 
-        billService.addBill = function(newBill) {
-            console.log(newBill);
+        billService.addBill = function (newBill) {
             var addBillResult = $http({
                 method: 'POST',
                 url: 'http://localhost:8080/api/bill/create',
@@ -72,9 +67,8 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response.data.message);
                 return response.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });
@@ -82,8 +76,7 @@ angular
             return addBillResult;
         };
 
-        billService.updateBill = function(updateBill) {
-            console.log(updateBill);
+        billService.updateBill = function (updateBill) {
             var updateBillResult = $http({
                 method: 'PUT',
                 url: 'http://localhost:8080/api/bill/update',
@@ -92,9 +85,8 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response.data.message);
                 return response.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });
@@ -102,10 +94,10 @@ angular
             return updateBillResult;
         };
 
-        billService.disableBill= function(billId) {
+        billService.disableBill = function (billId) {
 
 
-            var disablebillResult = $http({
+            var disableBillResult = $http({
                 method: 'DELETE',
                 url: 'http://localhost:8080/api/bill/delete',
                 data: {
@@ -115,17 +107,38 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response);
                 return response.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });
 
-            return disablebillResult;
+            return disableBillResult;
         };
 
-        billService.getAllPaymentTypes = function() {
+        billService.voidBill = function (billId) {
+
+
+            var voidBillResult = $http({
+                method: 'DELETE',
+                url: 'http://localhost:8080/api/bill/delete',
+                data: {
+                    id: billId
+                },
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            }).then(function (response) {
+                return response.data;
+            }, function (error) {
+                console.log(error);
+                return error.status;
+            });
+
+            return voidBillResult;
+        };
+
+        billService.getAllPaymentTypes = function () {
 
             var paymentTypeList = $http({
                 method: 'GET',
@@ -134,9 +147,8 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response);
                 return response.data.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });
@@ -144,7 +156,7 @@ angular
             return paymentTypeList;
         };
 
-        billService.getAllCurrency = function() {
+        billService.getAllCurrency = function () {
 
             var currencyList = $http({
                 method: 'GET',
@@ -153,9 +165,8 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response);
                 return response.data.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });
@@ -163,7 +174,7 @@ angular
             return currencyList;
         };
 
-        billService.getAllCreditCondition = function() {
+        billService.getAllCreditCondition = function () {
 
             var creditConditionList = $http({
                 method: 'GET',
@@ -172,9 +183,8 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response);
                 return response.data.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });
@@ -182,7 +192,7 @@ angular
             return creditConditionList;
         };
 
-        billService.getAllExchangeRates = function() {
+        billService.getAllExchangeRates = function () {
 
             var exchangeRateList = $http({
                 method: 'GET',
@@ -191,9 +201,8 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response);
                 return response.data.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });

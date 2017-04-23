@@ -74,6 +74,7 @@
             // Ajax
 
             customerService.getAll().then(function (response) {
+                console.log(response);
                 vm.customerList = response;
             });
 

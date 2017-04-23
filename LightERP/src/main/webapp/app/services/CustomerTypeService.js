@@ -6,7 +6,7 @@ angular
 
         var customerTypeService = {};
 
-        customerTypeService.getAll = function() {
+        customerTypeService.getAll = function () {
 
             var customerTypeList = $http({
                 method: 'GET',
@@ -16,7 +16,7 @@ angular
                 }
             }).then(function (response) {
                 return response.data.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });
@@ -24,7 +24,7 @@ angular
             return customerTypeList;
         }
 
-        customerTypeService.disableCustomerType = function(customerTypeId) {
+        customerTypeService.disableCustomerType = function (customerTypeId) {
 
             var disableCustomerTypeResult = $http({
                 method: 'DELETE',
@@ -36,9 +36,8 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response.data.message);
                 return response.data.message;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });

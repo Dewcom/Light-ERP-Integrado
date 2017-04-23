@@ -6,7 +6,7 @@ angular
 
         var userService = {};
 
-        userService.getAll = function() {
+        userService.getAll = function () {
 
             var userList = $http({
                 method: 'GET',
@@ -15,9 +15,8 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response);
                 return response.data.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });
@@ -25,7 +24,7 @@ angular
             return userList;
         };
 
-        userService.get = function(userId) {
+        userService.get = function (userId) {
 
             var user = $http({
                 method: 'GET',
@@ -34,9 +33,8 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response);
                 return response.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });
@@ -44,8 +42,7 @@ angular
             return user;
         };
 
-        userService.addUser = function(newUser) {
-            console.log(newUser);
+        userService.addUser = function (newUser) {
             var addUserResult = $http({
                 method: 'POST',
                 url: 'http://localhost:8080/api/user/create',
@@ -56,9 +53,8 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response.data.message);
                 return response.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });
@@ -66,8 +62,7 @@ angular
             return addUserResult;
         };
 
-        userService.updateUser= function(updatedUser) {
-            console.log(updatedUser);
+        userService.updateUser = function (updatedUser) {
             var updateUserResult = $http({
                 method: 'PUT',
                 url: 'http://localhost:8080/api/user/update',
@@ -76,9 +71,8 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response.data.message);
                 return response.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });
@@ -86,7 +80,7 @@ angular
             return updateUserResult;
         };
 
-        userService.disableUser= function(userId) {
+        userService.disableUser = function (userId) {
 
             var disableUserResult = $http({
                 method: 'DELETE',
@@ -98,9 +92,8 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                console.log(response);
                 return response.data;
-            },function (error) {
+            }, function (error) {
                 console.log(error);
                 return error.status;
             });

@@ -1,39 +1,39 @@
 'use strict';
 
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('app.user')
         .controller('UserController', UserController);
 
-    UserController.$inject = ['$uibModal','$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder','userService'
-        ,'toaster', '$state', '$filter', '$timeout', 'ngDialog', '$scope'];
+    UserController.$inject = ['$uibModal', '$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder', 'userService'
+        , 'toaster', '$state', '$filter', '$timeout', 'ngDialog', '$scope'];
     function UserController($uibModal, $resource, DTOptionsBuilder, DTColumnDefBuilder, userService,
                             toaster, $state, $filter, $timeout, ngDialog, $scope) {
         var vm = this;
 
         var language = {
-            "sProcessing":     "Procesando...",
-            "sLengthMenu":     "Mostrar _MENU_ registros",
-            "sZeroRecords":    "No se encontraron resultados",
-            "sEmptyTable":     "Ningún dato disponible en esta tabla",
-            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
-            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-            "sInfoPostFix":    "",
-            "sSearch":         "Buscar:",
-            "sUrl":            "",
-            "sInfoThousands":  ",",
+            "sProcessing": "Procesando...",
+            "sLengthMenu": "Mostrar _MENU_ registros",
+            "sZeroRecords": "No se encontraron resultados",
+            "sEmptyTable": "Ningún dato disponible en esta tabla",
+            "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix": "",
+            "sSearch": "Buscar:",
+            "sUrl": "",
+            "sInfoThousands": ",",
             "sLoadingRecords": "Cargando...",
             "oPaginate": {
-                "sFirst":    "Primero",
-                "sLast":     "Último",
-                "sNext":     "Siguiente",
+                "sFirst": "Primero",
+                "sLast": "Último",
+                "sNext": "Siguiente",
                 "sPrevious": "Anterior"
             },
             "oAria": {
-                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
                 "sSortDescending": ": Activar para ordenar la columna de manera descendente"
             }
         };
@@ -48,7 +48,7 @@
              * Usuarios
              =========================================================*/
 
-            userService.getAll().then(function(response) {
+            userService.getAll().then(function (response) {
                 console.log(response);
                 vm.userList = response;
             });
@@ -59,7 +59,7 @@
 
             vm.dtOptions = DTOptionsBuilder.newOptions()
                 .withPaginationType('full_numbers')
-                .withLanguage(language)
+                .withLanguage(language);
             vm.dtColumnDefs = [
                 DTColumnDefBuilder.newColumnDef(0),
                 DTColumnDefBuilder.newColumnDef(1),
@@ -80,26 +80,25 @@
                     closeByEscape: false
                 }).then(function (value) {
                     userService.disableUser(userId).then(function (response) {
-                        var toasterdata;
                         console.log(response);
+                        var toasterdata;
 
-                        if(response.code == "0"){
+                        if (response.code == "0") {
                             toasterdata = {
                                 type: 'success',
                                 title: 'Eliminar usuario',
                                 text: response.message
                             };
-                        }else{
+                        } else {
                             toasterdata = {
                                 type: 'warning',
                                 title: 'Usuario',
                                 text: response.message
                             };
-
                         }
                         pop(toasterdata);
                         init();
-                    },function (error) {
+                    }, function (error) {
                         console.log(error);
                     });
                 }, function (reason) {
@@ -158,22 +157,22 @@
              * Validación de campos y patrones
              =========================================================*/
             vm.submitted = false;
-            vm.validateInput = function(action , name, type) {
-                if(action == 'add'){
+            vm.validateInput = function (action, name, type) {
+                if (action == 'add') {
                     var input = vm.userForm[name];
                     return (input.$dirty || vm.submitted) && input.$error[type];
 
-                }else if(action == 'modify'){
+                } else if (action == 'modify') {
                     var input = vm.modifyUserForm[name];
                     return (input.$dirty || vm.submitted) && input.$error[type];
                 }
             };
 
             // Submit form
-            vm.submitForm = function(action) {
+            vm.submitForm = function (action) {
                 vm.submitted = true;
 
-                if(action == 'add'){
+                if (action == 'add') {
                     if (vm.userForm.$valid) {
                         addUser();
                     } else {
@@ -181,7 +180,7 @@
                         return false;
                     }
 
-                }else if(action == 'modify'){
+                } else if (action == 'modify') {
                     if (vm.modifyUserForm.$valid) {
                         updateUser();
                     } else {
@@ -198,30 +197,31 @@
 
             function addUser() {
 
-                var newUser ={
-                    "username":$scope.addUserForm.username,
-                    "password":$scope.addUserForm.password,
-                    "userCode":$scope.addUserForm.userCode,
-                    "name":$scope.addUserForm.name ,
-                    "firstLastName":$scope.addUserForm.firstLastName,
-                    "secondLastName":$scope.addUserForm.secondLastName,
-                    "phoneNumber":$scope.addUserForm.phoneNumber,
-                    "extension":$scope.addUserForm.extension,
-                    "mobile":$scope.addUserForm.mobile,
-                    "email":$scope.addUserForm.email,
-                    "commissionPercentage":parseFloat($scope.addUserForm.commissionPercentage)
+                var newUser = {
+                    "username": $scope.addUserForm.username,
+                    "password": $scope.addUserForm.password,
+                    "userCode": $scope.addUserForm.userCode,
+                    "name": $scope.addUserForm.name,
+                    "firstLastName": $scope.addUserForm.firstLastName,
+                    "secondLastName": $scope.addUserForm.secondLastName,
+                    "phoneNumber": $scope.addUserForm.phoneNumber,
+                    "extension": $scope.addUserForm.extension,
+                    "mobile": $scope.addUserForm.mobile,
+                    "email": $scope.addUserForm.email,
+                    "commissionPercentage": parseFloat($scope.addUserForm.commissionPercentage)
                 };
                 console.log(newUser);
                 userService.addUser(newUser).then(function (response) {
+                    console.log(response);
                     var toasterdata;
 
-                    if(response.code == "0"){
+                    if (response.code == "0") {
                         toasterdata = {
                             type: 'success',
                             title: 'Agregar usuario',
                             text: response.message
                         };
-                    }else{
+                    } else {
                         toasterdata = {
                             type: 'warning',
                             title: 'Usuario',
@@ -230,8 +230,10 @@
 
                     }
                     pop(toasterdata);
-                    $timeout(function(){ callAtTimeout(); }, 3000);
-                },function (error) {
+                    $timeout(function () {
+                        callAtTimeout();
+                    }, 3000);
+                }, function (error) {
                     console.log(error);
                 });
 
@@ -244,31 +246,32 @@
 
             function updateUser() {
 
-                var updatedUser={
-                    "id":$scope.currentUser.id,
-                    "username":$scope.currentUser.username,
-                    "password":$scope.currentUser.password,
-                    "userCode":$scope.currentUser.userCode,
-                    "name":$scope.currentUser.name ,
-                    "firstLastName":$scope.currentUser.firstLastName,
-                    "secondLastName":$scope.currentUser.secondLastName,
-                    "phoneNumber":$scope.currentUser.phoneNumber,
-                    "extension":$scope.currentUser.extension,
-                    "mobile":$scope.currentUser.mobile,
-                    "email":$scope.currentUser.email,
-                    "commissionPercentage":$scope.currentUser.commissionPercentage
+                var updatedUser = {
+                    "id": $scope.currentUser.id,
+                    "username": $scope.currentUser.username,
+                    "password": $scope.currentUser.password,
+                    "userCode": $scope.currentUser.userCode,
+                    "name": $scope.currentUser.name,
+                    "firstLastName": $scope.currentUser.firstLastName,
+                    "secondLastName": $scope.currentUser.secondLastName,
+                    "phoneNumber": $scope.currentUser.phoneNumber,
+                    "extension": $scope.currentUser.extension,
+                    "mobile": $scope.currentUser.mobile,
+                    "email": $scope.currentUser.email,
+                    "commissionPercentage": $scope.currentUser.commissionPercentage
                 };
                 console.log(updatedUser);
                 userService.updateUser(updatedUser).then(function (response) {
+                    console.log(response);
                     var toasterdata;
 
-                    if(response.code == "0"){
+                    if (response.code == "0") {
                         toasterdata = {
                             type: 'success',
                             title: 'Modificar usuario',
                             text: response.message
                         };
-                    }else{
+                    } else {
                         toasterdata = {
                             type: 'warning',
                             title: 'Usuario',
@@ -277,8 +280,10 @@
 
                     }
                     pop(toasterdata);
-                    $timeout(function(){ callAtTimeout(); }, 3000);
-                },function (error) {
+                    $timeout(function () {
+                        callAtTimeout();
+                    }, 3000);
+                }, function (error) {
                     console.log(error);
                 });
 
@@ -319,15 +324,15 @@
         }
 
 
-        function pop(toasterdata){
+        function pop(toasterdata) {
             toaster.pop({
                 type: toasterdata.type,
-                title : toasterdata.title,
+                title: toasterdata.title,
                 body: toasterdata.text
             });
         }
 
-        function callAtTimeout(){
+        function callAtTimeout() {
             $state.reload();
         }
     }

@@ -22,27 +22,27 @@ function LoginController($http, $state, authenticationService) {
         // place the message if something goes wrong
         vm.authMsg = '';
 
-          vm.login = function() {
-            if(vm.loginForm.$valid) {
+        vm.login = function () {
+            if (vm.loginForm.$valid) {
 
-              authenticationService.login(vm.account.email, vm.account.password)
-                .then(function(response) {
-                  console.log(response);
-                  $state.go('app.dashboard')  
-                },
-                function(response) {
-                    console.log(response);
+                authenticationService.login(vm.account.email, vm.account.password)
+                    .then(function (response) {
+                            console.log(response.data);
+                            $state.go('app.dashboard')
+                        },
+                        function (response) {
+                            console.log(response);
 
-                    if(response.status == 401){
+                            if (response.status == 401) {
 
-                     vm.authMsg = 'Usuario o clave incorrectos';
-                    }
-                    else{
+                                vm.authMsg = 'Credenciales incorrectas';
+                            }
+                            else {
 
-                     vm.authMsg = 'Ha ocurrido un problema al autenticarse';
-                    }
-                  
-                });
+                                vm.authMsg = 'Ha ocurrido un problema al autenticarse';
+                            }
+
+                        });
             }
             else {
                 // set as dirty if the user click directly to login so we show the validation messages
@@ -50,12 +50,12 @@ function LoginController($http, $state, authenticationService) {
                 vm.loginForm.account_email.$dirty = true;
                 vm.loginForm.account_password.$dirty = true;
             }
-          };
+        };
 
-           vm.logout = function() {
-              authenticationService.logout();
-              $state.go("page.login");
-          };
-        }
+        vm.logout = function () {
+            authenticationService.logout();
+            $state.go("page.login");
+        };
     }
+}
 

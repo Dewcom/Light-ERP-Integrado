@@ -23,7 +23,7 @@ angular
             return promise;
         }
 
-         function logout() {
+        function logout() {
             $window.sessionStorage.removeItem('userInfo');
         }
 

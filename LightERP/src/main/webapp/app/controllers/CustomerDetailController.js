@@ -99,7 +99,6 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
          =========================================================*/
 
         customerService.getAllContacts($stateParams.customerId).then(function (response) {
-            console.log('SE TRAE LOS CONTACTOS***************************');
             console.log(response);
             vm.customerContacts = response;
         });

@@ -1,40 +1,40 @@
 'use strict';
 
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('app.product')
         .controller('ProductController', ProductController);
 
-    ProductController.$inject = ['$uibModal','$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder',
-        'productService', 'productTypeService', 'presentationTypeService','toaster', '$state',
+    ProductController.$inject = ['$uibModal', '$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder',
+        'productService', 'productTypeService', 'presentationTypeService', 'toaster', '$state',
         '$filter', '$timeout', 'ngDialog', '$scope'];
     function ProductController($uibModal, $resource, DTOptionsBuilder, DTColumnDefBuilder, productService,
                                productTypeService, presentationTypeService, toaster, $state, $filter, $timeout, ngDialog, $scope) {
         var vm = this;
 
         var language = {
-            "sProcessing":     "Procesando...",
-            "sLengthMenu":     "Mostrar _MENU_ registros",
-            "sZeroRecords":    "No se encontraron resultados",
-            "sEmptyTable":     "Ningún dato disponible en esta tabla",
-            "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-            "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
-            "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-            "sInfoPostFix":    "",
-            "sSearch":         "Buscar:",
-            "sUrl":            "",
-            "sInfoThousands":  ",",
+            "sProcessing": "Procesando...",
+            "sLengthMenu": "Mostrar _MENU_ registros",
+            "sZeroRecords": "No se encontraron resultados",
+            "sEmptyTable": "Ningún dato disponible en esta tabla",
+            "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+            "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+            "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+            "sInfoPostFix": "",
+            "sSearch": "Buscar:",
+            "sUrl": "",
+            "sInfoThousands": ",",
             "sLoadingRecords": "Cargando...",
             "oPaginate": {
-                "sFirst":    "Primero",
-                "sLast":     "Último",
-                "sNext":     "Siguiente",
+                "sFirst": "Primero",
+                "sLast": "Último",
+                "sNext": "Siguiente",
                 "sPrevious": "Anterior"
             },
             "oAria": {
-                "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
                 "sSortDescending": ": Activar para ordenar la columna de manera descendente"
             }
         };
@@ -49,7 +49,7 @@
              * Tipos de producto
              =========================================================*/
 
-            productTypeService.getAll().then(function(response) {
+            productTypeService.getAll().then(function (response) {
                 vm.productTypeList = response;
             });
 
@@ -57,7 +57,7 @@
              * Tipos de presentación
              =========================================================*/
 
-            presentationTypeService.getAll().then(function(response) {
+            presentationTypeService.getAll().then(function (response) {
                 vm.presentationTypeList = response;
             });
 
@@ -65,7 +65,7 @@
              * Productos
              =========================================================*/
 
-            productService.getAll().then(function(response) {
+            productService.getAll().then(function (response) {
                 vm.productList = response;
             });
 
@@ -96,16 +96,16 @@
                     closeByEscape: false
                 }).then(function (value) {
                     productService.disableProduct(productId).then(function (response) {
-                        var toasterdata;
                         console.log(response);
+                        var toasterdata;
 
-                        if(response.code == "0"){
+                        if (response.code == "0") {
                             toasterdata = {
                                 type: 'success',
                                 title: 'Eliminar producto',
                                 text: response.message
                             };
-                        }else{
+                        } else {
                             toasterdata = {
                                 type: 'warning',
                                 title: 'Producto',
@@ -115,7 +115,7 @@
                         }
                         pop(toasterdata);
                         init();
-                    },function (error) {
+                    }, function (error) {
                         console.log(error);
                     });
                 }, function (reason) {
@@ -173,22 +173,22 @@
              * Validación de campos y patrones
              =========================================================*/
             vm.submitted = false;
-            vm.validateInput = function(action , name, type) {
-                if(action == 'add'){
+            vm.validateInput = function (action, name, type) {
+                if (action == 'add') {
                     var input = vm.productForm[name];
                     return (input.$dirty || vm.submitted) && input.$error[type];
 
-                }else if(action == 'modify'){
+                } else if (action == 'modify') {
                     var input = vm.modifyProductForm[name];
                     return (input.$dirty || vm.submitted) && input.$error[type];
                 }
             };
 
             // Submit form
-            vm.submitForm = function(action) {
+            vm.submitForm = function (action) {
                 vm.submitted = true;
 
-                if(action == 'add'){
+                if (action == 'add') {
                     if (vm.productForm.$valid) {
                         addProduct();
                     } else {
@@ -196,7 +196,7 @@
                         return false;
                     }
 
-                }else if(action == 'modify'){
+                } else if (action == 'modify') {
                     if (vm.modifyProductForm.$valid) {
                         updateProduct();
                     } else {
@@ -213,33 +213,34 @@
 
             function addProduct() {
 
-                var newProduct ={
-                    "productCode":$scope.addProductForm.productCode,
-                    "name":$scope.addProductForm.productName ,
-                    "commercialName":$scope.addProductForm.productCommercialName,
-                    "productType":$scope.addProductForm.productType,
-                    "presentationType":$scope.addProductForm.presentationType,
+                var newProduct = {
+                    "productCode": $scope.addProductForm.productCode,
+                    "name": $scope.addProductForm.productName,
+                    "commercialName": $scope.addProductForm.productCommercialName,
+                    "productType": $scope.addProductForm.productType,
+                    "presentationType": $scope.addProductForm.presentationType,
                     "bulkQuantity": parseFloat($scope.addProductForm.bulkQuantity),
-                    "priceInDollars":parseFloat($scope.addProductForm.priceInDollars),
-                    "priceInColones":parseFloat($scope.addProductForm.priceInColones),
-                    "costInDollars":parseFloat($scope.addProductForm.costInDollars),
-                    "costInColones":parseFloat($scope.addProductForm.costInColones),
-                    "suggestedCost":parseFloat($scope.addProductForm.suggestedCost),
-                    "tariffHeading":$scope.addProductForm.tariffHeading,
-                    "registrationDate":$scope.addProductForm.registrationDate,
-                    "utilityPercentage":parseInt($scope.addProductForm.utilityPercentage)
+                    "priceInDollars": parseFloat($scope.addProductForm.priceInDollars),
+                    "priceInColones": parseFloat($scope.addProductForm.priceInColones),
+                    "costInDollars": parseFloat($scope.addProductForm.costInDollars),
+                    "costInColones": parseFloat($scope.addProductForm.costInColones),
+                    "suggestedCost": parseFloat($scope.addProductForm.suggestedCost),
+                    "tariffHeading": $scope.addProductForm.tariffHeading,
+                    "registrationDate": $scope.addProductForm.registrationDate,
+                    "utilityPercentage": parseInt($scope.addProductForm.utilityPercentage)
                 };
                 console.log(newProduct);
                 productService.addProduct(newProduct).then(function (response) {
+                    console.log(response);
                     var toasterdata;
 
-                    if(response.code == "0"){
+                    if (response.code == "0") {
                         toasterdata = {
                             type: 'success',
                             title: 'Agregar producto',
                             text: response.message
                         };
-                    }else{
+                    } else {
                         toasterdata = {
                             type: 'warning',
                             title: 'Producto',
@@ -248,8 +249,10 @@
 
                     }
                     pop(toasterdata);
-                    $timeout(function(){ callAtTimeout(); }, 3000);
-                },function (error) {
+                    $timeout(function () {
+                        callAtTimeout();
+                    }, 3000);
+                }, function (error) {
                     console.log(error);
                 });
 
@@ -262,33 +265,34 @@
 
             function updateProduct() {
 
-                var updatedProduct ={
-                    "id":$scope.currentProduct.id,
-                    "productCode":$scope.currentProduct.productCode,
-                    "name":$scope.currentProduct.name ,
-                    "commercialName":$scope.currentProduct.commercialName,
-                    "productType":$scope.currentProduct.productType.id,
-                    "presentationType":$scope.currentProduct.presentationType.id,
+                var updatedProduct = {
+                    "id": $scope.currentProduct.id,
+                    "productCode": $scope.currentProduct.productCode,
+                    "name": $scope.currentProduct.name,
+                    "commercialName": $scope.currentProduct.commercialName,
+                    "productType": $scope.currentProduct.productType.id,
+                    "presentationType": $scope.currentProduct.presentationType.id,
                     "bulkQuantity": parseFloat($scope.currentProduct.bulkQuantity),
-                    "priceInDollars":parseFloat($scope.currentProduct.priceInDollars),
-                    "priceInColones":parseFloat($scope.currentProduct.priceInColones),
-                    "costInDollars":parseFloat($scope.currentProduct.costInDollars),
-                    "costInColones":parseFloat($scope.currentProduct.costInColones),
-                    "suggestedCost":parseFloat($scope.currentProduct.suggestedCost),
-                    "tariffHeading":$scope.currentProduct.tariffHeading,
-                    "utilityPercentage":parseInt($scope.currentProduct.utilityPercentage)
+                    "priceInDollars": parseFloat($scope.currentProduct.priceInDollars),
+                    "priceInColones": parseFloat($scope.currentProduct.priceInColones),
+                    "costInDollars": parseFloat($scope.currentProduct.costInDollars),
+                    "costInColones": parseFloat($scope.currentProduct.costInColones),
+                    "suggestedCost": parseFloat($scope.currentProduct.suggestedCost),
+                    "tariffHeading": $scope.currentProduct.tariffHeading,
+                    "utilityPercentage": parseInt($scope.currentProduct.utilityPercentage)
                 };
                 console.log(updatedProduct);
                 productService.updateProduct(updatedProduct).then(function (response) {
+                    console.log(response);
                     var toasterdata;
 
-                    if(response.code == "0"){
+                    if (response.code == "0") {
                         toasterdata = {
                             type: 'success',
                             title: 'Modificar producto',
                             text: response.message
                         };
-                    }else{
+                    } else {
                         toasterdata = {
                             type: 'warning',
                             title: 'Producto',
@@ -297,8 +301,10 @@
 
                     }
                     pop(toasterdata);
-                    $timeout(function(){ callAtTimeout(); }, 3000);
-                },function (error) {
+                    $timeout(function () {
+                        callAtTimeout();
+                    }, 3000);
+                }, function (error) {
                     console.log(error);
                 });
 
@@ -339,15 +345,15 @@
         }
 
 
-        function pop(toasterdata){
+        function pop(toasterdata) {
             toaster.pop({
                 type: toasterdata.type,
-                title : toasterdata.title,
+                title: toasterdata.title,
                 body: toasterdata.text
             });
         }
 
-        function callAtTimeout(){
+        function callAtTimeout() {
             $state.reload();
         }
     }

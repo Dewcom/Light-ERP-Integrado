@@ -51,8 +51,8 @@
             // Ajax
 
             contactService.getAll().then(function(response) {
-                vm.contactList = response;
                 console.log(response);
+                vm.contactList = response;
             });
 
             vm.dtOptions = DTOptionsBuilder.newOptions()

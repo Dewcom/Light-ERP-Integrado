@@ -8,7 +8,7 @@
         .controller('BillController', BillController);
 
     BillController.$inject = ['DTOptionsBuilder', 'DTColumnDefBuilder', 'billService', 'customerService', 'productService', '$scope',
-        '$uibModal', 'productTypeService', 'presentationTypeService', '$state', 'toaster', '$timeout' , '$filter', 'ngDialog'];
+        '$uibModal', 'productTypeService', 'presentationTypeService', '$state', 'toaster', '$timeout', '$filter', 'ngDialog'];
     function BillController(DTOptionsBuilder, DTColumnDefBuilder, billService, customerService, productService, $scope, $uibModal,
                             productTypeService, presentationTypeService, $state, toaster, $timeout, $filter, ngDialog) {
         var vm = this;
@@ -18,7 +18,7 @@
         ////////////////
 
         function activate() {
-            vm.today = function() {
+            vm.today = function () {
                 vm.dt = new Date();
             };
             vm.today();
@@ -28,16 +28,16 @@
             };
 
             // Disable weekend selection
-            vm.disabled = function(date, mode) {
+            vm.disabled = function (date, mode) {
                 return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
             };
 
-            vm.toggleMin = function() {
+            vm.toggleMin = function () {
                 vm.minDate = vm.minDate ? null : new Date();
             };
             vm.toggleMin();
 
-            vm.open = function($event) {
+            vm.open = function ($event) {
                 $event.preventDefault();
                 $event.stopPropagation();
 
@@ -110,7 +110,7 @@
              =========================================================*/
 
             productService.getAll().then(function (response) {
-                var sortedProducts =  $filter('orderBy')(response, 'productCode');
+                var sortedProducts = $filter('orderBy')(response, 'productCode');
                 vm.productList = sortedProducts;
             });
 
@@ -216,7 +216,7 @@
 
         vm.changeExchangeRate = function (currencyId) {
 
-            var rate = $filter("filter")(vm.exchangeRateList, {currency : {id: currencyId}});
+            var rate = $filter("filter")(vm.exchangeRateList, {currency: {id: currencyId}});
 
             vm.exchangeRate = rate[0].value;
 
@@ -311,7 +311,7 @@
         };
 
         // Submit form
-        vm.submitForm = function (action, registationType) {
+        vm.submitForm = function (action, registrationType) {
 
             var vm = this;
 
@@ -319,7 +319,22 @@
 
             if (action == 'add') {
                 if (vm.newBillForm.$valid) {
-                    vm.addBill(registationType);
+                    if (registrationType == 'validated') {
+
+                        ngDialog.openConfirm({
+                            template: 'validateBillModal',
+                            className: 'ngdialog-theme-default',
+                            closeByDocument: false,
+                            closeByEscape: false
+                        }).then(function (value) {
+                            vm.addBill(registrationType);
+                        }, function (reason) {
+                            console.log('Modal promise rejected. Reason: ', reason);
+                        });
+
+                    } else if (registrationType == 'saved') {
+                        vm.addBill(registrationType);
+                    }
                 } else {
                     console.log('Not valid!!');
                     return false;
@@ -344,9 +359,9 @@
 
             var userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
             var registrationType;
-            if(regType == 'created'){
+            if (regType == 'saved') {
                 registrationType = 0;
-            }else if(regType = 'validated'){
+            } else if (regType = 'validated') {
                 registrationType = 1;
             }
 
@@ -357,8 +372,8 @@
                 "billPaymentTypeId": vm.paymentType,
                 "creditConditionId": vm.creditCondition,
                 "currencyId": vm.currency,
-                "registrationType" : registrationType,
-                "billDate" : $filter('date')(vm.creationDate, "dd-MM-yyyy"),
+                "registrationType": registrationType,
+                "billDate": $filter('date')(vm.creationDate, "dd-MM-yyyy"),
                 "billDetails": formatBillDetails(vm.addedProductList)
 
             };
@@ -373,7 +388,7 @@
                 if (response.code == "0") {
                     toasterdata = {
                         type: 'success',
-                        title: 'Factura guardada',
+                        title: 'Factura creada',
                         text: response.message
                     };
                 } else {
@@ -645,7 +660,7 @@
      * We want to perform a OR.
      */
 
-    (function() {
+    (function () {
         'use strict';
 
         angular
@@ -660,7 +675,7 @@
                 var out = [];
 
                 if (angular.isArray(items)) {
-                    items.forEach(function(item) {
+                    items.forEach(function (item) {
                         var itemMatches = false;
 
                         var keys = Object.keys(props);
