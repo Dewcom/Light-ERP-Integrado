@@ -2,6 +2,7 @@ package com.dewcom.light
 
 import com.dewcom.light.rest.BillDetailRest
 import com.dewcom.light.rest.BillRest
+import com.dewcom.light.rest.UpdateBillRequestREST
 import grails.transaction.Transactional
 
 @Transactional
@@ -130,23 +131,93 @@ class BillService {
         }
     }
 
-    /*def updateBill(UpdateContactRequestREST argRestContact) {
+    def updateBill(UpdateBillRequestREST argUpdateBillRequest) {
         try {
-            Contact tmpContactToUpdate = Contact.findByIdAndEnabled(argRestContact.id, Constants.ESTADO_ACTIVO)
-            if (tmpContactToUpdate) {
-                tmpContactToUpdate.name = argRestContact.name;
-                tmpContactToUpdate.firstLastName = argRestContact.firstLastName;
-                tmpContactToUpdate.secondLastName = argRestContact.secondLastName;
-                tmpContactToUpdate.jobTitle = argRestContact.jobTitle;
-                tmpContactToUpdate.department = argRestContact.department;
-                tmpContactToUpdate.phoneNumber1 = argRestContact.phoneNumber1;
-                tmpContactToUpdate.phoneNumber2 = argRestContact.phoneNumber2;
-                tmpContactToUpdate.mobile = argRestContact.mobile;
-                tmpContactToUpdate.email =  argRestContact.email;
+            Bill tmpBillToUpdate = Bill.findByIdAndEnabled(argUpdateBillRequest.billId, Constants.ESTADO_ACTIVO)
+            if (tmpBillToUpdate) {
 
-                tmpContactToUpdate.save(flush: true);
+                tmpBillToUpdate.currency = argUpdateBillRequest.currencyId != null ?  Currency.get(argUpdateBillRequest.currencyId) : tmpBillToUpdate.currency
+                tmpBillToUpdate.exchangeRate = argUpdateBillRequest.exchangeRate != null ?  argUpdateBillRequest.exchangeRate : tmpBillToUpdate.exchangeRate
+                tmpBillToUpdate.billDate = argUpdateBillRequest.billDate != null ?  LightUtils.stringToDate(argUpdateBillRequest.billDate,"dd-MM-yyyy") : tmpBillToUpdate.billDate
+                tmpBillToUpdate.customer = argUpdateBillRequest.customerId != null ?  Customer.get(argUpdateBillRequest.customerId) : tmpBillToUpdate.customer
+
+                if(argUpdateBillRequest.billPaymentTypeId != null){
+                    def tmpBillPaymentType = BillPaymentType.get(argUpdateBillRequest.billPaymentTypeId)
+                    tmpBillToUpdate.billPaymentType = tmpBillPaymentType
+                    if(tmpBillPaymentType.code == Constants.PAGO_CONTADO){
+                        tmpBillToUpdate.dueDate = new Date()
+                        tmpBillToUpdate.creditCondition = null
+                    }
+                }
+
+                if(argUpdateBillRequest.creditConditionId != null){
+                    def tmpCreditCondition = CreditCondition.get(argUpdateBillRequest.creditConditionId)
+                    tmpBillToUpdate.creditCondition = tmpCreditCondition
+                    if(tmpBillToUpdate.billDate != null){
+                        tmpBillToUpdate.dueDate = LightUtils.plusDaysToDate(tmpBillToUpdate, tmpCreditCondition.days)
+                    }
+                }
+
+                if(argUpdateBillRequest.billStateId != null){
+                    def tmpState = BillStateType.get(argUpdateBillRequest.billStateId)
+                    tmpBillToUpdate.billState = tmpState
+                    if(tmpState.code == Constants.FACTURA_VALIDADA){
+                        if(tmpBillToUpdate.billNumber == null){
+                          def  configConsecFactura = Configuration.findByCode(Constants.CONFIG_CONSECUTIVO_FACTURA)
+                            if (!configConsecFactura) {
+                                Configuration tmpConfig = new Configuration(value: generateBillNumber().toString(), description: "consecutivo factura", code: Constants.CONFIG_CONSECUTIVO_FACTURA)
+                                configConsecFactura = adminService.createConfiguration(tmpConfig)
+                            }
+                            tmpBillToUpdate.billNumber = configConsecFactura.value as Long
+                        }
+
+                    }
+                }
+                if(argUpdateBillRequest.billDetails != null) {
+                    //Se desactivan las detalles de factura que fueron eliminadas en el FE
+
+
+                    if (argUpdateBillRequest.billDetails.size() == 0) {
+                        //si la lista viene vacia, se eliminan todas los detalles factura
+                        tmpBillToUpdate.billDetails.each{
+                            it.enabled = Constants.ESTADO_INACTIVO;
+                        }
+                    }
+                    else{
+
+                    tmpBillToUpdate.billDetails.each { tmpPersistedBillDetail ->
+
+                        tmpPersistedBillDetail.enabled = Constants.ESTADO_INACTIVO;
+                        argUpdateBillRequest.billDetails.each { restBilLDetail ->
+                            if (tmpPersistedBillDetail.id == restBilLDetail.id) {
+                                tmpPersistedBillDetail.enabled = Constants.ESTADO_ACTIVO;
+                                /*
+                                si viene un detalle factura que ya existe, se pone activo
+                                para quitarlo de los candidatos a eliminar y a la misma vez se
+                                edita indempotentemente
+                                 */
+                                setBillDetailFromRESTObject(tmpPersistedBillDetail, restBilLDetail)
+                            }
+                        }
+                    }
+                    //Se agregan los detalles factura nuevos
+                    def tmpNewBillDetailsToAdd = new ArrayList<BillDetailRest>()
+                    argUpdateBillRequest.billDetails.each {
+                        if (it.id == null) {
+                            tmpNewBillDetailsToAdd.add(it)
+                        }
+                    }
+                    processRestBillDetails(tmpNewBillDetailsToAdd, tmpBillToUpdate)
+                }
+                    //se recalculan los montos luego de la edicion de detalles de factura
+                    tmpBillToUpdate.totalAmount = calculateBillAmount(tmpBillToUpdate, Constants.FACTURA_TOTAL)
+                    tmpBillToUpdate.subTotalAmount = calculateBillAmount(tmpBillToUpdate, Constants.FACTURA_SUBTOTAL)
+                    tmpBillToUpdate.totalTaxAmount = calculateBillAmount(tmpBillToUpdate, Constants.FACTURA_TOTAL_IMPUESTOS)
+                    tmpBillToUpdate.totalDiscount = calculateBillAmount(tmpBillToUpdate, Constants.FACTURA_TOTAL_DESCUENTOS)
+                }
+                tmpBillToUpdate.save(flush: true);
             } else {
-                throw new LightRuntimeException(messageSource.getMessage("update.contact.notFound.error", null, Locale.default));
+                throw new LightRuntimeException(messageSource.getMessage("update.bill.notFound.error", null, Locale.default));
             }
         }
 
@@ -156,10 +227,10 @@ class BillService {
                 throw e;
             }
             else{
-                throw new LightRuntimeException(messageSource.getMessage("update.contact.error", null, Locale.default));
+                throw new LightRuntimeException(messageSource.getMessage("update.bill.error", null, Locale.default));
             }
         }
-    }*/
+    }
 
 /**
  * Este método se encarga de procesar todos los detalles de factura que vienen
@@ -170,19 +241,9 @@ class BillService {
         try {
             argBillDetails.each { billDetailRest ->
                 //TODO verificar que el producto este activo por motivos de concurrencia
-                def tmpProduct = Product.findByIdAndEnabled(billDetailRest.productId, Constants.ESTADO_ACTIVO)
                 def tmpBillDetail = new BillDetail()
-                //se inicializa el objeto detalleFactura
-                tmpBillDetail.product = tmpProduct
-                tmpBillDetail.quantity = billDetailRest.quantity
-                tmpBillDetail.linePrice = billDetailRest.linePrice
-                tmpBillDetail.discountPercentage = billDetailRest.discountPercentage
-                tmpBillDetail.taxPercentage = billDetailRest.taxPercentage
-                //se realizan calculos
-                tmpBillDetail.subTotal = tmpBillDetail.linePrice * tmpBillDetail.quantity
-                tmpBillDetail.totalDiscount = (tmpBillDetail.subTotal * tmpBillDetail.discountPercentage) / 100
-                tmpBillDetail.totalTaxAmount = (tmpBillDetail.subTotal * tmpBillDetail.taxPercentage) / 100
-                tmpBillDetail.total = (tmpBillDetail.subTotal - tmpBillDetail.totalDiscount) + tmpBillDetail.totalTaxAmount
+                //se  setea  el objeto detalleFactura
+                setBillDetailFromRESTObject(tmpBillDetail, billDetailRest)
                 argBill.addToBillDetails(tmpBillDetail)
             }
         } catch (Exception e) {
@@ -202,22 +263,30 @@ class BillService {
             switch (calculationTypeCode) {
                 case Constants.FACTURA_SUBTOTAL:
                     argBill.billDetails.each { billDetail ->
-                        tmpAmount+= billDetail.subTotal
+                        if(billDetail.enabled == Constants.ESTADO_ACTIVO) {
+                            tmpAmount += billDetail.subTotal
+                        }
                     }
                     break
                 case Constants.FACTURA_TOTAL:
                     argBill.billDetails.each { billDetail ->
-                        tmpAmount += billDetail.total
+                        if(billDetail.enabled == Constants.ESTADO_ACTIVO) {
+                            tmpAmount += billDetail.total
+                        }
                     }
                         break
                 case Constants.FACTURA_TOTAL_DESCUENTOS:
                     argBill.billDetails.each { billDetail ->
-                        tmpAmount += billDetail.totalDiscount
+                        if(billDetail.enabled == Constants.ESTADO_ACTIVO) {
+                            tmpAmount += billDetail.totalDiscount
+                        }
                     }
                         break
                 case Constants.FACTURA_TOTAL_IMPUESTOS:
                     argBill.billDetails.each { billDetail ->
-                        tmpAmount += billDetail.totalTaxAmount
+                        if(billDetail.enabled == Constants.ESTADO_ACTIVO) {
+                            tmpAmount += billDetail.totalTaxAmount
+                        }
                     }
                         break
             }
@@ -280,6 +349,32 @@ class BillService {
             }
         } catch (Exception e) {
             log.error "Ha ocurrido un error validando el numero de factura " + e.message
+            throw e
+        }
+    }
+
+    /**
+     * Este método se encarga de setear un objeto detalle factura a partir de un objeto
+     * sirve para procesar detalles de fatura en una creacion de factura o edicion
+     * detalle factura REST
+     * @author Leo Chen
+     */
+    def  setBillDetailFromRESTObject(def pBillDetail, def pBillDetailRest){
+        try {
+            def tmpProduct = Product.findByIdAndEnabled(pBillDetailRest.productId, Constants.ESTADO_ACTIVO)
+            //se inicializa el objeto detalleFactura
+            pBillDetail.product = tmpProduct
+            pBillDetail.quantity = pBillDetailRest.quantity
+            pBillDetail.linePrice = pBillDetailRest.linePrice
+            pBillDetail.discountPercentage = pBillDetailRest.discountPercentage
+            pBillDetail.taxPercentage = pBillDetailRest.taxPercentage
+            //se realizan calculos
+            pBillDetail.subTotal = pBillDetail.linePrice * pBillDetail.quantity
+            pBillDetail.totalDiscount = (pBillDetail.subTotal * pBillDetail.discountPercentage) / 100
+            pBillDetail.totalTaxAmount = (pBillDetail.subTotal * pBillDetail.taxPercentage) / 100
+            pBillDetail.total = (pBillDetail.subTotal - pBillDetail.totalDiscount) + pBillDetail.totalTaxAmount
+        } catch (Exception e) {
+            log.error "Ha ocurrido un error creando el objeto detalle factura" + e.message
             throw e
         }
     }

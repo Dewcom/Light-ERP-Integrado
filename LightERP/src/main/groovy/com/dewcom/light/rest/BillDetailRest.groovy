@@ -4,6 +4,7 @@ package com.dewcom.light.rest
  * Created by chen on 01/02/17.
  */
 class BillDetailRest {
+    Long id
     Long productId
     Integer quantity
     Double linePrice

@@ -2,6 +2,7 @@ package com.dewcom.light
 
 import com.dewcom.light.rest.BillRest
 import com.dewcom.light.rest.ResponseREST
+import com.dewcom.light.rest.UpdateBillRequestREST
 import grails.plugin.springsecurity.annotation.Secured
 import grails.converters.*
 
@@ -161,34 +162,33 @@ class BillController extends RestController {
     }
 
     /**
-     * Este método se encarga de modificar un contacto
+     * Este método se encarga de modificar una factura
      * @author Leonardo Chen
      * @param name
      */
-   /* @Secured(['ROLE_ANONYMOUS'])
+    @Secured(['ROLE_ANONYMOUS'])
     def update() {
         log.info "==========  Update bill request =========="
         log.info request.JSON
 
         ResponseREST tmpResponse = new ResponseREST();
-        UpdateContactRequestREST tmpContactRest = new UpdateContactRequestREST(request.JSON);
-        log.info request.JSON
+        UpdateBillRequestREST tmpUpdateBillrequest = new UpdateBillRequestREST(request.JSON);
+        //path variable
+        tmpUpdateBillrequest.billId = params.long('billId')
+        log.error request.JSON
+        log.error tmpUpdateBillrequest.billId
         try {
-            tmpContactRest.validate();
-            if (tmpContactRest.hasErrors()) {
-                this.handleDataErrorsREST(messageSource, tmpContactRest.errors);
-            } else {
-                contactService.updateContact(tmpContactRest);
-                tmpResponse.message = messageSource.getMessage("update.contact.success", null, Locale.default)
+                billService.updateBill(tmpUpdateBillrequest);
+                tmpResponse.message = messageSource.getMessage("update.bill.success", null, Locale.default)
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
 
-            }
-            log.info "====== Update contact response ======"
+
+            log.info "====== Update bill response ======"
             log.info tmpResponse as JSON
             render tmpResponse as JSON
         }catch (Exception e) {
             this.handleRESTExceptions(messageSource, e);
         }
-    }*/
+    }
 
 }

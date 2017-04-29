@@ -92,6 +92,7 @@ class BootStrap {
 
         JSON.registerObjectMarshaller(BillDetail) {
             def returnArray = [:]
+            returnArray['id'] = it.id
             returnArray['quantity'] = it.quantity
             returnArray['linePrice'] = it.linePrice
             returnArray['discountPercentage'] = it.discountPercentage
@@ -100,6 +101,7 @@ class BootStrap {
             returnArray['totalTaxAmount'] = it.totalTaxAmount
             returnArray['subTotal'] = it.subTotal
             returnArray['total'] = it.total
+            returnArray['enabled'] = it.enabled
             returnArray['productId'] = ["id": it.product.id,"productCode":it.product.productCode,"productName":it.product.name]
 
             return returnArray

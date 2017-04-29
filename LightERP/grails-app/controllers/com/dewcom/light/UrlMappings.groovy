@@ -17,6 +17,7 @@ class UrlMappings {
         get "/api/customer/addresses"(controller: 'customer', action: 'getCustomerAddresses')
         get "/api/bill/billNumber"(controller: 'bill', action: 'generateBillNumber')
         post "/api/bill"(controller: 'bill', action: 'create')
+        put "/api/bill/$billId"(controller: 'bill', action: 'update')
 
         //mantenimientos catalogo
         get "/api/billPaymentType"(controller: 'billPaymentType', action: 'getAll')

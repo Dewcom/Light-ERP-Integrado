@@ -14,6 +14,8 @@ class BillDetail {
     Double taxPercentage
     Double subTotal
     Double total
+    Byte enabled = Constants.ESTADO_ACTIVO
+
 
     static belongsTo = [Bill]
     static constraints = {
