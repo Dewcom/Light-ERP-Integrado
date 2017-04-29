@@ -1,7 +1,7 @@
 <div ng-controller="BillDetailController as controller">
     <div class="row">
         <div class="col-md-7">
-            <h3>Detalle del cliente</h3>
+            <h3>Detalle de factura</h3>
         </div>
     </div>
     <form class="panel">
@@ -40,17 +40,14 @@
                              <em class="fa fa-money"></em>
                           </span>Emitir pago
                         </button>
-                        <!--<button ng-show="currentBill.billNumber == null" type="button" ng-click="controller.disableBill(currentBill.id)" class="btn btn-danger pull-right">Eliminar</button>
-                        <button ng-show="currentBill.billState.description == 'Validada'" type="button" ng-click="controller.voidBill(currentBill.id)" class="btn btn-danger pull-right">Anular</button>
-                        <button ng-show="currentBill.billState.description == 'Validada'" type="button" ng-click="controller.makePayment(currentBill.id)" class="btn btn-success pull-right mr">Emitir pago</button>-->
                     </div>
                 </div>
                 <hr>
                 <uib-tab-heading>DETALLES</uib-tab-heading>
                 <div class="panel">
                     <div class="panel-body">
-                        <h3 class="mt0" ng-if="currentBill.billNumber != null">{{"Factura #:" + currentBill.billNumber}}</h3>
-                        <h3 class="mt0" ng-if="currentBill.billNumber == null">{{"**En borrador**"}}</h3>pull-right
+                        <h3 class="mt0" ng-if="currentBill.billNumber != null">{{"Factura # " + currentBill.billNumber}}</h3>
+                        <h3 class="mt0" ng-if="currentBill.billNumber == null">{{"B" + currentBill.id }}</h3>
                         <hr/>
                         <div class="row mb-lg">
                             <div class="col-lg-4 col-xs-6 br pv">
@@ -78,7 +75,7 @@
                                         {{currentBill.customer.contacts[0].phoneNumber1}}
                                         <br/>{{currentBill.customer.contacts[0].mobile}}
                                         <br/>{{currentBill.customer.contacts[0].email}}
-                                    </div>
+                                            </div>
                                 </div>
                             </div>
                             <div class="clearfix hidden-md hidden-lg">
@@ -88,7 +85,7 @@
                                 <div class="clearfix">
                                     <p class="pull-left">FACTURA NO.</p>
                                     <p class="pull-right mr" ng-if="currentBill.billNumber != null">{{currentBill.billNumber}}</p>
-                                    <p class="pull-right mr" ng-if="currentBill.billNumber == null">{{"**En borrador**"}}</p>
+                                    <p class="pull-right mr" ng-if="currentBill.billNumber == null">{{"B" + currentBill.id }}</p>
                                 </div>
                                 <div class="clearfix">
                                     <p class="pull-left">Fecha de facturación</p>

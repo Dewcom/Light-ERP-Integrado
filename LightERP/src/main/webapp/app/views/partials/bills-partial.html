@@ -19,6 +19,7 @@
                 <tr>
                     <th>Número de factura</th>
                     <th>Estado</th>
+                    <th>Cliente</th>
                     <th>Fecha creación</th>
                     <th>Fecha vencimiento</th>
                     <th>Total</th>
@@ -27,9 +28,10 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="billObj in controller.billList">
-                    <td ng-if="billObj.billNumber == null" >**Creada-Borrador**</td>
+                    <td ng-if="billObj.billNumber == null" >{{"B" + billObj.id }}</td>
                     <td ng-if="billObj.billNumber != null" >{{ billObj.billNumber }}</td>
                     <td>{{ billObj.billState.description }}</td>
+                    <td>{{billObj.customer.name + " " + billObj.customer.firstLastName + " " + billObj.customer.secondLastName}}</td>
                     <td>{{ billObj.creationDate | date :  "dd-MM-yyyy" }}</td>
                     <td>{{ billObj.dueDate | date :  "dd-MM-yyyy" }}</td>
                     <td>{{ billObj.totalAmount }}</td>

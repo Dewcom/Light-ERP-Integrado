@@ -186,6 +186,7 @@
 
             vm.dtOptionsBills = DTOptionsBuilder.newOptions()
                 .withPaginationType('full_numbers')
+                .withOption('order', [3 , 'desc'])
                 .withLanguage(language);
             vm.dtColumnDefsBills = [
                 DTColumnDefBuilder.newColumnDef(0),
