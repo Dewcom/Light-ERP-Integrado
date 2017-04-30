@@ -1,4 +1,4 @@
-<div ng-controller="BillDetailController as controller">
+<div>
     <div class="row">
         <div class="col-md-7">
             <h3>Detalle de factura</h3>
@@ -29,6 +29,11 @@
                           <span class="btn-label">
                              <em class="fa fa-times"></em>
                           </span>Eliminar
+                        </button>
+                        <button ng-show="currentBill.billNumber == null" type="button" ui-sref="app.updateBill({billId: currentBill.id})" class="btn btn-labeled btn-warning pull-right mr">
+                          <span class="btn-label">
+                             <em class="fa fa-times"></em>
+                          </span>Modificar
                         </button>
                         <button ng-show="currentBill.billState.description == 'Validada'" type="button" ng-click="controller.voidBill(currentBill.id)" class="btn btn-labeled btn-danger pull-right">
                           <span class="btn-label">
@@ -115,10 +120,14 @@
                                     <td>{{billDetail.product.productCode}}</td>
                                     <td>{{billDetail.product.name}}</td>
                                     <td>{{billDetail.quantity}}</td>
-                                    <td>{{billDetail.totalTaxAmount}}</td>
-                                    <td>{{billDetail.totalDiscount}}</td>
-                                    <td>{{billDetail.subTotal}}</td>
-                                    <td class="text-right">{{billDetail.total}}</td>
+                                    <td ng-if="billDetail.currency.currencyCode == 3">{{ billDetail.totalTaxAmount | currency : "$" : 2}}</td>
+                                    <td ng-if="billDetail.currency.currencyCode != 3">{{ billDetail.totalTaxAmount | currency : "₡" : 2}}</td>
+                                    <td ng-if="billDetail.currency.currencyCode == 3">{{ billDetail.totalDiscount | currency : "$" : 2}}</td>
+                                    <td ng-if="billDetail.currency.currencyCode != 3">{{ billDetail.totalDiscount | currency : "₡" : 2}}</td>
+                                    <td ng-if="billDetail.currency.currencyCode == 3">{{ billDetail.subTotal | currency : "$" : 2}}</td>
+                                    <td ng-if="billDetail.currency.currencyCode != 3">{{ billDetail.subTotal | currency : "₡" : 2}}</td>
+                                    <td class="text-right" ng-if="billDetail.currency.currencyCode == 3">{{ billDetail.total | currency : "$" : 2}}</td>
+                                    <td class="text-right" ng-if="billDetail.currency.currencyCode != 3">{{ billDetail.total | currency : "₡" : 2}}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -127,19 +136,23 @@
                             <div class="col-sm-offset-8 col-sm-4 pv">
                                 <div class="clearfix">
                                     <p class="pull-left">Subtotal</p>
-                                    <p class="pull-right mr">{{currentBill.subTotalAmount}}</p>
+                                    <p class="pull-right mr" ng-if="currentBill.currency.currencyCode == 3">{{ currentBill.subTotalAmount | currency : "$" : 2}}</p>
+                                    <p class="pull-right mr" ng-if="currentBill.currency.currencyCode != 3">{{ currentBill.subTotalAmount | currency : "₡" : 2}}</p>
                                 </div>
                                 <div class="clearfix">
                                     <p class="pull-left">Total de descuentos</p>
-                                    <p class="pull-right mr">{{currentBill.totalDiscount}}</p>
+                                    <p class="pull-right mr" ng-if="currentBill.currency.currencyCode == 3">{{ currentBill.totalDiscount | currency : "$" : 2}}</p>
+                                    <p class="pull-right mr" ng-if="currentBill.currency.currencyCode != 3">{{ currentBill.totalDiscount | currency : "₡" : 2}}</p>
                                 </div>
                                 <div class="clearfix">
                                     <p class="pull-left">Total de impuestos</p>
-                                    <p class="pull-right mr">{{currentBill.totalTaxAmount}}</p>
+                                    <p class="pull-right mr" ng-if="currentBill.currency.currencyCode == 3">{{ currentBill.totalTaxAmount | currency : "$" : 2}}</p>
+                                    <p class="pull-right mr" ng-if="currentBill.currency.currencyCode != 3">{{ currentBill.totalTaxAmount | currency : "₡" : 2}}</p>
                                 </div>
                                 <div class="clearfix">
                                     <p class="pull-left h3">TOTAL</p>
-                                    <p class="pull-right mr h3">{{currentBill.totalAmount}}</p>
+                                    <p class="pull-right h3 mr" ng-if="currentBill.currency.currencyCode == 3">{{ currentBill.totalAmount | currency : "$" : 2}}</p>
+                                    <p class="pull-right h3 mr" ng-if="currentBill.currency.currencyCode != 3">{{ currentBill.totalAmount | currency : "₡" : 2}}</p>
                                 </div>
                             </div>
                         </div>

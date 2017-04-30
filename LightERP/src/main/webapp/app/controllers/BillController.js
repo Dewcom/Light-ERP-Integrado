@@ -196,6 +196,10 @@
             ];
         }
 
+        //REGRESA A LA PANTALLA DE LISTA DE FACTURAS
+        vm.goBack = function () {
+            $state.go('app.billingMain');
+        };
 
         /**=========================================================
          * Obtiene las direcciones del cliente de la factura
@@ -271,29 +275,6 @@
                 state.text('Modal dismissed with Cancel status');
             });
         };
-
-        /*vm.openUpdateModal = function (billObj) {
-
-         var modalInstance = $uibModal.open({
-         templateUrl: '/updateBillModal.html',
-         controller: UpdateModalInstanceCtrl,
-         size: 'md',
-         resolve: {
-         user: function () {
-         return billObj;
-         }
-         },
-         backdrop: 'static', // No cierra clickeando fuera
-         keyboard: false // No cierra con escape
-         });
-
-         var state = $('#modal-state');
-         modalInstance.result.then(function () {
-         state.text('Modal dismissed with OK status');
-         }, function () {
-         state.text('Modal dismissed with Cancel status');
-         });
-         };*/
 
 
         /**=========================================================
@@ -374,7 +355,7 @@
                 "creditConditionId": vm.creditCondition,
                 "currencyId": vm.currency,
                 "registrationType": registrationType,
-                "billDate": $filter('date')(vm.creationDate, "dd-MM-yyyy"),
+                "billDate": $filter('date')(vm.billDate, "dd-MM-yyyy"),
                 "billDetails": formatBillDetails(vm.addedProductList)
 
             };

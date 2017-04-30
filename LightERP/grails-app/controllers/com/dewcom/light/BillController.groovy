@@ -98,7 +98,6 @@ class BillController extends RestController {
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
             }
             log.info "====== Create bill response ======"
-            log.info tmpResponse as JSON
             render tmpResponse as JSON
         } catch (Exception e) {
             this.handleRESTExceptions(messageSource, e)
