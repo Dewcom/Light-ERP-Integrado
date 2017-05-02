@@ -8,6 +8,7 @@ import grails.validation.Validateable
 class BillRest implements Validateable {
     String userName
     Long customerId
+    Long billAddress
     Double exchangeRate
     Long billPaymentTypeId
     Long creditConditionId
@@ -19,6 +20,7 @@ class BillRest implements Validateable {
     static constraints = {
         userName blank:true, nullable: true
         customerId nullable: true
+        billAddress nullable: true
         billPaymentTypeId  nullable: true
         creditConditionId  nullable: true
         currencyId nullable: true

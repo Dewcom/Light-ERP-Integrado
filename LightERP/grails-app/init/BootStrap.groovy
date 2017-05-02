@@ -75,7 +75,7 @@ class BootStrap {
             returnArray['billDate'] = it.billDate
             returnArray['billNumber'] = it.billNumber
             returnArray['dueDate'] = it.dueDate
-            returnArray['customer'] = ["id": it.user.id, "identification": it.customer.identification, "name":it.customer.name, "firstLastName:":it.customer.firstLastName, "secondLastName":it.customer.secondLastName]
+            returnArray['customer'] = ["id": it.customer.id, "identification": it.customer.identification, "name":it.customer.name, "firstLastName:":it.customer.firstLastName, "secondLastName":it.customer.secondLastName]
             returnArray['subTotalAmount'] = it.subTotalAmount
             returnArray['creationDate'] = it.creationDate
             returnArray['totalAmount'] = it.totalAmount

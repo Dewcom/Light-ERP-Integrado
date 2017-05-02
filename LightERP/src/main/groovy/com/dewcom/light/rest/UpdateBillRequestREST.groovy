@@ -12,5 +12,6 @@ class UpdateBillRequestREST {
     Long billPaymentTypeId
     Long currencyId
     Long creditConditionId
+    Long addressId
     List<BillDetailRest> billDetails
 }

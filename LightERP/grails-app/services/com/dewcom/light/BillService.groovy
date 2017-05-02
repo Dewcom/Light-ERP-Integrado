@@ -57,6 +57,7 @@ class BillService {
             def customer = Customer.findById(argRestBill.customerId)
             def paymentType = BillPaymentType.findById(argRestBill.billPaymentTypeId)
             def creditCondition;
+            tmpBill.address = Address.get(argRestBill.billAddress)
             def billDate = LightUtils.stringToDate(argRestBill.billDate,"dd-MM-yyyy")
 
             if(argRestBill.billPaymentTypeId != null && paymentType.code == Constants.PAGO_CREDITO){
@@ -140,6 +141,7 @@ class BillService {
                 tmpBillToUpdate.exchangeRate = argUpdateBillRequest.exchangeRate != null ?  argUpdateBillRequest.exchangeRate : tmpBillToUpdate.exchangeRate
                 tmpBillToUpdate.billDate = argUpdateBillRequest.billDate != null ?  LightUtils.stringToDate(argUpdateBillRequest.billDate,"dd-MM-yyyy") : tmpBillToUpdate.billDate
                 tmpBillToUpdate.customer = argUpdateBillRequest.customerId != null ?  Customer.get(argUpdateBillRequest.customerId) : tmpBillToUpdate.customer
+                tmpBillToUpdate.address = argUpdateBillRequest.addressId != null ?  Address.get(argUpdateBillRequest.addressId) : tmpBillToUpdate.address
 
                 if(argUpdateBillRequest.billPaymentTypeId != null){
                     def tmpBillPaymentType = BillPaymentType.get(argUpdateBillRequest.billPaymentTypeId)

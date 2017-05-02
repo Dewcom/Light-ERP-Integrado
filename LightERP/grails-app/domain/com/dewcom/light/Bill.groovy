@@ -1,6 +1,7 @@
 package com.dewcom.light
 
 class Bill {
+    Address address
     User user
     Byte enabled = Constants.ESTADO_ACTIVO
     Long billNumber
@@ -25,6 +26,7 @@ class Bill {
     static constraints = {
         billDate  nullable: true
         user  nullable: true
+        address  nullable: true
         billNumber nullable: true
         creationDate  nullable: true
         customer  nullable: true
