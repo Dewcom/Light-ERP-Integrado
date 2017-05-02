@@ -42,7 +42,6 @@ class CustomerController extends RestController {
                 tmpResponse.data = customersFromDB
             }
             log.info "====== Get customer response ======"
-            JSON.use('deep')
             render tmpResponse as JSON
         } catch (Exception e) {
             this.handleRESTExceptions(messageSource, e)

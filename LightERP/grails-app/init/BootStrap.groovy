@@ -1,8 +1,10 @@
+import com.dewcom.light.Address
 import com.dewcom.light.Bill
 import com.dewcom.light.BillDetail
 import com.dewcom.light.BillPaymentType
 import com.dewcom.light.BillStateType
-
+import com.dewcom.light.Contact
+import com.dewcom.light.Customer
 import com.dewcom.light.PresentationType
 import com.dewcom.light.ProductType
 import grails.converters.JSON
@@ -111,10 +113,64 @@ class BootStrap {
             return returnArray
         }
 
+        JSON.registerObjectMarshaller(Customer) {
+            def returnArray = [:]
+            returnArray['id'] = it.id
+            returnArray['name'] = it.name
+            returnArray['firstLastName'] = it.firstLastName
+            returnArray['secondLastName'] = it.secondLastName
+            returnArray['identificationType'] = ["id": it.identificationType.id, "name": it.identificationType.name]
+            returnArray['customerType'] = ["id": it.customerType.id, "name": it.customerType.name]
+            returnArray['identification'] = it.identification
+            returnArray['phoneNumber1'] = it.phoneNumber1
+            returnArray['phoneNumber2'] = it.phoneNumber2
+            returnArray['mobile'] = it.mobile
+            returnArray['website'] = it.website
+            returnArray['email'] = it.email
+            returnArray['contacts'] = it.contacts
+            returnArray['addresses'] = it.addresses
+            returnArray['enabled'] = it.enabled
+            returnArray['registrationDate'] = it.registrationDate
+            returnArray['discountPercentage'] = it.discountPercentage
+            returnArray['creditLimit'] = it.creditLimit
+            return returnArray
+        }
+
         JSON.registerObjectMarshaller(Currency) {
             def returnArray = [:]
             returnArray['id'] = it.id
             returnArray['description'] = it.description
+
+            return returnArray
+        }
+
+
+        JSON.registerObjectMarshaller(Contact) {
+            def returnArray = [:]
+            returnArray['id'] = it.id
+            returnArray['customerId'] = it.customer.id
+            returnArray['name'] = it.name
+            returnArray['firstLastName'] = it.firstLastName
+            returnArray['secondLastName'] = it.secondLastName
+            returnArray['jobTitle'] = it.jobTitle
+            returnArray['department'] = it.department
+            returnArray['phoneNumber1'] = it.phoneNumber1
+            returnArray['phoneNumber2'] = it.phoneNumber2
+            returnArray['mobile'] = it.mobile
+            returnArray['email'] = it.email
+            returnArray['enabled'] = it.enabled
+            returnArray['registrationDate'] = it.registrationDate
+            return returnArray
+        }
+
+
+        JSON.registerObjectMarshaller(Address) {
+            def returnArray = [:]
+            returnArray['id'] = it.id
+            returnArray['idDistrict'] = it.idDistrict
+            returnArray['address'] = it.address
+            returnArray['enabled'] = it.enabled
+            returnArray['customerId'] = it.customer.id
 
             return returnArray
         }
