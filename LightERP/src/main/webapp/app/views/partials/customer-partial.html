@@ -33,7 +33,7 @@
                     <td ng-if="customerObj.email == null" >**SIN CORREO**</td>
                     <td ng-if="customerObj.email != null" >{{ customerObj.email }}</td>
                     <td>
-                        <button type="button" ui-sref="app.customerDetail({customerId: customerObj.id})" class="btn btn-sm btn-toolbar">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <button type="button" ui-sref="app.customerDetail({customerId: customerObj.id})" class="btn btn-sm btn-toolbar">
                             <em class="fa fa-search"></em>
                         </button>
                         <button type="button" ng-click="controller.disableCustomer(customerObj.id)"

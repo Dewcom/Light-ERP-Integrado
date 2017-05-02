@@ -121,6 +121,7 @@ angular
         };
 
         customerService.getAllAddresses = function (customerId) {
+            // Inicializa el array vacio
             tmpAddressList = [];
 
             var customerAddressList = $http({

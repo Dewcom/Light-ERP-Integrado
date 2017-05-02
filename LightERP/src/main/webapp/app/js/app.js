@@ -839,12 +839,33 @@
                 url: '/billing',
                 title: 'Facturas',
                 templateUrl: helper.basepath('billing-main.html'),
+                controller: 'BillController',
+                controllerAs: 'controller',
                 resolve: helper.resolveFor('datatables', 'ngDialog', 'ui.select')
             })
             .state('app.billDetail', {
                 url: '/billDetail',
                 title: 'Detalle factura',
                 templateUrl: helper.basepath('bill-detail.html'),
+                controller: 'BillDetailController',
+                controllerAs: 'controller',
+                resolve: helper.resolveFor('ngDialog'),
+                params : { billId: null }
+            })
+            .state('app.newBill', {
+                url: '/new-bill',
+                title: 'Nueva factura',
+                templateUrl: helper.basepath('new-bill.html'),
+                controller: 'BillController',
+                controllerAs: 'controller',
+                resolve: helper.resolveFor('ngDialog')
+            })
+            .state('app.updateBill', {
+                url: '/update-bill',
+                title: 'Modificar factura',
+                templateUrl: helper.basepath('update-bill.html'),
+                controller: 'UpdateBillController',
+                controllerAs: 'controller',
                 resolve: helper.resolveFor('ngDialog'),
                 params : { billId: null }
             })
@@ -852,12 +873,16 @@
                 url: '/usersMain',
                 title: 'Usuarios',
                 templateUrl: helper.basepath('users-main.html'),
+                controller: 'UserController',
+                controllerAs: 'controller',
                 resolve: helper.resolveFor('datatables', 'ngDialog')
             })
             .state('app.warehouseMain', {
                 url: '/warehouseMain',
                 title: 'Almacén',
                 templateUrl: helper.basepath('warehouse-main.html'),
+                controller: 'ProductController',
+                controllerAs: 'controller',
                 resolve: helper.resolveFor('datatables', 'ngDialog')
             })
             .state('app.configuration', {

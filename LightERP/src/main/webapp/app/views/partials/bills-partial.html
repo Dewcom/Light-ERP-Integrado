@@ -1,11 +1,11 @@
-<div class="panel panel-default" ng-controller="BillController as controller">
+<div class="panel panel-default">
     <div class="panel-body">
         <div>
             <div class="col-md-12 dataTableTop">
                 <div class="col-md-9">
                     <h3>Lista de facturas</h3>
                 </div>
-                <div class="col-md-3" ng-click="controller.open('lg')">
+                <div class="col-md-3" ui-sref="app.newBill()" >
                     <button type="submit" class="btn btn-labeled btn-success addButton">
                           <span class="btn-label">
                              <em class="fa fa-plus"></em>
@@ -19,6 +19,7 @@
                 <tr>
                     <th>Número de factura</th>
                     <th>Estado</th>
+                    <th>Cliente</th>
                     <th>Fecha creación</th>
                     <th>Fecha vencimiento</th>
                     <th>Total</th>
@@ -27,12 +28,14 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="billObj in controller.billList">
-                    <td ng-if="billObj.billNumber == null" >**Creada-Borrador**</td>
+                    <td ng-if="billObj.billNumber == null" >{{"B" + billObj.id }}</td>
                     <td ng-if="billObj.billNumber != null" >{{ billObj.billNumber }}</td>
                     <td>{{ billObj.billState.description }}</td>
+                    <td>{{billObj.customer.name + " " + billObj.customer.firstLastName + " " + billObj.customer.secondLastName}}</td>
                     <td>{{ billObj.creationDate | date :  "dd-MM-yyyy" }}</td>
                     <td>{{ billObj.dueDate | date :  "dd-MM-yyyy" }}</td>
-                    <td>{{ billObj.totalAmount }}</td>
+                    <td ng-if="billObj.currency.currencyCode == 3">{{ billObj.totalAmount | currency : "$" : 2}}</td>
+                    <td ng-if="billObj.currency.currencyCode != 3">{{ billObj.totalAmount | currency : "₡" : 2}}</td>
                     <td>
                         <button type="button" ui-sref="app.billDetail({billId: billObj.id})" class="btn btn-sm btn-toolbar">
                             <em class="fa fa-search"></em>

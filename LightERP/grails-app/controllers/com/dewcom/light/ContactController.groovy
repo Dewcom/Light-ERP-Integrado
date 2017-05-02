@@ -44,7 +44,6 @@ class ContactController extends RestController {
                 tmpResponse.data = customersFromDB
             }
             log.info "====== Get contact response ======"
-            log.info tmpResponse as JSON
             JSON.use('deep');
             render tmpResponse as JSON
         } catch (Exception e) {

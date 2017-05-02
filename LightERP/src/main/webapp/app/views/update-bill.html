@@ -1,13 +1,16 @@
 <div>
     <div class="row">
         <div class="col-md-7">
-            <h3>Nueva factura</h3>
+            <h3>Modificar factura</h3>
         </div>
     </div>
     <div class="mb">
         <hr class="hidden-print"/>
         <div class="clearfix">
-            <button type="button" ng-click="controller.goBack()" class="btn btn-labeled btn-info pull-right">
+            <button type="button" ng-click="controller.updateBill()" class="btn btn-labeled btn-success pull-right">
+                <span class="btn-label"> <em class="fa fa-plus"></em></span>Guardar
+            </button>
+            <button type="button" ng-click="controller.goBack()" class="btn btn-labeled btn-info pull-right mr">
                 <span class="btn-label"> <em class="fa fa-mail-reply"></em></span>Regresar
             </button>
         </div>
@@ -28,7 +31,7 @@
                         <input type="text" uib-datepicker-popup="{{controller.format}}" ng-model="controller.billDate"
                                is-open="controller.opened" min-date="controller.minDate" max-date="'2020-12-31'"
                                datepicker-options="controller.dateOptions" popup-placement="top" ng-required="true"
-                               current-text="Hoy" clear-text="Limpiar" close-text="Salir" class="form-control" onkeydown="return false"/>
+                               current-text="Hoy" clear-text="Limpiar" close-text="Salir" class="form-control"/>
                     </p>
                 </div>
                 <div class="panel-heading bb">
@@ -40,7 +43,7 @@
                         <td>Impuestos</td>
                         <td>
                             <div class="text-right text-bold">
-                                {{controller.taxTotal}}
+                                {{totalTaxAmount}}
                             </div>
                         </td>
                     </tr>
@@ -48,7 +51,7 @@
                         <td>Descuentos</td>
                         <td>
                             <div class="text-right text-bold">
-                                {{controller.discountTotal}}
+                                {{totalDiscount}}
                             </div>
                         </td>
                     </tr>
@@ -58,7 +61,7 @@
                     <div class="clearfix">
                         <div class="pull-right text-right">
                             <div class="text-bold">
-                                {{controller.billTotal}}
+                                {{totalAmount}}
                             </div>
                         </div>
                         <div class="pull-left text-bold text-dark">TOTAL</div>
@@ -66,12 +69,10 @@
                 </div>
                 <div class="panel-body">
                     <p ng-show="controller.billDate != null && controller.chosenCustomer.name != null">
-                        <button type="button" class="btn btn-primary btn-block"
-                                ng-click="controller.submitForm('add', 'saved')">
+                        <button type="button" class="btn btn-primary btn-block" ng-click="controller.submitForm('add', 'saved')">
                             Guardar
                         </button>
-                        <button type="button" class="btn btn-primary btn-block"
-                                ng-click="controller.submitForm('add', 'validated')">
+                        <button type="button" class="btn btn-primary btn-block" ng-click="controller.submitForm('add', 'validated')">
                             Aplicar
                         </button>
                     </p>
@@ -90,7 +91,7 @@
                                 <div class="row">
                                     <div class="form-group">
                                         <div class="col-lg-6">
-                                            <ui-select ng-model="controller.chosenCustomer" theme="bootstrap">
+                                            <ui-select ng-model="currentCustomer" theme="bootstrap">
                                                 <ui-select-match
                                                         placeholder="Buscar por nombre o identificación..."></ui-select-match>
                                                 <ui-select-choices
@@ -99,7 +100,7 @@
                                                         <div ng-bind-html="customer.name + ' ' + customer.firstLastName + ' ' + customer.secondLastName  | highlight: $select.search"></div>
                                                         <small>email: {{customer.email === null ? '*SIN CORREO*' :
                                                             customer.email}} identificación:
-                                                            <span ng-bind-html="''+ customer.identification | highlight: $select.search"></span>
+                                                            <span ng-bind-html="''+customer.identification | highlight: $select.search"></span>
                                                         </small>
                                                     </div>
                                                 </ui-select-choices>
@@ -114,8 +115,7 @@
                                         <div class="col-lg-4">
                                             <div class="form-group">
                                                 <label>Nombre</label>
-                                                <input type="text" name="name" ng-model="controller.chosenCustomer.name"
-                                                       class="form-control"/>
+                                                <input type="text" name="name" ng-model="controller.chosenCustomer.name" class="form-control"/>
                                             </div>
                                             <div class="form-group">
                                                 <label>Identificación</label>
@@ -147,8 +147,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>Teléfono celular</label>
-                                                <input type="text" name="mobile"
-                                                       ng-model="controller.chosenCustomer.mobile"
+                                                <input type="text" name="mobile" ng-model="controller.chosenCustomer.mobile"
                                                        class="form-control"/>
                                             </div>
                                         </div>
@@ -233,7 +232,7 @@
                                             <div class="controls">
                                                 <select name="controller.paymentType" ng-model="controller.paymentType"
                                                         ng-options="item.id as item.description for item in controller.paymentTypeList"
-                                                        class="form-control">
+                                                        class="form-control" >
                                                 </select>
                                             </div>
                                         </div>
@@ -244,8 +243,7 @@
                                             <div class="controls">
                                                 <select name="controller.currency" ng-model="controller.currency"
                                                         ng-options="item.id as item.description for item in controller.currencyList"
-                                                        class="form-control"
-                                                        ng-change="controller.changeExchangeRate(controller.currency)">
+                                                        class="form-control" ng-change="controller.changeExchangeRate(controller.currency)" >
                                                 </select>
                                             </div>
                                         </div>
@@ -254,10 +252,9 @@
                                         <div class="form-group">
                                             <label>Condición de crédito</label>
                                             <div class="controls">
-                                                <select name="controller.creditCondition"
-                                                        ng-model="controller.creditCondition"
+                                                <select name="controller.creditCondition" ng-model="controller.creditCondition"
                                                         ng-options="item.id as item.description for item in controller.creditConditionList"
-                                                        class="form-control">
+                                                        class="form-control" >
                                                 </select>
                                             </div>
                                         </div>
@@ -265,8 +262,7 @@
                                     <div class="col-lg-3">
                                         <div class="form-group">
                                             <label>Tipo de cambio</label>
-                                            <input type="text" name="controller.exchangeRate"
-                                                   ng-model="controller.exchangeRate" required="" class="form-control"/>
+                                            <input type="text" name="controller.exchangeRate" ng-model="controller.exchangeRate" required="" class="form-control"/>
                                         </div>
                                     </div>
                                 </div>
@@ -332,8 +328,7 @@
                         </uib-accordion-group>
                     </uib-accordion>
                 </form>
-                <toaster-container
-                        toaster-options="{'position-class': 'toast-bottom-right', 'close-button':true, 'body-output-type': 'trustedHtml'}"></toaster-container>
+                <toaster-container toaster-options="{'position-class': 'toast-bottom-right', 'close-button':true, 'body-output-type': 'trustedHtml'}"></toaster-container>
 
             </div>
         </div>

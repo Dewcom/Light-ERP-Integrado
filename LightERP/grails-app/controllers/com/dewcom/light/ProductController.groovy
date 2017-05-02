@@ -44,7 +44,6 @@ class ProductController extends RestController{
             }
             log.info "====== Get product response ======"
             JSON.use('deep')
-            log.info tmpResponse as JSON
             render tmpResponse as JSON
         } catch (Exception e) {
             this.handleRESTExceptions(messageSource, e)
