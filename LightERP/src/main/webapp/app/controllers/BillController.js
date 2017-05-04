@@ -356,8 +356,8 @@
                 "currencyId": vm.currency,
                 "registrationType": registrationType,
                 "billDate": $filter('date')(vm.billDate, "dd-MM-yyyy"),
-                "billDetails": formatBillDetails(vm.addedProductList)
-
+                "billDetails": formatBillDetails(vm.addedProductList),
+                "billAddress" : vm.chosenCustomer.chosenAddress.id
             };
 
             console.log(newBill);
@@ -631,7 +631,7 @@
 
 
         function callAtTimeout() {
-            $state.reload();
+            $state.go("app.billingMain");
         }
     }
 

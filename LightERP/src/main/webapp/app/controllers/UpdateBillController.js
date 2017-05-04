@@ -4,8 +4,11 @@ angular
     .module('app.bill')
     .controller('UpdateBillController', UpdateBillController);
 
-UpdateBillController.$inject = ['$http', '$state', '$stateParams', '$scope', 'billService', '$timeout', 'ngDialog', 'toaster'];
-function UpdateBillController($http, $state, $stateParams, $scope, billService, $timeout, ngDialog, toaster) {
+UpdateBillController.$inject = ['$http', '$state', '$stateParams', '$scope', 'billService', '$timeout', 'ngDialog', 'toaster',
+    'customerService', 'productService', 'productTypeService', 'presentationTypeService', '$filter'];
+function UpdateBillController($http, $state, $stateParams, $scope, billService, $timeout, ngDialog, toaster, customerService,
+    productService, productTypeService, presentationTypeService, $filter) {
+
     var vm = this;
 
     init();
@@ -57,25 +60,81 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
             console.log(response.data);
 
             if (response.code == '0') {
+                vm.currentBill = response.data;
+                console.log(vm.currentBill);
 
-                bill = response.data;
+                customerService.getAllAddresses(vm.currentBill.customer.id).then(function (response) {
+                    vm.customerAddresses = response;
+                });
 
-                $scope.currentBill = bill;
+                console.log(billService.getAddressInfo(vm.currentBill.address));
+            };
+        });
 
-                console.log(bill);
-                $scope.billDate = bill.billDate;
-                $scope.totalTaxAmount = bill.totalTaxAmount;
-                $scope.totalDiscount = bill.totalDiscount;
-                $scope.totalAmount = bill.totalAmount;
-            }
+
+        /**=========================================================
+         * Productos
+         =========================================================*/
+
+        productService.getAll().then(function (response) {
+            var sortedProducts = $filter('orderBy')(response, 'productCode');
+            vm.productList = sortedProducts;
+        });
+
+        /**=========================================================
+         * Tipos de producto
+         =========================================================*/
+
+        productTypeService.getAll().then(function (response) {
+            vm.productTypeList = response;
+        });
+
+        /**=========================================================
+         * Tipos de presentación
+         =========================================================*/
+
+        presentationTypeService.getAll().then(function (response) {
+            vm.presentationTypeList = response;
+        });
+
+        /**=========================================================
+         * Tipos de pago
+         =========================================================*/
+
+        billService.getAllPaymentTypes().then(function (response) {
+            vm.paymentTypeList = response;
+        });
+
+        /**=========================================================
+         * Tipos de monedas
+         =========================================================*/
+
+        billService.getAllCurrency().then(function (response) {
+            vm.currencyList = response;
+        });
+
+        /**=========================================================
+         * Tipos de condiciones de credito
+         =========================================================*/
+
+        billService.getAllCreditCondition().then(function (response) {
+            vm.creditConditionList = response;
+        });
+
+        /**=========================================================
+         * Tipos de cambio
+         =========================================================*/
+
+        billService.getAllExchangeRates().then(function (response) {
+            vm.exchangeRateList = response;
         });
 
     }
 
     //REGRESA A LA PANTALLA DE DETALLE DE FACTURAS
     vm.goBack = function () {
-        console.log($scope.currentBill.id);
-        var params = {billId : $scope.currentBill.id}
+        console.log(vm.currentBill.id);
+        var params = {billId: vm.currentBill.id}
         $state.go('app.billDetail', params);
     };
 
@@ -184,7 +243,7 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
 
                 pop(toasterdata);
 
-                $timeout(function() {
+                $timeout(function () {
                     $state.go('app.billingMain');
                 }, 3000);
 
@@ -229,7 +288,7 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
 
                 pop(toasterdata);
 
-                $timeout(function() {
+                $timeout(function () {
                     $state.go('app.billingMain');
                 }, 3000);
 

@@ -62,7 +62,7 @@ class BillService {
 
             if(argRestBill.billPaymentTypeId != null && paymentType.code == Constants.PAGO_CREDITO){
                 if(argRestBill.creditConditionId != null ){
-                    creditCondition= CreditCondition.findById(argRestBill.creditConditionId)
+                    creditCondition = CreditCondition.findById(argRestBill.creditConditionId)
                     if(billDate != null){
                         tmpBill.dueDate = LightUtils.plusDaysToDate(billDate, creditCondition.days)
                     }

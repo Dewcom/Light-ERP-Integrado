@@ -131,7 +131,7 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                getAddressesFromCustomer(response.data);
+                getAddressesFromCustomer(response.data.data);
                 return tmpAddressList
             }, function (error) {
                 console.log(error);
@@ -144,7 +144,9 @@ angular
 
         function getAddressesFromCustomer(addressesFromCustomer) {
 
-            angular.forEach(addressesFromCustomer.data, function (value) {
+            console.log(addressesFromCustomer);
+
+            angular.forEach(addressesFromCustomer, function (value) {
 
                 var tmpIdAddress = value.id;
                 var tmpAddress = value.address;

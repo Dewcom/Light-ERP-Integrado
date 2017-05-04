@@ -19,7 +19,8 @@ class BootStrap {
         def adminRole = new Role(authority: 'ROLE_ADMIN').save()
         def userRole = new Role(authority: 'ROLE_USER').save()
 
-        def testUser = new User(username: 'admin', password: 'admin', userCode: 'A100', name: 'admin', phoneNumber: '2222-2222').save()
+        def testUser = new User(username: 'admin', password: 'admin', userCode: 'A100', name: 'admin',
+                phoneNumber: '2222-2222').save()
 
         UserRole.create testUser, adminRole
 
@@ -28,9 +29,9 @@ class BootStrap {
             it.clear()
         }
 
-       /* assert User.count() == 2
-        assert Role.count() == 2
-        assert UserRole.count() == 1*/
+        /* assert User.count() == 2
+         assert Role.count() == 2
+         assert UserRole.count() == 1*/
 
         JSON.registerObjectMarshaller(IdentificationType) {
             def returnArray = [:]
@@ -75,14 +76,17 @@ class BootStrap {
             returnArray['billDate'] = it.billDate
             returnArray['billNumber'] = it.billNumber
             returnArray['dueDate'] = it.dueDate
-            returnArray['customer'] = ["id": it.customer.id, "identification": it.customer.identification, "name":it.customer.name, "firstLastName:":it.customer.firstLastName, "secondLastName":it.customer.secondLastName]
+            returnArray['customer'] = ["id"            : it.customer.id, "identification": it.customer.identification,
+                                       "name"          : it.customer.name, "firstLastName": it.customer.firstLastName,
+                                       "secondLastName": it.customer.secondLastName, "contacts": it.customer.contacts,
+                                       "addresses"       : it.customer.addresses, "phoneNumber1" : it.customer.phoneNumber1,
+                                       "mobile" : it.customer.mobile]
             returnArray['subTotalAmount'] = it.subTotalAmount
             returnArray['creationDate'] = it.creationDate
             returnArray['totalAmount'] = it.totalAmount
             returnArray['totalDiscount'] = it.totalDiscount
             returnArray['exchangeRate'] = it.exchangeRate
             returnArray['totalTaxAmount'] = it.totalTaxAmount
-            returnArray['creationDate'] = it.creationDate
             returnArray['billState'] = it.billState
             returnArray['billDetails'] = it.billDetails
             returnArray['billPaymentType'] = it.billPaymentType
@@ -102,7 +106,7 @@ class BootStrap {
             returnArray['subTotal'] = it.subTotal
             returnArray['total'] = it.total
             returnArray['enabled'] = it.enabled
-            returnArray['productId'] = ["id": it.product.id,"productCode":it.product.productCode,"productName":it.product.name]
+            returnArray['product'] = ["id": it.product.id, "productCode": it.product.productCode, "productName": it.product.name]
 
             return returnArray
         }
