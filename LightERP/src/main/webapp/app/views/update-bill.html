@@ -7,9 +7,6 @@
     <div class="mb">
         <hr class="hidden-print"/>
         <div class="clearfix">
-            <button type="button" ng-click="controller.updateBill()" class="btn btn-labeled btn-success pull-right">
-                <span class="btn-label"> <em class="fa fa-plus"></em></span>Guardar
-            </button>
             <button type="button" ng-click="controller.goBack()" class="btn btn-labeled btn-info pull-right mr">
                 <span class="btn-label"> <em class="fa fa-mail-reply"></em></span>Regresar
             </button>
@@ -27,13 +24,14 @@
                             </button>
                         </div>
                     </div>
-                    {{controller.currentBill.billDate}}
                     <p class="input-group">
-                        <input type="datetime" uib-datepicker-popup="{{controller.format}}"
-                               ng-model="controller.currentBill.billDate"
+                        <!--<input type="text" class="form-control" ng-model="controller.currentBill.billDate"
+                               ng-required="true"
+                               class="form-control"/>-->
+                        <input type="text" uib-datepicker-popup="{{controller.format}}" ng-model="controller.billDate"
                                is-open="controller.opened" min-date="controller.minDate" max-date="'2020-12-31'"
                                datepicker-options="controller.dateOptions" popup-placement="top" ng-required="true"
-                               current-text="Hoy" clear-text="Limpiar" close-text="Salir" class="form-control"/>
+                               current-text="Hoy" clear-text="Limpiar" close-text="Salir" class="form-control" onkeydown="return false"/>
                     </p>
                 </div>
                 <div class="panel-heading bb">
@@ -44,16 +42,22 @@
                     <tr>
                         <td>Impuestos</td>
                         <td>
-                            <div class="text-right text-bold">
-                                {{controller.currentBill.totalTaxAmount}}
+                            <div ng-if="controller.currentBill.currency.id == 2" class="text-bold">
+                                {{controller.currentBill.totalTaxAmount | currency : "$" : 2}}
+                            </div>
+                            <div ng-if="controller.currentBill.currency.id == 1" class="text-bold">
+                                {{controller.currentBill.totalTaxAmount | currency : "₡" : 2}}
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td>Descuentos</td>
                         <td>
-                            <div class="text-right text-bold">
-                                {{controller.currentBill.totalDiscount}}
+                            <div ng-if="controller.currentBill.currency.id == 2" class="text-bold">
+                                {{controller.currentBill.totalDiscount | currency : "$" : 2}}
+                            </div>
+                            <div ng-if="controller.currentBill.currency.id == 1" class="text-bold">
+                                {{controller.currentBill.totalDiscount | currency : "₡" : 2}}
                             </div>
                         </td>
                     </tr>
@@ -62,15 +66,18 @@
                 <div class="panel-body">
                     <div class="clearfix">
                         <div class="pull-right text-right">
-                            <div class="text-bold">
-                                {{controller.currentBill.totalAmount}}
+                            <div ng-if="controller.currentBill.currency.id == 2" class="text-bold">
+                                {{controller.currentBill.totalAmount | currency : "$" : 2}}
+                            </div>
+                            <div ng-if="controller.currentBill.currency.id == 1" class="text-bold">
+                                {{controller.currentBill.totalAmount | currency : "₡" : 2}}
                             </div>
                         </div>
                         <div class="pull-left text-bold text-dark">TOTAL</div>
                     </div>
                 </div>
                 <div class="panel-body">
-                    <p ng-show="controller.billDate != null && controller.chosenCustomer.name != null">
+                    <p ng-show="controller.billDate != null">
                         <button type="button" class="btn btn-primary btn-block"
                                 ng-click="controller.submitForm('add', 'saved')">
                             Guardar
@@ -86,7 +93,7 @@
         <div class="col-md-10">
             <div class="container-md">
                 <!-- Información del cliente-->
-                <form name="controller.newBillForm" action="" method="post" novalidate="novalidate">
+                <form name="controller.updateBillForm" action="" method="post" novalidate="novalidate">
                     <uib-accordion close-others="true">
                         <uib-accordion-group is-open="chk.step1" ng-init="chk.step1 = true" panel-class="b">
                             <uib-accordion-heading>1. Información del cliente</uib-accordion-heading>
@@ -169,31 +176,31 @@
                                         <div class="form-group">
                                             <label>Provincia</label>
                                             <input type="text" name="province"
-                                                   ng-model="controller.billAddress.provincia"
+                                                   ng-model="controller.currentBill.address.province.name"
                                                    required=""
-                                                   class="form-control"/>
+                                                   class="form-control" disabled/>
                                         </div>
                                         <div class="form-group">
                                             <label>Distrito</label>
                                             <input type="text" name="district"
-                                                   ng-model="controller.billAddress.distrito"
+                                                   ng-model="controller.currentBill.address.district.name"
                                                    required=""
-                                                   class="form-control"/>
+                                                   class="form-control" disabled/>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label>Cantón</label>
                                             <input type="text" name="canton"
-                                                   ng-model="controller.billAddress.canton"
+                                                   ng-model="controller.currentBill.address.canton.name"
                                                    required=""
-                                                   class="form-control"/>
+                                                   class="form-control" disabled/>
                                         </div>
                                         <div class="form-group">
                                             <label>Dirección</label>
                                             <textarea style="resize: none" name="address"
-                                                      ng-model="controller.billAddress.address"
-                                                      class="form-control"></textarea>
+                                                      ng-model="controller.currentBill.address.address"
+                                                      class="form-control" disabled></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -229,7 +236,7 @@
                                                 <select name="controller.currency" ng-model="controller.currentBill.currency.id"
                                                         ng-options="item.id as item.description for item in controller.currencyList"
                                                         class="form-control"
-                                                        ng-change="controller.changeExchangeRate(controller.currency)">
+                                                        ng-change="controller.changeExchangeRate(controller.currentBill.currency)">
                                                 </select>
                                             </div>
                                         </div>
@@ -247,7 +254,6 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-3">
-                                        {{controller.currentBill.exchangeRate}}
                                         <div class="form-group">
                                             <label>Tipo de cambio</label>
                                             <input type="text" name="controller.exchangeRate"
@@ -291,15 +297,15 @@
                                         <th>Precio unitario</th>
                                         <th>Descuento</th>
                                         <th>Impuestos</th>
-                                        <th>Subtotal</th>
+                                        <th>Sub total</th>
                                         <th>Eliminar</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr ng-repeat="billProduct in controller.currentBill.billDetails">
+                                    <tr ng-repeat="billProduct in controller.currentBill.productList">
                                         <td>{{ billProduct.quantity }}</td>
-                                        <td>{{ billProduct.product.productCode }}</td>
-                                        <td>{{ billProduct.product.name }}</td>
+                                        <td>{{ billProduct.productCode }}</td>
+                                        <td>{{ billProduct.name }}</td>
                                         <td>{{ billProduct.linePrice }}</td>
                                         <td>{{ billProduct.discountPercentage}} %</td>
                                         <td>{{ billProduct.taxPercentage}} %</td>
@@ -332,6 +338,6 @@
                 </div>
             </div>
         </script>
-        <div ng-include="'app/views/modals/add-product-to-bill-modal.html'"></div>
+        <div ng-include="'app/views/modals/add-product-to-update-bill-modal.html'"></div>
     </div>
 </div>

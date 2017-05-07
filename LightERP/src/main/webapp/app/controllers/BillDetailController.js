@@ -23,6 +23,10 @@ function BillDetailController($http, $state, $stateParams, $scope, billService, 
                 bill = response.data;
 
                 $scope.currentBill = bill;
+
+                billService.getAddressInfo(bill.address, function (addressInfo) {
+                    $scope.currentBill.address = addressInfo;
+                });
             }
         });
 

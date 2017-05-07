@@ -6,6 +6,7 @@ angular
 
         var billService = {};
         var addedProductList = [];
+        var updateBillProductList = [];
 
         billService.getAddedProductList = function () {
             return addedProductList;
@@ -19,10 +20,33 @@ angular
             addedProductList.splice(index, 1);
         };
 
-        billService.getAddressInfo = function (address) {
-            console.log(address);
 
-            var addressInfo = null;
+        /**=========================================================
+         * Para ser usado a la hora de editar una factura
+         =========================================================*/
+
+        billService.getUpdateBillProductList = function () {
+            return updateBillProductList;
+        };
+
+        billService.setUpdateBillProductList = function (list) {
+            updateBillProductList = list;
+        };
+
+        billService.resetUpdateBillProductList = function () {
+            updateBillProductList = [];
+        };
+
+        billService.removeProductUpdateBill = function (index) {
+            updateBillProductList.splice(index, 1);
+        };
+
+        /**=========================================================
+         *
+         =========================================================*/
+
+        billService.getAddressInfo = function (address, callback) {
+            console.log(address);
 
             var tmpIdAddress = address.id;
             var tmpAddress = address.address;
@@ -63,6 +87,8 @@ angular
 
                     } while (provinceNotFound);
 
+                }).catch(function (e) {
+                    console.log(e);
                 });
 
 
@@ -82,24 +108,22 @@ angular
 
                     } while (cantonNotFound);
 
-                    addressInfo = _buildAddress2AddFromCustomer(tmpIdAddress, tmpProvince, tmpCanton, tmpDistrict, tmpAddress);
+                    callback({
+                        id: tmpIdAddress,
+                        province: tmpProvince,
+                        canton: tmpCanton,
+                        district: tmpDistrict,
+                        address: tmpAddress
+                    });
+
+                }).catch(function (e) {
+                    console.log(e);
                 });
 
+            }).catch(function (e) {
+                console.log(e);
             });
-            
-            return addressInfo;
         };
-
-
-        function _buildAddress2AddFromCustomer(idAddress, province, canton, district, address) {
-            return {
-                id: idAddress,
-                province: province,
-                canton: canton,
-                district: district,
-                address: address
-            };
-        }
 
         billService.getAll = function () {
 

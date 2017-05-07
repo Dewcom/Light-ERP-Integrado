@@ -63,9 +63,9 @@
                                     <div class="col-md-10">
                                         <h4>{{currentBill.customer.name + " " + currentBill.customer.firstLastName + " " + currentBill.customer.secondLastName}}</h4>
                                         <address></address>
-                                        {{currentBill.customer.addresses[0].address}}
-                                        <!--<br/>Happy St., 50487
-                                        <br/>Neverland-->
+                                        {{currentBill.address.district.name + ", " + currentBill.address.canton.name}}<br/>
+                                        {{currentBill.address.province.name}}<br/>
+                                        {{currentBill.address.address}}
                                     </div>
                                 </div>
                             </div>
@@ -77,10 +77,10 @@
                                     <div class="col-md-10">
                                         <h4>{{currentBill.customer.contacts[0].name + " " + currentBill.customer.contacts[0].firstLastName + " " + currentBill.customer.contacts[0].secondLastName }}</h4>
                                         <address></address>
-                                        {{currentBill.customer.contacts[0].phoneNumber1}}
-                                        <br/>{{currentBill.customer.contacts[0].mobile}}
-                                        <br/>{{currentBill.customer.contacts[0].email}}
-                                            </div>
+                                        {{currentBill.customer.contacts[0].phoneNumber1}}<br/>
+                                        {{currentBill.customer.contacts[0].mobile}}<br/>
+                                        {{currentBill.customer.contacts[0].email}}
+                                    </div>
                                 </div>
                             </div>
                             <div class="clearfix hidden-md hidden-lg">

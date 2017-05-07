@@ -39,26 +39,36 @@
                     <tr>
                         <td>Impuestos</td>
                         <td>
-                            <div class="text-right text-bold">
-                                {{controller.taxTotal}}
+                            <div ng-if="controller.currency == 2" class="text-bold">
+                                {{controller.taxTotal | currency : "$" : 2}}
+                            </div>
+                            <div ng-if="controller.currency == 1" class="text-bold">
+                                {{controller.taxTotal | currency : "₡" : 2}}
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td>Descuentos</td>
                         <td>
-                            <div class="text-right text-bold">
-                                {{controller.discountTotal}}
+                            <div ng-if="controller.currency == 2" class="text-bold">
+                                {{controller.discountTotal | currency : "$" : 2}}
+                            </div>
+                            <div ng-if="controller.currency == 1" class="text-bold">
+                                {{controller.discountTotal | currency : "₡" : 2}}
                             </div>
                         </td>
                     </tr>
                     </tbody>
                 </table>
+
                 <div class="panel-body">
                     <div class="clearfix">
                         <div class="pull-right text-right">
-                            <div class="text-bold">
-                                {{controller.billTotal}}
+                            <div ng-if="controller.currency == 2" class="text-bold">
+                                {{controller.billTotal | currency : "$" : 2}}
+                            </div>
+                            <div ng-if="controller.currency == 1" class="text-bold">
+                                {{controller.billTotal | currency : "₡" : 2}}
                             </div>
                         </div>
                         <div class="pull-left text-bold text-dark">TOTAL</div>

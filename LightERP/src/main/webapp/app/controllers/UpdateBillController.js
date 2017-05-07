@@ -5,9 +5,9 @@ angular
     .controller('UpdateBillController', UpdateBillController);
 
 UpdateBillController.$inject = ['$http', '$state', '$stateParams', '$scope', 'billService', '$timeout', 'ngDialog', 'toaster',
-    'customerService', 'productService', 'productTypeService', 'presentationTypeService', '$filter'];
+    'customerService', 'productService', 'productTypeService', 'presentationTypeService', '$filter', '$uibModal'];
 function UpdateBillController($http, $state, $stateParams, $scope, billService, $timeout, ngDialog, toaster, customerService,
-    productService, productTypeService, presentationTypeService, $filter) {
+                              productService, productTypeService, presentationTypeService, $filter, $uibModal) {
 
     var vm = this;
 
@@ -67,9 +67,42 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
                     vm.customerAddresses = response;
                 });
 
-                console.log(billService.getAddressInfo(vm.currentBill.address));
-            };
+                billService.getAddressInfo(vm.currentBill.address, function (addressInfo) {
+                    vm.currentBill.address = addressInfo;
+                });
+
+                console.log(vm.currentBill.billDetails);
+
+                prepareBillProductList(vm.currentBill.billDetails);
+
+            }
         });
+
+        function prepareBillProductList(billDetailList) {
+
+            var productList = [];
+
+            angular.forEach(billDetailList, function (value, key) {
+                var productToAdd = {
+                    "productId": value.product.id,
+                    "productCode": value.product.productCode,
+                    "name": value.product.name,
+                    "quantity": value.quantity,
+                    "linePrice": value.linePrice,
+                    "discountPercentage": value.discountPercentage,
+                    "taxPercentage": value.taxPercentage,
+                    "subtotal": value.total
+                };
+
+                productList.push(productToAdd);
+            });
+
+            billService.setUpdateBillProductList(productList);
+
+            console.log(productList);
+
+            vm.currentBill.productList = productList;
+        }
 
 
         /**=========================================================
@@ -156,53 +189,130 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
 
 
     /**=========================================================
-     * Modificar clientes
+     * Ajusta el tipo de cambio de acuerdo a la moneda seleccionada
      =========================================================*/
-    /*
-     vm.updateCustomer = function () {
-     var updatedCustomer = {
-     "id": $scope.currentCustomer.id,
-     "name": $scope.currentCustomer.name,
-     "firstLastName": $scope.currentCustomer.firstLastName,
-     "secondLastName": $scope.currentCustomer.secondLastName,
-     "identification": $scope.currentCustomer.identification,
-     "addresses": formatAddreses(),
-     "phoneNumber1": $scope.currentCustomer.phoneNumber1,
-     "phoneNumber2": $scope.currentCustomer.phoneNumber2,
-     "mobile": $scope.currentCustomer.mobile,
-     "website": $scope.currentCustomer.website,
-     "email": $scope.currentCustomer.email,
-     "discountPercentage": $scope.currentCustomer.discountPercentage,
-     "creditLimit": $scope.currentCustomer.creditLimit,
-     "identificationType": $scope.currentCustomer.selectedIdentificationType,
-     "customerType": $scope.currentCustomer.selectedCustomerType
-     };
-     console.log(updatedCustomer);
-     customerService.updateCustomer(updatedCustomer).then(function (response) {
-     var toasterdata;
 
-     if (response.code == "0") {
-     toasterdata = {
-     type: 'success',
-     title: 'Cliente',
-     text: response.message
-     };
-     } else {
-     toasterdata = {
-     type: 'warning',
-     title: 'Cliente',
-     text: response.message
-     };
-     }
-     $scope.pop(toasterdata);
-     }, function (error) {
-     console.log(error);
-     });
+    vm.changeExchangeRate = function (currency) {
+        var rate = $filter("filter")(vm.exchangeRateList, {currency: {id: currency.id}});
+        vm.currentBill.exchangeRate = rate[0].value;
+    };
 
-     };*/
 
     /**=========================================================
-     * Eliminar facturas
+     * Eliminar un producto de la factura
+     =========================================================*/
+
+    vm.removeProduct = function (index) {
+        billService.removeProductUpdateBill(index);
+        var updateBillProductList = billService.getAdeddUpdatedBillProductList();
+        vm.billTotal = calculateTotalAmmount(updateBillProductList);
+        vm.taxTotal = calculateTotalTaxes(updateBillProductList);
+        vm.discountTotal = calculateTotalDiscount(updateBillProductList);
+    };
+
+    // Submit form
+    vm.submitForm = function (action, registrationType) {
+
+        var vm = this;
+
+        vm.submitted = true;
+
+        if (action == 'add') {
+            if (vm.updateBillForm.$valid) {
+                if (registrationType == 'validated') {
+
+                    ngDialog.openConfirm({
+                        template: 'validateBillModal',
+                        className: 'ngdialog-theme-default',
+                        closeByDocument: false,
+                        closeByEscape: false
+                    }).then(function (value) {
+                        vm.updateBill(registrationType);
+                    }, function (reason) {
+                        console.log('Modal promise rejected. Reason: ', reason);
+                    });
+
+                } else if (registrationType == 'saved') {
+                    vm.updateBill(registrationType);
+                }
+            } else {
+                console.log('Not valid!!');
+                return false;
+            }
+
+        } else if (action == 'modify') {
+            if (vm.form.$valid) {
+                updateUser();
+            } else {
+                console.log('Not valid!!');
+                return false;
+            }
+
+        }
+    };
+
+    /**=========================================================
+     * Modificar facturas
+     =========================================================*/
+    vm.updateBill = function (regType) {
+
+        var userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
+        var registrationType;
+        if (regType == 'saved') {
+            registrationType = 0;
+        } else if (regType = 'validated') {
+            registrationType = 1;
+        }
+
+
+        var billToUpdate = {
+            "id" : vm.currentBill.id,
+            "userName": userInfo.userName,
+            "customerId": vm.currentBill.customer.id,
+            "exchangeRate": vm.currentBill.exchangeRate,
+            "billPaymentTypeId": vm.currentBill.billPaymentType.id,
+            "creditConditionId": vm.currentBill.creditCondition,
+            "currencyId": vm.currentBill.currency.id,
+            "registrationType": registrationType,
+            "billDate": $filter('date')(vm.billDate, "dd-MM-yyyy"),
+            "billDetails": formatBillDetails(vm.currentBill.billDetails),
+            "billAddress" : vm.currentBill.address.id
+        };
+
+        console.log(billToUpdate);
+
+        billService.resetAddedProductList();
+
+        billService.updateBill(billToUpdate).then(function (response) {
+            var toasterdata;
+
+            if (response.code == "0") {
+                toasterdata = {
+                    type: 'success',
+                    title: 'Factura creada',
+                    text: response.message
+                };
+            } else {
+                toasterdata = {
+                    type: 'warning',
+                    title: 'Factura',
+                    text: response.message
+                };
+            }
+
+            pop(toasterdata);
+            $timeout(function () {
+                callAtTimeout();
+            }, 3000);
+        }, function (error) {
+            console.log(error);
+        });
+
+
+    };
+
+    /**=========================================================
+     * Clonar facturas
      =========================================================*/
 
     vm.cloneBill = function (billToClone) {
@@ -299,6 +409,171 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
             console.log('Modal promise rejected. Reason: ', reason);
         });
     };
+
+    /**=========================================================
+     * Module: modals
+     =========================================================*/
+
+    vm.openAddProductModal = function () {
+
+        var modalInstance = $uibModal.open({
+            templateUrl: '/addProductToUpdateBillModal.html',
+            controller: AddModalInstanceCtrl,
+            size: 'lg',
+            resolve: {
+                productList: function () {
+                    return vm.productList;
+                },
+                taxTotal: function () {
+                    return vm.taxTotal;
+                },
+                discountTotal: function () {
+                    return vm.discountTotal;
+                }
+            },
+            backdrop: 'static', // No cierra clickeando fuera
+            keyboard: false // No cierra con escape
+        });
+
+        var state = $('#modal-state');
+        modalInstance.result.then(function (result) {
+            vm.taxTotal = result.taxTotal;
+            vm.discountTotal = result.discountTotal;
+            vm.billTotal = result.totalAmmount;
+            state.text('Modal dismissed with OK status');
+        }, function () {
+            state.text('Modal dismissed with Cancel status');
+        });
+    };
+
+    function addProductToUpdateBill(selectedProduct) {
+
+        var productToAdd = {
+            "productId": selectedProduct.id,
+            "name": selectedProduct.name,
+            "productCode": selectedProduct.productCode,
+            "quantity": selectedProduct.quantity,
+            "linePrice": selectedProduct.priceInColones,
+            "discountPercentage": selectedProduct.discount,
+            "taxPercentage": selectedProduct.tax,
+            "subtotal": calculateSubtotal(selectedProduct.quantity, selectedProduct.priceInColones,
+                selectedProduct.discount, selectedProduct.tax)
+        };
+
+        var tmpList = billService.getUpdateBillProductList();
+
+        tmpList.push(productToAdd);
+
+        console.log(tmpList);
+
+        vm.currentBill.billDetails = tmpList;
+
+        var tmpTaxes = calculateTotalTaxes(tmpList);
+        var tmpDiscount = calculateTotalDiscount(tmpList);
+        var totalAmmount = calculateTotalAmmount(tmpList);
+
+        var result = {
+            'taxTotal': tmpTaxes,
+            'discountTotal': tmpDiscount,
+            'totalAmmount': totalAmmount
+        };
+
+        return result;
+    }
+
+    // Please note that $uibModalInstance represents a modal window (instance) dependency.
+    // It is not the same as the $uibModal service used above.
+
+    AddModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', 'productList', 'discountTotal', 'taxTotal'];
+    function AddModalInstanceCtrl($scope, $uibModalInstance, productList, discountTotal, taxTotal) {
+        var vm = this;
+        vm.selectedProduct = {};
+
+        vm.productList = productList;
+
+        $scope.selectProduct = function (product) {
+            vm.selectedProduct = product;
+            vm.selectedProduct.quantity = 1;
+            vm.selectedProduct.discount = 0;
+            vm.selectedProduct.tax = 0;
+        };
+
+        $scope.ok = function () {
+
+            console.log(vm.selectedProduct);
+            var result = addProductToUpdateBill(vm.selectedProduct);
+            $uibModalInstance.close(result);
+        };
+
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+    }
+
+    function calculateSubtotal(quantity, price, discount, tax) {
+        var tmpSubTotal = price * quantity;
+
+        var totalAfterDiscount = tmpSubTotal - (tmpSubTotal * (discount / 100));
+
+        var subtotal = totalAfterDiscount + (totalAfterDiscount * (tax / 100));
+
+        return subtotal;
+    }
+
+    function calculateTotalTaxes(addedProductList) {
+        var taxTotal = 0;
+
+        angular.forEach(addedProductList, function (value, key) {
+            taxTotal += parseFloat(value.taxPercentage) / 100 * parseFloat(value.linePrice);
+        });
+
+        return taxTotal;
+    }
+
+    function calculateTotalDiscount(addedProductList) {
+        var totalDiscount = 0;
+
+        angular.forEach(addedProductList, function (value, key) {
+            totalDiscount += parseFloat(value.discountPercentage) / 100 * parseFloat(value.linePrice);
+        });
+
+        return totalDiscount;
+    }
+
+    function calculateTotalAmmount(addedProductList) {
+        var totalAmmount = 0;
+
+        angular.forEach(addedProductList, function (value, key) {
+            totalAmmount += parseFloat(value.subtotal);
+        });
+
+        return totalAmmount;
+    }
+
+    /**=========================================================
+     * Formateo de informacion de facturas
+     =========================================================*/
+
+    function formatBillDetails(list) {
+        console.log(list);
+
+        var formattedList = [];
+
+        angular.forEach(list, function (value, key) {
+
+            var item = {
+                'productId': value.productId,
+                'quantity': value.quantity,
+                'linePrice': value.linePrice,
+                'discountPercentage': value.discountPercentage,
+                'taxPercentage': value.taxPercentage
+            };
+            formattedList.push(item);
+        });
+
+        return formattedList;
+
+    }
 
     function pop(toasterdata) {
         toaster.pop({

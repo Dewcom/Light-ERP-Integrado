@@ -34,8 +34,8 @@
                     <td>{{billObj.customer.name + " " + billObj.customer.firstLastName + " " + billObj.customer.secondLastName}}</td>
                     <td>{{ billObj.creationDate | date :  "dd-MM-yyyy" }}</td>
                     <td>{{ billObj.dueDate | date :  "dd-MM-yyyy" }}</td>
-                    <td ng-if="billObj.currency.currencyCode == 3">{{ billObj.totalAmount | currency : "$" : 2}}</td>
-                    <td ng-if="billObj.currency.currencyCode != 3">{{ billObj.totalAmount | currency : "₡" : 2}}</td>
+                    <td ng-if="billObj.currency.currencyCode == 2">{{ billObj.totalAmount | currency : "$" : 2}}</td>
+                    <td ng-if="billObj.currency.currencyCode != 2">{{ billObj.totalAmount | currency : "₡" : 2}}</td>
                     <td>
                         <button type="button" ui-sref="app.billDetail({billId: billObj.id})" class="btn btn-sm btn-toolbar">
                             <em class="fa fa-search"></em>

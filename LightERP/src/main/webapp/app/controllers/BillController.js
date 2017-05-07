@@ -93,7 +93,6 @@
              =========================================================*/
 
             billService.getAll().then(function (response) {
-                console.log(response);
                 vm.billList = response;
             });
 
@@ -163,6 +162,12 @@
             });
 
             /**=========================================================
+             * Inicializa la lista de productos
+             =========================================================*/
+
+            billService.resetAddedProductList();
+
+            /**=========================================================
              * Datatable productos agregados
              =========================================================*/
 
@@ -218,13 +223,9 @@
          * Ajusta el tipo de cambio de acuerdo a la moneda seleccionada
          =========================================================*/
 
-
-        vm.changeExchangeRate = function (currencyId) {
-
-            var rate = $filter("filter")(vm.exchangeRateList, {currency: {id: currencyId}});
-
+        vm.changeExchangeRate = function (currency) {
+            var rate = $filter("filter")(vm.exchangeRateList, {currency: {id: currency}});
             vm.exchangeRate = rate[0].value;
-
         };
 
 
@@ -393,7 +394,7 @@
         };
 
         /**=========================================================
-         * Modificar facturas
+         * Formateo de informacion de facturas
          =========================================================*/
 
         function formatBillDetails(list) {
@@ -416,56 +417,9 @@
         }
 
         /**=========================================================
-         * Modificar facturas
-         =========================================================*/
-
-        function updateBill() {
-
-            /* var updatedUser={
-             "id":$scope.currentUser.id,
-             "username":$scope.currentUser.username,
-             "password":$scope.currentUser.password,
-             "userCode":$scope.currentUser.userCode,
-             "name":$scope.currentUser.name ,
-             "firstLastName":$scope.currentUser.firstLastName,
-             "secondLastName":$scope.currentUser.secondLastName,
-             "phoneNumber":$scope.currentUser.phoneNumber,
-             "extension":$scope.currentUser.extension,
-             "mobile":$scope.currentUser.mobile,
-             "email":$scope.currentUser.email,
-             "commissionPercentage":$scope.currentUser.commissionPercentage
-             };
-             console.log(updatedUser);
-             billService.updateUser(updatedUser).then(function (response) {
-             var toasterdata;
-
-             if(response.code == "0"){
-             toasterdata = {
-             type: 'success',
-             title: 'Modificar usuario',
-             text: response.message
-             };
-             }else{
-             toasterdata = {
-             type: 'warning',
-             title: 'Usuario',
-             text: response.message
-             };
-
-             }
-             pop(toasterdata);
-             $timeout(function(){ callAtTimeout(); }, 3000);
-             },function (error) {
-             console.log(error);
-             });
-
-             $scope.cancel();*/
-        }
-
-
-        /**=========================================================
          * Eliminar facturas
          =========================================================*/
+
         vm.disableBill = function (billId) {
             ngDialog.openConfirm({
                 template: 'disableBillModal',
@@ -563,7 +517,11 @@
 
             var tmpList = billService.getAddedProductList();
 
+            console.log(tmpList);
+
             tmpList.push(productToAdd);
+
+            console.log(billService.getAddedProductList());
 
             vm.addedProductList = tmpList;
 
