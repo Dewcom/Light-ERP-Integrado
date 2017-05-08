@@ -108,18 +108,38 @@
 
             //Se carga la lista de cantones
             vm.loadCantons = function(pidProvince){
+                vm.cantons= [];
 
                 $resource('server/location/cantones.json').query().$promise.then(function(data) {
-                    vm.cantons = $filter('filter')(data, {idProvince: pidProvince });
+                    var tmpList = $filter('filter')(data, {idProvince: pidProvince });
+
+                    angular.forEach(tmpList, function (value) {
+                        if (parseInt(value.idProvince) === pidProvince) {
+                            vm.cantons.push(value);
+                        }
+                    });
                 });
             };
 
             //Se carga la lista de distritos
             vm.loadDistricts = function(pidCanton){
+            vm.districts= [];
 
                 $resource('server/location/distritos.json').query().$promise.then(function(data) {
 
-                    vm.districts = $filter('filter')(data, {idCanton: pidCanton});
+                    var tmpList = $filter('filter')(data, {idCanton: pidCanton});
+
+                    angular.forEach(tmpList, function (value) {
+
+                        console.log(value);
+                        if (value.idCanton === pidCanton) {
+                            vm.districts.push(value);
+
+                            console.log(vm.districts);
+                        }
+                    });
+
+                    console.log(vm.districts);
                 });
             };
         }
