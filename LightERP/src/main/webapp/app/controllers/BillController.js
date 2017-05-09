@@ -587,7 +587,6 @@
             });
         }
 
-
         function callAtTimeout() {
             $state.go("app.billingMain");
         }

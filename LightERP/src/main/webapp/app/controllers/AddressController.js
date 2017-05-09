@@ -131,15 +131,10 @@
 
                     angular.forEach(tmpList, function (value) {
 
-                        console.log(value);
                         if (value.idCanton === pidCanton) {
                             vm.districts.push(value);
-
-                            console.log(vm.districts);
                         }
                     });
-
-                    console.log(vm.districts);
                 });
             };
         }

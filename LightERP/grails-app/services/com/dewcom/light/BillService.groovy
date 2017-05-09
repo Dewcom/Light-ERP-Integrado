@@ -156,7 +156,7 @@ class BillService {
                     def tmpCreditCondition = CreditCondition.get(argUpdateBillRequest.creditConditionId)
                     tmpBillToUpdate.creditCondition = tmpCreditCondition
                     if(tmpBillToUpdate.billDate != null){
-                        tmpBillToUpdate.dueDate = LightUtils.plusDaysToDate(tmpBillToUpdate, tmpCreditCondition.days)
+                        tmpBillToUpdate.dueDate = LightUtils.plusDaysToDate(tmpBillToUpdate.billDate, tmpCreditCondition.days)
                     }
                 }
 

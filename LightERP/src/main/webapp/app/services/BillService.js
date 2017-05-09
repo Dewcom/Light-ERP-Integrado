@@ -184,8 +184,8 @@ angular
         billService.updateBill = function (updateBill) {
             var updateBillResult = $http({
                 method: 'PUT',
-                url: 'http://localhost:8080/api/bill/update',
-                data: updatedBill,
+                url: 'http://localhost:8080/api/bill/' + updateBill.billId,
+                data: updateBill,
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }

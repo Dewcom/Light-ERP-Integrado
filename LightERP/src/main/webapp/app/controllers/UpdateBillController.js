@@ -204,7 +204,7 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
 
     vm.removeProduct = function (index) {
         billService.removeProductUpdateBill(index);
-        var updateBillProductList = billService.getAdeddUpdatedBillProductList();
+        var updateBillProductList = billService.getUpdateBillProductList();
         vm.billTotal = calculateTotalAmmount(updateBillProductList);
         vm.taxTotal = calculateTotalTaxes(updateBillProductList);
         vm.discountTotal = calculateTotalDiscount(updateBillProductList);
@@ -257,26 +257,25 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
     vm.updateBill = function (regType) {
 
         var userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
-        var registrationType;
+        var billStateId;
         if (regType == 'saved') {
-            registrationType = 0;
-        } else if (regType = 'validated') {
-            registrationType = 1;
+            billStateId = 1;
+        } else if (billStateId = 'validated') {
+            billStateId = 2;
         }
 
 
         var billToUpdate = {
-            "id" : vm.currentBill.id,
-            "userName": userInfo.userName,
+            "billId" : vm.currentBill.id,
             "customerId": vm.currentBill.customer.id,
             "exchangeRate": vm.currentBill.exchangeRate,
             "billPaymentTypeId": vm.currentBill.billPaymentType.id,
-            "creditConditionId": vm.currentBill.creditCondition,
+            "creditConditionId": vm.currentBill.creditCondition != null ? vm.currentBill.creditCondition.id : null,
             "currencyId": vm.currentBill.currency.id,
-            "registrationType": registrationType,
+            "billStateId": billStateId,
             "billDate": $filter('date')(vm.billDate, "dd-MM-yyyy"),
-            "billDetails": formatBillDetails(vm.currentBill.billDetails),
-            "billAddress" : vm.currentBill.address.id
+            "billDetails": formatBillDetails(vm.currentBill.productList),
+            "addressId" : vm.currentBill.address.id
         };
 
         console.log(billToUpdate);
@@ -466,7 +465,7 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
 
         console.log(tmpList);
 
-        vm.currentBill.billDetails = tmpList;
+        vm.currentBill.productList = tmpList;
 
         var tmpTaxes = calculateTotalTaxes(tmpList);
         var tmpDiscount = calculateTotalDiscount(tmpList);
@@ -582,5 +581,9 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
             body: toasterdata.text,
             bodyOutputType: 'trustedHtml'
         });
+    }
+
+    function callAtTimeout() {
+        $state.go("app.billingMain");
     }
 }

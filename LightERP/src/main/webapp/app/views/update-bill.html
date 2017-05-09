@@ -220,35 +220,12 @@
                                 <div class="row">
                                     <div class="col-lg-3">
                                         <div class="form-group">
-                                            <label>Tipo de pago</label>
-                                            <div class="controls">
-                                                <select name="controller.paymentType" ng-model="controller.currentBill.billPaymentType.id"
-                                                        ng-options="item.id as item.description for item in controller.paymentTypeList"
-                                                        class="form-control">
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <div class="form-group">
                                             <label>Moneda</label>
                                             <div class="controls">
                                                 <select name="controller.currency" ng-model="controller.currentBill.currency.id"
                                                         ng-options="item.id as item.description for item in controller.currencyList"
                                                         class="form-control"
-                                                        ng-change="controller.changeExchangeRate(controller.currentBill.currency)">
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <div class="form-group">
-                                            <label>Condición de crédito</label>
-                                            <div class="controls">
-                                                <select name="controller.creditCondition"
-                                                        ng-model="controller.currentBill.creditCondition.id"
-                                                        ng-options="item.id as item.description for item in controller.creditConditionList"
-                                                        class="form-control">
+                                                        ng-change="controller.changeExchangeRate(controller.currency)">
                                                 </select>
                                             </div>
                                         </div>
@@ -258,6 +235,29 @@
                                             <label>Tipo de cambio</label>
                                             <input type="text" name="controller.exchangeRate"
                                                    ng-model="controller.currentBill.exchangeRate" required="" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label>Tipo de pago</label>
+                                            <div class="controls">
+                                                <select name="controller.paymentType" ng-model="controller.currentBill.billPaymentType.id"
+                                                        ng-options="item.id as item.description for item in controller.paymentTypeList"
+                                                        class="form-control">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3" ng-hide="controller.currentBill.billPaymentType.id == 1 || controller.currentBill.billPaymentType.id == null ">
+                                        <div class="form-group">
+                                            <label>Condición de crédito</label>
+                                            <div class="controls">
+                                                <select name="controller.creditCondition"
+                                                        ng-model="controller.creditCondition"
+                                                        ng-options="item.id as item.description for item in controller.creditConditionList"
+                                                        class="form-control" ng-disabled="controller.paymentType == 1">
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

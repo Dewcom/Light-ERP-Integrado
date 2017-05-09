@@ -239,17 +239,6 @@
                                 <div class="row">
                                     <div class="col-lg-3">
                                         <div class="form-group">
-                                            <label>Tipo de pago</label>
-                                            <div class="controls">
-                                                <select name="controller.paymentType" ng-model="controller.paymentType"
-                                                        ng-options="item.id as item.description for item in controller.paymentTypeList"
-                                                        class="form-control">
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <div class="form-group">
                                             <label>Moneda</label>
                                             <div class="controls">
                                                 <select name="controller.currency" ng-model="controller.currency"
@@ -262,21 +251,32 @@
                                     </div>
                                     <div class="col-lg-3">
                                         <div class="form-group">
-                                            <label>Condición de crédito</label>
+                                            <label>Tipo de cambio</label>
+                                            <input type="text" name="controller.exchangeRate"
+                                                   ng-model="controller.exchangeRate" required="" class="form-control"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label>Tipo de pago</label>
                                             <div class="controls">
-                                                <select name="controller.creditCondition"
-                                                        ng-model="controller.creditCondition"
-                                                        ng-options="item.id as item.description for item in controller.creditConditionList"
+                                                <select name="controller.paymentType" ng-model="controller.paymentType"
+                                                        ng-options="item.id as item.description for item in controller.paymentTypeList"
                                                         class="form-control">
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-3">
+                                    <div class="col-lg-3" ng-hide="controller.paymentType == 1 || controller.paymentType == null ">
                                         <div class="form-group">
-                                            <label>Tipo de cambio</label>
-                                            <input type="text" name="controller.exchangeRate"
-                                                   ng-model="controller.exchangeRate" required="" class="form-control"/>
+                                            <label>Condición de crédito</label>
+                                            <div class="controls">
+                                                <select name="controller.creditCondition"
+                                                        ng-model="controller.creditCondition"
+                                                        ng-options="item.id as item.description for item in controller.creditConditionList"
+                                                        class="form-control" ng-disabled="controller.paymentType == 1">
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
