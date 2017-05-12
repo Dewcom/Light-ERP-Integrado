@@ -18,7 +18,12 @@ class UrlMappings {
         get "/api/bill/billNumber"(controller: 'bill', action: 'generateBillNumber')
         post "/api/bill"(controller: 'bill', action: 'create')
         put "/api/bill/$billId"(controller: 'bill', action: 'update')
-
+        //payments
+        put "/api/payment/$paymentId"(controller: 'payment', action: 'update')
+        post "/api/payment"(controller: 'payment', action: 'create')
+        delete "/api/payment/$paymentId"(controller: 'payment', action: 'delete')
+        get "/api/payment/$paymentId"(controller: 'payment', action: 'get')
+        get "/api/payment"(controller: 'payment', action: 'get')
         //mantenimientos catalogo
         get "/api/billPaymentType"(controller: 'billPaymentType', action: 'getAll')
         get "/api/billStateType"(controller: 'billStateType', action: 'getAll')
