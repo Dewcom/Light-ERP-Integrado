@@ -43,6 +43,8 @@ class Constants {
     //codigo de estados facturas
     public static final Integer FACTURA_CREADA = 1;
     public static final Integer FACTURA_VALIDADA =2 ;
+    public static final Integer FACTURA_PAGADA_PARCIAL =3;
+    public static final Integer FACTURA_PAGADA =4 ;
 
     //codigos de tipos de monedas
     public static final Integer MONEDA_COLONES = 1;

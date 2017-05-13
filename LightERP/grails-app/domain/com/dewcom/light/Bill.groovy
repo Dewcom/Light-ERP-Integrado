@@ -20,7 +20,7 @@ class Bill {
     Currency currency
     CreditCondition creditCondition
     Double totalTaxAmount
-    static hasMany = [billDetails: BillDetail]
+    static hasMany = [billDetails: BillDetail, payments:Payment]
     static belongsTo = [Customer]
 
     static constraints = {
