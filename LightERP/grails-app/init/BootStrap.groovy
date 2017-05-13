@@ -76,13 +76,9 @@ class BootStrap {
             def returnArray = [:]
             returnArray['id'] = it.id
             returnArray['billDate'] = it.billDate
+            returnArray['address'] = it.address
             returnArray['billNumber'] = it.billNumber
             returnArray['dueDate'] = it.dueDate
-            returnArray['customer'] = ["id"            : it.customer.id, "identification": it.customer.identification,
-                                       "name"          : it.customer.name, "firstLastName": it.customer.firstLastName,
-                                       "secondLastName": it.customer.secondLastName, "contacts": it.customer.contacts,
-                                       "addresses"       : it.customer.addresses, "phoneNumber1" : it.customer.phoneNumber1,
-                                       "mobile" : it.customer.mobile]
             returnArray['subTotalAmount'] = it.subTotalAmount
             returnArray['creationDate'] = it.creationDate
             returnArray['totalAmount'] = it.totalAmount
@@ -93,6 +89,12 @@ class BootStrap {
             returnArray['billDetails'] = it.billDetails
             returnArray['billPaymentType'] = it.billPaymentType
             returnArray['currency'] = it.currency
+            returnArray['creditCondition'] = it.creditCondition
+            returnArray['customer'] = ["id"            : it.customer.id, "identification": it.customer.identification,
+                                       "name"          : it.customer.name, "firstLastName": it.customer.firstLastName,
+                                       "secondLastName": it.customer.secondLastName, "contacts": it.customer.contacts,
+                                       "addresses"       : it.customer.addresses, "phoneNumber1" : it.customer.phoneNumber1,
+                                       "mobile" : it.customer.mobile]
             return returnArray
         }
 

@@ -4,8 +4,8 @@ angular
     .module('app.bill')
     .controller('BillDetailController', BillDetailController);
 
-BillDetailController.$inject = ['$http', '$state', '$stateParams', '$scope', 'billService', '$timeout', 'ngDialog', 'toaster'];
-function BillDetailController($http, $state, $stateParams, $scope, billService, $timeout, ngDialog, toaster) {
+BillDetailController.$inject = ['$http', '$state', '$stateParams', '$scope', 'billService', '$timeout', 'ngDialog', 'toaster', '$filter'];
+function BillDetailController($http, $state, $stateParams, $scope, billService, $timeout, ngDialog, toaster, $filter) {
     var vm = this;
 
 
@@ -53,60 +53,53 @@ function BillDetailController($http, $state, $stateParams, $scope, billService, 
         }, 3000);
     };
 
-
-    /**=========================================================
-     * Modificar clientes
-     =========================================================*/
-/*
-    vm.updateCustomer = function () {
-        var updatedCustomer = {
-            "id": $scope.currentCustomer.id,
-            "name": $scope.currentCustomer.name,
-            "firstLastName": $scope.currentCustomer.firstLastName,
-            "secondLastName": $scope.currentCustomer.secondLastName,
-            "identification": $scope.currentCustomer.identification,
-            "addresses": formatAddreses(),
-            "phoneNumber1": $scope.currentCustomer.phoneNumber1,
-            "phoneNumber2": $scope.currentCustomer.phoneNumber2,
-            "mobile": $scope.currentCustomer.mobile,
-            "website": $scope.currentCustomer.website,
-            "email": $scope.currentCustomer.email,
-            "discountPercentage": $scope.currentCustomer.discountPercentage,
-            "creditLimit": $scope.currentCustomer.creditLimit,
-            "identificationType": $scope.currentCustomer.selectedIdentificationType,
-            "customerType": $scope.currentCustomer.selectedCustomerType
-        };
-        console.log(updatedCustomer);
-        customerService.updateCustomer(updatedCustomer).then(function (response) {
-            var toasterdata;
-
-            if (response.code == "0") {
-                toasterdata = {
-                    type: 'success',
-                    title: 'Cliente',
-                    text: response.message
-                };
-            } else {
-                toasterdata = {
-                    type: 'warning',
-                    title: 'Cliente',
-                    text: response.message
-                };
-            }
-            $scope.pop(toasterdata);
-        }, function (error) {
-            console.log(error);
-        });
-
-    };*/
-
     /**=========================================================
      * Eliminar facturas
      =========================================================*/
 
     vm.cloneBill = function (billToClone) {
-        console.log(billToClone);
-        console.log("################");
+
+        var userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
+
+        var newBill = {
+            "userName": userInfo.userName,
+            "customerId": billToClone.customer.id,
+            "exchangeRate": billToClone.exchangeRate,
+            "billPaymentTypeId": billToClone.billPaymentType.id,
+            "creditConditionId": billToClone.creditCondition.id != null ? billToClone.creditCondition.id :null,
+            "currencyId": billToClone.currency.id,
+            "registrationType": 0,
+            "billDate": $filter('date')(new Date(), "dd-MM-yyyy"),
+            "billDetails": formatBillDetails(billToClone.billDetails),
+            "billAddress" : billToClone.address.id
+        };
+
+        billService.addBill(newBill).then(function (response) {
+
+            var toasterdata;
+
+            if (response.code == "0") {
+                toasterdata = {
+                    type: 'success',
+                    title: 'Factura creada',
+                    text: response.message
+                };
+            } else {
+                toasterdata = {
+                    type: 'warning',
+                    title: 'Factura',
+                    text: response.message
+                };
+            }
+
+            pop(toasterdata);
+            $timeout(function () {
+                var params = {billId: response.data.id};
+                $state.go('app.updateBill', params);
+            }, 3000);
+        }, function (error) {
+            console.log(error);
+        });
     };
 
     /**=========================================================
@@ -158,22 +151,26 @@ function BillDetailController($http, $state, $stateParams, $scope, billService, 
      * Anular facturas
      =========================================================*/
 
-    vm.voidBill = function (billId) {
-        console.log(billId);
+    vm.voidBill = function (bill) {
+
+        bill.billState = 3;
+
+        console.log(bill);
+
         ngDialog.openConfirm({
             template: 'voidBillModal',
             className: 'ngdialog-theme-default',
             closeByDocument: false,
             closeByEscape: false
         }).then(function (value) {
-            billService.voidBill(billId).then(function (response) {
+            billService.voidBill(bill).then(function (response) {
                 var toasterdata;
                 console.log(response);
 
                 if (response.code == "0") {
                     toasterdata = {
                         type: 'success',
-                        title: 'Eliminar factura',
+                        title: 'Anular factura',
                         text: response.message
                     };
                 } else {
@@ -199,12 +196,39 @@ function BillDetailController($http, $state, $stateParams, $scope, billService, 
         });
     };
 
+
+
+    /**=========================================================
+     * Formateo de informacion de facturas
+     =========================================================*/
+
+    function formatBillDetails(list) {
+        console.log(list);
+        var formattedList = [];
+
+        angular.forEach(list, function (value, key) {
+
+            var item = {
+                'productId': value.product.id,
+                'quantity': value.quantity,
+                'linePrice': value.linePrice,
+                'discountPercentage': value.discountPercentage,
+                'taxPercentage': value.taxPercentage
+            };
+            formattedList.push(item);
+        });
+
+        return formattedList;
+
+    }
+
+
     function pop(toasterdata) {
+        console.log(toasterdata);
         toaster.pop({
             type: toasterdata.type,
             title: toasterdata.title,
-            body: toasterdata.text,
-            bodyOutputType: 'trustedHtml'
+            body: toasterdata.text
         });
     }
 }

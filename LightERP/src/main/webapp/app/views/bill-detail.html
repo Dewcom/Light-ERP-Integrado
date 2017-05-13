@@ -15,35 +15,38 @@
                              <em class="fa fa-print"></em>
                           </span>Imprimir
                         </button>
-                        <button type="button" ng-click="controller.cloneBill(currentBill)" class="btn btn-labeled btn-info pull-left ml">
+                        <button type="button" ng-click="controller.cloneBill(currentBill)"
+                                class="btn btn-labeled btn-info pull-left ml">
                           <span class="btn-label">
                              <em class="fa fa-copy"></em>
                           </span>Clonar
                         </button>
-                        <button type="button" ng-click="controller.goBack()" class="btn btn-labeled btn-info pull-left ml">
+                        <button type="button" ng-click="controller.goBack()"
+                                class="btn btn-labeled btn-info pull-left ml">
                           <span class="btn-label">
                              <em class="fa fa-mail-reply"></em>
                           </span>Regresar
                         </button>
-                        <button ng-show="currentBill.billNumber == null" type="button" ng-click="controller.disableBill(currentBill.id)" class="btn btn-labeled btn-danger pull-right">
+                        <button ng-show="currentBill.billNumber == null" type="button"
+                                ng-click="controller.disableBill(currentBill.id)"
+                                class="btn btn-labeled btn-danger pull-right">
                           <span class="btn-label">
                              <em class="fa fa-times"></em>
                           </span>Eliminar
                         </button>
-                        <button ng-show="currentBill.billNumber == null" type="button" ui-sref="app.updateBill({billId: currentBill.id})" class="btn btn-labeled btn-warning pull-right mr">
+                        <button ng-show="currentBill.billNumber == null" type="button"
+                                ui-sref="app.updateBill({billId: currentBill.id})"
+                                class="btn btn-labeled btn-warning pull-right mr">
                           <span class="btn-label">
                              <em class="fa fa-times"></em>
                           </span>Modificar
                         </button>
-                        <button ng-show="currentBill.billState.description == 'Validada'" type="button" ng-click="controller.voidBill(currentBill.id)" class="btn btn-labeled btn-danger pull-right">
+                        <button ng-show="currentBill.billState.description == 'Validada'" type="button"
+                                ng-click="controller.voidBill(currentBill)"
+                                class="btn btn-labeled btn-danger pull-right">
                           <span class="btn-label">
                              <em class="fa fa-times"></em>
                           </span>Anular
-                        </button>
-                        <button ng-show="currentBill.billState.description == 'Validada'" type="button" ng-click="controller.makePayment(currentBill.id)" class="btn btn-labeled btn-success pull-right mr">
-                          <span class="btn-label">
-                             <em class="fa fa-money"></em>
-                          </span>Emitir pago
                         </button>
                     </div>
                 </div>
@@ -51,7 +54,8 @@
                 <uib-tab-heading>DETALLES</uib-tab-heading>
                 <div class="panel">
                     <div class="panel-body">
-                        <h3 class="mt0" ng-if="currentBill.billNumber != null">{{"Factura # " + currentBill.billNumber}}</h3>
+                        <h3 class="mt0" ng-if="currentBill.billNumber != null">{{"Factura # " +
+                            currentBill.billNumber}}</h3>
                         <h3 class="mt0" ng-if="currentBill.billNumber == null">{{"B" + currentBill.id }}</h3>
                         <hr/>
                         <div class="row mb-lg">
@@ -61,9 +65,11 @@
                                         <em class="fa fa-user fa-4x text-muted"></em>
                                     </div>
                                     <div class="col-md-10">
-                                        <h4>{{currentBill.customer.name + " " + currentBill.customer.firstLastName + " " + currentBill.customer.secondLastName}}</h4>
+                                        <h4>{{currentBill.customer.name + " " + currentBill.customer.firstLastName + " "
+                                            + currentBill.customer.secondLastName}}</h4>
                                         <address></address>
-                                        {{currentBill.address.district.name + ", " + currentBill.address.canton.name}}<br/>
+                                        {{currentBill.address.district.name + ", " +
+                                        currentBill.address.canton.name}}<br/>
                                         {{currentBill.address.province.name}}<br/>
                                         {{currentBill.address.address}}
                                     </div>
@@ -75,7 +81,9 @@
                                         <em class="fa fa-phone fa-4x text-muted"></em>
                                     </div>
                                     <div class="col-md-10">
-                                        <h4>{{currentBill.customer.contacts[0].name + " " + currentBill.customer.contacts[0].firstLastName + " " + currentBill.customer.contacts[0].secondLastName }}</h4>
+                                        <h4>{{currentBill.customer.contacts[0].name + " " +
+                                            currentBill.customer.contacts[0].firstLastName + " " +
+                                            currentBill.customer.contacts[0].secondLastName }}</h4>
                                         <address></address>
                                         {{currentBill.customer.contacts[0].phoneNumber1}}<br/>
                                         {{currentBill.customer.contacts[0].mobile}}<br/>
@@ -89,8 +97,10 @@
                             <div class="col-lg-4 col-xs-12 pv">
                                 <div class="clearfix">
                                     <p class="pull-left">FACTURA NO.</p>
-                                    <p class="pull-right mr" ng-if="currentBill.billNumber != null">{{currentBill.billNumber}}</p>
-                                    <p class="pull-right mr" ng-if="currentBill.billNumber == null">{{"B" + currentBill.id }}</p>
+                                    <p class="pull-right mr" ng-if="currentBill.billNumber != null">
+                                        {{currentBill.billNumber}}</p>
+                                    <p class="pull-right mr" ng-if="currentBill.billNumber == null">{{"B" +
+                                        currentBill.id }}</p>
                                 </div>
                                 <div class="clearfix">
                                     <p class="pull-left">Fecha de facturación</p>
@@ -120,14 +130,30 @@
                                     <td>{{billDetail.product.productCode}}</td>
                                     <td>{{billDetail.product.name}}</td>
                                     <td>{{billDetail.quantity}}</td>
-                                    <td ng-if="billDetail.currency.currencyCode == 3">{{ billDetail.totalTaxAmount | currency : "$" : 2}}</td>
-                                    <td ng-if="billDetail.currency.currencyCode != 3">{{ billDetail.totalTaxAmount | currency : "₡" : 2}}</td>
-                                    <td ng-if="billDetail.currency.currencyCode == 3">{{ billDetail.totalDiscount | currency : "$" : 2}}</td>
-                                    <td ng-if="billDetail.currency.currencyCode != 3">{{ billDetail.totalDiscount | currency : "₡" : 2}}</td>
-                                    <td ng-if="billDetail.currency.currencyCode == 3">{{ billDetail.subTotal | currency : "$" : 2}}</td>
-                                    <td ng-if="billDetail.currency.currencyCode != 3">{{ billDetail.subTotal | currency : "₡" : 2}}</td>
-                                    <td class="text-right" ng-if="billDetail.currency.currencyCode == 3">{{ billDetail.total | currency : "$" : 2}}</td>
-                                    <td class="text-right" ng-if="billDetail.currency.currencyCode != 3">{{ billDetail.total | currency : "₡" : 2}}</td>
+                                    <td ng-if="billDetail.currency.currencyCode == 3">{{ billDetail.totalTaxAmount |
+                                        currency : "$" : 2}}
+                                    </td>
+                                    <td ng-if="billDetail.currency.currencyCode != 3">{{ billDetail.totalTaxAmount |
+                                        currency : "₡" : 2}}
+                                    </td>
+                                    <td ng-if="billDetail.currency.currencyCode == 3">{{ billDetail.totalDiscount |
+                                        currency : "$" : 2}}
+                                    </td>
+                                    <td ng-if="billDetail.currency.currencyCode != 3">{{ billDetail.totalDiscount |
+                                        currency : "₡" : 2}}
+                                    </td>
+                                    <td ng-if="billDetail.currency.currencyCode == 3">{{ billDetail.subTotal | currency
+                                        : "$" : 2}}
+                                    </td>
+                                    <td ng-if="billDetail.currency.currencyCode != 3">{{ billDetail.subTotal | currency
+                                        : "₡" : 2}}
+                                    </td>
+                                    <td class="text-right" ng-if="billDetail.currency.currencyCode == 3">{{
+                                        billDetail.total | currency : "$" : 2}}
+                                    </td>
+                                    <td class="text-right" ng-if="billDetail.currency.currencyCode != 3">{{
+                                        billDetail.total | currency : "₡" : 2}}
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -136,23 +162,31 @@
                             <div class="col-sm-offset-8 col-sm-4 pv">
                                 <div class="clearfix">
                                     <p class="pull-left">Subtotal</p>
-                                    <p class="pull-right mr" ng-if="currentBill.currency.currencyCode == 3">{{ currentBill.subTotalAmount | currency : "$" : 2}}</p>
-                                    <p class="pull-right mr" ng-if="currentBill.currency.currencyCode != 3">{{ currentBill.subTotalAmount | currency : "₡" : 2}}</p>
+                                    <p class="pull-right mr" ng-if="currentBill.currency.currencyCode == 3">{{
+                                        currentBill.subTotalAmount | currency : "$" : 2}}</p>
+                                    <p class="pull-right mr" ng-if="currentBill.currency.currencyCode != 3">{{
+                                        currentBill.subTotalAmount | currency : "₡" : 2}}</p>
                                 </div>
                                 <div class="clearfix">
                                     <p class="pull-left">Total de descuentos</p>
-                                    <p class="pull-right mr" ng-if="currentBill.currency.currencyCode == 3">{{ currentBill.totalDiscount | currency : "$" : 2}}</p>
-                                    <p class="pull-right mr" ng-if="currentBill.currency.currencyCode != 3">{{ currentBill.totalDiscount | currency : "₡" : 2}}</p>
+                                    <p class="pull-right mr" ng-if="currentBill.currency.currencyCode == 3">{{
+                                        currentBill.totalDiscount | currency : "$" : 2}}</p>
+                                    <p class="pull-right mr" ng-if="currentBill.currency.currencyCode != 3">{{
+                                        currentBill.totalDiscount | currency : "₡" : 2}}</p>
                                 </div>
                                 <div class="clearfix">
                                     <p class="pull-left">Total de impuestos</p>
-                                    <p class="pull-right mr" ng-if="currentBill.currency.currencyCode == 3">{{ currentBill.totalTaxAmount | currency : "$" : 2}}</p>
-                                    <p class="pull-right mr" ng-if="currentBill.currency.currencyCode != 3">{{ currentBill.totalTaxAmount | currency : "₡" : 2}}</p>
+                                    <p class="pull-right mr" ng-if="currentBill.currency.currencyCode == 3">{{
+                                        currentBill.totalTaxAmount | currency : "$" : 2}}</p>
+                                    <p class="pull-right mr" ng-if="currentBill.currency.currencyCode != 3">{{
+                                        currentBill.totalTaxAmount | currency : "₡" : 2}}</p>
                                 </div>
                                 <div class="clearfix">
                                     <p class="pull-left h3">TOTAL</p>
-                                    <p class="pull-right h3 mr" ng-if="currentBill.currency.currencyCode == 3">{{ currentBill.totalAmount | currency : "$" : 2}}</p>
-                                    <p class="pull-right h3 mr" ng-if="currentBill.currency.currencyCode != 3">{{ currentBill.totalAmount | currency : "₡" : 2}}</p>
+                                    <p class="pull-right h3 mr" ng-if="currentBill.currency.currencyCode == 3">{{
+                                        currentBill.totalAmount | currency : "$" : 2}}</p>
+                                    <p class="pull-right h3 mr" ng-if="currentBill.currency.currencyCode != 3">{{
+                                        currentBill.totalAmount | currency : "₡" : 2}}</p>
                                 </div>
                             </div>
                         </div>
@@ -164,6 +198,60 @@
             </uib-tab>
         </uib-tabset>
     </form>
+    <div class="panel panel-default" ng-show="currentBill.billState.id == 2">
+        <div class="panel-body">
+            <div>
+                <div class="col-md-12 dataTableTop">
+                    <div class="col-md-9">
+                        <h3>Lista de pagos</h3>
+                    </div>
+                    <div ng-click="controller.open('lg')" class="pull-right">
+                        <button ng-show="currentBill.billState.description == 'Validada'" type="button"
+                                ng-click="controller.makePayment(currentBill.id)"
+                                class="btn btn-labeled btn-success">
+                          <span class="btn-label">
+                             <em class="fa fa-money"></em>
+                          </span>Emitir pago
+                        </button>
+                    </div>
+                </div>
+                <table datatable="ng" dt-options="controller.dtOptions" dt-column-defs="controller.dtColumnDefs"
+                       class="row-border hover">
+                    <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Identificación</th>
+                        <th>Teléfono</th>
+                        <th>Correo electrónico</th>
+                        <th>Opciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="customerObj in controller.customerList">
+                        <td ng-if="customerObj.firstLastName == null">{{ customerObj.name }}</td>
+                        <td ng-if="customerObj.firstLastName != null">{{ customerObj.name + ' ' +
+                            customerObj.firstLastName + ' ' + customerObj.secondLastName}}
+                        </td>
+                        <td>{{ customerObj.identification }}</td>
+                        <td>{{ customerObj.phoneNumber1 }}</td>
+                        <td ng-if="customerObj.email == null">**SIN CORREO**</td>
+                        <td ng-if="customerObj.email != null">{{ customerObj.email }}</td>
+                        <td>
+                            <button type="button" ui-sref="app.customerDetail({customerId: customerObj.id})"
+                                    class="btn btn-sm btn-toolbar">
+                                <em class="fa fa-search"></em>
+                            </button>
+                            <button type="button" ng-click="controller.disableCustomer(customerObj.id)"
+                                    class="btn btn-sm btn-danger">
+                                <em class="fa fa-trash-o"></em>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
     <toaster-container
             toaster-options="{'position-class': 'toast-bottom-right', 'close-button':true}"></toaster-container>
     <script type="text/ng-template" id="voidBillModal">

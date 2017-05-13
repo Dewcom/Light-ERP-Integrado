@@ -166,7 +166,6 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
 
     //REGRESA A LA PANTALLA DE DETALLE DE FACTURAS
     vm.goBack = function () {
-        console.log(vm.currentBill.id);
         var params = {billId: vm.currentBill.id}
         $state.go('app.billDetail', params);
     };
@@ -308,15 +307,6 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
         });
 
 
-    };
-
-    /**=========================================================
-     * Clonar facturas
-     =========================================================*/
-
-    vm.cloneBill = function (billToClone) {
-        console.log(billToClone);
-        console.log("################");
     };
 
     /**=========================================================

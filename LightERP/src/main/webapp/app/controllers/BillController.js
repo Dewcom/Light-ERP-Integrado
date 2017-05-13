@@ -186,12 +186,12 @@
             ];
 
             /**=========================================================
-             * Datatable productos agregados
+             * Datatable lista de facturas
              =========================================================*/
 
             vm.dtOptionsBills = DTOptionsBuilder.newOptions()
                 .withPaginationType('full_numbers')
-                .withOption('order', [3 , 'desc'])
+                .withOption('order', [1 , 'desc'])
                 .withLanguage(language);
             vm.dtColumnDefsBills = [
                 DTColumnDefBuilder.newColumnDef(0),
@@ -389,7 +389,6 @@
             }, function (error) {
                 console.log(error);
             });
-
 
         };
 

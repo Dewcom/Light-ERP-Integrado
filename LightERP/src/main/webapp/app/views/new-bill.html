@@ -28,7 +28,8 @@
                         <input type="text" uib-datepicker-popup="{{controller.format}}" ng-model="controller.billDate"
                                is-open="controller.opened" min-date="controller.minDate" max-date="'2020-12-31'"
                                datepicker-options="controller.dateOptions" popup-placement="top" ng-required="true"
-                               current-text="Hoy" clear-text="Limpiar" close-text="Salir" class="form-control" onkeydown="return false"/>
+                               current-text="Hoy" clear-text="Limpiar" close-text="Salir" class="form-control"
+                               onkeydown="return false"/>
                     </p>
                 </div>
                 <div class="panel-heading bb">
@@ -75,14 +76,14 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <p ng-show="controller.billDate != null && controller.chosenCustomer.name != null">
-                        <button type="button" class="btn btn-primary btn-block"
+                    <p ng-show="controller.billDate != null && controller.paymentType != null">
+                        <button ng-hide="controller.paymentType == 1" type="button" class="btn btn-primary btn-block"
                                 ng-click="controller.submitForm('add', 'saved')">
                             Guardar
                         </button>
                         <button type="button" class="btn btn-primary btn-block"
                                 ng-click="controller.submitForm('add', 'validated')">
-                            Aplicar
+                            Validar
                         </button>
                     </p>
                 </div>
@@ -267,7 +268,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-3" ng-hide="controller.paymentType == 1 || controller.paymentType == null ">
+                                    <div class="col-lg-3"
+                                         ng-hide="controller.paymentType == 1 || controller.paymentType == null ">
                                         <div class="form-group">
                                             <label>Condición de crédito</label>
                                             <div class="controls">

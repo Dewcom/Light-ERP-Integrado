@@ -252,8 +252,8 @@
                                         <div class="form-group">
                                             <label>Condición de crédito</label>
                                             <div class="controls">
-                                                <select name="controller.creditCondition"
-                                                        ng-model="controller.creditCondition"
+                                                <select name="controller.currentBill.creditCondition.id"
+                                                        ng-model="controller.currentBill.creditCondition.id"
                                                         ng-options="item.id as item.description for item in controller.creditConditionList"
                                                         class="form-control" ng-disabled="controller.paymentType == 1">
                                                 </select>

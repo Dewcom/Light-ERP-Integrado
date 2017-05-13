@@ -221,14 +221,14 @@ angular
             return disableBillResult;
         };
 
-        billService.voidBill = function (billId) {
+        billService.voidBill = function (bill) {
 
 
             var voidBillResult = $http({
-                method: 'DELETE',
-                url: 'http://localhost:8080/api/bill/delete',
+                method: 'PUT',
+                url: 'http://localhost:8080/api/bill/' + bill.billId,
                 data: {
-                    id: billId
+                    id: bill
                 },
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'

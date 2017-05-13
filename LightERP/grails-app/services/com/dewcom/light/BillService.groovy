@@ -160,8 +160,8 @@ class BillService {
                     }
                 }
 
-                if(argUpdateBillRequest.billStateId != null){
-                    def tmpState = BillStateType.get(argUpdateBillRequest.billStateId)
+                if(argUpdateBillRequest.billState != null){
+                    def tmpState = BillStateType.get(argUpdateBillRequest.billState)
                     tmpBillToUpdate.billState = tmpState
                     if(tmpState.code == Constants.FACTURA_VALIDADA){
                         if(tmpBillToUpdate.billNumber == null){
