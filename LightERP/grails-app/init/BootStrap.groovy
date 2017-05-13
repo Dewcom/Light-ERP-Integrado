@@ -110,7 +110,7 @@ class BootStrap {
             returnArray['subTotal'] = it.subTotal
             returnArray['total'] = it.total
             returnArray['enabled'] = it.enabled
-            returnArray['product'] = ["id": it.product.id, "productCode": it.product.productCode, "productName": it.product.name]
+            returnArray['product'] = ["id": it.product.id, "productCode": it.product.productCode, "name": it.product.name]
 
             return returnArray
         }

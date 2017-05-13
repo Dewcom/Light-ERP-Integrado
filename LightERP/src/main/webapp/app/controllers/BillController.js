@@ -186,7 +186,7 @@
             ];
 
             /**=========================================================
-             * Datatable lista de facturas
+             * Datatable productos agregados
              =========================================================*/
 
             vm.dtOptionsBills = DTOptionsBuilder.newOptions()
