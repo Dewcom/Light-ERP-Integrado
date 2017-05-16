@@ -54,21 +54,24 @@ class PaymentService {
             if(tmpTotalPaymentsAmount == 0.0D){
                 tmpBill.billState = BillStateType.findByCode(Constants.FACTURA_PAGADA_PARCIAL)
             }
-
-            billService.updateBill(tmpBill)
-
+            //actualizamos el objeto bill
+            tmpBill.save()
             pPayment.save(flush: true, failOnError: true)
         } catch (Exception e) {
             log.error(e);
-            throw new LightRuntimeException(messageSource.getMessage("create.payment.error", null, Locale.default));
+            if(e instanceof LightRuntimeException ){
+                throw e;
+            }
+            else{
+                throw new LightRuntimeException(messageSource.getMessage("create.payment.error", null, Locale.default));
+            }
         }
     }
 
     def deletePayment(Payment pPayment) {
         log.info "====== Deleting payment ======"
         try {
-            pPayment.enabled = Constants.ESTADO_INACTIVO;
-            pPayment.save(flush: true)
+            pPayment.delete(flush: true)
         } catch (Exception e) {
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("delete.payment.error", null, Locale.default));

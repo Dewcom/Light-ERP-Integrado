@@ -26,7 +26,8 @@ class PaymentController extends  RestController {
         ResponseREST tmpResponse = new ResponseREST();
 
         try {
-            def tmpId = params.id
+           def tmpId = params.long('paymentId')
+            log.info tmpId
 
             if (tmpId) {
                 Payment tmpPayment = paymentService.getPayment(tmpId);
@@ -64,7 +65,7 @@ class PaymentController extends  RestController {
 
         ResponseREST tmpResponse = new ResponseREST();
         Payment tmpPayment;
-        PaymentREST tmpRestPayment = new Payment(request.JSON.payment);
+        PaymentREST tmpRestPayment = new PaymentREST(request.JSON.payment);
         try {
 
             tmpRestPayment.validate();
@@ -97,7 +98,7 @@ class PaymentController extends  RestController {
 
         ResponseREST tmpResponse = new ResponseREST();
         try {
-            def tmpId = params.id
+            def tmpId = params.long('paymentId')
             if (tmpId != null) {
                 Payment tmpPayment = paymentService.getPayment(tmpId);
 

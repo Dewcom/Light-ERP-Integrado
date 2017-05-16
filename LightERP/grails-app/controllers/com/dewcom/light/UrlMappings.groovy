@@ -18,6 +18,7 @@ class UrlMappings {
         get "/api/bill/billNumber"(controller: 'bill', action: 'generateBillNumber')
         post "/api/bill"(controller: 'bill', action: 'create')
         put "/api/bill/$billId"(controller: 'bill', action: 'update')
+        get "/api/bill"(controller: 'bill', action: 'get')
         //payments
         put "/api/payment/$paymentId"(controller: 'payment', action: 'update')
         post "/api/payment"(controller: 'payment', action: 'create')

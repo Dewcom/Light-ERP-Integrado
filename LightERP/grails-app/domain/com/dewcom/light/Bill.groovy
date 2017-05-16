@@ -23,6 +23,10 @@ class Bill {
     static hasMany = [billDetails: BillDetail, payments:Payment]
     static belongsTo = [Customer]
 
+    static mapping = {
+        billDetails cascade: "all-delete-orphan"
+    }
+
     static constraints = {
         billDate  nullable: true
         user  nullable: true
