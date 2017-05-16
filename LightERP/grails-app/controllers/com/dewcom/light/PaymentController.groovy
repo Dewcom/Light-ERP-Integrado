@@ -135,6 +135,7 @@ class PaymentController extends  RestController {
         ResponseREST tmpResponse = new ResponseREST();
         UpdatePaymentRequestREST tmpPayment = new UpdatePaymentRequestREST(request.JSON.payment);
         try {
+            tmpPayment.id = params.long('paymentId')
             tmpPayment.validate();
             if (tmpPayment.hasErrors()) {
                 this.handleDataErrorsREST(messageSource, tmpPayment.errors);
