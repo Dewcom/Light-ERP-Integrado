@@ -406,4 +406,67 @@ class AdminService {
         }
     }
 
+    //static reference values
+    def  createBillStateType(def pJSON) {
+        try {
+            def tmpBillState = new BillStateType(pJSON)
+            tmpBillState.save(flush: true)
+        } catch (Exception e) {
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("create.constantReference.error", null, Locale.default));
+        }
+    }
+
+    def  createPaymentType(def pJSON) {
+        try {
+            def paymentType = new BillPaymentType(pJSON)
+            paymentType.save(flush: true)
+        } catch (Exception e) {
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("create.constantReference.error", null, Locale.default));
+        }
+    }
+
+
+    def  createCurrency(def pJSON) {
+        try {
+            def tmpCurrency = new Currency(pJSON)
+           tmpCurrency.save(flush: true)
+        } catch (Exception e) {
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("create.constantReference.error", null, Locale.default));
+        }
+    }
+
+
+
+    def  createCreditCondition(def pJSON) {
+        try {
+            def creditCondition = new CreditCondition(pJSON)
+            creditCondition.save(flush: true)
+        } catch (Exception e) {
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("create.constantReference.error", null, Locale.default));
+        }
+    }
+
+
+    def  createExchangeRate(def pJSON) {
+        try {
+            def tmpExRate = new ExchangeRate()
+            def currency = Currency.get(pJSON.currencyId)
+
+            if(!currency){
+                throw new LightRuntimeException(messageSource.getMessage("currency.dontExists.error", null, Locale.default));
+            }
+            tmpExRate.code = pJSON.code
+            tmpExRate.description = pJSON.description
+            tmpExRate.value = pJSON.value
+            tmpExRate.save(flush: true)
+        } catch (Exception e) {
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("create.constantReference.error", null, Locale.default));
+        }
+    }
+
 }

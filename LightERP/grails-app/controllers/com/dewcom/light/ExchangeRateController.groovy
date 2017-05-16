@@ -6,7 +6,7 @@ import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 
 class ExchangeRateController extends RestController {
-    static allowedMethods = [get: "GET"]
+    static allowedMethods = [get: "GET", create: "POST"]
     def messageSource
     def adminService
 
@@ -38,6 +38,20 @@ class ExchangeRateController extends RestController {
                 tmpResponse.data = exchangeRatesFromDB
             }
             log.info "====== Get exchange rate response ======"
+            log.info tmpResponse as JSON
+            render tmpResponse as JSON
+        } catch (Exception e) {
+            this.handleRESTExceptions(messageSource, e)
+        }
+    }
+
+    @Secured(['ROLE_ANONYMOUS'])
+    def create() {
+        ResponseREST tmpResponse = new ResponseREST();
+        try {
+            adminService.createExchangeRate(request.JSON);
+            tmpResponse.message = messageSource.getMessage("generic.create.success", null, Locale.default);
+            tmpResponse.code = Constants.SUCCESS_RESPONSE
             log.info tmpResponse as JSON
             render tmpResponse as JSON
         } catch (Exception e) {
