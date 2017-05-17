@@ -88,8 +88,8 @@ angular
                     } while (provinceNotFound);
 
                 }).catch(function (e) {
-                    console.log(e);
                 });
+                    console.log(e);
 
 
                 $resource('server/location/cantones.json').query().$promise.then(function (data) {
@@ -247,7 +247,7 @@ angular
 
             var paymentTypeList = $http({
                 method: 'GET',
-                url: 'http://localhost:8080/api/billPaymentType/get',
+                url: 'http://localhost:8080/api/billPaymentType',
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
@@ -265,7 +265,7 @@ angular
 
             var currencyList = $http({
                 method: 'GET',
-                url: 'http://localhost:8080/api/currency/get',
+                url: 'http://localhost:8080/api/currency',
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
@@ -283,7 +283,7 @@ angular
 
             var creditConditionList = $http({
                 method: 'GET',
-                url: 'http://localhost:8080/api/creditCondition/get',
+                url: 'http://localhost:8080/api/creditCondition',
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
@@ -301,7 +301,7 @@ angular
 
             var exchangeRateList = $http({
                 method: 'GET',
-                url: 'http://localhost:8080/api/exchangeRate/get',
+                url: 'http://localhost:8080/api/exchangeRate',
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
