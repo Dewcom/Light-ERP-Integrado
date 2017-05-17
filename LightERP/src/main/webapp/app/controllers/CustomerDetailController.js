@@ -134,8 +134,8 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
         var updatedCustomer = {
             "id" : $scope.currentCustomer.id,
             "name": $scope.currentCustomer.name,
-            "firstLastName": $scope.currentCustomer.firstLastName,
-            "secondLastName": $scope.currentCustomer.secondLastName,
+            "firstLastName": $scope.currentCustomer.firstLastName != null ? vm.firstLastName : "" ,
+            "secondLastName": $scope.currentCustomer.secondLastName != null ? vm.secondLastName : "" ,
             "identification": $scope.currentCustomer.identification,
             "addresses": formatAddreses(),
             "phoneNumber1": $scope.currentCustomer.phoneNumber1,

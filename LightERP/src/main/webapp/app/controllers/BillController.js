@@ -351,7 +351,7 @@
             var newBill = {
                 "userName": userInfo.userName,
                 "customerId": vm.chosenCustomer.id,
-                "exchangeRate": vm.exchangeRate,
+                "exchangeRate": parseFloat(vm.exchangeRate),
                 "billPaymentTypeId": vm.paymentType,
                 "creditConditionId": vm.creditCondition,
                 "currencyId": vm.currency,

@@ -88,8 +88,8 @@ angular
                     } while (provinceNotFound);
 
                 }).catch(function (e) {
-                });
                     console.log(e);
+                });
 
 
                 $resource('server/location/cantones.json').query().$promise.then(function (data) {

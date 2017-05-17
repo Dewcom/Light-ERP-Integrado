@@ -138,8 +138,8 @@
 
             var newCustomer = {
                 "name": vm.name,
-                "firstLastName": vm.firstLastName,
-                "secondLastName": vm.secondLastName,
+                "firstLastName": vm.firstLastName != null ? vm.firstLastName : "" ,
+                "secondLastName": vm.secondLastName != null ? vm.secondLastName : "" ,
                 "identification": vm.identification,
                 "addresses": formatAddreses(),
                 "phoneNumber1": vm.phoneNumber1,
