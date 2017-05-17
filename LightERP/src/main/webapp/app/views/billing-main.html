@@ -41,7 +41,7 @@
                         <button type="button" ui-sref="app.billDetail({billId: billObj.id})" class="btn btn-sm btn-toolbar">
                             <em class="fa fa-search"></em>
                         </button>
-                        <button ng-disabled="billObj.billState.id == 2" type="button" ng-click="controller.disableBill(billObj.id)"
+                        <button ng-disabled="billObj.billState.code != 1" type="button" ng-click="controller.disableBill(billObj.id)"
                                 class="btn btn-sm btn-danger">
                             <em class="fa fa-trash-o"></em>
                         </button>

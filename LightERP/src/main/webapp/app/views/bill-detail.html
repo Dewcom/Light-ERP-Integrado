@@ -198,7 +198,7 @@
             </uib-tab>
         </uib-tabset>
     </form>
-    <div class="panel panel-default" ng-show="currentBill.billState.id == 2">
+    <div class="panel panel-default" ng-show="currentBill.billState.code == 2 || currentBill.billState.code == 3">
         <div class="panel-body">
             <div>
                 <div class="col-md-12 dataTableTop">
@@ -206,7 +206,7 @@
                         <h3>Lista de pagos</h3>
                     </div>
                     <div ng-click="controller.open('lg')" class="pull-right">
-                        <button ng-show="currentBill.billState.description == 'Validada'" type="button"
+                        <button ng-show="currentBill.billState.code == '2' || currentBill.billState.code == '3'" type="button"
                                 ng-click="controller.makePayment(currentBill.id)"
                                 class="btn btn-labeled btn-success">
                           <span class="btn-label">
