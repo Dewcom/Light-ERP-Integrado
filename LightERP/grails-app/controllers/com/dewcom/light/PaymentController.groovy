@@ -59,7 +59,7 @@ class PaymentController extends  RestController {
      * @param name
      */
     @Secured(['ROLE_ANONYMOUS'])
-    def create() {
+        def create() {
         log.info "==========  Create payment request =========="
         log.info request.JSON
 

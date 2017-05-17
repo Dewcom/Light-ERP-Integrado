@@ -83,6 +83,19 @@ class PaymentService {
         try {
             Payment tmpPaymentToUpdate = Payment.findByIdAndEnabled(pPaymentREST.id, Constants.ESTADO_ACTIVO)
             if (tmpPaymentToUpdate) {
+                def tmpBill = tmpPaymentToUpdate.bill
+                def billPayments = tmpBill.payments
+                def tmpTotalPaymentsAmount = !billPayments ? 0.0D : billPayments.sum { it.amount };
+
+                if(tmpPaymentToUpdate.amount + tmpTotalPaymentsAmount > tmpBill.totalAmount){
+                    throw new LightRuntimeException(messageSource.getMessage("create.payment.amount.greater.error", null, Locale.default));
+                }
+                else if(tmpBill.totalAmount == tmpTotalPaymentsAmount+tmpPaymentToUpdate.amount ){
+                    tmpBill.billState = BillStateType.findByCode(Constants.FACTURA_PAGADA)
+                }
+
+                //actualizamos el objeto bill
+                tmpBill.save()
 
                 tmpPaymentToUpdate.amount = pPaymentREST.amount;
                 tmpPaymentToUpdate.observation = pPaymentREST.observation;
