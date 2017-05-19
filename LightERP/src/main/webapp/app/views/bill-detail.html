@@ -207,7 +207,7 @@
                     </div>
                     <div ng-click="controller.open('lg')" class="pull-right">
                         <button ng-show="currentBill.billState.description == 'Validada'" type="button"
-                                ng-click="controller.makePayment(currentBill.id)"
+                                ng-click="controller.openPaymentModal(currentBill)"
                                 class="btn btn-labeled btn-success">
                           <span class="btn-label">
                              <em class="fa fa-money"></em>
@@ -219,29 +219,27 @@
                        class="row-border hover">
                     <thead>
                     <tr>
-                        <th>Nombre</th>
-                        <th>Identificación</th>
-                        <th>Teléfono</th>
-                        <th>Correo electrónico</th>
+                        <th>Monto</th>
+                        <th>Banco</th>
+                        <th>Comprobante</th>
+                        <th>Observaciones</th>
                         <th>Opciones</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="customerObj in controller.customerList">
-                        <td ng-if="customerObj.firstLastName == null">{{ customerObj.name }}</td>
-                        <td ng-if="customerObj.firstLastName != null">{{ customerObj.name + ' ' +
-                            customerObj.firstLastName + ' ' + customerObj.secondLastName}}
-                        </td>
-                        <td>{{ customerObj.identification }}</td>
-                        <td>{{ customerObj.phoneNumber1 }}</td>
-                        <td ng-if="customerObj.email == null">**SIN CORREO**</td>
-                        <td ng-if="customerObj.email != null">{{ customerObj.email }}</td>
+                    <tr ng-repeat="paymentObj in currentBill.paymentList">
+                        <td ng-if="paymentObj.bank == null">**SIN BANCO**</td>
+                        <td ng-if="paymentObj.bank != null">{{ paymentObj.email }}</td>
+                        <td ng-if="paymentObj.bankReceipt == null">**SIN COMPROBANTE**</td>
+                        <td ng-if="paymentObj.bankReceipt != null">{{ paymentObj.email }}</td>
+                        <td ng-if="paymentObj.observation == null">**SIN OBSERVACIONES**</td>
+                        <td ng-if="paymentObj.observation != null">{{ paymentObj.email }}</td>
                         <td>
-                            <button type="button" ui-sref="app.customerDetail({customerId: customerObj.id})"
+                            <button type="button" ng-click="controller.openUpdatePaymentModal(paymentObj)"
                                     class="btn btn-sm btn-toolbar">
                                 <em class="fa fa-search"></em>
                             </button>
-                            <button type="button" ng-click="controller.disableCustomer(customerObj.id)"
+                            <button type="button" ng-click="controller.deletePayment(currentBill)"
                                     class="btn btn-sm btn-danger">
                                 <em class="fa fa-trash-o"></em>
                             </button>
@@ -264,4 +262,5 @@
             </div>
         </div>
     </script>
+    <div ng-include="'app/views/modals/make-payment-modal.html'"></div>
 </div>

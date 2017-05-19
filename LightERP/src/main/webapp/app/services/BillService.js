@@ -315,5 +315,23 @@ angular
             return exchangeRateList;
         };
 
+        billService.makePayment = function (newPayment) {
+
+            var exchangeRateList = $http({
+                method: 'GET',
+                url: 'http://localhost:8080/api/exchangeRate/get',
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            }).then(function (response) {
+                return response.data.data;
+            }, function (error) {
+                console.log(error);
+                return error.status;
+            });
+
+            return exchangeRateList;
+        };
+
         return billService;
     });

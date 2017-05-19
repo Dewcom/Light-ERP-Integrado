@@ -64,7 +64,7 @@ class PaymentController extends  RestController {
 
         ResponseREST tmpResponse = new ResponseREST();
         Payment tmpPayment;
-        PaymentREST tmpRestPayment = new Payment(request.JSON.payment);
+        PaymentREST tmpRestPayment = new PaymentREST(request.JSON.payment);
         try {
 
             tmpRestPayment.validate();
