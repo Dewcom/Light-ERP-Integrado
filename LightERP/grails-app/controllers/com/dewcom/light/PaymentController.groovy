@@ -26,7 +26,8 @@ class PaymentController extends  RestController {
         ResponseREST tmpResponse = new ResponseREST();
 
         try {
-            def tmpId = params.id
+           def tmpId = params.long('paymentId')
+            log.info tmpId
 
             if (tmpId) {
                 Payment tmpPayment = paymentService.getPayment(tmpId);
@@ -58,7 +59,7 @@ class PaymentController extends  RestController {
      * @param name
      */
     @Secured(['ROLE_ANONYMOUS'])
-    def create() {
+        def create() {
         log.info "==========  Create payment request =========="
         log.info request.JSON
 
@@ -97,7 +98,7 @@ class PaymentController extends  RestController {
 
         ResponseREST tmpResponse = new ResponseREST();
         try {
-            def tmpId = params.id
+            def tmpId = params.long('paymentId')
             if (tmpId != null) {
                 Payment tmpPayment = paymentService.getPayment(tmpId);
 
@@ -134,6 +135,7 @@ class PaymentController extends  RestController {
         ResponseREST tmpResponse = new ResponseREST();
         UpdatePaymentRequestREST tmpPayment = new UpdatePaymentRequestREST(request.JSON.payment);
         try {
+            tmpPayment.id = params.long('paymentId')
             tmpPayment.validate();
             if (tmpPayment.hasErrors()) {
                 this.handleDataErrorsREST(messageSource, tmpPayment.errors);

@@ -6983,3 +6983,46 @@ label + .form-control + .parsley-errors-list + .form-control-feedback {
     margin-top: 18px;
     margin-bottom: 30px;
 }
+
+
+@media print {
+  .notPrintable, footer, em /*#printSection *:not(table):not(thead):not(tbody):not(tr):not(td):not(th)*/{
+     display: none;
+     visibility:hidden;
+   }
+
+  .printable /*#printSection *:not(table):not(thead):not(tbody):not(tr):not(td):not(th)*/{
+    display: block;
+    visibility:visible;
+  }
+
+  /*
+  #printSection {
+    position:absolute;
+    left:0;
+    top:0;
+    margin-bottom:0;
+  }
+  table{
+    display:table;
+    visibility:visible;
+  }
+  thead{
+    display:table-header-group;
+    visibility:visible;
+  }
+  tbody{
+    display:table-row-group;
+    visibility:visible;
+  }
+  td, th{
+    display:table-cell;
+    visibility:visible;
+  }
+  tr{
+    display:table-row;
+    visibility:visible;
+  }
+  */
+
+}

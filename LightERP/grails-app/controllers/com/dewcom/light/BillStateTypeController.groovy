@@ -6,7 +6,7 @@ import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 
 class BillStateTypeController extends RestController {
-    static allowedMethods = [getAll: "GET"]
+    static allowedMethods = [get: "GET", create: "POST"]
     def messageSource
     def adminService
 
@@ -21,6 +21,20 @@ class BillStateTypeController extends RestController {
             tmpResponse.code = Constants.SUCCESS_RESPONSE
             tmpResponse.data = states
 
+            log.info tmpResponse as JSON
+            render tmpResponse as JSON
+        } catch (Exception e) {
+            this.handleRESTExceptions(messageSource, e)
+        }
+    }
+
+    @Secured(['ROLE_ANONYMOUS'])
+    def create() {
+        ResponseREST tmpResponse = new ResponseREST();
+        try {
+            adminService.createBillStateType(request.JSON);
+            tmpResponse.message = messageSource.getMessage("generic.create.success", null, Locale.default);
+            tmpResponse.code = Constants.SUCCESS_RESPONSE
             log.info tmpResponse as JSON
             render tmpResponse as JSON
         } catch (Exception e) {

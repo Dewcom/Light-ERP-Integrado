@@ -18,6 +18,7 @@ class UrlMappings {
         get "/api/bill/billNumber"(controller: 'bill', action: 'generateBillNumber')
         post "/api/bill"(controller: 'bill', action: 'create')
         put "/api/bill/$billId"(controller: 'bill', action: 'update')
+        get "/api/bill"(controller: 'bill', action: 'get')
         //payments
         put "/api/payment/$paymentId"(controller: 'payment', action: 'update')
         post "/api/payment"(controller: 'payment', action: 'create')
@@ -29,6 +30,12 @@ class UrlMappings {
         get "/api/billStateType"(controller: 'billStateType', action: 'getAll')
         get "/api/creditCondition"(controller: 'creditCondition', action: 'getAll')
         get "/api/currency"(controller: 'currency', action: 'getAll')
-        get "/api/exchangeRate"(controller: 'exchangeRate', action: 'getAll')
+        get "/api/exchangeRate"(controller: 'exchangeRate', action: 'get')
+
+        post "/api/billPaymentType"(controller: 'billPaymentType', action: 'create')
+        post "/api/billStateType"(controller: 'billStateType', action: 'create')
+        post "/api/creditCondition"(controller: 'creditCondition', action: 'create')
+        post "/api/currency"(controller: 'currency', action: 'create')
+        post "/api/exchangeRate"(controller: 'exchangeRate', action: 'create')
     }
 }

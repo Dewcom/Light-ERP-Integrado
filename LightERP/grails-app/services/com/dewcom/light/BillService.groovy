@@ -211,6 +211,9 @@ class BillService {
                     }
                     processRestBillDetails(tmpNewBillDetailsToAdd, tmpBillToUpdate)
                 }
+                    //luego de taggear los detalles de factura existentes a eliminar, se eliminan de la lista para reflejar dicha
+                    //eliminacion en BD
+                    tmpBillToUpdate.billDetails.removeAll { it.enabled == Constants.ESTADO_INACTIVO}
                     //se recalculan los montos luego de la edicion de detalles de factura
                     tmpBillToUpdate.totalAmount = calculateBillAmount(tmpBillToUpdate, Constants.FACTURA_TOTAL)
                     tmpBillToUpdate.subTotalAmount = calculateBillAmount(tmpBillToUpdate, Constants.FACTURA_SUBTOTAL)

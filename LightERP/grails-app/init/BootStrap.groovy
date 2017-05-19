@@ -90,11 +90,7 @@ class BootStrap {
             returnArray['billPaymentType'] = it.billPaymentType
             returnArray['currency'] = it.currency
             returnArray['creditCondition'] = it.creditCondition
-            returnArray['customer'] = ["id"            : it.customer.id, "identification": it.customer.identification,
-                                       "name"          : it.customer.name, "firstLastName": it.customer.firstLastName,
-                                       "secondLastName": it.customer.secondLastName, "contacts": it.customer.contacts,
-                                       "addresses"       : it.customer.addresses, "phoneNumber1" : it.customer.phoneNumber1,
-                                       "mobile" : it.customer.mobile]
+            returnArray['customer'] = it.customer
             return returnArray
         }
 

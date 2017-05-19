@@ -54,21 +54,24 @@ class PaymentService {
             if(tmpTotalPaymentsAmount == 0.0D){
                 tmpBill.billState = BillStateType.findByCode(Constants.FACTURA_PAGADA_PARCIAL)
             }
-
-            billService.updateBill(tmpBill)
-
+            //actualizamos el objeto bill
+            tmpBill.save()
             pPayment.save(flush: true, failOnError: true)
         } catch (Exception e) {
             log.error(e);
-            throw new LightRuntimeException(messageSource.getMessage("create.payment.error", null, Locale.default));
+            if(e instanceof LightRuntimeException ){
+                throw e;
+            }
+            else{
+                throw new LightRuntimeException(messageSource.getMessage("create.payment.error", null, Locale.default));
+            }
         }
     }
 
     def deletePayment(Payment pPayment) {
         log.info "====== Deleting payment ======"
         try {
-            pPayment.enabled = Constants.ESTADO_INACTIVO;
-            pPayment.save(flush: true)
+            pPayment.delete(flush: true)
         } catch (Exception e) {
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("delete.payment.error", null, Locale.default));
@@ -80,6 +83,19 @@ class PaymentService {
         try {
             Payment tmpPaymentToUpdate = Payment.findByIdAndEnabled(pPaymentREST.id, Constants.ESTADO_ACTIVO)
             if (tmpPaymentToUpdate) {
+                def tmpBill = tmpPaymentToUpdate.bill
+                def billPayments = tmpBill.payments
+                def tmpTotalPaymentsAmount = !billPayments ? 0.0D : billPayments.sum { it.amount };
+
+                if(tmpPaymentToUpdate.amount + tmpTotalPaymentsAmount > tmpBill.totalAmount){
+                    throw new LightRuntimeException(messageSource.getMessage("create.payment.amount.greater.error", null, Locale.default));
+                }
+                else if(tmpBill.totalAmount == tmpTotalPaymentsAmount+tmpPaymentToUpdate.amount ){
+                    tmpBill.billState = BillStateType.findByCode(Constants.FACTURA_PAGADA)
+                }
+
+                //actualizamos el objeto bill
+                tmpBill.save()
 
                 tmpPaymentToUpdate.amount = pPaymentREST.amount;
                 tmpPaymentToUpdate.observation = pPaymentREST.observation;

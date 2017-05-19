@@ -6,12 +6,12 @@ import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 
 class CurrencyController extends RestController {
-    static allowedMethods = [get: "GET"]
+    static allowedMethods = [get: "GET", create: "POST"]
     def messageSource
     def adminService
 
     @Secured(['ROLE_ANONYMOUS'])
-    def get() {
+    def getAll() {
         ResponseREST tmpResponse = new ResponseREST();
         try {
             def currencies = adminService.getAllCurrencies();
@@ -20,6 +20,20 @@ class CurrencyController extends RestController {
             tmpResponse.code = Constants.SUCCESS_RESPONSE
             tmpResponse.data = currencies
 
+            log.info tmpResponse as JSON
+            render tmpResponse as JSON
+        } catch (Exception e) {
+            this.handleRESTExceptions(messageSource, e)
+        }
+    }
+
+    @Secured(['ROLE_ANONYMOUS'])
+    def create() {
+        ResponseREST tmpResponse = new ResponseREST();
+        try {
+            adminService.createCurrency(request.JSON);
+            tmpResponse.message = messageSource.getMessage("generic.create.success", null, Locale.default);
+            tmpResponse.code = Constants.SUCCESS_RESPONSE
             log.info tmpResponse as JSON
             render tmpResponse as JSON
         } catch (Exception e) {
