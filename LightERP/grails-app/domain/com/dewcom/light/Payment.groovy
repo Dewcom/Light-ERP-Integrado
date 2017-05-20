@@ -17,7 +17,9 @@ class Payment {
     static constraints = {
         amount nullable: false
         bill nullable: false
+        bank blank: true, nullable: true
+        bankReceipt blank: true, nullable: true
+        observation  nullable: true, blank: true
     }
-
 
 }
