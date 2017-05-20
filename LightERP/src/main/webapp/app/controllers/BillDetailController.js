@@ -4,8 +4,9 @@ angular
     .module('app.bill')
     .controller('BillDetailController', BillDetailController);
 
-BillDetailController.$inject = ['$http', '$state', '$stateParams', '$scope', 'billService', '$timeout', 'ngDialog', 'toaster', '$filter'];
-function BillDetailController($http, $state, $stateParams, $scope, billService, $timeout, ngDialog, toaster, $filter) {
+BillDetailController.$inject = ['$uibModal', '$http', '$state', '$stateParams', '$scope', 'billService', '$timeout', 'ngDialog', 'toaster',
+    '$filter'];
+function BillDetailController($uibModal, $http, $state, $stateParams, $scope, billService, $timeout, ngDialog, toaster, $filter) {
     var vm = this;
 
 
@@ -66,12 +67,12 @@ function BillDetailController($http, $state, $stateParams, $scope, billService, 
             "customerId": billToClone.customer.id,
             "exchangeRate": billToClone.exchangeRate,
             "billPaymentTypeId": billToClone.billPaymentType.id,
-            "creditConditionId": billToClone.creditCondition.id != null ? billToClone.creditCondition.id :null,
+            "creditConditionId": billToClone.creditCondition.id != null ? billToClone.creditCondition.id : null,
             "currencyId": billToClone.currency.id,
             "registrationType": 0,
             "billDate": $filter('date')(new Date(), "dd-MM-yyyy"),
             "billDetails": formatBillDetails(billToClone.billDetails),
-            "billAddress" : billToClone.address.id
+            "billAddress": billToClone.address.id
         };
 
         billService.addBill(newBill).then(function (response) {
@@ -135,7 +136,7 @@ function BillDetailController($http, $state, $stateParams, $scope, billService, 
 
                 pop(toasterdata);
 
-                $timeout(function() {
+                $timeout(function () {
                     $state.go('app.billingMain');
                 }, 3000);
 
@@ -184,7 +185,7 @@ function BillDetailController($http, $state, $stateParams, $scope, billService, 
 
                 pop(toasterdata);
 
-                $timeout(function() {
+                $timeout(function () {
                     $state.go('app.billingMain');
                 }, 3000);
 
@@ -196,6 +197,113 @@ function BillDetailController($http, $state, $stateParams, $scope, billService, 
         });
     };
 
+    /**=========================================================
+     * Make payment modal
+     =========================================================*/
+
+    vm.openPaymentModal = function (billObj) {
+
+        var modalInstance = $uibModal.open({
+            templateUrl: '/makePaymentModal.html',
+            controller: MakePaymentModalInstanceCtrl,
+            size: 'md',
+            resolve: {
+                billObj: function () {
+                    return billObj;
+                }
+            },
+            backdrop: 'static', // No cierra clickeando fuera
+            keyboard: false // No cierra con escape
+        });
+
+        var state = $('#modal-state');
+        modalInstance.result.then(function () {
+            state.text('Modal dismissed with OK status');
+        }, function () {
+            state.text('Modal dismissed with Cancel status');
+        });
+    };
+
+
+    MakePaymentModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', 'billObj'];
+    function MakePaymentModalInstanceCtrl($scope, $uibModalInstance, billObj) {
+        var vm = this;
+
+        console.log(billObj);
+
+        vm.currentBill = JSON.parse(JSON.stringify(billObj));
+
+        $scope.close = function () {
+            $uibModalInstance.close('closed');
+        };
+
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+    }
+
+
+    /**=========================================================
+     * Validación de campos y patrones
+     =========================================================*/
+    vm.submitted = false;
+    vm.validateInput = function (name, type) {
+        var input = vm.paymentForm[name];
+        return (input.$dirty || vm.submitted) && input.$error[type];
+    }
+
+    // Submit form
+    vm.submitForm = function (action) {
+        vm.submitted = true;
+
+        if (vm.paymentForm.$valid) {
+            makePayment();
+        } else {
+            console.log('Not valid!!');
+            return false;
+        }
+    };
+
+    /**=========================================================
+     * Emitir pago
+     =========================================================*/
+
+    function makePayment() {
+
+        var newPayment = {
+            "billId": $scope.currentBill.id,
+            "amount": $scope.makePaymentForm.amount,
+            "bank": $scope.makePaymentForm.bank,
+            "bankReceipt": $scope.makePaymentForm.bankReceipt,
+            "observation": $scope.makePaymentForm.observation
+        };
+        console.log(newPayment);
+
+        billService.makePayment(newPayment).then(function (response) {
+            console.log(response);
+            var toasterdata;
+
+            if (response.code == "0") {
+                toasterdata = {
+                    type: 'success',
+                    title: 'Pago exitoso',
+                    text: response.message
+                };
+            } else {
+                toasterdata = {
+                    type: 'warning',
+                    title: 'Pago',
+                    text: response.message
+                };
+
+            }
+            pop(toasterdata);
+        }, function (error) {
+            console.log(error);
+        });
+
+        $scope.cancel();
+    }
 
 
     /**=========================================================
