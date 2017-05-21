@@ -318,19 +318,61 @@ angular
         billService.makePayment = function (newPayment) {
 
             var exchangeRateList = $http({
-                method: 'GET',
-                url: 'http://localhost:8080/api/exchangeRate/get',
+                method: 'POST',
+                url: 'http://localhost:8080/api/payment/create',
+                data: {
+                    payment: newPayment
+                },
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
-                return response.data.data;
+                console.log(response);
+                return response.data;
             }, function (error) {
                 console.log(error);
                 return error.status;
             });
 
             return exchangeRateList;
+        };
+
+        billService.deletePayment = function (paymentId) {
+
+            var deletePaymentResult = $http({
+                method: 'DELETE',
+                url: 'http://localhost:8080/api/payment/' + paymentId,
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            }).then(function (response) {
+                return response.data;
+            }, function (error) {
+                console.log(error);
+                return error.status;
+            });
+
+            return deletePaymentResult;
+        };
+
+        billService.updatePayment = function (updatedPayment) {
+            var updatePaymentResult = $http({
+                method: 'PUT',
+                url: 'http://localhost:8080/api/payment/' + updatedPayment.id,
+                data: {
+                    payment: updatedPayment
+                },
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            }).then(function (response) {
+                return response.data;
+            }, function (error) {
+                console.log(error);
+                return error.status;
+            });
+
+            return updatePaymentResult;
         };
 
         return billService;

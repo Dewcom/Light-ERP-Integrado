@@ -462,7 +462,8 @@ class AdminService {
             tmpExRate.code = pJSON.code
             tmpExRate.description = pJSON.description
             tmpExRate.value = pJSON.value
-            tmpExRate.save(flush: true)
+            tmpExRate.currency = currency
+            tmpExRate.save(flush: true, failOnError:true)
         } catch (Exception e) {
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("create.constantReference.error", null, Locale.default));

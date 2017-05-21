@@ -19,9 +19,9 @@ class PaymentREST implements Validateable {
 
     static constraints = {
         bank blank: true, nullable: true
-        amount  nullable: false
+        amount nullable: false
         bankReceipt blank: true, nullable: true
-        billId  nullable: false
-        observation  nullable: false
+        billId nullable: false
+        observation nullable: true
     }
 }

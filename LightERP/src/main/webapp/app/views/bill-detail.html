@@ -198,16 +198,16 @@
             </uib-tab>
         </uib-tabset>
     </form>
-    <div class="panel panel-default" ng-show="currentBill.billState.code == 2 || currentBill.billState.code == 3">
+    <div class="panel panel-default" ng-show="currentBill.billState.code != 1">
         <div class="panel-body">
             <div>
                 <div class="col-md-12 dataTableTop">
                     <div class="col-md-9">
                         <h3>Lista de pagos</h3>
                     </div>
-                    <div ng-click="controller.open('lg')" class="pull-right">
+                    <div ng-click="controller.open('lg')" class="pull-right" ng-show="currentBill.billState.code != 4">
                         <button ng-show="currentBill.billState.code == '2' || currentBill.billState.code == '3'" type="button"
-                                ng-click="controller.makePayment(currentBill.id)"
+                                ng-click="controller.openPaymentModal(currentBill)"
                                 class="btn btn-labeled btn-success">
                           <span class="btn-label">
                              <em class="fa fa-money"></em>
@@ -221,28 +221,28 @@
                     <tr>
                         <th>Monto</th>
                         <th>Banco</th>
-                        <th>Comprobante</th>
+                        <th>Recibo bancario</th>
                         <th>Observaciones</th>
-                        <th>Opciones</th>
+                        <th ng-show="currentBill.billState.code != 4">Opciones</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="paymentObj in currentBill.paymentList">
+                    <tr ng-repeat="paymentObj in currentBill.payments">
+                        <td>{{ paymentObj.amount }}</td>
                         <td ng-if="paymentObj.bank == null">**SIN BANCO**</td>
-                        <td ng-if="paymentObj.bank != null">{{ paymentObj.email }}</td>
+                        <td ng-if="paymentObj.bank != null">{{ paymentObj.bank }}</td>
                         <td ng-if="paymentObj.bankReceipt == null">**SIN COMPROBANTE**</td>
-                        <td ng-if="paymentObj.bankReceipt != null">{{ paymentObj.email }}</td>
+                        <td ng-if="paymentObj.bankReceipt != null">{{ paymentObj.bankReceipt }}</td>
                         <td ng-if="paymentObj.observation == null">**SIN OBSERVACIONES**</td>
-                        <td ng-if="paymentObj.observation != null">{{ paymentObj.email }}</td>
-                        <td>
-                            <button type="button" ng-click="controller.openUpdatePaymentModal(paymentObj)"
-                                    class="btn btn-sm btn-toolbar">
+                        <td ng-if="paymentObj.observation != null">{{ paymentObj.observation }}</td>
+                        <td ng-show="currentBill.billState.code != 4">
+                            <button type="button" ng-click="controller.openUpdatePaymentModal(paymentObj)" class="btn btn-sm btn-toolbar">
                                 <em class="fa fa-search"></em>
                             </button>
-                            <button type="button" ng-click="controller.deletePayment(currentBill)"
+                            <button type="button" ng-click="controller.deletePayment(paymentObj.id)"
                                     class="btn btn-sm btn-danger">
                                 <em class="fa fa-trash-o"></em>
-                            </button>
+                            </button >
                         </td>
                     </tr>
                     </tbody>
@@ -262,5 +262,16 @@
             </div>
         </div>
     </script>
+    <script type="text/ng-template" id="deletePaymentModal">
+    <div class="ngdialog-message text-center">
+        <h3>Eliminar pago</h3>
+        <p>¿Está seguro que desea eliminar el pago?</p>
+        <div>
+            <button type="button" ng-click="confirm(confirmValue)" class="btn btn-primary mr">Confirmar</button>
+            <button type="button" ng-click="closeThisDialog('button')" class="btn btn-default">Cancelar</button>
+        </div>
+    </div>
+    </script>
     <div ng-include="'app/views/modals/make-payment-modal.html'"></div>
+    <div ng-include="'app/views/modals/update-payment-modal.html'"></div>
 </div>
