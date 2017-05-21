@@ -21,7 +21,7 @@ class PaymentREST implements Validateable {
         bank blank: true, nullable: true
         amount nullable: false
         bankReceipt blank: true, nullable: true
-        billId nullable: false
-        observation nullable: true
+        billId  nullable: false
+        observation  nullable: true, blank: true
     }
 }
