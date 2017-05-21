@@ -2,7 +2,7 @@
 
 angular
     .module('app.services')
-    .factory("userService", function ($http, $state) {
+    .factory("userService", function ($http, $state, APP_CONSTANTS) {
 
         var userService = {};
 
@@ -10,7 +10,7 @@ angular
 
             var userList = $http({
                 method: 'GET',
-                url: 'http://localhost:8080/api/user/get',
+                url: APP_CONSTANTS.appURL + 'user/get',
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
@@ -28,7 +28,7 @@ angular
 
             var user = $http({
                 method: 'GET',
-                url: 'http://localhost:8080/api/user/get?id=' + userId,
+                url: APP_CONSTANTS.appURL + 'user/get?id=' + userId,
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
@@ -45,7 +45,7 @@ angular
         userService.addUser = function (newUser) {
             var addUserResult = $http({
                 method: 'POST',
-                url: 'http://localhost:8080/api/user/create',
+                url: APP_CONSTANTS.appURL + 'user/create',
                 data: {
                     user: newUser
                 },
@@ -65,7 +65,7 @@ angular
         userService.updateUser = function (updatedUser) {
             var updateUserResult = $http({
                 method: 'PUT',
-                url: 'http://localhost:8080/api/user/update',
+                url: APP_CONSTANTS.appURL + 'user/update',
                 data: updatedUser,
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
@@ -84,7 +84,7 @@ angular
 
             var disableUserResult = $http({
                 method: 'DELETE',
-                url: 'http://localhost:8080/api/user/delete',
+                url: APP_CONSTANTS.appURL + 'user/delete',
                 data: {
                     id: userId
                 },

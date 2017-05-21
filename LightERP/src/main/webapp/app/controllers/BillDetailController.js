@@ -5,9 +5,9 @@ angular
     .controller('BillDetailController', BillDetailController);
 
 BillDetailController.$inject = ['$uibModal', '$http', '$state', '$stateParams', '$scope', 'billService', '$timeout', 'ngDialog', 'toaster',
-    '$filter', 'DTOptionsBuilder', 'DTColumnDefBuilder'];
+    '$filter', 'DTOptionsBuilder', 'DTColumnDefBuilder', 'APP_MEDIAQUERY'];
 function BillDetailController($uibModal, $http, $state, $stateParams, $scope, billService, $timeout, ngDialog, toaster, $filter,
-                              DTOptionsBuilder, DTColumnDefBuilder) {
+                              DTOptionsBuilder, DTColumnDefBuilder, APP_MEDIAQUERY) {
     var vm = this;
 
     var language = {

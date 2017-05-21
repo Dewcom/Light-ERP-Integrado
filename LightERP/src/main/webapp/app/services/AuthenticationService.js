@@ -2,13 +2,13 @@
 
 angular
     .module('app.services')
-    .factory("authenticationService", function ($http, $state, $q, $window) {
+    .factory("authenticationService", function ($http, $state, $q, $window, APP_CONSTANTS) {
 
 
         function login(userName, password) {
 
             var userInfo;
-            var promise = $http.post("http://localhost:8080/api/login", {
+            var promise = $http.post(APP_CONSTANTS.appURL + 'login', {
                 username: userName,
                 password: password
             }).then(function (response) {

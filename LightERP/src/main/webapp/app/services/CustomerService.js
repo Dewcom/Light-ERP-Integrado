@@ -2,7 +2,7 @@
 
 angular
     .module('app.services')
-    .factory("customerService", function ($http, $state, $resource, $filter) {
+    .factory("customerService", function ($http, $state, $resource, $filter, APP_CONSTANTS) {
 
         var customerService = {};
         var tmpAddressList = [];
@@ -11,7 +11,7 @@ angular
 
             var customerList = $http({
                 method: 'GET',
-                url: 'http://localhost:8080/api/customer/get',
+                url: APP_CONSTANTS.appURL + 'customer/get',
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
@@ -29,7 +29,7 @@ angular
 
             var customer = $http({
                 method: 'GET',
-                url: 'http://localhost:8080/api/customer/get?id=' + customerId,
+                url: APP_CONSTANTS.appURL + 'customer/get?id=' + customerId,
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
@@ -46,7 +46,7 @@ angular
         customerService.addCustomer = function (newCustomer) {
             var addCustomerResult = $http({
                 method: 'POST',
-                url: 'http://localhost:8080/api/customer/create',
+                url: APP_CONSTANTS.appURL + 'customer/create',
                 data: {
                     customer: newCustomer
                 },
@@ -66,7 +66,7 @@ angular
         customerService.updateCustomer = function (updatedCustomer) {
             var updateCustomerResult = $http({
                 method: 'PUT',
-                url: 'http://localhost:8080/api/customer/update',
+                url: APP_CONSTANTS.appURL + 'customer/update',
                 data: updatedCustomer,
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
@@ -85,7 +85,7 @@ angular
 
             var disableCustomerResult = $http({
                 method: 'DELETE',
-                url: 'http://localhost:8080/api/customer/delete',
+                url: APP_CONSTANTS.appURL + 'customer/delete',
                 data: {
                     id: customerId
                 },
@@ -106,7 +106,7 @@ angular
 
             var customerContactsList = $http({
                 method: 'GET',
-                url: 'http://localhost:8080/api/customer/contacts?id=' + customerId,
+                url: APP_CONSTANTS.appURL + 'customer/contacts?id=' + customerId,
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
@@ -126,7 +126,7 @@ angular
 
             var customerAddressList = $http({
                 method: 'GET',
-                url: 'http://localhost:8080/api/customer/addresses?id=' + customerId,
+                url: APP_CONSTANTS.appURL + 'customer/addresses?id=' + customerId,
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }

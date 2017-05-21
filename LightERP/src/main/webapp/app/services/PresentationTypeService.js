@@ -2,7 +2,7 @@
 
 angular
     .module('app.services')
-    .factory("presentationTypeService", function ($http, $state) {
+    .factory("presentationTypeService", function ($http, $state, APP_CONSTANTS) {
 
         var presentationTypeService = {};
 
@@ -10,7 +10,7 @@ angular
 
             var presentationTypeList = $http({
                 method: 'GET',
-                url: 'http://localhost:8080/api/presentationType/get',
+                url: APP_CONSTANTS.appURL + 'presentationType/get',
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
@@ -28,7 +28,7 @@ angular
 
             var disablePresentationTypeResult = $http({
                 method: 'DELETE',
-                url: 'http://localhost:8080/api/presentationType/delete',
+                url: APP_CONSTANTS.appURL + 'presentationType/delete',
                 data: {
                     id: presentationTypeId
                 },
