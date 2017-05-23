@@ -305,7 +305,8 @@
             'mobile':                 480
         })
         .constant('APP_CONSTANTS', {
-            'appURL':             'http://localhost:8080/api/'
+            'appURL':             'http://localhost:8080/api/',
+            'datatableLanguage': ''
         })
     ;
 

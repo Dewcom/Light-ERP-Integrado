@@ -10,6 +10,8 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
                               DTOptionsBuilder, DTColumnDefBuilder, APP_MEDIAQUERY) {
     var vm = this;
 
+
+
     var language = {
         "sProcessing": "Procesando...",
         "sLengthMenu": "Mostrar _MENU_ registros",
@@ -71,6 +73,20 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
             DTColumnDefBuilder.newColumnDef(3),
             DTColumnDefBuilder.newColumnDef(4).notSortable()
         ];
+
+
+
+        vm.toPDF = function () {
+            var vm = this;
+            var dd = {
+                content: [
+
+                    'Cliente:  ' + $scope.currentBill.customer.name
+                ]
+            };
+
+            pdfMake.createPdf(dd).open();
+        }
 
     }
 
@@ -524,7 +540,6 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
 
     }
 
-
     function pop(toasterdata) {
         console.log(toasterdata);
         toaster.pop({
@@ -533,4 +548,5 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
             body: toasterdata.text
         });
     }
+
 }
