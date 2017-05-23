@@ -257,7 +257,7 @@
                 });
 
                 $scope.cancel();
-            };
+            }
 
             /**=========================================================
              * Modificar productos
@@ -309,10 +309,8 @@
                 });
 
                 $scope.cancel();
-            };
+            }
 
-            // Please note that $uibModalInstance represents a modal window (instance) dependency.
-            // It is not the same as the $uibModal service used above.
 
             AddModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance'];
             function AddModalInstanceCtrl($scope, $uibModalInstance) {

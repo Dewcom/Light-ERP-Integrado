@@ -20,6 +20,6 @@ class UpdatePaymentRequestREST implements Validateable {
         amount  nullable: false
         bankReceipt blank: true, nullable: true
         id  nullable: false
-        observation  nullable: false
+        observation  nullable: true
     }
 }

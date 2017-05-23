@@ -87,7 +87,7 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label">Utilidad</label>
-                            <input tabindex="9" type="text" name="utilityPercentage" ng-model="addProductForm.utilityPercentage"
+                            <input tabindex="9" type="text" name="utilityPercentage" ng-model="addProductForm.utilityPercentage" ng-pattern="/^[0-9.,]+$/"
                                    class="form-control"/>
                             <span ng-show="modalCtrl.validateInput('add', 'suggestedCost', 'pattern')" class="text-danger">Solamente números permitidos</span>
                         </div>

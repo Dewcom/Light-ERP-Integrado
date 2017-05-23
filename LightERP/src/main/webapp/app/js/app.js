@@ -304,6 +304,9 @@
             'tablet':                 768,
             'mobile':                 480
         })
+        .constant('APP_CONSTANTS', {
+            'appURL':             'http://localhost:8080/api/'
+        })
     ;
 
 })();

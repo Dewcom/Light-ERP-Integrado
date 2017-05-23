@@ -2,7 +2,7 @@
 
 angular
     .module('app.services')
-    .factory("billService", function ($http, $state, $resource, $filter) {
+    .factory("billService", function ($http, $state, $resource, $filter, APP_CONSTANTS) {
 
         var billService = {};
         var addedProductList = [];
@@ -129,7 +129,7 @@ angular
 
             var billList = $http({
                 method: 'GET',
-                url: 'http://localhost:8080/api/bill/get',
+                url: APP_CONSTANTS.appURL + 'bill/get',
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
@@ -147,7 +147,7 @@ angular
 
             var bill = $http({
                 method: 'GET',
-                url: 'http://localhost:8080/api/bill/get?id=' + billId,
+                url: APP_CONSTANTS.appURL + 'bill/get?id=' + billId,
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
@@ -164,7 +164,7 @@ angular
         billService.addBill = function (newBill) {
             var addBillResult = $http({
                 method: 'POST',
-                url: 'http://localhost:8080/api/bill/create',
+                url: APP_CONSTANTS.appURL + 'bill/create',
                 data: {
                     bill: newBill
                 },
@@ -184,7 +184,7 @@ angular
         billService.updateBill = function (updateBill) {
             var updateBillResult = $http({
                 method: 'PUT',
-                url: 'http://localhost:8080/api/bill/' + updateBill.billId,
+                url: APP_CONSTANTS.appURL + 'bill/' + updateBill.billId,
                 data: updateBill,
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
@@ -204,7 +204,7 @@ angular
 
             var disableBillResult = $http({
                 method: 'DELETE',
-                url: 'http://localhost:8080/api/bill/delete',
+                url: APP_CONSTANTS.appURL + 'bill/delete',
                 data: {
                     id: billId
                 },
@@ -226,7 +226,7 @@ angular
 
             var voidBillResult = $http({
                 method: 'PUT',
-                url: 'http://localhost:8080/api/bill/' + bill.billId,
+                url: APP_CONSTANTS.appURL + 'bill/' + bill.billId,
                 data: {
                     id: bill
                 },
@@ -247,7 +247,7 @@ angular
 
             var paymentTypeList = $http({
                 method: 'GET',
-                url: 'http://localhost:8080/api/billPaymentType',
+                url: APP_CONSTANTS.appURL + 'billPaymentType',
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
@@ -265,7 +265,7 @@ angular
 
             var currencyList = $http({
                 method: 'GET',
-                url: 'http://localhost:8080/api/currency',
+                url: APP_CONSTANTS.appURL + 'currency',
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
@@ -283,7 +283,7 @@ angular
 
             var creditConditionList = $http({
                 method: 'GET',
-                url: 'http://localhost:8080/api/creditCondition',
+                url: APP_CONSTANTS.appURL + 'creditCondition',
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
@@ -301,7 +301,7 @@ angular
 
             var exchangeRateList = $http({
                 method: 'GET',
-                url: 'http://localhost:8080/api/exchangeRate',
+                url: APP_CONSTANTS.appURL + 'exchangeRate',
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
@@ -313,6 +313,66 @@ angular
             });
 
             return exchangeRateList;
+        };
+
+        billService.makePayment = function (newPayment) {
+
+            var exchangeRateList = $http({
+                method: 'POST',
+                url: APP_CONSTANTS.appURL + 'payment/create',
+                data: {
+                    payment: newPayment
+                },
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            }).then(function (response) {
+                console.log(response);
+                return response.data;
+            }, function (error) {
+                console.log(error);
+                return error.status;
+            });
+
+            return exchangeRateList;
+        };
+
+        billService.deletePayment = function (paymentId) {
+
+            var deletePaymentResult = $http({
+                method: 'DELETE',
+                url: APP_CONSTANTS.appURL + 'payment/' + paymentId,
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            }).then(function (response) {
+                return response.data;
+            }, function (error) {
+                console.log(error);
+                return error.status;
+            });
+
+            return deletePaymentResult;
+        };
+
+        billService.updatePayment = function (updatedPayment) {
+            var updatePaymentResult = $http({
+                method: 'PUT',
+                url: APP_CONSTANTS.appURL + 'payment/' + updatedPayment.id,
+                data: {
+                    payment: updatedPayment
+                },
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            }).then(function (response) {
+                return response.data;
+            }, function (error) {
+                console.log(error);
+                return error.status;
+            });
+
+            return updateBillResult;
         };
 
         return billService;

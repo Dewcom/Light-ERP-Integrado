@@ -119,6 +119,7 @@ class BootStrap {
             returnArray['currency'] = it.currency
             returnArray['creditCondition'] = it.creditCondition
             returnArray['customer'] = it.customer
+            returnArray['payments'] = it.payments
             return returnArray
         }
 
@@ -213,6 +214,7 @@ class BootStrap {
             def returnArray = [:]
             returnArray['id'] = it.id
             returnArray['description'] = it.description
+            returnArray['code'] = it.code
 
             return returnArray
         }

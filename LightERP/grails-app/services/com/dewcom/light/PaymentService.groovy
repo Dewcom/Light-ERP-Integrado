@@ -102,7 +102,7 @@ class PaymentService {
                 tmpPaymentToUpdate.bank = pPaymentREST.bank;
                 tmpPaymentToUpdate.bankReceipt = pPaymentREST.bankReceipt;
 
-                tmpPaymentToUpdate.save(flush: true);
+                tmpPaymentToUpdate.save(flush: true, failOnError:true);
             } else {
                 throw new LightRuntimeException(messageSource.getMessage("update.payment.notFound.error", null, Locale.default));
             }

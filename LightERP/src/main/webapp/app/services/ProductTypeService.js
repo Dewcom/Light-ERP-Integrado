@@ -2,7 +2,7 @@
 
 angular
     .module('app.services')
-    .factory("productTypeService", function ($http, $state) {
+    .factory("productTypeService", function ($http, $state, APP_CONSTANTS) {
 
         var productTypeService = {};
 
@@ -10,7 +10,7 @@ angular
 
             var productTypeList = $http({
                 method: 'GET',
-                url: 'http://localhost:8080/api/productType/get',
+                url: APP_CONSTANTS.appURL + 'productType/get',
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
@@ -28,7 +28,7 @@ angular
 
             var disableProductTypeResult = $http({
                 method: 'DELETE',
-                url: 'http://localhost:8080/api/productType/delete',
+                url: APP_CONSTANTS.appURL + 'productType/delete',
                 data: {
                     id: productTypeId
                 },
