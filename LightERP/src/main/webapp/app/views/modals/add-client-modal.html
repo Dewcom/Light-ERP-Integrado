@@ -4,7 +4,7 @@
         <div class="panel panel-default" ng-controller="CustomerController as parentController">
             <div class="modal-header"><button type="button" data-dismiss="modal" aria-hidden="true" class="close"
                                               ng-click="close()">×</button>
-                <h4 id="myModalLabel" class="modal-title">Agregar cliente</h4>
+                <h4 id="myModalLabel" class="modal-title">Agregar Cliente</h4>
             </div>
             <div class="panel-body">
                 <form action="/" form-wizard="" steps="6" validate-steps="true" name="addCustomerWizard">
@@ -12,24 +12,24 @@
                         <!-- START wizard steps indicator-->
                         <ol class="row">
                             <li ng-class="{'active':wizard.active(1)}" ng-click="wizard.go(1)" class="col-md-2">
-                                <h4>Datos personales</h4>
-                                <small class="text-muted">Información general del cliente.</small>
+                                <h4>Datos Personales</h4>
+                                <small class="text-muted">Información General del Cliente</small>
                             </li>
                             <li ng-class="{'active':wizard.active(2)}" ng-click="wizard.go(2)" class="col-md-2">
-                                <h4>Información de contacto</h4>
-                                <small class="text-muted">Información de medios de contacto.</small>
+                                <h4>Información de Contacto</h4>
+                                <small class="text-muted">Información de Medios de Contacto</small>
                             </li>
                             <li ng-class="{'active':wizard.active(3)}" ng-click="wizard.go(3)" class="col-md-2">
-                                <h4>Dirección</h4>
-                                <small class="text-muted">Direcciónes físicas del cliente.</small>
+                                <h4>Direcciónes del Cliente</h4>
+                                <small class="text-muted">Direcciónes Físicas del Cliente<br></small>
                             </li>
                             <li ng-class="{'active':wizard.active(4)}" ng-click="wizard.go(4)" class="col-md-2">
-                                <h4>Línea de crédito</h4>
-                                <small class="text-muted">Información de crédito</small>
+                                <h4>Línea de Crédito</h4>
+                                <small class="text-muted">Información de Crédito<br></small>
                             </li>
                             <li ng-class="{'active':wizard.active(5)}" ng-click="wizard.go(5)" class="col-md-2">
-                                <h4>Contactos</h4>
-                                <small class="text-muted">Información del contacto responsable</small>
+                                <h4>Contactos & Puestos</h4>
+                                <small class="text-muted">Información del Contacto Responsable<br></small>
                             </li>
                         </ol>
                         <!-- END wizard steps indicator-->
@@ -42,7 +42,7 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label>Tipo de cliente</label>
+                                            <label>Tipo de Cliente</label>
                                             <div class="controls">
                                                 <select name="selectedCustomerType" ng-model="parentController.selectedCustomerType"
                                                         ng-options="item.id as item.name for item in parentController.customerTypeList"
@@ -55,7 +55,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label>Tipo de identificación</label>
+                                            <label>Tipo de Identificación</label>
                                             <div class="controls">
                                                 <select name="selectedIdentificationType" ng-model="parentController.selectedIdentificationType"
                                                         ng-options="item.id as item.name for item in parentController.identificationTypeList"
@@ -71,17 +71,17 @@
                                             <label>Identificación</label>
                                             <div class="controls">
                                                 <input type="text" name="identification" ng-model="parentController.identification"
-                                                       placeholder="110102020" required="required" class="form-control" maxlength="20"/>
+                                                       placeholder="{{parentController.selectedIdentificationType==2?'3101010101':'112340101'}}" required="required" class="form-control" maxlength="20"/>
                                                 <span ng-show="formStep1.$submitted &amp;&amp; formStep1.identification.$invalid"
                                                       class="text-danger">Este campo no puede ser vacío</span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4" >
+                                    <div ng-class="parentController.selectedIdentificationType==2 ? 'col-md-12':'col-md-4'">
                                         <div class="form-group">
                                             <!--Asegurar que los id's finales sirvan para esta validación-->
-                                            <label ng-show="parentController.selectedIdentificationType == 1">Nombre del cliente</label>
-                                            <label ng-show="parentController.selectedIdentificationType == 2">Nombre de la empresa</label>
+                                            <label ng-show="parentController.selectedIdentificationType == 1">Nombre del Cliente</label>
+                                            <label ng-show="parentController.selectedIdentificationType == 2">Nombre de la Empresa</label>
                                             <div class="controls">
                                                 <input ng-show="parentController.selectedIdentificationType != null" type="text" name="name" ng-model="parentController.name" required="required"
                                                        class="form-control" maxlength="50" replace="[^a-zA-Z]" with=""/>
@@ -92,7 +92,7 @@
                                     </div>
                                     <div class="col-md-4" ng-show="parentController.selectedIdentificationType == 1">
                                         <div class="form-group">
-                                            <label>Primer apellido</label>
+                                            <label>Primer Apellido</label>
                                             <div class="controls">
                                                 <input type="text" name="firstLastName" ng-model="parentController.firstLastName"
                                                        class="form-control" maxlength="50" replace="[^a-zA-Z]" with=""/>
@@ -101,7 +101,7 @@
                                     </div>
                                     <div class="col-md-4" ng-show="parentController.selectedIdentificationType == 1">
                                         <div class="form-group">
-                                            <label>Segundo apellido</label>
+                                            <label>Segundo Apellido</label>
                                             <div class="controls">
                                                 <input type="text" name="secondLastName" ng-model="parentController.secondLastName"
                                                        class="form-control" maxlength="50" replace="[^a-zA-Z]" with=""/>
@@ -146,7 +146,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label>Teléfono móvil</label>
+                                            <label>Teléfono Móvil</label>
                                             <div class="controls">
                                                 <input type="tel" name="mobile" ng-model="parentController.mobile" class="form-control"
                                                        ui-mask="9999-9999" />
@@ -158,7 +158,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Correo electrónico</label>
+                                            <label>Correo Electrónico</label>
                                             <div class="controls">
                                                 <input type="email" name="email" ng-model="parentController.email" placeholder="cliente@empresa.com"
                                                        class="form-control" />

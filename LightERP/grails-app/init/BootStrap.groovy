@@ -18,6 +18,34 @@ import com.dewcom.light.UserRole
 class BootStrap {
 
     def init = {
+
+        //Creacion de Identificaciones por Defecto
+        if(!IdentificationType.findByCode(IdentificationType.PHYSICAL_CODE)){
+          def physicalClient = new IdentificationType()
+          physicalClient.name = "Cédula Física"
+          physicalClient.code = IdentificationType.PHYSICAL_CODE
+          physicalClient.save()
+        }
+        if(!IdentificationType.findByCode(IdentificationType.COMPANY_CODE)){
+          def companyClient = new IdentificationType()
+          companyClient.name = "Cédula Juridica"
+          companyClient.code = IdentificationType.COMPANY_CODE;
+          companyClient.save()
+        }
+
+        //Creacion de Tipos de Clientes por Defecto
+        if(!IdentificationType.findByName("Contado & Credito")){
+            def companyClient = new CustomerType()
+            companyClient.name = "Contado & Credito"
+            companyClient.save()
+        }
+        if(!IdentificationType.findByName("Solo Contado")){
+            def companyClient = new CustomerType()
+            companyClient.name = "Solo Contado"
+            companyClient.save()
+        }
+
+
         def adminRole = new Role(authority: 'ROLE_ADMIN').save()
         def userRole = new Role(authority: 'ROLE_USER').save()
 
