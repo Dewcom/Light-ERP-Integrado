@@ -2,7 +2,7 @@
 
 angular
     .module('app.services')
-    .factory("contactService", function ($http, $state) {
+    .factory("contactService", function ($http, $state, APP_CONSTANTS) {
 
         var contactService = {};
 
@@ -10,7 +10,7 @@ angular
 
             var contactList = $http({
                 method: 'GET',
-                url: 'http://localhost:8080/api/contact/get',
+                url: APP_CONSTANTS.appURL + 'contact/get',
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
@@ -27,7 +27,7 @@ angular
         contactService.updateContact = function (updatedContact) {
             var updateContactResult = $http({
                 method: 'PUT',
-                url: 'http://localhost:8080/api/contact/update',
+                url: APP_CONSTANTS.appURL + 'contact/update',
                 data: updatedContact,
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
@@ -46,7 +46,7 @@ angular
 
             var disableContactResutl = $http({
                 method: 'DELETE',
-                url: 'http://localhost:8080/api/contact/delete',
+                url: APP_CONSTANTS.appURL + 'contact/delete',
                 data: {
                     id: contactId
                 },

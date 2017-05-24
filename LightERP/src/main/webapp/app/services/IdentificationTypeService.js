@@ -2,7 +2,7 @@
 
 angular
     .module('app.services')
-    .factory("identificationTypeService", function ($http, $state) {
+    .factory("identificationTypeService", function ($http, $state, APP_CONSTANTS) {
 
         var identificationTypeService = {};
 
@@ -28,7 +28,7 @@ angular
 
             var disableIdentificationTypeResult = $http({
                 method: 'DELETE',
-                url: 'http://localhost:8080/api/identificationType/delete',
+                url: APP_CONSTANTS.appURL + 'identificationType/delete',
                 data: {
                     id: identificationTypeId
                 },

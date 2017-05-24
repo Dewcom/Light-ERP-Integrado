@@ -2,7 +2,7 @@
 
 angular
     .module('app.services')
-    .factory("customerTypeService", function ($http, $state) {
+    .factory("customerTypeService", function ($http, $state, APP_CONSTANTS) {
 
         var customerTypeService = {};
 
@@ -10,7 +10,7 @@ angular
 
             var customerTypeList = $http({
                 method: 'GET',
-                url: 'http://localhost:8080/api/customerType/get',
+                url: APP_CONSTANTS.appURL + 'customerType/get',
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
@@ -28,7 +28,7 @@ angular
 
             var disableCustomerTypeResult = $http({
                 method: 'DELETE',
-                url: 'http://localhost:8080/api/customerType/delete',
+                url: APP_CONSTANTS.appURL + 'customerType/delete',
                 data: {
                     id: customerTypeId
                 },

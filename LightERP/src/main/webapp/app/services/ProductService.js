@@ -2,7 +2,7 @@
 
 angular
     .module('app.services')
-    .factory("productService", function ($http, $state) {
+    .factory("productService", function ($http, $state, APP_CONSTANTS) {
 
         var productService = {};
 
@@ -10,7 +10,7 @@ angular
 
             var productList = $http({
                 method: 'GET',
-                url: 'http://localhost:8080/api/product/get',
+                url: APP_CONSTANTS.appURL + 'product/get',
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
@@ -28,7 +28,7 @@ angular
 
             var product = $http({
                 method: 'GET',
-                url: 'http://localhost:8080/api/product/get?id=' + productId,
+                url: APP_CONSTANTS.appURL + 'product/get?id=' + productId,
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
@@ -45,7 +45,7 @@ angular
         productService.addProduct = function (newProduct) {
             var addProductResult = $http({
                 method: 'POST',
-                url: 'http://localhost:8080/api/product/create',
+                url: APP_CONSTANTS.appURL + 'product/create',
                 data: {
                     product: newProduct
                 },
@@ -65,7 +65,7 @@ angular
         productService.updateProduct = function (updatedProduct) {
             var updateProductResult = $http({
                 method: 'PUT',
-                url: 'http://localhost:8080/api/product/update',
+                url: APP_CONSTANTS.appURL + 'product/update',
                 data: updatedProduct,
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
@@ -84,7 +84,7 @@ angular
 
             var disableProductResult = $http({
                 method: 'DELETE',
-                url: 'http://localhost:8080/api/product/delete',
+                url: APP_CONSTANTS.appURL + 'product/delete',
                 data: {
                     id: productId
                 },
