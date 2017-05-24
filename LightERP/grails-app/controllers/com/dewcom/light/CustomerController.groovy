@@ -30,7 +30,7 @@ class CustomerController extends RestController {
                 if(customerFromDB){
                     tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
-                    tmpResponse.data = customerFromDB
+                    tmpResponse.data = JSONMapper.from(customerFromDB)
                 }else{
                     tmpResponse.message = messageSource.getMessage("customer.not.found", null, Locale.default);
                     tmpResponse.code = Constants.REGISTER_NOT_FOUND
@@ -39,7 +39,7 @@ class CustomerController extends RestController {
                 def customersFromDB = customerService.getAllCustomers();
                 tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
-                tmpResponse.data = customersFromDB
+                tmpResponse.data = JSONMapper.listFrom(customersFromDB)
             }
             log.info "====== Get customer response ======"
             render tmpResponse as JSON
@@ -167,7 +167,7 @@ class CustomerController extends RestController {
             }
             tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
             tmpResponse.code = Constants.SUCCESS_RESPONSE
-            tmpResponse.data = tmpContactsList
+            tmpResponse.data = JSONMapper.listFrom(tmpContactsList)
 
             log.info "====== Get contacts by client id response ======"
             log.info tmpResponse as JSON
@@ -191,7 +191,7 @@ class CustomerController extends RestController {
             }
             tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
             tmpResponse.code = Constants.SUCCESS_RESPONSE
-            tmpResponse.data = tmpAddressesList
+            tmpResponse.data = JSONMapper.listFrom(tmpAddressesList)
 
             log.info "====== Get addresses by client id response ======"
             log.info tmpResponse as JSON

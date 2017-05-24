@@ -18,7 +18,7 @@ class CurrencyController extends RestController {
 
             tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
             tmpResponse.code = Constants.SUCCESS_RESPONSE
-            tmpResponse.data = currencies
+            tmpResponse.data = JSONMapper.listFrom(currencies)
 
             log.info tmpResponse as JSON
             render tmpResponse as JSON

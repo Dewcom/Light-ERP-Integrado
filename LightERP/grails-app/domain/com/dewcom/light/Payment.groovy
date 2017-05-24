@@ -21,5 +21,4 @@ class Payment {
         bankReceipt blank: true, nullable: true
         observation  nullable: true, blank: true
     }
-
 }

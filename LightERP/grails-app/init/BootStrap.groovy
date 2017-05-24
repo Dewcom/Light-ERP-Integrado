@@ -35,7 +35,7 @@ class BootStrap {
          assert Role.count() == 2
          assert UserRole.count() == 1*/
 
-        JSON.registerObjectMarshaller(IdentificationType) {
+        /*JSON.registerObjectMarshaller(IdentificationType) {
             def returnArray = [:]
             returnArray['id'] = it.id
             returnArray['name'] = it.name
@@ -196,7 +196,7 @@ class BootStrap {
             returnArray['username'] = it.username
 
             return returnArray
-        }
+        }*/
 
         def destroy = {
         }

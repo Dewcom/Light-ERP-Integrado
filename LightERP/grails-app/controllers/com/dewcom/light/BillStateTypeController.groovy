@@ -19,7 +19,7 @@ class BillStateTypeController extends RestController {
 
             tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
             tmpResponse.code = Constants.SUCCESS_RESPONSE
-            tmpResponse.data = states
+            tmpResponse.data = JSONMapper.listFrom(states)
 
             log.info tmpResponse as JSON
             render tmpResponse as JSON

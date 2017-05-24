@@ -18,7 +18,7 @@ class CreditConditionController extends RestController {
 
             tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
             tmpResponse.code = Constants.SUCCESS_RESPONSE
-            tmpResponse.data = creditConditions
+            tmpResponse.data = JSONMapper.listFrom(creditConditions)
 
             log.info tmpResponse as JSON
             render tmpResponse as JSON
