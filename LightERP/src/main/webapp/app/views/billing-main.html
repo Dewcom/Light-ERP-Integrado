@@ -12,6 +12,13 @@
                           </span>Agregar
                     </button>
                 </div>
+                <div class="col-md-3" ng-click="controller.toPDF()" >
+                    <button type="submit" class="btn btn-labeled btn-success addButton">
+                          <span class="btn-label">
+                             <em class="fa fa-plus"></em>
+                          </span>TEST
+                    </button>
+                </div>
             </div>
             <table datatable="ng" dt-options="controller.dtOptionsBills" dt-column-defs="controller.dtColumnDefsBills"
                    class="row-border hover">

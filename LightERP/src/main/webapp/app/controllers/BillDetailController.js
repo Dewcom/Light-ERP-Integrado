@@ -74,20 +74,6 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
             DTColumnDefBuilder.newColumnDef(4).notSortable()
         ];
 
-
-
-        vm.toPDF = function () {
-            var vm = this;
-            var dd = {
-                content: [
-
-                    'Cliente:  ' + $scope.currentBill.customer.name
-                ]
-            };
-
-            pdfMake.createPdf(dd).open();
-        }
-
     }
 
     //REGRESA A LA PANTALLA DE LISTA DE FACTURAS

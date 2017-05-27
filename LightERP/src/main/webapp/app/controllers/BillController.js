@@ -8,10 +8,91 @@
         .controller('BillController', BillController);
 
     BillController.$inject = ['DTOptionsBuilder', 'DTColumnDefBuilder', 'billService', 'customerService', 'productService', '$scope',
-        '$uibModal', 'productTypeService', 'presentationTypeService', '$state', 'toaster', '$timeout', '$filter', 'ngDialog'];
+        '$uibModal', 'productTypeService', 'presentationTypeService', '$state', 'toaster', '$timeout', '$filter', 'ngDialog','$base64'];
     function BillController(DTOptionsBuilder, DTColumnDefBuilder, billService, customerService, productService, $scope, $uibModal,
-                            productTypeService, presentationTypeService, $state, toaster, $timeout, $filter, ngDialog) {
+                            productTypeService, presentationTypeService, $state, toaster, $timeout, $filter, ngDialog, $base64) {
         var vm = this;
+
+
+
+        vm.toPDF = function () {
+            var vm = this;
+            var imageData=$base64.encode('test');
+            console.log(imageData);
+
+            var dd = {
+                content: [
+                    {
+                        style: 'headerTable',
+                        table: {
+                            widths: ['*', '*'],
+                            body: [
+                                ['IMAGEN', 'Factura\n' +
+                                            '# ' + '*NUMERO*' +
+                                            'Fecha de facturación: ' + '*FECHA\n' +
+                                            'Fecha de vencimiento: ' + '*FECHA\n' +
+                                            'Código de cliente: ' + '*CODIGO\n'
+                                ],
+                                ['*EMPRESA\n' +
+                                    'DIRECCION\n' +
+                                    'CEDULA\n' +
+                                    'TELEFONO\n' +
+                                    'CORREO\n' +
+                                    'WEBSITE',
+                                'CLIENTE\n' +
+                                'CEDULA\n' +
+                                'DIRECCION\n']
+                            ]
+                        }
+                    },
+                    {
+                        style: 'bodyTable',
+                        table: {
+                            widths: ['*', 30, 30, 30, 30, 30],
+                            body: [
+                                ['Descripción', 'IVA', 'Descuentos', 'Precio unidad', 'Cantidad', 'Subtotal'],
+                                ['PRODUCTO', '13%', '10%', '10000', '5', '50000'],
+                                ['PRODUCTO', '13%', '10%', '10000', '5', '50000'],
+                                ['PRODUCTO', '13%', '10%', '10000', '5', '50000'],
+                                ['PRODUCTO', '13%', '10%', '10000', '5', '50000'],
+                                ['PRODUCTO', '13%', '10%', '10000', '5', '50000']
+                            ]
+                        }
+                    },
+                    {
+                        style: 'footerTable',
+                        table: {
+                            widths: ['*', '*'],
+                            body: [
+                                ['Condición de pago: ' + '*CONDICION DE PAGO', 'Subtotal'],
+                                ['', 'Total ' + '*TOTAL']
+                            ]
+                        }
+                    }
+                ],
+                styles: {
+                    header: {
+                        fontSize: 18,
+                        bold: true,
+                        margin: [0, 0, 0, 10]
+                    },
+                    subheader: {
+                        fontSize: 16,
+                        bold: true,
+                        margin: [0, 10, 0, 5]
+                    },
+                    standardBill: {
+                        margin: [0, 5, 0, 15]
+                    },
+                    tableHeader: {
+                        bold: true,
+                        fontSize: 13,
+                        color: 'black'
+                    }
+                },
+            }
+            pdfMake.createPdf(dd).open();
+        }
 
         activate();
 

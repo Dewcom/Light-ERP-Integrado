@@ -50,7 +50,8 @@
             'cfp.loadingBar',
             'ngSanitize',
             'ngResource',
-            'ui.utils'
+            'ui.utils',
+            'base64'
         ]);
 })();
 (function() {
