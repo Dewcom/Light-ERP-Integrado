@@ -31,7 +31,7 @@ class ContactController extends RestController {
                 if(contactFromDB){
                     tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
-                    tmpResponse.data = contactFromDB
+                    tmpResponse.data = JSONMapper.from(contactFromDB)
                 }else{
                     tmpResponse.message = messageSource.getMessage("contact.not.found", null, Locale.default);
                     tmpResponse.code = Constants.REGISTER_NOT_FOUND
@@ -41,7 +41,7 @@ class ContactController extends RestController {
 
                 tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
-                tmpResponse.data = customersFromDB
+                tmpResponse.data = JSONMapper.listFrom(customersFromDB)
             }
             log.info "====== Get contact response ======"
             JSON.use('deep');
@@ -65,7 +65,7 @@ class ContactController extends RestController {
                }
             tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
             tmpResponse.code = Constants.SUCCESS_RESPONSE
-            tmpResponse.data = tmpContactsList
+            tmpResponse.data = JSONMapper.listFrom(tmpContactsList)
 
             log.info "====== Get contacts by client id response ======"
             log.info tmpResponse as JSON

@@ -31,7 +31,7 @@ class ProductController extends RestController{
                 if(productFromDB){
                     tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
-                    tmpResponse.data = productFromDB
+                    tmpResponse.data = JSONMapper.from(productFromDB)
                 }else{
                     tmpResponse.message = messageSource.getMessage("product.not.found", null, Locale.default);
                     tmpResponse.code = Constants.REGISTER_NOT_FOUND
@@ -40,7 +40,7 @@ class ProductController extends RestController{
                 def productsFromDB = productService.getAllProducts();
                 tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
-                tmpResponse.data = productsFromDB
+                tmpResponse.data = JSONMapper.listFrom(productsFromDB)
             }
             log.info "====== Get product response ======"
             JSON.use('deep')
