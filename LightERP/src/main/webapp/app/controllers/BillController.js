@@ -8,16 +8,17 @@
         .controller('BillController', BillController);
 
     BillController.$inject = ['DTOptionsBuilder', 'DTColumnDefBuilder', 'billService', 'customerService', 'productService', '$scope',
-        '$uibModal', 'productTypeService', 'presentationTypeService', '$state', 'toaster', '$timeout', '$filter', 'ngDialog','$base64'];
+        '$uibModal', 'productTypeService', 'presentationTypeService', '$state', 'toaster', '$timeout', '$filter', 'ngDialog','$base64',       'APP_CONSTANTS'];
     function BillController(DTOptionsBuilder, DTColumnDefBuilder, billService, customerService, productService, $scope, $uibModal,
-                            productTypeService, presentationTypeService, $state, toaster, $timeout, $filter, ngDialog, $base64) {
+                            productTypeService, presentationTypeService, $state, toaster, $timeout, $filter, ngDialog, $base64,
+                            APP_CONSTANTS) {
         var vm = this;
 
 
 
         vm.toPDF = function () {
             var vm = this;
-            var imageData=$base64.encode('test');
+            var imageData=$base64.encode('/app/img/logo-test.png');
             console.log(imageData);
 
             var dd = {
@@ -25,74 +26,200 @@
                     {
                         style: 'headerTable',
                         table: {
-                            widths: ['*', '*'],
+                            widths: ['*', 180],
                             body: [
-                                ['IMAGEN', 'Factura\n' +
-                                            '# ' + '*NUMERO*' +
-                                            'Fecha de facturación: ' + '*FECHA\n' +
-                                            'Fecha de vencimiento: ' + '*FECHA\n' +
+                                [
+                                    {
+                                        border: [false, false, false, false],
+                                        image :APP_CONSTANTS.logo, width: 50, height: 50
+                                    },
+                                    {
+                                        border: [false, false, false, false],
+                                        style: 'headerTableBillSection',
+                                        text: [
+                                            { text: 'Factura', fontSize: 10, bold: true },
+                                            { text: '# '  + '*NUMERO\n', fontSize: 10, bold: true },
+                                            'Fecha de facturación: ' + '*FECHA\n',
+                                            'Fecha de vencimiento: ' + '*FECHA\n',
                                             'Código de cliente: ' + '*CODIGO\n'
+                                        ]
+                                    }
                                 ],
-                                ['*EMPRESA\n' +
-                                    'DIRECCION\n' +
-                                    'CEDULA\n' +
-                                    'TELEFONO\n' +
-                                    'CORREO\n' +
-                                    'WEBSITE',
-                                'CLIENTE\n' +
-                                'CEDULA\n' +
-                                'DIRECCION\n']
+                                [
+                                    {
+                                        border: [false, false, false, false],
+                                        text: [
+                                            {text: '*EMPRESA\n', fontSize: 10, bold: true},
+                                            'CEDULA\n',
+                                            'DIRECCION\n',
+                                            'TELEFONO\n',
+                                            'CORREO\n',
+                                            'WEBSITE'
+                                        ]
+                                    },
+                                    {
+                                        border: [false, false, false, false],
+                                        fillColor: '#dddddd',
+                                        text: [
+                                            {text: '*CLIENTE\n', fontSize: 10, bold: true},
+                                            'CEDULA\n',
+                                            'DIRECCION\n'
+                                        ]
+                                    }
+                                ]
                             ]
+                        },
+                        layout: {
+                            defaultBorder: false,
                         }
                     },
                     {
                         style: 'bodyTable',
                         table: {
                             widths: ['*', 30, 30, 30, 30, 30],
+                            height: 150,
                             body: [
-                                ['Descripción', 'IVA', 'Descuentos', 'Precio unidad', 'Cantidad', 'Subtotal'],
-                                ['PRODUCTO', '13%', '10%', '10000', '5', '50000'],
-                                ['PRODUCTO', '13%', '10%', '10000', '5', '50000'],
-                                ['PRODUCTO', '13%', '10%', '10000', '5', '50000'],
-                                ['PRODUCTO', '13%', '10%', '10000', '5', '50000'],
-                                ['PRODUCTO', '13%', '10%', '10000', '5', '50000']
+                                [
+                                    {
+                                        border: [true, true, true, true],
+                                        text: [
+                                            {text: 'Descripción', bold: true}
+                                        ]
+                                    },
+                                    {
+                                        border: [true, true, true, true],
+                                        text: [
+                                            {text: 'IVA', alignment: 'center', bold: true}
+                                        ]
+                                    },
+                                    {
+                                        border: [true, true, true, true],
+                                        text: [
+                                            {text: 'Desc', alignment: 'center', bold: true}
+                                        ]
+                                    },
+                                    {
+                                        border: [true, true, true, true],
+                                        text: [
+                                            {text: 'P.U.', alignment: 'center', bold: true}
+                                        ]
+                                    },
+                                    {
+                                        border: [true, true, true, true],
+                                        text: [
+                                            {text: 'Cant.', alignment: 'center', bold: true}
+                                        ]
+                                    },
+                                    {
+                                        border: [true, true, true, true],
+                                        text: [
+                                            {text: 'Subtotal', alignment: 'center', bold: true}
+                                        ]
+                                    }
+                                ],
+                                [
+                                    {
+                                        border: [true, true, true, true],
+                                        text: [
+                                            'PRODUCTO'
+                                        ]
+                                    },
+                                    {
+                                        border: [true, true, true, true],
+                                        text: [
+                                            'PRODUCTO'
+                                        ]
+                                    },
+                                    {
+                                        border: [true, true, true, true],
+                                        text: [
+                                            'PRODUCTO'
+                                        ]
+                                    },
+                                    {
+                                        border: [true, true, true, true],
+                                        text: [
+                                            'PRODUCTO'
+                                        ]
+                                    },
+                                    {
+                                        border: [true, true, true, true],
+                                        text: [
+                                            'PRODUCTO'
+                                        ]
+                                    },
+                                    {
+                                        border: [true, true, true, true],
+                                        text: [
+                                            'PRODUCTO'
+                                        ]
+                                    }
+                                ],
+                                [
+                                    {
+                                        border: [false, false, false, false],
+                                        text: [
+                                            'Condición de pago: '
+                                        ]
+                                    },
+                                    {
+                                        border: [false, false, false, false],
+                                        text: [
+                                            'Subtotal'
+                                        ],
+                                        colSpan: 5
+                                    }
+                                ],
+                                [
+                                    {
+                                        border: [false, false, false, false],
+                                        text: [
+                                            ''
+                                        ]
+                                    },
+                                    {
+                                        border: [false, false, false, false],
+                                        fillColor: '#dddddd',
+                                        text: [
+                                            'Total: '
+                                        ],
+                                        colSpan: 5
+                                    }
+                                ]
                             ]
-                        }
-                    },
-                    {
-                        style: 'footerTable',
-                        table: {
-                            widths: ['*', '*'],
-                            body: [
-                                ['Condición de pago: ' + '*CONDICION DE PAGO', 'Subtotal'],
-                                ['', 'Total ' + '*TOTAL']
-                            ]
+                        },
+                        layout: {
+                            defaultBorder: false
                         }
                     }
                 ],
                 styles: {
-                    header: {
-                        fontSize: 18,
-                        bold: true,
+                    headerTable: {
+                        fontSize: 8,
+                        bold: false,
                         margin: [0, 0, 0, 10]
                     },
-                    subheader: {
-                        fontSize: 16,
-                        bold: true,
-                        margin: [0, 10, 0, 5]
+                    headerTableBillSection: {
+                        alignment: 'right',
+                        fontSize: 8,
+                        bold: false,
+                        margin: [0, 0, 0, 10]
                     },
-                    standardBill: {
-                        margin: [0, 5, 0, 15]
+                    bodyTable: {
+                        fontSize: 8,
+                        bold: false,
+                        margin: [0, 0, 0, 10]
                     },
-                    tableHeader: {
-                        bold: true,
-                        fontSize: 13,
-                        color: 'black'
+                    footerTable: {
+                        fontSize: 8,
+                        bold: false,
+                        margin: [0, 0, 0, 10]
                     }
-                },
-            }
+                }
+            };
+
             pdfMake.createPdf(dd).open();
-        }
+        };
 
         activate();
 
