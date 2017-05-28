@@ -5,9 +5,9 @@ angular
     .controller('BillDetailController', BillDetailController);
 
 BillDetailController.$inject = ['$uibModal', '$http', '$state', '$stateParams', '$scope', 'billService', '$timeout', 'ngDialog', 'toaster',
-    '$filter', 'DTOptionsBuilder', 'DTColumnDefBuilder', 'APP_CONSTANTS'];
+    '$filter', 'DTOptionsBuilder', 'DTColumnDefBuilder', 'APP_CONSTANTS', 'printService'];
 function BillDetailController($uibModal, $http, $state, $stateParams, $scope, billService, $timeout, ngDialog, toaster, $filter,
-                              DTOptionsBuilder, DTColumnDefBuilder, APP_CONSTANTS) {
+                              DTOptionsBuilder, DTColumnDefBuilder, APP_CONSTANTS, printService) {
     var vm = this;
 
 
@@ -539,267 +539,21 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
      * Coversion a PFF
      =========================================================*/
 
-    vm.toPDF = function () {
-        var vm = this;
-        var billNumber = $scope.currentBill.billNumber;
-        var billDate = $filter('date')($scope.currentBill.billDate, "MM-dd-yyyy");
-        var dueDate = $filter('date')($scope.currentBill.dueDate, "MM-dd-yyyy");
-        var customerName = $scope.currentBill.customer.name;
-        var identificationType = 'Cédula jurídica: ';
-        var completeAddress = $scope.currentBill.address.district.name + ', ' + $scope.currentBill.address.canton.name +
-                                ', ' + $scope.currentBill.address.province.name + ', ' + $scope.currentBill.address.address
+    vm.toPDF = function (bill) {
+
+        var billNumber = bill.billNumber;
 
         if(billNumber == null){
-            billNumber = 'B' + $scope.currentBill.id;
+            billNumber = 'B' + bill.id;
         }
 
-        if($scope.currentBill.customer.firstLastName != null){
-            customerName += ' ' + $scope.currentBill.customer.firstLastName + ' ' + $scope.currentBill.customer.secondLastName;
-        }
+        var docDefinition = printService.createDocDefinition(bill);
 
-        if($scope.currentBill.customer.identificationType.code == 1){
-            identificationType = 'Cédula: '
-        }
+        //pdfMake.createPdf(docDefinition).download('factura ' + billNumber + '.pdf');
 
-        var productList = [];
+        //pdfMake.createPdf(docDefinition).open();
 
-        angular.forEach($scope.currentBill.billDetails, function(value, key) {
-            productList.push({productName: value.product.name, taxAmount: value.totalTaxAmount, discountAmount : value.totalDiscount,
-                            price: value.product.priceInColones, quantity: value.quantity, subtotal: value.total});
-        });
-
-        var items = productList.map(function(item) {
-            return [{text: item.productName, alignment: 'left'}, item.taxAmount, item.discountAmount, item.price, item.quantity, item.subtotal ];
-        });
-
-
-        var dd = {
-            content: [
-                {
-                    style: 'headerTable',
-                    table: {
-                        widths: ['*', 180],
-                        body: [
-                            [
-                                {
-                                    border: [false, false, false, false],
-                                    image :APP_CONSTANTS.logo, width: 50, height: 50
-                                },
-                                {
-                                    border: [false, false, false, false],
-                                    style: 'headerTableBillSection',
-                                    text: [
-                                        { text: 'Factura No ' + billNumber + '\n', fontSize: 10, bold: true },
-                                        'Fecha de facturación: ' + billDate + '\n',
-                                        'Fecha de vencimiento: ' + dueDate + '\n',
-                                        'Código de cliente: CU' + $scope.currentBill.customer.id + '\n'
-                                    ]
-                                }
-                            ],
-                            [
-                                {
-                                    border: [false, false, false, false],
-                                    text: [
-                                        {text: 'EMPRESA' + '\n', fontSize: 10, bold: true},
-                                        'CEDULA\n',
-                                        'DIRECCION\n',
-                                        'TELEFONO\n',
-                                        'CORREO\n',
-                                        'WEBSITE'
-                                    ]
-                                },
-                                {
-                                    border: [false, false, false, false],
-                                    fillColor: '#dddddd',
-                                    text: [
-                                        {text: customerName + '\n', fontSize: 10, bold: true},
-                                        identificationType + $scope.currentBill.customer.identification + '\n',
-                                        'Dirección: ' + completeAddress
-                                    ]
-                                }
-                            ]
-                        ]
-                    },
-                    layout: {
-                        defaultBorder: false,
-                    }
-                },
-                {
-                    style: 'bodyTable',
-                    table: {
-                        widths: ['*', 30, 30, 30, 30, 30],
-                        body: [
-                            [
-                                {
-                                    border: [true, true, true, true],
-                                    text: [
-                                        {text: 'Descripción', alignment: 'left', bold: true, fontSize : 8}
-                                    ]
-                                },
-                                {
-                                    border: [true, true, true, true],
-                                    text: [
-                                        {text: 'IVA', bold: true, fontSize : 8}
-                                    ]
-                                },
-                                {
-                                    border: [true, true, true, true],
-                                    text: [
-                                        {text: 'Desc.', bold: true, fontSize : 8}
-                                    ]
-                                },
-                                {
-                                    border: [true, true, true, true],
-                                    text: [
-                                        {text: 'P.U.', bold: true, fontSize : 8}
-                                    ]
-                                },
-                                {
-                                    border: [true, true, true, true],
-                                    text: [
-                                        {text: 'Cant.', bold: true, fontSize : 8}
-                                    ]
-                                },
-                                {
-                                    border: [true, true, true, true],
-                                    text: [
-                                        {text: 'Subtotal', bold: true, fontSize : 8}
-                                    ]
-                                }
-                            ]
-                        ].concat(items)
-                    },
-                    layout: {
-                        defaultBorder: true
-                    }
-                },
-                {
-                    style: 'footerTable',
-                    table: {
-                        widths: ['*', 120, 60],
-                        body: [
-                                [
-                                    {
-                                        border: [false, false, false, false],
-                                        text: [
-                                            'Condición de pago: '
-                                        ]
-                                    },
-                                    {
-                                        border: [false, false, false, false],
-                                        text: [
-                                            'Subtotal: '
-                                        ],
-                                        fillColor: '#dddddd',
-                                    },
-                                    {
-                                        border: [false, false, false, false],
-                                        text: [
-                                            {text: $scope.currentBill.subTotalAmount, alignment: 'right'}
-                                        ],
-                                        fillColor: '#dddddd',
-                                    }
-                                ],
-                            [
-                                {
-                                    border: [false, false, false, false],
-                                    text: [
-                                        ''
-                                    ]
-                                },
-                                {
-                                    border: [false, false, false, false],
-                                    text: [
-                                        'Total de descuentos:'
-                                    ],
-                                    fillColor: '#dddddd',
-                                },
-                                {
-                                    border: [false, false, false, false],
-                                    text: [
-                                        {text: $scope.currentBill.totalDiscount, alignment: 'right'}
-                                    ],
-                                    fillColor: '#dddddd',
-                                }
-                            ],
-                            [
-                                {
-                                    border: [false, false, false, false],
-                                    text: [
-                                        ''
-                                    ]
-                                },
-                                {
-                                    border: [false, false, false, false],
-                                    text: [
-                                        'Total de impuestos:'
-                                    ],
-                                    fillColor: '#dddddd',
-                                },
-                                {
-                                    border: [false, false, false, false],
-                                    text: [
-                                        {text: $scope.currentBill.totalTaxAmount, alignment: 'right'}
-                                    ],
-                                    fillColor: '#dddddd',
-                                }
-                            ],
-                            [
-                                {
-                                    border: [false, false, false, false],
-                                    text: [
-                                        ''
-                                    ]
-                                },
-                                {
-                                    border: [false, false, false, false],
-                                    text: [
-                                        'Total:'
-                                    ],
-                                    fillColor: '#dddddd',
-                                },
-                                {
-                                    border: [false, false, false, false],
-                                    text: [
-                                        {text: $scope.currentBill.totalAmount, alignment: 'right'}
-                                    ],
-                                    fillColor: '#dddddd',
-                                }
-                            ]
-                        ]
-                    },
-                    layout: {
-                        defaultBorder: false,
-                    }
-                }
-            ],
-            styles: {
-                headerTable: {
-                    fontSize: 8,
-                    bold: false,
-                    margin: [0, 0, 0, 10]
-                },
-                headerTableBillSection: {
-                    alignment: 'right',
-                    fontSize: 8,
-                    bold: false,
-                    margin: [0, 0, 0, 10]
-                },
-                bodyTable: {
-                    alignment: 'center',
-                    fontSize: 7,
-                    bold: false,
-                    margin: [0, 0, 0, 10]
-                },
-                footerTable: {
-                    fontSize: 8,
-                    bold: false,
-                    margin: [0, 0, 0, 10]
-                }
-            }
-        };
-
-        pdfMake.createPdf(dd).open();
+        pdfMake.createPdf(docDefinition).print();
     };
 
 }
