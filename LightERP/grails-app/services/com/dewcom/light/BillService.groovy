@@ -383,5 +383,22 @@ class BillService {
             throw e
         }
     }
+
+    /**
+     * Este servicio se encarga de actualizar  solamente el estado de la factura cuando sea necesario
+     * desde cualquier controller
+     * @param pBill es la factura a actualizar
+     * @param pBillStateCode es el codigo del estado
+     * @author Leo Chen
+     */
+    def  changeBillState(def pBill, def pBillStateCode){
+        try {
+            pBill.billState = BillStateType.findByCode(pBillStateCode)
+            pBill.save(failOnError: true)
+        } catch (Exception e) {
+            log.error "Ha ocurrido un error actualizando el estado de la factura" + e.message
+            throw e
+        }
+    }
 }
 

@@ -5,9 +5,9 @@ angular
     .controller('BillDetailController', BillDetailController);
 
 BillDetailController.$inject = ['$uibModal', '$http', '$state', '$stateParams', '$scope', 'billService', '$timeout', 'ngDialog', 'toaster',
-    '$filter', 'DTOptionsBuilder', 'DTColumnDefBuilder', 'APP_MEDIAQUERY'];
+    '$filter', 'DTOptionsBuilder', 'DTColumnDefBuilder', 'APP_CONSTANTS', 'printService'];
 function BillDetailController($uibModal, $http, $state, $stateParams, $scope, billService, $timeout, ngDialog, toaster, $filter,
-                              DTOptionsBuilder, DTColumnDefBuilder, APP_MEDIAQUERY) {
+                              DTOptionsBuilder, DTColumnDefBuilder, APP_CONSTANTS, printService) {
     var vm = this;
 
 
@@ -73,20 +73,6 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
             DTColumnDefBuilder.newColumnDef(3),
             DTColumnDefBuilder.newColumnDef(4).notSortable()
         ];
-
-
-
-        vm.toPDF = function () {
-            var vm = this;
-            var dd = {
-                content: [
-
-                    'Cliente:  ' + $scope.currentBill.customer.name
-                ]
-            };
-
-            pdfMake.createPdf(dd).open();
-        }
 
     }
 
@@ -548,5 +534,26 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
             body: toasterdata.text
         });
     }
+
+    /**=========================================================
+     * Coversion a PFF
+     =========================================================*/
+
+    vm.toPDF = function (bill) {
+
+        var billNumber = bill.billNumber;
+
+        if(billNumber == null){
+            billNumber = 'B' + bill.id;
+        }
+
+        var docDefinition = printService.createDocDefinition(bill);
+
+        //pdfMake.createPdf(docDefinition).download('factura ' + billNumber + '.pdf');
+
+        //pdfMake.createPdf(docDefinition).open();
+
+        pdfMake.createPdf(docDefinition).print();
+    };
 
 }

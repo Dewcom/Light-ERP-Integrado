@@ -21,7 +21,7 @@ class BootStrap {
         }
         if(!IdentificationType.findByCode(IdentificationType.COMPANY_CODE)){
           def companyClient = new IdentificationType()
-          companyClient.name = "Cédula Juridica"
+          companyClient.name = "Cédula Jurídica"
           companyClient.code = IdentificationType.COMPANY_CODE;
           companyClient.save()
         }
@@ -29,7 +29,7 @@ class BootStrap {
         //Creacion de Tipos de Clientes por Defecto
         if(!CustomerType.findByName("Contado & Credito")){
             def companyClient = new CustomerType()
-            companyClient.name = "Contado & Credito"
+            companyClient.name = "Contado & Crédito"
             companyClient.save()
         }
         if(!CustomerType.findByName("Solo Contado")){

@@ -14,7 +14,7 @@ class PaymentController extends  RestController {
     static allowedMethods = [get: "GET", create: "POST", update: "PUT", delete: "DELETE"]
     def messageSource
     def paymentService
-
+    def billService
     /**
      * Este método se encarga de obtener una lista de pagos o uno especifico
      * @author Leonardo Chen
@@ -106,6 +106,10 @@ class PaymentController extends  RestController {
                     paymentService.deletePayment(tmpPayment);
                     tmpResponse.message = messageSource.getMessage("delete.payment.success", null, Locale.default);
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
+                    //en caso de que la factura se quede sin pagos esta pasa a validada
+                    if(tmpPayment.bill.payments.size() == 0){
+                        billService.changeBillState(tmpPayment.bill, BillStateType.FACTURA_VALIDADA)
+                    }
                 } else {
                     tmpResponse.message = messageSource.getMessage("payment.not.found", null, Locale.default);
                     tmpResponse.code = Constants.REGISTER_NOT_FOUND
