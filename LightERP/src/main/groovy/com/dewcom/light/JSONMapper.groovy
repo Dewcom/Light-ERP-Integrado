@@ -217,6 +217,8 @@ class JSONMapper {
             tmpRestObject.productType = from(pProduct.productType)
             tmpRestObject.costInColones = pProduct.costInColones
             tmpRestObject.costInDollars = pProduct.costInDollars
+            tmpRestObject.priceInColones = pProduct.priceInColones
+            tmpRestObject.priceInDollars = pProduct.priceInDollars
             tmpRestObject.suggestedCost = pProduct.suggestedCost
             tmpRestObject.tariffHeading = pProduct.tariffHeading
             tmpRestObject.commercialName = pProduct.commercialName
