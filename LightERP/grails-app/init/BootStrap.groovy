@@ -1,14 +1,8 @@
-import com.dewcom.light.Address
-import com.dewcom.light.Bill
-import com.dewcom.light.BillDetail
 import com.dewcom.light.BillPaymentType
 import com.dewcom.light.BillStateType
-import com.dewcom.light.Contact
-import com.dewcom.light.Customer
-import com.dewcom.light.PresentationType
-import com.dewcom.light.ProductType
-import grails.converters.JSON
-import com.dewcom.light.AgentType
+import com.dewcom.light.CreditCondition
+import com.dewcom.light.Currency
+import com.dewcom.light.ExchangeRate
 import com.dewcom.light.CustomerType
 import com.dewcom.light.IdentificationType
 import com.dewcom.light.Role
@@ -18,8 +12,7 @@ import com.dewcom.light.UserRole
 class BootStrap {
 
     def init = {
-
-        //Creacion de Identificaciones por Defecto
+        //Creacion de contantes por Defecto
         if(!IdentificationType.findByCode(IdentificationType.PHYSICAL_CODE)){
           def physicalClient = new IdentificationType()
           physicalClient.name = "Cédula Física"
@@ -34,16 +27,125 @@ class BootStrap {
         }
 
         //Creacion de Tipos de Clientes por Defecto
-        if(!IdentificationType.findByName("Contado & Credito")){
+        if(!CustomerType.findByName("Contado & Credito")){
             def companyClient = new CustomerType()
             companyClient.name = "Contado & Credito"
             companyClient.save()
         }
-        if(!IdentificationType.findByName("Solo Contado")){
+        if(!CustomerType.findByName("Solo Contado")){
             def companyClient = new CustomerType()
             companyClient.name = "Solo Contado"
             companyClient.save()
         }
+
+        //estados de factura
+        if(!BillStateType.findByCode(BillStateType.FACTURA_CREADA)){
+            def tmpBillStateType = new BillStateType()
+            tmpBillStateType.description = "Factura borrador"
+            tmpBillStateType.code = BillStateType.FACTURA_CREADA;
+            tmpBillStateType.save()
+        }
+        if(!BillStateType.findByCode(BillStateType.FACTURA_PAGADA_PARCIAL)){
+            def tmpBillStateType = new BillStateType()
+            tmpBillStateType.description = "Factura pagada parcial"
+            tmpBillStateType.code = BillStateType.FACTURA_PAGADA_PARCIAL;
+            tmpBillStateType.save()
+        }
+        if(!BillStateType.findByCode(BillStateType.FACTURA_PAGADA)){
+            def tmpBillStateType = new BillStateType()
+            tmpBillStateType.description = "Factura pagada"
+            tmpBillStateType.code = BillStateType.FACTURA_PAGADA;
+            tmpBillStateType.save()
+        }
+
+        if(!BillStateType.findByCode(BillStateType.FACTURA_VALIDADA)){
+            def tmpBillStateType = new BillStateType()
+            tmpBillStateType.description = "Factura validada"
+            tmpBillStateType.code = BillStateType.FACTURA_VALIDADA;
+            tmpBillStateType.save()
+        }
+
+        //monedas
+
+        if(!Currency.findByCurrencyCode(Currency.MONEDA_COLONES)){
+            def tmpCurrency = new Currency()
+            tmpCurrency.description = "Colones"
+            tmpCurrency.currencyCode = Currency.MONEDA_COLONES;
+            tmpCurrency.save()
+        }
+
+        if(!Currency.findByCurrencyCode(Currency.MONEDA_DOLARES)){
+            def tmpCurrency = new Currency()
+            tmpCurrency.description = "Dolares"
+            tmpCurrency.currencyCode = Currency.MONEDA_DOLARES;
+            tmpCurrency.save()
+        }
+
+        //tipos de pago
+
+        if(!BillPaymentType.findByCode(BillPaymentType.PAGO_CONTADO)){
+            def tmpPaymentType = new BillPaymentType()
+            tmpPaymentType.description = "Contado"
+            tmpPaymentType.code = BillPaymentType.PAGO_CONTADO;
+            tmpPaymentType.save()
+        }
+
+        if(!BillPaymentType.findByCode(BillPaymentType.PAGO_CREDITO)){
+            def tmpPaymentType = new BillPaymentType()
+            tmpPaymentType.description = "Crédito"
+            tmpPaymentType.code = BillPaymentType.PAGO_CREDITO;
+            tmpPaymentType.save()
+        }
+
+        //condiciones de credito
+
+        if(!CreditCondition.findByCode(CreditCondition.CREDITO_OCHO_DIAS)){
+            def tmpCreditCon = new CreditCondition()
+            tmpCreditCon.description = "8 días"
+            tmpCreditCon.code = CreditCondition.CREDITO_OCHO_DIAS;
+            tmpCreditCon.days = 8;
+            tmpCreditCon.save()
+        }
+
+        if(!CreditCondition.findByCode(CreditCondition.CREDITO_QUINCE_DIAS)){
+            def tmpCreditCon = new CreditCondition()
+            tmpCreditCon.description = "15 días"
+            tmpCreditCon.code = CreditCondition.CREDITO_QUINCE_DIAS;
+            tmpCreditCon.days = 15;
+            tmpCreditCon.save()
+        }
+
+
+
+        if(!CreditCondition.findByCode(CreditCondition.CREDITO_TREINTA_DIAS)){
+            def tmpCreditCon = new CreditCondition()
+            tmpCreditCon.description = "30 días"
+            tmpCreditCon.code = CreditCondition.CREDITO_TREINTA_DIAS;
+            tmpCreditCon.days = 30;
+            tmpCreditCon.save()
+        }
+
+        if(!CreditCondition.findByCode(CreditCondition.CREDITO_SESENTA_DIAS)){
+            def tmpCreditCon = new CreditCondition()
+            tmpCreditCon.description = "60 días"
+            tmpCreditCon.code = CreditCondition.CREDITO_SESENTA_DIAS;
+            tmpCreditCon.days = 60;
+            tmpCreditCon.save()
+        }
+
+        //exchangeRate
+        if(!ExchangeRate.findByCode(ExchangeRate.TIPO_CAMBIO_DOLARES)){
+            def tmpExchageRate = new ExchangeRate()
+            tmpExchageRate.description = "Tipo cambio dólares compra"
+            tmpExchageRate.code = ExchangeRate.TIPO_CAMBIO_DOLARES;
+            tmpExchageRate.currency = Currency.findByCurrencyCode(Currency.MONEDA_DOLARES);
+            tmpExchageRate.value = 574.0D;
+            tmpExchageRate.save()
+        }
+
+
+
+
 
 
         def adminRole = new Role(authority: 'ROLE_ADMIN').save()

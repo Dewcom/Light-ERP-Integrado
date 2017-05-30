@@ -60,7 +60,7 @@ class BillService {
             tmpBill.address = Address.get(argRestBill.billAddress)
             def billDate = LightUtils.stringToDate(argRestBill.billDate,"dd-MM-yyyy")
 
-            if(argRestBill.billPaymentTypeId != null && paymentType.code == Constants.PAGO_CREDITO){
+            if(argRestBill.billPaymentTypeId != null && paymentType.code == BillPaymentType.PAGO_CREDITO){
                 if(argRestBill.creditConditionId != null ){
                     creditCondition = CreditCondition.findById(argRestBill.creditConditionId)
                     if(billDate != null){
@@ -72,7 +72,7 @@ class BillService {
 
             def billStateType
             if(argRestBill.registrationType == Constants.CREADA_BORRADOR){
-                billStateType = BillStateType.findByCode(Constants.FACTURA_CREADA)
+                billStateType = BillStateType.findByCode(BillStateType.FACTURA_CREADA)
             }
             else{
                 configConsecFactura = Configuration.findByCode(Constants.CONFIG_CONSECUTIVO_FACTURA)
@@ -80,7 +80,7 @@ class BillService {
                     Configuration tmpConfig = new Configuration(value: generateBillNumber().toString(), description: "consecutivo factura", code: Constants.CONFIG_CONSECUTIVO_FACTURA)
                     configConsecFactura = adminService.createConfiguration(tmpConfig)
                 }
-                billStateType = BillStateType.findByCode(Constants.FACTURA_VALIDADA)
+                billStateType = BillStateType.findByCode(BillStateType.FACTURA_VALIDADA)
                 tmpBill.billNumber = configConsecFactura.value as Long
             }
 
@@ -146,7 +146,7 @@ class BillService {
                 if(argUpdateBillRequest.billPaymentTypeId != null){
                     def tmpBillPaymentType = BillPaymentType.get(argUpdateBillRequest.billPaymentTypeId)
                     tmpBillToUpdate.billPaymentType = tmpBillPaymentType
-                    if(tmpBillPaymentType.code == Constants.PAGO_CONTADO){
+                    if(tmpBillPaymentType.code == BillPaymentType.PAGO_CONTADO){
                         tmpBillToUpdate.dueDate = new Date()
                         tmpBillToUpdate.creditCondition = null
                     }
@@ -163,7 +163,7 @@ class BillService {
                 if(argUpdateBillRequest.billStateId != null){
                     def tmpState = BillStateType.get(argUpdateBillRequest.billStateId)
                     tmpBillToUpdate.billState = tmpState
-                    if(tmpState.code == Constants.FACTURA_VALIDADA){
+                    if(tmpState.code == BillStateType.FACTURA_VALIDADA){
                         if(tmpBillToUpdate.billNumber == null){
                           def  configConsecFactura = Configuration.findByCode(Constants.CONFIG_CONSECUTIVO_FACTURA)
                             if (!configConsecFactura) {
