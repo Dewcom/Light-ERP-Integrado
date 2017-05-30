@@ -23,7 +23,8 @@
             'app.client',
             'app.product',
             'app.user',
-            'app.bill'
+            'app.bill',
+            'base64'
         ]);
 })();
 
@@ -50,8 +51,7 @@
             'cfp.loadingBar',
             'ngSanitize',
             'ngResource',
-            'ui.utils',
-            'base64'
+            'ui.utils'
         ]);
 })();
 (function() {
