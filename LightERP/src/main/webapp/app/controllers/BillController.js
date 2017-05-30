@@ -16,6 +16,7 @@
 
         activate();
 
+
         ////////////////
 
         function activate() {
@@ -163,12 +164,6 @@
             });
 
             /**=========================================================
-             * Inicializa la lista de productos
-             =========================================================*/
-
-            billService.resetAddedProductList();
-
-            /**=========================================================
              * Datatable productos agregados
              =========================================================*/
 
@@ -204,7 +199,14 @@
 
         //REGRESA A LA PANTALLA DE LISTA DE FACTURAS
         vm.goBack = function () {
+            billService.resetAddedProductList();
             $state.go('app.billingMain');
+        };
+
+        //LLeva a la pantalla de nueva factura
+        vm.createBill = function () {
+            billService.resetAddedProductList();
+            $state.go('app.newBill');
         };
 
         /**=========================================================
