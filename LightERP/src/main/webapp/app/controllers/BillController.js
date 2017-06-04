@@ -63,7 +63,7 @@
             "sProcessing": "Procesando...",
             "sLengthMenu": "Mostrar _MENU_ registros",
             "sZeroRecords": "",
-            "sEmptyTable": "",
+            "sEmptyTable": "Ningún dato disponible en esta tabla",
             "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
             "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
             "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
@@ -468,6 +468,7 @@
             vm.productList = productList;
 
             $scope.selectProduct = function (product) {
+                console.log(product);
                 vm.selectedProduct = product;
                 vm.selectedProduct.quantity = 1;
                 vm.selectedProduct.discount = 0;
