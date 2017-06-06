@@ -8,10 +8,9 @@
         .controller('BillController', BillController);
 
     BillController.$inject = ['DTOptionsBuilder', 'DTColumnDefBuilder', 'billService', 'customerService', 'productService', '$scope',
-        '$uibModal', 'productTypeService', 'presentationTypeService', '$state', 'toaster', '$timeout', '$filter', 'ngDialog','$base64',       'APP_CONSTANTS'];
+        '$uibModal', 'productTypeService', 'presentationTypeService', '$state', 'toaster', '$timeout', '$filter', 'ngDialog', 'APP_CONSTANTS'];
     function BillController(DTOptionsBuilder, DTColumnDefBuilder, billService, customerService, productService, $scope, $uibModal,
-                            productTypeService, presentationTypeService, $state, toaster, $timeout, $filter, ngDialog, $base64,
-                            APP_CONSTANTS) {
+                            productTypeService, presentationTypeService, $state, toaster, $timeout, $filter, ngDialog, APP_CONSTANTS) {
         var vm = this;
 
         activate();
@@ -297,40 +296,38 @@
         };
 
         // Submit form
-        vm.submitForm = function (action, registrationType) {
+        vm.submitForm = function (registrationType) {
+
 
             var vm = this;
-
             vm.submitted = true;
 
-            if (action == 'add') {
-                if (vm.newBillForm.$valid) {
-                    if (registrationType == 'validated') {
+            if(registrationType == APP_CONSTANTS.BILL_SAVED_ID){
+                vm.addBill(registrationType);
+            }else if(registrationType == APP_CONSTANTS.BILL_VALIDATED_ID){
 
-                        ngDialog.openConfirm({
-                            template: 'validateBillModal',
-                            className: 'ngdialog-theme-default',
-                            closeByDocument: false,
-                            closeByEscape: false
-                        }).then(function (value) {
-                            vm.addBill(registrationType);
-                        }, function (reason) {
-                            console.log('Modal promise rejected. Reason: ', reason);
-                        });
+                if (vm.newBillForm.$valid && billService.getAddedProductList().length > 0){
 
-                    } else if (registrationType == 'saved') {
+                    ngDialog.openConfirm({
+                        template: 'validateBillModal',
+                        className: 'ngdialog-theme-default',
+                        closeByDocument: false,
+                        closeByEscape: false
+                    }).then(function (value) {
                         vm.addBill(registrationType);
-                    }
+                    }, function (reason) {
+                        console.log('Modal promise rejected. Reason: ', reason);
+                    });
                 } else {
-                    console.log('Not valid!!');
-                    return false;
-                }
+                    var toasterdata = {
+                        type: 'warning',
+                        title: 'Factura',
+                        text: 'Por favor llene todos los campos indicados con asterisco'
+                    };
 
-            } else if (action == 'modify') {
-                if (vm.form.$valid) {
-                    updateUser();
-                } else {
-                    console.log('Not valid!!');
+                    console.log(toasterdata);
+
+                    pop(toasterdata);
                     return false;
                 }
 
@@ -356,12 +353,12 @@
                 "customerId": vm.chosenCustomer.id,
                 "exchangeRate": parseFloat(vm.exchangeRate),
                 "billPaymentTypeId": vm.paymentType,
-                "creditConditionId": vm.creditCondition,
+                "creditConditionId": vm.paymentType == 2 ? vm.creditCondition : null,
                 "currencyId": vm.currency,
                 "registrationType": registrationType,
                 "billDate": $filter('date')(vm.billDate, "dd-MM-yyyy"),
                 "billDetails": formatBillDetails(vm.addedProductList),
-                "billAddress" : vm.chosenCustomer.chosenAddress.id
+                "billAddress" : vm.chosenCustomer.chosenAddress != null ? vm.chosenCustomer.chosenAddress.id :null
             };
 
             console.log(newBill);

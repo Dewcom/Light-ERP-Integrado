@@ -110,7 +110,7 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
             "customerId": billToClone.customer.id,
             "exchangeRate": billToClone.exchangeRate,
             "billPaymentTypeId": billToClone.billPaymentType.id,
-            "creditConditionId": billToClone.creditCondition.id != null ? billToClone.creditCondition.id : null,
+            "creditConditionId": billToClone.creditCondition != null ? billToClone.creditCondition.id : null,
             "currencyId": billToClone.currency.id,
             "registrationType": 0,
             "billDate": $filter('date')(new Date(), "dd-MM-yyyy"),

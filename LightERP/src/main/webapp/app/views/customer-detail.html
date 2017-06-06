@@ -48,12 +48,12 @@
                                     <div class="form-group">
                                         <label>Tipo de identificación</label>
                                         <div class="controls">
+                                            <span ng-show="formStep1.$submitted &amp;&amp; formStep1.selectedIdentificationType.$invalid" class="text-danger">Este campo es inválido</span>
                                             <select name="selectedIdentificationType" ng-model="currentCustomer.selectedIdentificationType"
                                                     ng-options="item.id as item.name for item in parentController.identificationTypeList"
                                                     class="form-control" required="required">
                                                 <option value="?"></option>
                                             </select>
-                                            <span ng-show="formStep1.$submitted &amp;&amp; formStep1.selectedIdentificationType.$invalid" class="text-danger">Este campo es inválido</span>
                                         </div>
                                     </div>
                                 </div>
@@ -66,16 +66,17 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div ng-class="currentCustomer.selectedIdentificationType == 2 ? 'col-md-12':'col-md-4'">
                                     <div class="form-group">
-                                        <label>Nombre</label>
+                                        <label ng-show="currentCustomer.selectedIdentificationType == 1">Nombre</label>
+                                        <label ng-show="currentCustomer.selectedIdentificationType == 2">Nombre de la Empresa</label>
                                         <div class="controls">
                                             <input type="text" name="name" ng-model="currentCustomer.name" placeholder="Juan" required="required" class="form-control" />
                                             <span ng-show="formStep1.$submitted &amp;&amp; formStep1.name.$invalid" class="text-danger">Este campo es inválido</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4" ng-show="currentCustomer.selectedIdentificationType == 1">
                                     <div class="form-group">
                                         <label>Primer apellido</label>
                                         <div class="controls">
@@ -84,7 +85,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4" ng-show="currentCustomer.selectedIdentificationType == 1">
                                     <div class="form-group">
                                         <label>Segundo apellido</label>
                                         <div class="controls">
