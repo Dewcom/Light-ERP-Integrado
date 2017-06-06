@@ -5,6 +5,7 @@ package com.dewcom.light
  */
 class ExchangeRate {
     public static final Integer TIPO_CAMBIO_DOLARES = 1;
+    public static final Integer TIPO_CAMBIO_COLONES = 2;
     Integer code
     String description
     Double value

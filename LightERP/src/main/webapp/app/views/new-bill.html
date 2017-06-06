@@ -17,7 +17,7 @@
             <div class="panel b">
                 <div class="panel-body">
                     <div class="panel-body">
-                        <div class="pull-left text-bold text-dark" class="col-md-6">FECHA</div>
+                        <div class="pull-left text-bold text-dark col-md-6">FECHA</div>
                         <div class="pull-right col-md-6">
                             <button type="button" ng-click="controller.open($event)" class="btn btn-default">
                                 <em class="fa fa-calendar"></em>
@@ -76,13 +76,13 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <p ng-show="controller.billDate != null && controller.paymentType != null">
+                    <p ng-show="controller.billDate != null && controller.chosenCustomer.name != null">
                         <button type="button" class="btn btn-primary btn-block"
-                                ng-click="controller.submitForm('add', 'saved')">
+                                ng-click="controller.submitForm(1)">
                             Guardar
                         </button>
                         <button type="button" class="btn btn-primary btn-block"
-                                ng-click="controller.submitForm('add', 'validated')">
+                                ng-click="controller.submitForm(2)">
                             Validar
                         </button>
                     </p>

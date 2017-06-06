@@ -76,7 +76,7 @@ class BootStrap {
 
         if(!Currency.findByCurrencyCode(Currency.MONEDA_DOLARES)){
             def tmpCurrency = new Currency()
-            tmpCurrency.description = "Dolares"
+            tmpCurrency.description = "Dólares"
             tmpCurrency.currencyCode = Currency.MONEDA_DOLARES;
             tmpCurrency.save()
         }
@@ -140,6 +140,15 @@ class BootStrap {
             tmpExchageRate.code = ExchangeRate.TIPO_CAMBIO_DOLARES;
             tmpExchageRate.currency = Currency.findByCurrencyCode(Currency.MONEDA_DOLARES);
             tmpExchageRate.value = 574.0D;
+            tmpExchageRate.save()
+        }
+
+        if(!ExchangeRate.findByCode(ExchangeRate.TIPO_CAMBIO_COLONES)){
+            def tmpExchageRate = new ExchangeRate()
+            tmpExchageRate.description = "Tipo cambio colones compra"
+            tmpExchageRate.code = ExchangeRate.TIPO_CAMBIO_COLONES;
+            tmpExchageRate.currency = Currency.findByCurrencyCode(Currency.MONEDA_COLONES);
+            tmpExchageRate.value = 1D;
             tmpExchageRate.save()
         }
 
