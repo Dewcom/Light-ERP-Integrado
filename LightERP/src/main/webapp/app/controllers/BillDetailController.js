@@ -9,8 +9,7 @@ BillDetailController.$inject = ['$uibModal', '$http', '$state', '$stateParams', 
 function BillDetailController($uibModal, $http, $state, $stateParams, $scope, billService, $timeout, ngDialog, toaster, $filter,
                               DTOptionsBuilder, DTColumnDefBuilder, APP_CONSTANTS, printService) {
     var vm = this;
-
-
+    $scope.globalConstants = APP_CONSTANTS
 
     var language = {
         "sProcessing": "Procesando...",
@@ -137,7 +136,7 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
             }
 
             pop(toasterdata);
-            $timeout(function () {
+    $timeout(function () {
                 var params = {billId: response.data.id};
                 $state.go('app.updateBill', params);
             }, 3000);
@@ -196,10 +195,11 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
      =========================================================*/
 
     vm.voidBill = function (bill) {
-
-        bill.billState = 3;
-
-        console.log(bill);
+        //se envia solamente el billstateid en el put ya q es
+        // lo unico q ocupo cambiar
+        var billToUpdate = {
+            "billStateId": APP_CONSTANTS.BILL_VOID_STATE_CODE
+        };
 
         ngDialog.openConfirm({
             template: 'voidBillModal',
@@ -207,7 +207,7 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
             closeByDocument: false,
             closeByEscape: false
         }).then(function (value) {
-            billService.voidBill(bill).then(function (response) {
+            billService.voidBill(billToUpdate, bill.id).then(function (response) {
                 var toasterdata;
                 console.log(response);
 

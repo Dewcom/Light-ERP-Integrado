@@ -41,7 +41,7 @@
                              <em class="fa fa-times"></em>
                           </span>Modificar
                         </button>
-                        <button ng-show="currentBill.billState.description == 'Validada'" type="button"
+                        <button ng-show="currentBill.billState.code == globalConstants.BILL_VALIDATED_STATE_CODE" type="button"
                                 ng-click="controller.voidBill(currentBill)"
                                 class="btn btn-labeled btn-danger pull-right">
                           <span class="btn-label">

@@ -65,6 +65,13 @@ class BootStrap {
             tmpBillStateType.save()
         }
 
+        if(!BillStateType.findByCode(BillStateType.FACTURA_ANULADA)){
+            def tmpBillStateType = new BillStateType()
+            tmpBillStateType.description = "Factura anulada"
+            tmpBillStateType.code = BillStateType.FACTURA_ANULADA;
+            tmpBillStateType.save()
+        }
+
         //monedas
 
         if(!Currency.findByCurrencyCode(Currency.MONEDA_COLONES)){
