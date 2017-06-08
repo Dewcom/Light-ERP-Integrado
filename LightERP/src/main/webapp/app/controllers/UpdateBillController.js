@@ -211,7 +211,6 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
 
     // Submit form
     vm.submitForm = function (action, registrationType) {
-
         var vm = this;
 
         vm.submitted = true;

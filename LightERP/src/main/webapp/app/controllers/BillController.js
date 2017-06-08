@@ -297,7 +297,7 @@
 
         // Submit form
         vm.submitForm = function (registrationType) {
-
+        
 
             var vm = this;
             vm.submitted = true;
@@ -341,12 +341,6 @@
         vm.addBill = function (regType) {
 
             var userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
-            var registrationType;
-            if (regType == 'saved') {
-                registrationType = 0;
-            } else if (regType = 'validated') {
-                registrationType = 1;
-            }
 
             var newBill = {
                 "userName": userInfo.userName,
@@ -355,7 +349,7 @@
                 "billPaymentTypeId": vm.paymentType,
                 "creditConditionId": vm.paymentType == 2 ? vm.creditCondition : null,
                 "currencyId": vm.currency,
-                "registrationType": registrationType,
+                "registrationType": regType,
                 "billDate": $filter('date')(vm.billDate, "dd-MM-yyyy"),
                 "billDetails": formatBillDetails(vm.addedProductList),
                 "billAddress" : vm.chosenCustomer.chosenAddress != null ? vm.chosenCustomer.chosenAddress.id :null

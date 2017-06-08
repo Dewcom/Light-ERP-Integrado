@@ -43,6 +43,9 @@ class PaymentService {
             def billPayments = tmpBill.payments
             def tmpTotalPaymentsAmount = !billPayments ? 0.0D : billPayments.sum { it.amount };
 
+            if(tmpTotalPaymentsAmount == 0.0D){
+                tmpBill.billState = BillStateType.findByCode(BillStateType.FACTURA_PAGADA_PARCIAL)
+            }
 
             if(pPayment.amount + tmpTotalPaymentsAmount > tmpBill.totalAmount){
                 throw new LightRuntimeException(messageSource.getMessage("create.payment.amount.greater.error", null, Locale.default));
@@ -51,9 +54,7 @@ class PaymentService {
                 tmpBill.billState = BillStateType.findByCode(BillStateType.FACTURA_PAGADA)
             }
 
-            if(tmpTotalPaymentsAmount == 0.0D){
-                tmpBill.billState = BillStateType.findByCode(BillStateType.FACTURA_PAGADA_PARCIAL)
-            }
+
             //actualizamos el objeto bill
             tmpBill.save()
             pPayment.save(flush: true, failOnError: true)
