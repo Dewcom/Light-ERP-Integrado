@@ -49,8 +49,6 @@ class Constants {
     public static final Integer FACTURA_TOTAL_DESCUENTOS = 3;
     public static final Integer FACTURA_TOTAL_IMPUESTOS = 4;
 
-    //codigo config parametro
-    public static final Integer CONFIG_CONSECUTIVO_FACTURA = 0;
 
     //tipos registro factura
     public static final Integer CREADA_BORRADOR = 0;

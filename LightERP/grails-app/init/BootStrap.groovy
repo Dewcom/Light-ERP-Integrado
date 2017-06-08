@@ -1,5 +1,7 @@
 import com.dewcom.light.BillPaymentType
 import com.dewcom.light.BillStateType
+import com.dewcom.light.Configuration
+import com.dewcom.light.Constants
 import com.dewcom.light.CreditCondition
 import com.dewcom.light.Currency
 import com.dewcom.light.ExchangeRate
@@ -159,9 +161,10 @@ class BootStrap {
             tmpExchageRate.save()
         }
 
-
-
-
+        //se crea la configuracion de  num factura con el primer numero
+        if(!Configuration.findByCode(Configuration.CONFIG_CONSECUTIVO_FACTURA)){
+            def tmpConfig = new Configuration(value: "1", description: "consecutivo candidato factura", code: Configuration.CONFIG_CONSECUTIVO_FACTURA).save()
+        }
 
 
         def adminRole = new Role(authority: 'ROLE_ADMIN').save()
