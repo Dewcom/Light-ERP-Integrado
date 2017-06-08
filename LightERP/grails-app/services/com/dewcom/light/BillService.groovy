@@ -59,6 +59,7 @@ class BillService {
             def creditCondition;
             tmpBill.address = Address.get(argRestBill.billAddress)
             def billDate = LightUtils.stringToDate(argRestBill.billDate,"dd-MM-yyyy")
+            tmpBill.dueDate = billDate
 
             if(argRestBill.billPaymentTypeId != null && paymentType.code == BillPaymentType.PAGO_CREDITO){
                 if(argRestBill.creditConditionId != null ){
@@ -147,7 +148,7 @@ class BillService {
                     def tmpBillPaymentType = BillPaymentType.get(argUpdateBillRequest.billPaymentTypeId)
                     tmpBillToUpdate.billPaymentType = tmpBillPaymentType
                     if(tmpBillPaymentType.code == BillPaymentType.PAGO_CONTADO){
-                        tmpBillToUpdate.dueDate = new Date()
+                        tmpBillToUpdate.dueDate = tmpBillToUpdate.billDate
                         tmpBillToUpdate.creditCondition = null
                     }
                 }
