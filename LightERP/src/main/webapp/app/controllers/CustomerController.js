@@ -10,9 +10,10 @@
 
     CustomerController.$inject = ['$uibModal', '$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder',
         'customerService', 'customerTypeService', 'identificationTypeService', 'toaster', '$state',
-        '$filter', '$timeout', 'ngDialog', '$scope'];
+        '$filter', '$timeout', 'ngDialog', '$scope', 'userService', 'LOCATION'];
     function CustomerController($uibModal, $resource, DTOptionsBuilder, DTColumnDefBuilder, customerService,
-                                customerTypeService, identificationTypeService, toaster, $state, $filter, $timeout, ngDialog, $scope) {
+                                customerTypeService, identificationTypeService, toaster, $state, $filter, $timeout,
+                                ngDialog, $scope, userService, LOCATION) {
         var vm = this;
 
         vm.addresses = [];
