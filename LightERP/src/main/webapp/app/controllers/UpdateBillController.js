@@ -266,7 +266,7 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
         var billToUpdate = {
             "billId" : vm.currentBill.id,
             "customerId": vm.currentBill.customer.id,
-            "exchangeRate": vm.currentBill.exchangeRate,
+            "exchangeRate": parseFloat(vm.currentBill.exchangeRate),
             "billPaymentTypeId": vm.currentBill.billPaymentType.id,
             "creditConditionId": vm.currentBill.billPaymentType.id == 2 ? vm.currentBill.creditCondition.id : null,
             "currencyId": vm.currentBill.currency.id,

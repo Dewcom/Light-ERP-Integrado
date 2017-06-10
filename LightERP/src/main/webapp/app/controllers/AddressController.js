@@ -10,8 +10,8 @@
         .module('app.tables')
         .controller('AddressController', AddressController);
 
-    AddressController.$inject = ['$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder', '$filter', '$scope'];
-    function AddressController($resource, DTOptionsBuilder, DTColumnDefBuilder, $filter, $scope) {
+    AddressController.$inject = ['$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder', '$filter', '$scope', 'LOCATION'];
+    function AddressController($resource, DTOptionsBuilder, DTColumnDefBuilder, $filter, $scope, LOCATION) {
         var vm = this;
 
         var language = {
@@ -98,26 +98,22 @@
 
 
             //Distribución territorial
-            vm.provinces= [];
-            vm.cantons= [];
-            vm.districts= [];
+            vm.provinces = LOCATION.provinces;
 
-            $resource('server/location/provincias.json').query().$promise.then(function(data) {
+            /*$resource('server/location/provincias.json').query().$promise.then(function(data) {
                 vm.provinces = data;
-            });
+            });*/
 
             //Se carga la lista de cantones
             vm.loadCantons = function(pidProvince){
                 vm.cantons= [];
 
-                $resource('server/location/cantones.json').query().$promise.then(function(data) {
-                    var tmpList = $filter('filter')(data, {idProvince: pidProvince });
+                var tmpList = $filter('filter')(LOCATION.cantons, {idProvince: pidProvince });
 
-                    angular.forEach(tmpList, function (value) {
-                        if (parseInt(value.idProvince) === pidProvince) {
-                            vm.cantons.push(value);
-                        }
-                    });
+                angular.forEach(tmpList, function (value) {
+                    if (parseInt(value.idProvince) === pidProvince) {
+                        vm.cantons.push(value);
+                    }
                 });
             };
 
@@ -125,16 +121,13 @@
             vm.loadDistricts = function(pidCanton){
             vm.districts= [];
 
-                $resource('server/location/distritos.json').query().$promise.then(function(data) {
+                var tmpList = $filter('filter')(LOCATION.districts, {idCanton: pidCanton});
 
-                    var tmpList = $filter('filter')(data, {idCanton: pidCanton});
+                angular.forEach(tmpList, function (value) {
 
-                    angular.forEach(tmpList, function (value) {
-
-                        if (value.idCanton === pidCanton) {
-                            vm.districts.push(value);
-                        }
-                    });
+                    if (value.idCanton === pidCanton) {
+                        vm.districts.push(value);
+                    }
                 });
             };
         }
