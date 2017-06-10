@@ -225,7 +225,7 @@
                                                 <select name="controller.currency" ng-model="controller.currentBill.currency.id"
                                                         ng-options="item.id as item.description for item in controller.currencyList"
                                                         class="form-control"
-                                                        ng-change="controller.changeExchangeRate(controller.currency)">
+                                                        ng-change="controller.changeExchangeRate(controller.currentBill.currency)">
                                                 </select>
                                             </div>
                                         </div>

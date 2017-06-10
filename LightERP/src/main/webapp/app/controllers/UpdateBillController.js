@@ -192,6 +192,7 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
      =========================================================*/
 
     vm.changeExchangeRate = function (currency) {
+        console.log(currency);
         var rate = $filter("filter")(vm.exchangeRateList, {currency: {id: currency.id}});
         vm.currentBill.exchangeRate = rate[0].value;
     };
@@ -234,7 +235,15 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
                     vm.updateBill(registrationType);
                 }
             } else {
-                console.log('Not valid!!');
+                var toasterdata = {
+                    type: 'warning',
+                    title: 'Factura',
+                    text: 'Por favor completar todos los campos'
+                };
+
+                console.log(toasterdata);
+
+                pop(toasterdata);
                 return false;
             }
 
