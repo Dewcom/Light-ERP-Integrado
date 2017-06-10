@@ -76,13 +76,12 @@ class BillService {
                 billStateType = BillStateType.findByCode(BillStateType.FACTURA_CREADA)
             }
             else{
-                configConsecFactura = Configuration.findByCode(Constants.CONFIG_CONSECUTIVO_FACTURA)
-                if (!configConsecFactura) {
-                    Configuration tmpConfig = new Configuration(value: generateBillNumber().toString(), description: "consecutivo factura", code: Constants.CONFIG_CONSECUTIVO_FACTURA)
-                    configConsecFactura = adminService.createConfiguration(tmpConfig)
-                }
+                configConsecFactura = Configuration.findByCode(Configuration.CONFIG_CONSECUTIVO_FACTURA)
+                def billNumber = configConsecFactura.value as Long
+                tmpBill.billNumber = billNumber
+                configConsecFactura.value = billNumber+1
+                adminService.updateConfiguration(configConsecFactura)
                 billStateType = BillStateType.findByCode(BillStateType.FACTURA_VALIDADA)
-                tmpBill.billNumber = configConsecFactura.value as Long
             }
 
             tmpBill.user = billUser
@@ -105,11 +104,6 @@ class BillService {
 
             savedBill = tmpBill.save(flush: true, failOnError:true)
 
-            //se actualiza el numero de consecutivo en caso de haberse almacenado  correctamente la factura
-            if(argRestBill.registrationType == Constants.CREADA_VALIDADA){
-                configConsecFactura.value = ((configConsecFactura.value as Long) + 1).toString();
-                adminService.updateConfiguration(configConsecFactura)
-            }
         } catch (Exception e) {
             log.error(e);
 
@@ -163,18 +157,17 @@ class BillService {
 
                 if(argUpdateBillRequest.billStateId != null){
                     def tmpState = BillStateType.findByCode(argUpdateBillRequest.billStateId)
-                    tmpBillToUpdate.billState = tmpState
                     if(tmpState.code == BillStateType.FACTURA_VALIDADA){
-                        if(tmpBillToUpdate.billNumber == null){
-                          def  configConsecFactura = Configuration.findByCode(Constants.CONFIG_CONSECUTIVO_FACTURA)
-                            if (!configConsecFactura) {
-                                Configuration tmpConfig = new Configuration(value: generateBillNumber().toString(), description: "consecutivo factura", code: Constants.CONFIG_CONSECUTIVO_FACTURA)
-                                configConsecFactura = adminService.createConfiguration(tmpConfig)
-                            }
-                            tmpBillToUpdate.billNumber = configConsecFactura.value as Long
+                        if(tmpBillToUpdate.billState.code == BillStateType.FACTURA_CREADA){
+                           def  configConsecFactura = Configuration.findByCode(Configuration.CONFIG_CONSECUTIVO_FACTURA)
+                            def billNumber = configConsecFactura.value as Long
+                            tmpBillToUpdate.billNumber = billNumber
+                            //se actualiza el consecutivo al existir para generar un nuevo candidato a utilizar
+                            configConsecFactura.value = billNumber+1
+                            adminService.updateConfiguration(configConsecFactura)
                         }
-
                     }
+                    tmpBillToUpdate.billState = tmpState
                 }
                 if(argUpdateBillRequest.billDetails != null) {
                     //Se desactivan las detalles de factura que fueron eliminadas en el FE
@@ -304,8 +297,8 @@ class BillService {
     }
 
     /**
-     * Este método se encarga de procesar revisar de la base de datos
-     * cual es el numero de factura mas reciente secuencialmente generar uno nuevo.
+     * Este método se encarga de generar el siguiente numero factible
+     * para ser utilizado como bill number utilizado en flujo de creacion y edicion especificamente
      * @author Leo Chen
      */
     def generateBillNumber(){
@@ -321,10 +314,12 @@ class BillService {
                 billNumber = tmpMaxBillNumber+1
             }
             else{
+                //si entramos en este bloque no existe facturas registradas
+                // por lo tanto el numero de factura
                 billNumber =1;
             }
         } catch (Exception e) {
-            log.error "Ha ocurrido un error calculando los totales " + e.message
+            log.error "Ha ocurrido un error calculando el numero de factura " + e.message
             throw e
         }
         return billNumber

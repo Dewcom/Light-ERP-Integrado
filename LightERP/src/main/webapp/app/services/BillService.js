@@ -221,15 +221,13 @@ angular
             return disableBillResult;
         };
 
-        billService.voidBill = function (bill) {
+        billService.voidBill = function (bill, billId) {
 
 
             var voidBillResult = $http({
                 method: 'PUT',
-                url: APP_CONSTANTS.appURL + 'bill/' + bill.billId,
-                data: {
-                    id: bill
-                },
+                url: APP_CONSTANTS.appURL + 'bill/' + billId,
+                data:bill,
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
