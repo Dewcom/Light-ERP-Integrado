@@ -225,6 +225,8 @@
          =========================================================*/
 
         vm.changeExchangeRate = function (currency) {
+
+            console.log(currency);
             var rate = $filter("filter")(vm.exchangeRateList, {currency: {id: currency}});
             vm.exchangeRate = rate[0].value;
         };
