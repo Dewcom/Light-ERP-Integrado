@@ -55,6 +55,10 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
                 billService.getAddressInfo(bill.address, function (addressInfo) {
                     $scope.currentBill.address = addressInfo;
                 });
+
+                vm.paymentQuantity = bill.payments.length;
+                vm.paidTotal = calculatePaidTotal(bill);
+                vm.toBepaidTotal = calculateToBePaidTotal(bill);
             }
         });
 
@@ -62,10 +66,13 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
          * Payments datatable
          =========================================================*/
 
-        vm.dtOptions = DTOptionsBuilder.newOptions()
-            .withPaginationType('full_numbers')
+        vm.dtPaymentOptions = DTOptionsBuilder.newOptions()
+            .withOption('bFilter', false)
+            .withOption('bInfo', false)
+            .withOption('bPaginate', false)
+            .withOption('bLengthChange', false)
             .withLanguage(language);
-        vm.dtColumnDefs = [
+        vm.dtPaymentColumnDefs = [
             DTColumnDefBuilder.newColumnDef(0),
             DTColumnDefBuilder.newColumnDef(1),
             DTColumnDefBuilder.newColumnDef(2),
@@ -536,7 +543,7 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
     }
 
     /**=========================================================
-     * Coversion a PFF
+     * Coversion a PDF
      =========================================================*/
 
     vm.toPDF = function (bill) {
@@ -555,5 +562,41 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
 
         //pdfMake.createPdf(docDefinition).print();
     };
+
+    /**=========================================================
+     * Calcula el total pagado
+     =========================================================*/
+
+    function calculatePaidTotal (currentBill) {
+        var paidTotal = 0;
+
+        angular.forEach(currentBill.payments, function (value, key) {
+            console.log(value);
+            paidTotal += value.amount;
+        });
+
+        return paidTotal;
+    }
+
+    /**=========================================================
+     * Calcula el total por ser pagado
+     =========================================================*/
+
+    function calculateToBePaidTotal (currentBill) {
+        var toBePaidTotal = 0;
+        var paidTotal = 0;
+
+        angular.forEach(currentBill.payments, function (value, key) {
+            console.log(value);
+            paidTotal += value.amount;
+        });
+
+        toBePaidTotal = parseFloat(currentBill.totalAmount) - parseFloat(paidTotal);
+        console.log(paidTotal);
+        console.log(toBePaidTotal);
+        console.log(currentBill.totalAmount);
+
+        return toBePaidTotal;
+    }
 
 }
