@@ -235,7 +235,7 @@
                         <td ng-if="paymentObj.bankReceipt != null">{{ paymentObj.bankReceipt }}</td>
                         <td ng-if="paymentObj.observation == null">**SIN OBSERVACIONES**</td>
                         <td ng-if="paymentObj.observation != null">{{ paymentObj.observation }}</td>
-                        <td ng-show="currentBill.billState.code != 4">
+                        <td>
                             <button type="button" ng-click="controller.openUpdatePaymentModal(paymentObj)" class="btn btn-sm btn-toolbar">
                                 <em class="fa fa-search"></em>
                             </button>
