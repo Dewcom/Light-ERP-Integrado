@@ -2,14 +2,14 @@
 
 angular
     .module('app.services')
-    .factory("customerService", function ($http, $state, $resource, $filter, APP_CONSTANTS) {
+    .factory("customerService", function ($http, $state, $resource, $filter, APP_CONSTANTS, LOCATION) {
 
         var customerService = {};
         var tmpAddressList = [];
 
         customerService.getAll = function () {
 
-            var customerList = $http({
+            return $http({
                 method: 'GET',
                 url: APP_CONSTANTS.appURL + 'customer/get',
                 headers: {
@@ -21,13 +21,11 @@ angular
                 console.log(error);
                 return error.status;
             });
-
-            return customerList;
         };
 
         customerService.get = function (customerId) {
 
-            var customer = $http({
+            return $http({
                 method: 'GET',
                 url: APP_CONSTANTS.appURL + 'customer/get?id=' + customerId,
                 headers: {
@@ -39,12 +37,10 @@ angular
                 console.log(error);
                 return error.status;
             });
-
-            return customer;
         };
 
         customerService.addCustomer = function (newCustomer) {
-            var addCustomerResult = $http({
+            return $http({
                 method: 'POST',
                 url: APP_CONSTANTS.appURL + 'customer/create',
                 data: {
@@ -59,12 +55,10 @@ angular
                 console.log(error);
                 return error.status;
             });
-
-            return addCustomerResult;
         };
 
         customerService.updateCustomer = function (updatedCustomer) {
-            var updateCustomerResult = $http({
+            return $http({
                 method: 'PUT',
                 url: APP_CONSTANTS.appURL + 'customer/update',
                 data: updatedCustomer,
@@ -77,13 +71,11 @@ angular
                 console.log(error);
                 return error.status;
             });
-
-            return updateCustomerResult;
         };
 
         customerService.disableCustomer = function (customerId) {
 
-            var disableCustomerResult = $http({
+            return $http({
                 method: 'DELETE',
                 url: APP_CONSTANTS.appURL + 'customer/delete',
                 data: {
@@ -98,13 +90,11 @@ angular
                 console.log(error);
                 return error.status;
             });
-
-            return disableCustomerResult;
         };
 
         customerService.getAllContacts = function (customerId) {
 
-            var customerContactsList = $http({
+            return $http({
                 method: 'GET',
                 url: APP_CONSTANTS.appURL + 'customer/contacts?id=' + customerId,
                 headers: {
@@ -116,15 +106,13 @@ angular
                 console.log(error);
                 return error.status;
             });
-
-            return customerContactsList;
         };
 
         customerService.getAllAddresses = function (customerId) {
             // Inicializa el array vacio
             tmpAddressList = [];
 
-            var customerAddressList = $http({
+            return $http({
                 method: 'GET',
                 url: APP_CONSTANTS.appURL + 'customer/addresses?id=' + customerId,
                 headers: {
@@ -138,7 +126,6 @@ angular
                 return error.status;
             });
 
-            return customerAddressList;
         };
 
 
@@ -155,61 +142,55 @@ angular
                 var tmpProvince = null;
                 var tmpCanton = null;
 
-                $resource('server/location/distritos.json').query().$promise.then(function (data) {
-                    var districtObjList = $filter('filter')(data, {idDistrict: tmpIdDistrict});
+                var districtObjList = $filter('filter')(LOCATION.districts, {idDistrict: tmpIdDistrict});
 
-                    var districtNotFound = true;
+                var districtNotFound = true;
+                do {
+                    angular.forEach(districtObjList, function (value) {
+                        if (parseInt(value.idDistrict) === tmpIdDistrict) {
+                            tmpDistrict = value;
+                            districtNotFound = false;
+                        }
+                    });
+
+                } while (districtNotFound);
+
+                var tmpIdProvince = parseInt(tmpDistrict.idProvince);
+
+                var tmpIdCanton = parseInt(tmpDistrict.idCanton);
+
+                var provinceObjList = $filter('filter')(LOCATION.provinces, {idProvince: tmpIdProvince});
+
+                    var provinceNotFound = true;
                     do {
-                        angular.forEach(districtObjList, function (value) {
-                            if (parseInt(value.idDistrict) === tmpIdDistrict) {
-                                tmpDistrict = value;
-                                districtNotFound = false;
+                        angular.forEach(provinceObjList, function (value) {
+                            if (parseInt(value.idProvince) === tmpIdProvince) {
+                                tmpProvince = value;
+                                provinceNotFound = false;
                             }
                         });
 
-                    } while (districtNotFound);
-
-                    var tmpIdProvince = parseInt(tmpDistrict.idProvince);
-
-                    var tmpIdCanton = parseInt(tmpDistrict.idCanton);
-
-                    $resource('server/location/provincias.json').query().$promise.then(function (data) {
-                        var provinceObjList = $filter('filter')(data, {idProvince: tmpIdProvince});
-
-                        var provinceNotFound = true;
-                        do {
-                            angular.forEach(provinceObjList, function (value) {
-                                if (parseInt(value.idProvince) === tmpIdProvince) {
-                                    tmpProvince = value;
-                                    provinceNotFound = false;
-                                }
-                            });
-
-                        } while (provinceNotFound);
-
-                    });
+                    } while (provinceNotFound);
 
 
-                    $resource('server/location/cantones.json').query().$promise.then(function (data) {
-                        var cantonObjList = $filter('filter')(data, {idCanton: tmpIdCanton});
+                var cantonObjList = $filter('filter')(LOCATION.cantons, {idProvince: tmpIdProvince});
 
-                        var cantonNotFound = true;
-                        do {
-                            angular.forEach(cantonObjList, function (value) {
-                                if (parseInt(value.idCanton) === tmpIdCanton) {
+                    var cantonNotFound = true;
+                    do {
+                        angular.forEach(cantonObjList, function (value) {
+                            if (parseInt(value.idCanton) === tmpIdCanton) {
+                                tmpCanton = value;
+                                cantonNotFound = false;
+                            }
+                        });
 
-                                    tmpCanton = value;
+                    }  while (provinceNotFound);
 
-                                    cantonNotFound = false;
-                                }
-                            });
+                console.log(tmpDistrict);
+                console.log(tmpProvince);
+                console.log(tmpCanton);
 
-                        } while (cantonNotFound);
-
-                        tmpAddressList.push(_buildAddress2AddFromCustomer(tmpIdAddress, tmpProvince, tmpCanton, tmpDistrict, tmpAddress));
-                    });
-
-                });
+                tmpAddressList.push(_buildAddress2AddFromCustomer(tmpIdAddress, tmpProvince, tmpCanton, tmpDistrict, tmpAddress));
 
             });
         }

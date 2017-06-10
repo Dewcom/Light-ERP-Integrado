@@ -321,7 +321,7 @@
                     var toasterdata = {
                         type: 'warning',
                         title: 'Factura',
-                        text: 'Por favor llene todos los campos indicados con asterisco'
+                        text: 'Por favor completar todos los campos'
                     };
 
                     console.log(toasterdata);
