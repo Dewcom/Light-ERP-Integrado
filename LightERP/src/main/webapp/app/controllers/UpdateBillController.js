@@ -53,6 +53,8 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
         vm.format = 'dd-MM-yyyy'
     }
 
+
+
     function init() {
         console.log($stateParams.billId);
         var bill;
@@ -75,13 +77,14 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
 
                 prepareBillProductList(vm.currentBill.billDetails);
 
+                vm.billTotal = calculateTotalAmmount(vm.currentBill.billDetails);
+                vm.taxTotal = calculateTotalTaxes(vm.currentBill.billDetails);
+                vm.discountTotal = calculateTotalDiscount(vm.currentBill.billDetails);
             }
         });
 
         function prepareBillProductList(billDetailList) {
-
             var productList = [];
-
             angular.forEach(billDetailList, function (value, key) {
                 var productToAdd = {
                     "productId": value.product.id,
@@ -91,7 +94,7 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
                     "linePrice": value.linePrice,
                     "discountPercentage": value.discountPercentage,
                     "taxPercentage": value.taxPercentage,
-                    "subtotal": value.total
+                    "subTotal": value.total
                 };
 
                 productList.push(productToAdd);
@@ -161,7 +164,6 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
         billService.getAllExchangeRates().then(function (response) {
             vm.exchangeRateList = response;
         });
-
     }
 
     //REGRESA A LA PANTALLA DE DETALLE DE FACTURAS
@@ -453,7 +455,7 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
             "linePrice": selectedProduct.priceInColones,
             "discountPercentage": selectedProduct.discount,
             "taxPercentage": selectedProduct.tax,
-            "subtotal": calculateSubtotal(selectedProduct.quantity, selectedProduct.priceInColones,
+            "subTotal": calculateSubtotal(selectedProduct.quantity, selectedProduct.priceInColones,
                 selectedProduct.discount, selectedProduct.tax)
         };
 
@@ -541,7 +543,7 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
         var totalAmmount = 0;
 
         angular.forEach(addedProductList, function (value, key) {
-            totalAmmount += parseFloat(value.subtotal);
+            totalAmmount += parseFloat(value.subTotal);
         });
 
         return totalAmmount;
