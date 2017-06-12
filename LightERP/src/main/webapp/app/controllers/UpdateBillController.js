@@ -77,9 +77,12 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
 
                 prepareBillProductList(vm.currentBill.billDetails);
 
+                //iniciando variables de control del form de edicion de factura
                 vm.billTotal = calculateTotalAmmount(vm.currentBill.billDetails);
                 vm.taxTotal = calculateTotalTaxes(vm.currentBill.billDetails);
                 vm.discountTotal = calculateTotalDiscount(vm.currentBill.billDetails);
+                //variable para mostrar fecha de la factura en el datePicker
+               vm.billDate = new Date(vm.currentBill.billDate);
             }
         });
 
