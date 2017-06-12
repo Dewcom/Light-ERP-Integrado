@@ -78,11 +78,11 @@
                 <div class="panel-body">
                     <p ng-show="controller.billDate != null && controller.chosenCustomer.name != null">
                         <button type="button" class="btn btn-primary btn-block"
-                                ng-click="controller.submitForm(0)">
+                                ng-click="controller.submitForm(globalConstants.BILL_SAVED_STATE_CODE)">
                             Guardar
                         </button>
                         <button type="button" class="btn btn-primary btn-block"
-                                ng-click="controller.submitForm(1)">
+                                ng-click="controller.submitForm(globalConstants.BILL_VALIDATED_STATE_CODE)">
                             Validar
                         </button>
                     </p>

@@ -12,6 +12,7 @@
     function BillController(DTOptionsBuilder, DTColumnDefBuilder, billService, customerService, productService, $scope, $uibModal,
                             productTypeService, presentationTypeService, $state, toaster, $timeout, $filter, ngDialog, APP_CONSTANTS) {
         var vm = this;
+        $scope.globalConstants = APP_CONSTANTS
         activate();
 
 
@@ -109,8 +110,7 @@
              =========================================================*/
 
             productService.getAll().then(function (response) {
-                var sortedProducts = $filter('orderBy')(response, 'productCode');
-                vm.productList = sortedProducts;
+                vm.productList = $filter('orderBy')(response, 'productCode');
             });
 
             /**=========================================================
@@ -194,6 +194,39 @@
                 DTColumnDefBuilder.newColumnDef(3)
             ];
         }
+
+        /**=========================================================
+         * Formatea el numero de factura para que muestre 6 caracteres
+         =========================================================*/
+
+        vm.formatBillNumber = function (bill) {
+            var formatedBillNumber = "0";
+            var zerosNeeded = 0;
+
+            if(bill.billNumber != null){
+                zerosNeeded = 5 - parseInt(bill.billNumber.toString().length);
+
+                for (var i = 0; i < zerosNeeded; i++) {
+                    formatedBillNumber = formatedBillNumber.concat("0");
+                }
+
+                formatedBillNumber = formatedBillNumber.concat(bill.billNumber);
+            }else{
+                zerosNeeded = 4 - parseInt(bill.id.toString().length);
+
+                for (var i = 0; i < zerosNeeded; i++) {
+                    formatedBillNumber = formatedBillNumber.concat("0");
+                }
+
+                formatedBillNumber = formatedBillNumber.concat("B");
+
+                formatedBillNumber = formatedBillNumber.concat(bill.id);
+
+            }
+
+            return formatedBillNumber;
+
+        };
 
         //REGRESA A LA PANTALLA DE LISTA DE FACTURAS
         vm.goBack = function () {
@@ -303,9 +336,9 @@
             var vm = this;
             vm.submitted = true;
 
-            if(registrationType == APP_CONSTANTS.BILL_SAVED_ID){
-                vm.addBill(registrationType);
-            }else if(registrationType == APP_CONSTANTS.BILL_VALIDATED_ID){
+            if(registrationType == APP_CONSTANTS.BILL_SAVED_STATE_CODE){
+                vm.addBill(APP_CONSTANTS.BILL_SAVED_STATE_CODE);
+            }else if(registrationType == APP_CONSTANTS.BILL_VALIDATED_STATE_CODE){
 
                 if (vm.newBillForm.$valid && billService.getAddedProductList().length > 0){
 
@@ -315,7 +348,7 @@
                         closeByDocument: false,
                         closeByEscape: false
                     }).then(function (value) {
-                        vm.addBill(registrationType);
+                        vm.addBill(APP_CONSTANTS.BILL_VALIDATED_STATE_CODE);
                     }, function (reason) {
                         console.log('Modal promise rejected. Reason: ', reason);
                     });
@@ -339,7 +372,7 @@
          * Agregar facturas
          =========================================================*/
 
-        vm.addBill = function (regType) {
+        vm.addBill = function (billState) {
 
             var userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
 
@@ -350,7 +383,7 @@
                 "billPaymentTypeId": vm.paymentType,
                 "creditConditionId": vm.paymentType == 2 ? vm.creditCondition : null,
                 "currencyId": vm.currency,
-                "registrationType": regType,
+                "billState": billState,
                 "billDate": $filter('date')(vm.billDate, "dd-MM-yyyy"),
                 "billDetails": formatBillDetails(vm.addedProductList),
                 "billAddress" : vm.chosenCustomer.chosenAddress != null ? vm.chosenCustomer.chosenAddress.id :null

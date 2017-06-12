@@ -398,18 +398,19 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
                     title: 'Pago exitoso',
                     text: response.message
                 };
+                pop(toasterdata);
+
+                $timeout(function () {
+                    $state.reload();
+                }, 3000);
             } else {
                 toasterdata = {
                     type: 'warning',
                     title: 'Pago',
                     text: response.message
                 };
+                pop(toasterdata);
             }
-            pop(toasterdata);
-
-            $timeout(function () {
-                $state.reload();
-            }, 3000);
 
         }, function (error) {
             console.log(error);
@@ -571,7 +572,6 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
         var paidTotal = 0;
 
         angular.forEach(currentBill.payments, function (value, key) {
-            console.log(value);
             paidTotal += value.amount;
         });
 
@@ -592,11 +592,41 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
         });
 
         toBePaidTotal = parseFloat(currentBill.totalAmount) - parseFloat(paidTotal);
-        console.log(paidTotal);
-        console.log(toBePaidTotal);
-        console.log(currentBill.totalAmount);
 
         return toBePaidTotal;
     }
+
+    /**=========================================================
+     * Formatea el numero de factura para que muestre 6 caracteres
+     =========================================================*/
+
+    vm.formatBillNumber = function (bill) {
+        var formatedBillNumber = "0";
+        var zerosNeeded = 0;
+
+        if(bill.billNumber != null){
+            zerosNeeded = 5 - parseInt(bill.billNumber.toString().length);
+
+            for (var i = 0; i < zerosNeeded; i++) {
+                formatedBillNumber = formatedBillNumber.concat("0");
+            }
+
+            formatedBillNumber = formatedBillNumber.concat(bill.billNumber);
+        }else{
+            zerosNeeded = 4 - parseInt(bill.id.toString().length);
+
+            for (var i = 0; i < zerosNeeded; i++) {
+                formatedBillNumber = formatedBillNumber.concat("0");
+            }
+
+            formatedBillNumber = formatedBillNumber.concat("B");
+
+            formatedBillNumber = formatedBillNumber.concat(bill.id);
+
+        }
+
+        return formatedBillNumber;
+
+    };
 
 }
