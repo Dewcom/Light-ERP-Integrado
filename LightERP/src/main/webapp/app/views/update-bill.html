@@ -43,10 +43,10 @@
                         <td>Impuestos</td>
                         <td>
                             <div ng-if="controller.currentBill.currency.id == 2" class="text-bold">
-                                {{controller.currentBill.totalTaxAmount | currency : "$" : 2}}
+                                {{controller.taxTotal | currency : "$" : 2}}
                             </div>
                             <div ng-if="controller.currentBill.currency.id == 1" class="text-bold">
-                                {{controller.currentBill.totalTaxAmount | currency : "₡" : 2}}
+                                {{controller.taxTotal | currency : "₡" : 2}}
                             </div>
                         </td>
                     </tr>
@@ -54,10 +54,10 @@
                         <td>Descuentos</td>
                         <td>
                             <div ng-if="controller.currentBill.currency.id == 2" class="text-bold">
-                                {{controller.currentBill.totalDiscount | currency : "$" : 2}}
+                                {{controller.discountTotal | currency : "$" : 2}}
                             </div>
                             <div ng-if="controller.currentBill.currency.id == 1" class="text-bold">
-                                {{controller.currentBill.totalDiscount | currency : "₡" : 2}}
+                                {{controller.discountTotal | currency : "₡" : 2}}
                             </div>
                         </td>
                     </tr>
@@ -67,10 +67,10 @@
                     <div class="clearfix">
                         <div class="pull-right text-right">
                             <div ng-if="controller.currentBill.currency.id == 2" class="text-bold">
-                                {{controller.currentBill.totalAmount | currency : "$" : 2}}
+                                {{controller.billTotal | currency : "$" : 2}}
                             </div>
                             <div ng-if="controller.currentBill.currency.id == 1" class="text-bold">
-                                {{controller.currentBill.totalAmount | currency : "₡" : 2}}
+                                {{controller.billTotal | currency : "₡" : 2}}
                             </div>
                         </div>
                         <div class="pull-left text-bold text-dark">TOTAL</div>
@@ -309,7 +309,7 @@
                                         <td>{{ billProduct.linePrice }}</td>
                                         <td>{{ billProduct.discountPercentage}} %</td>
                                         <td>{{ billProduct.taxPercentage}} %</td>
-                                        <td>{{ billProduct.subtotal }}</td>
+                                        <td>{{ billProduct.subTotal }}</td>
                                         <td>
                                             <button type="button" ng-click="controller.removeProduct($index)"
                                                     class="btn btn-sm btn-danger">
