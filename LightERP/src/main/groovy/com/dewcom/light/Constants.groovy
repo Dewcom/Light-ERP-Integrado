@@ -51,7 +51,11 @@ class Constants {
 
 
     //tipos registro factura
-    public static final Integer CREADA_BORRADOR = 0;
-    public static final Integer CREADA_VALIDADA = 1;
+    public static final Integer BILL_SAVED_STATE_CODE = 1;
+    public static final Integer BILL_VALIDATED_STATE_CODE = 2;
+    public static final Integer BILL_PARTIALLY_PAID_STATE_CODE = 3;
+    public static final Integer BILL_PAID_STATE_CODE = 4;
+    public static final Integer BILL_VOID_STATE_CODE = 5;
+
 
 }

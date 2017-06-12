@@ -55,8 +55,8 @@
                 <div class="panel">
                     <div class="panel-body">
                         <h3 class="mt0" ng-if="currentBill.billNumber != null">{{"Factura # " +
-                            currentBill.billNumber}}</h3>
-                        <h3 class="mt0" ng-if="currentBill.billNumber == null">{{"B" + currentBill.id }}</h3>
+                            controller.formatBillNumber(currentBill)}}</h3>
+                        <h3 class="mt0" ng-if="currentBill.billNumber == null">{{controller.formatBillNumber(currentBill)}}</h3>
                         <hr/>
                         <div class="row mb-lg">
                             <div class="col-lg-4 col-xs-6 br pv">
@@ -98,9 +98,8 @@
                                 <div class="clearfix">
                                     <p class="pull-left">FACTURA NO.</p>
                                     <p class="pull-right mr" ng-if="currentBill.billNumber != null">
-                                        {{currentBill.billNumber}}</p>
-                                    <p class="pull-right mr" ng-if="currentBill.billNumber == null">{{"B" +
-                                        currentBill.id }}</p>
+                                        {{controller.formatBillNumber(currentBill)}}</p>
+                                    <p class="pull-right mr" ng-if="currentBill.billNumber == null">{{controller.formatBillNumber(currentBill)}}</p>
                                 </div>
                                 <div class="clearfix">
                                     <p class="pull-left">Fecha de facturación</p>
@@ -193,7 +192,7 @@
                     </div>
                 </div>
             </uib-tab>
-            <uib-tab>
+            <uib-tab ng-hide="currentBill.billState.code == globalConstants.BILL_SAVED_CODE">
                 <uib-tab-heading>PAGOS</uib-tab-heading>
                 <div class="panel panel-default" ng-show="currentBill.billState.code != 1">
                     <div class="panel-body">
@@ -202,7 +201,7 @@
                                 <div class="col-lg-9">
                                     <h3>Pagos</h3>
                                 </div>
-                                <div ng-click="controller.open('lg')" class="pull-right" ng-show="currentBill.billState.code != 4">
+                                <div ng-click="controller.open('lg')" class="pull-right" ng-show="currentBill.billState.code != globalConstants.BILL_PAID_STATE_CODE">
                                     <button ng-show="currentBill.billState.code == '2' || currentBill.billState.code == '3'" type="button"
                                             ng-click="controller.openPaymentModal(currentBill)"
                                             class="btn btn-labeled btn-success">
@@ -227,7 +226,7 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td>{{ currentBill.billNumber }}</td>
+                                    <td>{{ controller.formatBillNumber(currentBill) }}</td>
                                     <td>{{ controller.paymentQuantity }}</td>
                                     <td>{{ currentBill.totalAmount }}</td>
                                     <td>{{ controller.paidTotal }}</td>

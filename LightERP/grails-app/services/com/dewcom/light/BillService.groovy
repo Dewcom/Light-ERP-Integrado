@@ -71,17 +71,13 @@ class BillService {
             }
             def currency = Currency.findById(argRestBill.currencyId)
 
-            def billStateType
-            if(argRestBill.registrationType == Constants.CREADA_BORRADOR){
-                billStateType = BillStateType.findByCode(BillStateType.FACTURA_CREADA)
-            }
-            else{
+            def billStateType = BillStateType.findByCode(argRestBill.billState)
+            if(billStateType.code != Constants.BILL_SAVED_STATE_CODE){
                 configConsecFactura = Configuration.findByCode(Configuration.CONFIG_CONSECUTIVO_FACTURA)
                 def billNumber = configConsecFactura.value as Long
                 tmpBill.billNumber = billNumber
                 configConsecFactura.value = billNumber+1
                 adminService.updateConfiguration(configConsecFactura)
-                billStateType = BillStateType.findByCode(BillStateType.FACTURA_VALIDADA)
             }
 
             tmpBill.user = billUser
