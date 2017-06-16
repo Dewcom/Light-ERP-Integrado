@@ -82,7 +82,7 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
                 vm.taxTotal = calculateTotalTaxes(vm.currentBill.billDetails);
                 vm.discountTotal = calculateTotalDiscount(vm.currentBill.billDetails);
                 //variable para mostrar fecha de la factura en el datePicker
-               vm.billDate = new Date(vm.currentBill.billDate);
+                vm.billDate = new Date(vm.currentBill.billDate);
             }
         });
 

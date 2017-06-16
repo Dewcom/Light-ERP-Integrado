@@ -36,8 +36,8 @@
                     <td ng-if="billObj.billPaymentType.id != 1" >{{ billObj.dueDate | date :  "dd-MM-yyyy" }}</td>
                     <td ng-if="billObj.billPaymentType.id == 1" >{{ "Pago de contado"}}</td>
                     <td ng-if="billObj.totalAmount == null">{{ '**SIN PRODUCTOS**'}}</td>
-                    <td ng-if="billObj.currency.currencyCode == 2 && billObj.totalAmount != null">{{ billObj.totalAmount | currency : "$" : 2}}</td>
-                    <td ng-if="billObj.currency.currencyCode != 2 && billObj.totalAmount != null">{{ billObj.totalAmount | currency : "₡" : 2}}</td>
+                    <td ng-if="billObj.currency.currencyCode == globalConstants.CURRENCY_DOLLARS_CODE && billObj.totalAmount != null">{{ billObj.totalAmount | currency : "$" : 2}}</td>
+                    <td ng-if="billObj.currency.currencyCode == globalConstants.CURRENCY_COLONES_CODE && billObj.totalAmount != null">{{ billObj.totalAmount | currency : "₡" : 2}}</td>
                     <td>
                         <button type="button" ui-sref="app.billDetail({billId: billObj.id})" class="btn btn-sm btn-toolbar">
                             <em class="fa fa-search"></em>

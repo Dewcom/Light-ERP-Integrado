@@ -9,7 +9,7 @@ BillDetailController.$inject = ['$uibModal', '$http', '$state', '$stateParams', 
 function BillDetailController($uibModal, $http, $state, $stateParams, $scope, billService, $timeout, ngDialog, toaster, $filter,
                               DTOptionsBuilder, DTColumnDefBuilder, APP_CONSTANTS, printService) {
     var vm = this;
-    $scope.globalConstants = APP_CONSTANTS
+    $scope.globalConstants = APP_CONSTANTS;
 
     var language = {
         "sProcessing": "Procesando...",
@@ -118,7 +118,7 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
             "billPaymentTypeId": billToClone.billPaymentType.id,
             "creditConditionId": billToClone.creditCondition != null ? billToClone.creditCondition.id : null,
             "currencyId": billToClone.currency.id,
-            "registrationType": 0,
+            "billState": APP_CONSTANTS.BILL_SAVED_STATE_CODE,
             "billDate": $filter('date')(new Date(), "dd-MM-yyyy"),
             "billDetails": formatBillDetails(billToClone.billDetails),
             "billAddress": billToClone.address.id

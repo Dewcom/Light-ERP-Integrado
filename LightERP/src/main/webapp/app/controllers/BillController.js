@@ -12,7 +12,7 @@
     function BillController(DTOptionsBuilder, DTColumnDefBuilder, billService, customerService, productService, $scope, $uibModal,
                             productTypeService, presentationTypeService, $state, toaster, $timeout, $filter, ngDialog, APP_CONSTANTS) {
         var vm = this;
-        $scope.globalConstants = APP_CONSTANTS
+        $scope.globalConstants = APP_CONSTANTS;
         activate();
 
 
