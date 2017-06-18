@@ -32,7 +32,7 @@ class CustomerREST implements Validateable {
         firstLastName blank: true, nullable: true
         secondLastName blank: true, nullable: true
         identification blank: false, nullable: false
-        phoneNumber1 blank: false, nullable: false
+        phoneNumber1 blank: true, nullable: true
         phoneNumber2 nullable: true, blank: true
         mobile nullable: true, blank: true
         website nullable: true, blank: true
