@@ -243,7 +243,7 @@
                                             <label>Moneda</label>
                                             <div class="controls">
                                                 <select name="controller.currency" ng-model="controller.currency"
-                                                        ng-options="item.id as item.description for item in controller.currencyList"
+                                                        ng-options="item.currencyCode as item.description for item in controller.currencyList"
                                                         class="form-control"
                                                         ng-change="controller.changeExchangeRate(controller.currency)">
                                                 </select>
@@ -253,8 +253,9 @@
                                     <div class="col-lg-3">
                                         <div class="form-group">
                                             <label>Tipo de cambio</label>
-                                            <input type="text" name="controller.exchangeRate"
-                                                   ng-model="controller.exchangeRate" required="" class="form-control" ng-disabled="controller.currency == 1"/>
+                                            <input type="text" name="controller.exchangeRate" ng-change="controller.updateProductListPrices(controller.exchangeRate)"
+                                                   ng-model="controller.exchangeRate" required="" class="form-control"
+                                                   ng-disabled="controller.currency == globalConstants.CURRENCY_COLONES_CODE"/>
                                         </div>
                                     </div>
                                     <div class="col-lg-3">
@@ -327,10 +328,12 @@
                                         <td>{{ addedProductObj.quantity }}</td>
                                         <td>{{ addedProductObj.productCode }}</td>
                                         <td>{{ addedProductObj.name }}</td>
-                                        <td>{{ addedProductObj.linePrice }}</td>
+                                        <td ng-if="controller.currency == globalConstants.CURRENCY_COLONES_CODE">{{ addedProductObj.linePrice | currency : "₡" : 2 }}</td>
+                                        <td ng-if="controller.currency == globalConstants.CURRENCY_DOLLARS_CODE">{{ addedProductObj.linePrice | currency : "$" : 2 }}</td>
                                         <td>{{ addedProductObj.discountPercentage}} %</td>
                                         <td>{{ addedProductObj.taxPercentage}} %</td>
-                                        <td>{{ addedProductObj.subtotal }}</td>
+                                        <td ng-if="controller.currency == globalConstants.CURRENCY_COLONES_CODE">{{ addedProductObj.subtotal | currency : "₡" : 2 }}</td>
+                                        <td ng-if="controller.currency == globalConstants.CURRENCY_DOLLARS_CODE">{{ addedProductObj.subtotal | currency : "$" : 2 }}</td>
                                         <td>
                                             <button type="button" ng-click="controller.removeProduct($index)"
                                                     class="btn btn-sm btn-danger">

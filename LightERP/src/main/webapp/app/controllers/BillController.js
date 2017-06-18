@@ -8,11 +8,13 @@
         .controller('BillController', BillController);
 
     BillController.$inject = ['DTOptionsBuilder', 'DTColumnDefBuilder', 'billService', 'customerService', 'productService', '$scope',
-        '$uibModal', 'productTypeService', 'presentationTypeService', '$state', 'toaster', '$timeout', '$filter', 'ngDialog', 'APP_CONSTANTS'];
+                                '$uibModal', 'productTypeService', 'presentationTypeService', '$state', 'toaster', '$timeout', '$filter',
+                                'ngDialog', 'APP_CONSTANTS'];
     function BillController(DTOptionsBuilder, DTColumnDefBuilder, billService, customerService, productService, $scope, $uibModal,
                             productTypeService, presentationTypeService, $state, toaster, $timeout, $filter, ngDialog, APP_CONSTANTS) {
         var vm = this;
         $scope.globalConstants = APP_CONSTANTS;
+        // Se utiliza para tener disponible el tipo de cambio original traido de BD.
         activate();
 
 
@@ -147,6 +149,7 @@
 
             billService.getAllCurrency().then(function (response) {
                 vm.currencyList = response;
+                vm.currency = response[0].currencyCode;
             });
 
             /**=========================================================
@@ -163,6 +166,11 @@
 
             billService.getAllExchangeRates().then(function (response) {
                 vm.exchangeRateList = response;
+                vm.exchangeRate = 1;
+
+                var rate = $filter("filter")(vm.exchangeRateList, {code: APP_CONSTANTS.EXCHANGE_RATE_DOLLARS_CODE});
+
+                vm.dollarExchangeRateFromDB = rate[0].value;
             });
 
             /**=========================================================
@@ -210,7 +218,7 @@
             if(bill.billNumber != null){
                 zerosNeeded = 5 - parseInt(bill.billNumber.toString().length);
 
-                for (var i = 0; i < zerosNeeded; i++) {
+                for (i = 0; i < zerosNeeded; i++) {
                     formatedBillNumber = formatedBillNumber.concat("0");
                 }
 
@@ -262,10 +270,10 @@
          =========================================================*/
 
         vm.changeExchangeRate = function (currency) {
-
-            console.log(currency);
-            var rate = $filter("filter")(vm.exchangeRateList, {currency: {id: currency}});
+            var rate = $filter("filter")(vm.exchangeRateList, {currency: {currencyCode: currency}});
             vm.exchangeRate = rate[0].value;
+
+            vm.updateProductListPrices(vm.exchangeRate);
         };
 
 
@@ -276,7 +284,7 @@
         vm.removeProduct = function (index) {
             billService.removeProduct(index);
             var addedProductList = billService.getAddedProductList();
-            vm.billTotal = calculateTotalAmmount(addedProductList);
+            vm.billTotal = calculateTotalAmount(addedProductList);
             vm.taxTotal = calculateTotalTaxes(addedProductList);
             vm.discountTotal = calculateTotalDiscount(addedProductList);
         };
@@ -300,6 +308,15 @@
                     },
                     discountTotal: function () {
                         return vm.discountTotal;
+                    },
+                    exchangeRate: function () {
+                        return vm.exchangeRate;
+                    },
+                    currency: function () {
+                        return vm.currency;
+                    },
+                    dollarExchangeRateFromDB: function () {
+                        return vm.dollarExchangeRateFromDB;
                     }
                 },
                 backdrop: 'static', // No cierra clickeando fuera
@@ -310,7 +327,7 @@
             modalInstance.result.then(function (result) {
                 vm.taxTotal = result.taxTotal;
                 vm.discountTotal = result.discountTotal;
-                vm.billTotal = result.totalAmmount;
+                vm.billTotal = result.totalAmount;
                 state.text('Modal dismissed with OK status');
             }, function () {
                 state.text('Modal dismissed with Cancel status');
@@ -336,6 +353,7 @@
         // Submit form
         vm.submitForm = function (registrationType) {
 
+            console.log(registrationType);
 
             var vm = this;
             vm.submitted = true;
@@ -386,7 +404,7 @@
                 "exchangeRate": parseFloat(vm.exchangeRate),
                 "billPaymentTypeId": vm.paymentType,
                 "creditConditionId": vm.paymentType == 2 ? vm.creditCondition : null,
-                "currencyId": vm.currency,
+                "currencyId": vm.currency == null ? APP_CONSTANTS.CURRENCY_COLONES_CODE : vm.currency,
                 "billState": billState,
                 "billDate": $filter('date')(vm.billDate, "dd-MM-yyyy"),
                 "billDetails": formatBillDetails(vm.addedProductList),
@@ -489,12 +507,24 @@
         // Please note that $uibModalInstance represents a modal window (instance) dependency.
         // It is not the same as the $uibModal service used above.
 
-        AddModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', 'productList', 'discountTotal', 'taxTotal'];
-        function AddModalInstanceCtrl($scope, $uibModalInstance, productList, discountTotal, taxTotal) {
+        AddModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', 'productList', 'discountTotal', 'taxTotal', 'exchangeRate', 'currency', 'dollarExchangeRateFromDB'];
+        function AddModalInstanceCtrl($scope, $uibModalInstance, productList, discountTotal, taxTotal, exchangeRate, currency, dollarExchangeRateFromDB) {
             var vm = this;
             vm.selectedProduct = {};
-
             vm.productList = productList;
+            var rate = 1;
+
+
+            console.log(dollarExchangeRateFromDB);
+
+            if(currency == APP_CONSTANTS.CURRENCY_COLONES_CODE){
+                rate = dollarExchangeRateFromDB;
+            }else{
+                rate = exchangeRate;
+            }
+
+
+            console.log(rate);
 
             $scope.selectProduct = function (product) {
                 console.log(product);
@@ -502,12 +532,20 @@
                 vm.selectedProduct.quantity = 1;
                 vm.selectedProduct.discount = 0;
                 vm.selectedProduct.tax = 0;
+                vm.selectedProduct.calcDollarPrice = product.priceInColones / rate;
+                vm.currency = currency;
             };
 
             $scope.ok = function () {
+                var linePrice = 0;
 
-                console.log(vm.selectedProduct);
-                var result = addProductToBill(vm.selectedProduct);
+                if(currency == APP_CONSTANTS.CURRENCY_COLONES_CODE || currency == null){
+                    linePrice = vm.selectedProduct.priceInColones;
+                }else{
+                    linePrice = vm.selectedProduct.calcDollarPrice;
+                }
+
+                var result = addProductToBill(vm.selectedProduct, linePrice);
                 $uibModalInstance.close(result);
             };
 
@@ -531,43 +569,36 @@
             };
         }
 
-        function addProductToBill(selectedProduct) {
-
-            console.log(selectedProduct);
+        function addProductToBill(selectedProduct, linePrice) {
 
             var productToAdd = {
                 "productId": selectedProduct.id,
                 "productCode": selectedProduct.productCode,
                 "name": selectedProduct.name,
                 "quantity": selectedProduct.quantity,
-                "linePrice": selectedProduct.priceInColones,
+                "price": selectedProduct.priceInColones,
+                "linePrice": linePrice,
                 "discountPercentage": selectedProduct.discount,
                 "taxPercentage": selectedProduct.tax,
-                "subtotal": calculateSubtotal(selectedProduct.quantity, selectedProduct.priceInColones,
+                "subtotal": calculateSubtotal(selectedProduct.quantity, linePrice,
                     selectedProduct.discount, selectedProduct.tax)
             };
 
             var tmpList = billService.getAddedProductList();
 
-            console.log(tmpList);
-
             tmpList.push(productToAdd);
-
-            console.log(billService.getAddedProductList());
 
             vm.addedProductList = tmpList;
 
             var tmpTaxes = calculateTotalTaxes(tmpList);
             var tmpDiscount = calculateTotalDiscount(tmpList);
-            var totalAmmount = calculateTotalAmmount(tmpList);
+            var totalAmount = calculateTotalAmount(tmpList);
 
-            var result = {
+            return {
                 'taxTotal': tmpTaxes,
                 'discountTotal': tmpDiscount,
-                'totalAmmount': totalAmmount
+                'totalAmount': totalAmount
             };
-
-            return result;
         }
 
         function calculateSubtotal(quantity, price, discount, tax) {
@@ -575,16 +606,19 @@
 
             var totalAfterDiscount = tmpSubTotal - (tmpSubTotal * (discount / 100));
 
-            var subtotal = totalAfterDiscount + (totalAfterDiscount * (tax / 100));
-
-            return subtotal;
+            return totalAfterDiscount + (totalAfterDiscount * (tax / 100));
         }
 
         function calculateTotalTaxes(addedProductList) {
             var taxTotal = 0;
+            var discount = 0;
 
             angular.forEach(addedProductList, function (value, key) {
-                taxTotal += parseFloat(value.taxPercentage) / 100 * parseFloat(value.linePrice);
+                console.log(value);
+                discount = parseFloat((value.discountPercentage) / 100 * parseFloat(value.linePrice));
+                console.log(discount);
+                taxTotal += (parseFloat(value.linePrice) - discount) * parseFloat((value.taxPercentage)/100) * value.quantity;
+                console.log(taxTotal);
             });
 
             return taxTotal;
@@ -594,21 +628,36 @@
             var totalDiscount = 0;
 
             angular.forEach(addedProductList, function (value, key) {
-                totalDiscount += parseFloat(value.discountPercentage) / 100 * parseFloat(value.linePrice);
+                totalDiscount += parseFloat((value.discountPercentage) / 100 * parseFloat(value.linePrice)) * value.quantity;
             });
 
             return totalDiscount;
         }
 
-        function calculateTotalAmmount(addedProductList) {
-            var totalAmmount = 0;
+        function calculateTotalAmount(addedProductList) {
+            var totalAmount = 0;
 
             angular.forEach(addedProductList, function (value, key) {
-                totalAmmount += parseFloat(value.subtotal);
+                totalAmount += parseFloat(value.subtotal);
             });
 
-            return totalAmmount;
+            return totalAmount;
         }
+
+        vm.updateProductListPrices = function (exchangeRate) {
+            var tmpList = billService.getAddedProductList();
+
+            angular.forEach(tmpList, function (value, key) {
+                value.linePrice = value.price / exchangeRate;
+                value.subtotal = calculateSubtotal(value.quantity, value.linePrice, value.discountPercentage, value.taxPercentage);
+            });
+
+            vm.addedProductList = tmpList;
+
+            vm.billTotal = calculateTotalAmount(tmpList);
+            vm.taxTotal = calculateTotalTaxes(tmpList);
+            vm.discountTotal = calculateTotalDiscount(tmpList);
+        };
 
         function pop(toasterdata) {
             toaster.pop({
