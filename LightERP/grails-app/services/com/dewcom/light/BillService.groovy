@@ -368,7 +368,7 @@ class BillService {
             //se realizan calculos
             pBillDetail.subTotal = pBillDetail.linePrice * pBillDetail.quantity
             pBillDetail.totalDiscount = (pBillDetail.subTotal * pBillDetail.discountPercentage) / 100
-            pBillDetail.totalTaxAmount = (pBillDetail.subTotal * pBillDetail.taxPercentage) / 100
+            pBillDetail.totalTaxAmount = ((pBillDetail.subTotal - pBillDetail.totalDiscount) * pBillDetail.taxPercentage) / 100
             pBillDetail.total = (pBillDetail.subTotal - pBillDetail.totalDiscount) + pBillDetail.totalTaxAmount
         } catch (Exception e) {
             log.error "Ha ocurrido un error creando el objeto detalle factura" + e.message

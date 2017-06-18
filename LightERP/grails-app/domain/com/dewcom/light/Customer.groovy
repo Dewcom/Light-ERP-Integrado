@@ -29,7 +29,7 @@ class Customer {
         firstLastName blank: true, nullable: true
         secondLastName blank: true, nullable: true
         identification blank: false, nullable: false, maxSize: 20
-        phoneNumber1 blank: false
+        phoneNumber1 nullable: true, blank: true
         phoneNumber2 nullable: true, blank: true
         mobile nullable: true, blank: true
         website nullable: true, blank: true
