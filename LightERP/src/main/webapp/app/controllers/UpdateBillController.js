@@ -5,11 +5,12 @@ angular
     .controller('UpdateBillController', UpdateBillController);
 
 UpdateBillController.$inject = ['$http', '$state', '$stateParams', '$scope', 'billService', '$timeout', 'ngDialog', 'toaster',
-    'customerService', 'productService', 'productTypeService', 'presentationTypeService', '$filter', '$uibModal'];
+    'customerService', 'productService', 'productTypeService', 'presentationTypeService', '$filter', '$uibModal', 'APP_CONSTANTS'];
 function UpdateBillController($http, $state, $stateParams, $scope, billService, $timeout, ngDialog, toaster, customerService,
-                              productService, productTypeService, presentationTypeService, $filter, $uibModal) {
+                              productService, productTypeService, presentationTypeService, $filter, $uibModal, APP_CONSTANTS) {
 
     var vm = this;
+    $scope.globalConstants = APP_CONSTANTS;
 
     init();
 
@@ -56,29 +57,28 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
 
 
     function init() {
-        console.log($stateParams.billId);
         var bill;
         billService.get($stateParams.billId).then(function (response) {
-            console.log(response.data);
+                console.log(response);
 
             if (response.code == '0') {
                 vm.currentBill = response.data;
-                console.log(vm.currentBill);
 
                 customerService.getAllAddresses(vm.currentBill.customer.id).then(function (response) {
                     vm.customerAddresses = response;
                 });
 
-                billService.getAddressInfo(vm.currentBill.address, function (addressInfo) {
-                    vm.currentBill.address = addressInfo;
-                });
 
-                console.log(vm.currentBill.billDetails);
+                if(vm.currentBill.address != null || vm.currentBill.address != undefined){
+                    billService.getAddressInfo(vm.currentBill.address, function (addressInfo) {
+                        vm.currentBill.address = addressInfo;
+                    });
+                }
 
-                prepareBillProductList(vm.currentBill.billDetails);
+                prepareBillProductList(vm.currentBill);
 
                 //iniciando variables de control del form de edicion de factura
-                vm.billTotal = calculateTotalAmmount(vm.currentBill.billDetails);
+                vm.billTotal = calculateTotalAmount(vm.currentBill.billDetails);
                 vm.taxTotal = calculateTotalTaxes(vm.currentBill.billDetails);
                 vm.discountTotal = calculateTotalDiscount(vm.currentBill.billDetails);
                 //variable para mostrar fecha de la factura en el datePicker
@@ -86,28 +86,28 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
             }
         });
 
-        function prepareBillProductList(billDetailList) {
+        function prepareBillProductList(currentBill) {
             var productList = [];
-            angular.forEach(billDetailList, function (value, key) {
+            angular.forEach(currentBill.billDetails, function (value, key) {
                 var productToAdd = {
                     "productId": value.product.id,
                     "productCode": value.product.productCode,
                     "name": value.product.name,
                     "quantity": value.quantity,
-                    "linePrice": value.linePrice,
+                    "linePrice": parseFloat(value.linePrice),
                     "discountPercentage": value.discountPercentage,
                     "taxPercentage": value.taxPercentage,
-                    "subTotal": value.total
+                    "subTotal": parseFloat(value.total),
+                    "product": value.product
                 };
 
                 productList.push(productToAdd);
             });
 
+
             billService.setUpdateBillProductList(productList);
 
-            console.log(productList);
-
-            vm.currentBill.productList = productList;
+            vm.currentBill.productList = billService.getUpdateBillProductList();
         }
 
 
@@ -197,9 +197,10 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
      =========================================================*/
 
     vm.changeExchangeRate = function (currency) {
-        console.log(currency);
         var rate = $filter("filter")(vm.exchangeRateList, {currency: {id: currency.id}});
         vm.currentBill.exchangeRate = rate[0].value;
+
+        vm.updateProductListPrices(vm.currentBill.exchangeRate);
     };
 
 
@@ -210,7 +211,7 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
     vm.removeProduct = function (index) {
         billService.removeProductUpdateBill(index);
         var updateBillProductList = billService.getUpdateBillProductList();
-        vm.billTotal = calculateTotalAmmount(updateBillProductList);
+        vm.billTotal = calculateTotalAmount(updateBillProductList);
         vm.taxTotal = calculateTotalTaxes(updateBillProductList);
         vm.discountTotal = calculateTotalDiscount(updateBillProductList);
     };
@@ -246,8 +247,6 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
                     text: 'Por favor completar todos los campos'
                 };
 
-                console.log(toasterdata);
-
                 pop(toasterdata);
                 return false;
             }
@@ -271,9 +270,9 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
         var userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
         var billStateId;
         if (regType == 'saved') {
-            billStateId = 1;
+            billStateId = APP_CONSTANTS.BILL_SAVED_STATE_CODE;
         } else if (billStateId = 'validated') {
-            billStateId = 2;
+            billStateId = APP_CONSTANTS.BILL_VALIDATED_STATE_CODE;
         }
 
 
@@ -281,8 +280,8 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
             "billId" : vm.currentBill.id,
             "customerId": vm.currentBill.customer.id,
             "exchangeRate": parseFloat(vm.currentBill.exchangeRate),
-            "billPaymentTypeId": vm.currentBill.billPaymentType.id,
-            "creditConditionId": vm.currentBill.billPaymentType.id == 2 ? vm.currentBill.creditCondition.id : null,
+            "billPaymentTypeId": vm.currentBill.billPaymentType.code,
+            "creditConditionId": vm.currentBill.billPaymentType.code == APP_CONSTANTS.PAYMENT_TYPE_CREDIT_CODE ? vm.currentBill.creditCondition.code : null,
             "currencyId": vm.currentBill.currency.id,
             "billStateId": billStateId,
             "billDate": $filter('date')(vm.billDate, "dd-MM-yyyy"),
@@ -327,7 +326,6 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
      =========================================================*/
 
     vm.disableBill = function (billId) {
-        console.log(billId);
         ngDialog.openConfirm({
             template: 'disableBillModal',
             className: 'ngdialog-theme-default',
@@ -372,7 +370,6 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
      =========================================================*/
 
     vm.voidBill = function (billId) {
-        console.log(billId);
         ngDialog.openConfirm({
             template: 'voidBillModal',
             className: 'ngdialog-theme-default',
@@ -431,6 +428,15 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
                 },
                 discountTotal: function () {
                     return vm.discountTotal;
+                },
+                exchangeRate: function () {
+                    return vm.currentBill.exchangeRate;
+                },
+                currency: function () {
+                    return vm.currentBill.currency.id;
+                },
+                dollarExchangeRateFromDB: function () {
+                    return vm.dollarExchangeRateFromDB;
                 }
             },
             backdrop: 'static', // No cierra clickeando fuera
@@ -441,25 +447,25 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
         modalInstance.result.then(function (result) {
             vm.taxTotal = result.taxTotal;
             vm.discountTotal = result.discountTotal;
-            vm.billTotal = result.totalAmmount;
+            vm.billTotal = result.totalAmount;
             state.text('Modal dismissed with OK status');
         }, function () {
             state.text('Modal dismissed with Cancel status');
         });
     };
 
-    function addProductToUpdateBill(selectedProduct) {
+    function addProductToUpdateBill(selectedProduct, linePrice, currentProduct) {
 
         var productToAdd = {
             "productId": selectedProduct.id,
             "name": selectedProduct.name,
             "productCode": selectedProduct.productCode,
             "quantity": selectedProduct.quantity,
-            "linePrice": selectedProduct.priceInColones,
+            "linePrice": parseFloat(linePrice),
             "discountPercentage": selectedProduct.discount,
             "taxPercentage": selectedProduct.tax,
-            "subTotal": calculateSubtotal(selectedProduct.quantity, selectedProduct.priceInColones,
-                selectedProduct.discount, selectedProduct.tax)
+            "subTotal": parseFloat(calculateSubtotal(selectedProduct.quantity, linePrice, selectedProduct.discount, selectedProduct.tax)),
+            "product" : currentProduct
         };
 
         var tmpList = billService.getUpdateBillProductList();
@@ -472,12 +478,12 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
 
         var tmpTaxes = calculateTotalTaxes(tmpList);
         var tmpDiscount = calculateTotalDiscount(tmpList);
-        var totalAmmount = calculateTotalAmmount(tmpList);
+        var totalAmount = calculateTotalAmount(tmpList);
 
         var result = {
             'taxTotal': tmpTaxes,
             'discountTotal': tmpDiscount,
-            'totalAmmount': totalAmmount
+            'totalAmount': totalAmount
         };
 
         return result;
@@ -486,24 +492,39 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
     // Please note that $uibModalInstance represents a modal window (instance) dependency.
     // It is not the same as the $uibModal service used above.
 
-    AddModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', 'productList', 'discountTotal', 'taxTotal'];
-    function AddModalInstanceCtrl($scope, $uibModalInstance, productList, discountTotal, taxTotal) {
+    AddModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', 'productList', 'discountTotal', 'taxTotal', 'currency', 'exchangeRate', 'dollarExchangeRateFromDB'];
+    function AddModalInstanceCtrl($scope, $uibModalInstance, productList, discountTotal, taxTotal, currency, exchangeRate, dollarExchangeRateFromDB) {
         var vm = this;
         vm.selectedProduct = {};
-
         vm.productList = productList;
+        var rate = APP_CONSTANTS.LOCAL_EXCHANGE_RATE_VALUE;
+        var currentProduct;
+
+        if(currency == APP_CONSTANTS.CURRENCY_COLONES_CODE){
+            rate = dollarExchangeRateFromDB;
+        }else{
+            rate = exchangeRate;
+        }
 
         $scope.selectProduct = function (product) {
+            currentProduct = product;
             vm.selectedProduct = product;
             vm.selectedProduct.quantity = 1;
             vm.selectedProduct.discount = 0;
             vm.selectedProduct.tax = 0;
+            vm.selectedProduct.calcDollarPrice = product.priceInColones / rate;
         };
 
         $scope.ok = function () {
+            var linePrice = 0;
 
-            console.log(vm.selectedProduct);
-            var result = addProductToUpdateBill(vm.selectedProduct);
+            if(currency == APP_CONSTANTS.CURRENCY_COLONES_CODE || currency == null){
+                linePrice = vm.selectedProduct.priceInColones;
+            }else{
+                linePrice = vm.selectedProduct.calcDollarPrice;
+            }
+
+            var result = addProductToUpdateBill(vm.selectedProduct, linePrice, currentProduct);
             $uibModalInstance.close(result);
         };
 
@@ -517,16 +538,28 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
 
         var totalAfterDiscount = tmpSubTotal - (tmpSubTotal * (discount / 100));
 
-        var subtotal = totalAfterDiscount + (totalAfterDiscount * (tax / 100));
+        var subTotal = totalAfterDiscount + (totalAfterDiscount * (tax / 100));
 
-        return subtotal;
+        return subTotal;
+    }
+
+    function calculateTotalAmount(addedProductList) {
+        var totalAmount = 0;
+
+        angular.forEach(addedProductList, function (value, key) {
+            totalAmount += parseFloat(value.subTotal);
+        });
+
+        return totalAmount;
     }
 
     function calculateTotalTaxes(addedProductList) {
         var taxTotal = 0;
+        var discount = 0;
 
         angular.forEach(addedProductList, function (value, key) {
-            taxTotal += parseFloat(value.taxPercentage) / 100 * parseFloat(value.linePrice);
+            discount = parseFloat((value.discountPercentage) / 100 * parseFloat(value.linePrice));
+            taxTotal += (parseFloat(value.linePrice) - discount) * parseFloat((value.taxPercentage)/100) * value.quantity;
         });
 
         return taxTotal;
@@ -536,21 +569,41 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
         var totalDiscount = 0;
 
         angular.forEach(addedProductList, function (value, key) {
-            totalDiscount += parseFloat(value.discountPercentage) / 100 * parseFloat(value.linePrice);
+            totalDiscount += parseFloat((value.discountPercentage) / 100 * parseFloat(value.linePrice)) * value.quantity;
         });
 
         return totalDiscount;
     }
 
-    function calculateTotalAmmount(addedProductList) {
-        var totalAmmount = 0;
+    function calculateTotalAmount(addedProductList) {
+        var totalAmount = 0;
 
         angular.forEach(addedProductList, function (value, key) {
-            totalAmmount += parseFloat(value.subTotal);
+            totalAmount += parseFloat(value.subTotal);
         });
 
-        return totalAmmount;
+        return totalAmount;
     }
+
+    /**=========================================================
+     * Actualiza los montos de la factura de acuerdo a la moneda
+     =========================================================*/
+
+    vm.updateProductListPrices = function (exchangeRate) {
+        var tmpList = billService.getUpdateBillProductList();
+
+        angular.forEach(tmpList, function (value, key) {
+
+            value.linePrice = value.product.priceInColones / exchangeRate;
+            value.subTotal = calculateSubtotal(value.quantity, value.linePrice, value.discountPercentage, value.taxPercentage);
+        });
+
+        vm.currentBill.productList = tmpList;
+
+        vm.billTotal = calculateTotalAmount(tmpList);
+        vm.taxTotal = calculateTotalTaxes(tmpList);
+        vm.discountTotal = calculateTotalDiscount(tmpList);
+    };
 
     /**=========================================================
      * Formateo de informacion de facturas
@@ -566,7 +619,7 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
             var item = {
                 'productId': value.productId,
                 'quantity': value.quantity,
-                'linePrice': value.linePrice,
+                'linePrice': parseFloat(value.linePrice),
                 'discountPercentage': value.discountPercentage,
                 'taxPercentage': value.taxPercentage
             };
