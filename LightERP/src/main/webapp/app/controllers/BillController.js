@@ -1,5 +1,3 @@
-'use strict';
-
 (function () {
     'use strict';
 
@@ -166,7 +164,7 @@
 
             billService.getAllExchangeRates().then(function (response) {
                 vm.exchangeRateList = response;
-                vm.exchangeRate = 1;
+                vm.exchangeRate = APP_CONSTANTS.LOCAL_EXCHANGE_RATE_VALUE;
 
                 var rate = $filter("filter")(vm.exchangeRateList, {code: APP_CONSTANTS.EXCHANGE_RATE_DOLLARS_CODE});
 
@@ -403,7 +401,7 @@
                 "customerId": vm.chosenCustomer.id,
                 "exchangeRate": parseFloat(vm.exchangeRate),
                 "billPaymentTypeId": vm.paymentType,
-                "creditConditionId": vm.paymentType == 2 ? vm.creditCondition : null,
+                "creditConditionId": vm.paymentType == APP_CONSTANTS.PAYMENT_TYPE_CREDIT_CODE ? vm.creditCondition : null,
                 "currencyId": vm.currency == null ? APP_CONSTANTS.CURRENCY_COLONES_CODE : vm.currency,
                 "billState": billState,
                 "billDate": $filter('date')(vm.billDate, "dd-MM-yyyy"),
@@ -512,19 +510,13 @@
             var vm = this;
             vm.selectedProduct = {};
             vm.productList = productList;
-            var rate = 1;
-
-
-            console.log(dollarExchangeRateFromDB);
+            var rate = APP_CONSTANTS.LOCAL_EXCHANGE_RATE_VALUE;
 
             if(currency == APP_CONSTANTS.CURRENCY_COLONES_CODE){
                 rate = dollarExchangeRateFromDB;
             }else{
                 rate = exchangeRate;
             }
-
-
-            console.log(rate);
 
             $scope.selectProduct = function (product) {
                 console.log(product);
@@ -614,11 +606,8 @@
             var discount = 0;
 
             angular.forEach(addedProductList, function (value, key) {
-                console.log(value);
                 discount = parseFloat((value.discountPercentage) / 100 * parseFloat(value.linePrice));
-                console.log(discount);
                 taxTotal += (parseFloat(value.linePrice) - discount) * parseFloat((value.taxPercentage)/100) * value.quantity;
-                console.log(taxTotal);
             });
 
             return taxTotal;
@@ -643,6 +632,10 @@
 
             return totalAmount;
         }
+
+        /**=========================================================
+         * Actualiza los montos de la factura de acuerdo a la moneda
+         =========================================================*/
 
         vm.updateProductListPrices = function (exchangeRate) {
             var tmpList = billService.getAddedProductList();

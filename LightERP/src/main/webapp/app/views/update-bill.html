@@ -42,10 +42,10 @@
                     <tr>
                         <td>Impuestos</td>
                         <td>
-                            <div ng-if="controller.currentBill.currency.id == 2" class="text-bold">
+                            <div ng-if="controller.currentBill.currency.id == globalConstants.CURRENCY_DOLLARS_CODE" class="text-bold">
                                 {{controller.taxTotal | currency : "$" : 2}}
                             </div>
-                            <div ng-if="controller.currentBill.currency.id == 1" class="text-bold">
+                            <div ng-if="controller.currentBill.currency.id == globalConstants.CURRENCY_COLONES_CODE" class="text-bold">
                                 {{controller.taxTotal | currency : "₡" : 2}}
                             </div>
                         </td>
@@ -53,10 +53,10 @@
                     <tr>
                         <td>Descuentos</td>
                         <td>
-                            <div ng-if="controller.currentBill.currency.id == 2" class="text-bold">
+                            <div ng-if="controller.currentBill.currency.id == globalConstants.CURRENCY_DOLLARS_CODE" class="text-bold">
                                 {{controller.discountTotal | currency : "$" : 2}}
                             </div>
-                            <div ng-if="controller.currentBill.currency.id == 1" class="text-bold">
+                            <div ng-if="controller.currentBill.currency.id == globalConstants.CURRENCY_COLONES_CODE" class="text-bold">
                                 {{controller.discountTotal | currency : "₡" : 2}}
                             </div>
                         </td>
@@ -66,10 +66,10 @@
                 <div class="panel-body">
                     <div class="clearfix">
                         <div class="pull-right text-right">
-                            <div ng-if="controller.currentBill.currency.id == 2" class="text-bold">
+                            <div ng-if="controller.currentBill.currency.id == globalConstants.CURRENCY_DOLLARS_CODE" class="text-bold">
                                 {{controller.billTotal | currency : "$" : 2}}
                             </div>
-                            <div ng-if="controller.currentBill.currency.id == 1" class="text-bold">
+                            <div ng-if="controller.currentBill.currency.id == globalConstants.CURRENCY_COLONES_CODE" class="text-bold">
                                 {{controller.billTotal | currency : "₡" : 2}}
                             </div>
                         </div>
@@ -234,7 +234,9 @@
                                         <div class="form-group">
                                             <label>Tipo de cambio</label>
                                             <input type="text" name="controller.exchangeRate"
-                                                   ng-model="controller.currentBill.exchangeRate" required="" class="form-control" ng-disabled="controller.currentBill.currency.id == 1"/>
+                                                   ng-change="controller.updateProductListPrices(controller.currentBill.exchangeRate)"
+                                                   ng-model="controller.currentBill.exchangeRate" required="" class="form-control"
+                                                   ng-disabled="controller.currentBill.currency.id == globalConstants.CURRENCY_COLONES_CODE"/>
                                         </div>
                                     </div>
                                     <div class="col-lg-3">
@@ -248,14 +250,14 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-3" ng-hide="controller.currentBill.billPaymentType.id == 1 || controller.currentBill.billPaymentType.id == null ">
+                                    <div class="col-lg-3" ng-hide="controller.currentBill.billPaymentType.code == globalConstants.PAYMENT_TYPE_CASH_CODE || controller.currentBill.billPaymentType.id == null ">
                                         <div class="form-group">
                                             <label>Condición de crédito</label>
                                             <div class="controls">
                                                 <select name="controller.currentBill.creditCondition.id"
                                                         ng-model="controller.currentBill.creditCondition.id"
                                                         ng-options="item.id as item.description for item in controller.creditConditionList"
-                                                        class="form-control" ng-disabled="controller.paymentType == 1">
+                                                        class="form-control" ng-disabled="controller.paymentType == globalConstants.PAYMENT_TYPE_CASH_CODE">
                                                 </select>
                                             </div>
                                         </div>
@@ -306,10 +308,12 @@
                                         <td>{{ billProduct.quantity }}</td>
                                         <td>{{ billProduct.productCode }}</td>
                                         <td>{{ billProduct.name }}</td>
-                                        <td>{{ billProduct.linePrice }}</td>
+                                        <td ng-if="controller.currentBill.currency.id == globalConstants.CURRENCY_COLONES_CODE">{{ billProduct.linePrice | currency : "₡" : 2 }}</td>
+                                        <td ng-if="controller.currentBill.currency.id == globalConstants.CURRENCY_DOLLARS_CODE">{{ billProduct.linePrice | currency : "$" : 2 }}</td>
                                         <td>{{ billProduct.discountPercentage}} %</td>
                                         <td>{{ billProduct.taxPercentage}} %</td>
-                                        <td>{{ billProduct.subTotal }}</td>
+                                        <td ng-if="controller.currentBill.currency.id == globalConstants.CURRENCY_COLONES_CODE">{{ billProduct.subTotal | currency : "₡" : 2 }}</td>
+                                        <td ng-if="controller.currentBill.currency.id == globalConstants.CURRENCY_DOLLARS_CODE">{{ billProduct.subTotal | currency : "$" : 2 }}</td>
                                         <td>
                                             <button type="button" ng-click="controller.removeProduct($index)"
                                                     class="btn btn-sm btn-danger">

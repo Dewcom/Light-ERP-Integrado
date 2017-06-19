@@ -52,9 +52,11 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
 
                 $scope.currentBill = bill;
 
-                billService.getAddressInfo(bill.address, function (addressInfo) {
-                    $scope.currentBill.address = addressInfo;
-                });
+                if(bill.address != null){
+                    billService.getAddressInfo(bill.address, function (addressInfo) {
+                        $scope.currentBill.address = addressInfo;
+                    });
+                }
 
                 vm.paymentQuantity = bill.payments.length;
                 vm.paidTotal = calculatePaidTotal(bill);
