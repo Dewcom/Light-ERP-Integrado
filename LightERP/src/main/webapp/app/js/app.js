@@ -3723,8 +3723,7 @@
             scripts: {
                 'modernizr': ['vendor/modernizr/modernizr.custom.js'],
                 'icons': ['vendor/fontawesome/css/font-awesome.min.css',
-                    'vendor/simple-line-icons/css/simple-line-icons.css']
-
+                        'vendor/simple-line-icons/css/simple-line-icons.css']
             },
             // Angular based script (use the right module name)
             modules: [
