@@ -69,7 +69,7 @@ class Customer {
             }
         }
 
-        tmpCustomer.identificationType = IdentificationType.findByIdAndEnabled(argRestCustomer.identificationType, Constants.ESTADO_ACTIVO);
+        tmpCustomer.identificationType = IdentificationType.findByCodeAndEnabled(argRestCustomer.identificationType, Constants.ESTADO_ACTIVO);
         tmpCustomer.customerType =  CustomerType.findByIdAndEnabled(argRestCustomer.customerType, Constants.ESTADO_ACTIVO);
 
         return tmpCustomer;

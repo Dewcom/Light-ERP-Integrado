@@ -6,14 +6,13 @@ angular
 
 CustomerDetailController.$inject = ['$http', '$state', '$stateParams', '$scope', 'customerTypeService',
                                     'identificationTypeService', 'customerService', 'toaster', '$resource',
-                                    '$timeout', '$filter'];
+                                    '$timeout', '$filter', 'APP_CONSTANTS'];
 function CustomerDetailController($http, $state, $stateParams, $scope, customerTypeService,
-                                  identificationTypeService, customerService, toaster, $resource, $timeout, $filter) {
+                                  identificationTypeService, customerService, toaster, $resource, $timeout, $filter, APP_CONSTANTS) {
     var vm = this;
 
     vm.addresses = [];
-
-
+    vm.globalConstants = APP_CONSTANTS
     ////////////////
     init();
 
@@ -28,7 +27,7 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
                 $scope.currentCustomer = customer;
 
                 $scope.currentCustomer.selectedCustomerType = customer.customerType.id;
-                $scope.currentCustomer.selectedIdentificationType = customer.identificationType.id;
+                $scope.currentCustomer.selectedIdentificationType = customer.identificationType.code;
 
                 customerService.getAllAddresses($stateParams.customerId).then(function (response) {
                     vm.addresses = response;
@@ -102,6 +101,21 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
             console.log(response);
             vm.customerContacts = response;
         });
+
+        //Funcion para definir un max y length para campo identificacion
+        //dependiendo del tipo de documento
+        vm.maxMinLength = function(){
+            switch($scope.currentCustomer.selectedIdentificationType) {
+                case vm.globalConstants.CUSTOMER_IDENT_TYPE_PHYSICAL:
+                    return 9
+                    break;
+                case vm.globalConstants.CUSTOMER_IDENT_TYPE_JURIDICAL:
+                    return 10
+                    break;
+                default:
+                    return -1
+            }
+        }
 
     }
 

@@ -99,7 +99,7 @@ class CustomerService {
                     }
                 }
 
-                tmpCustomerToUpdate.identificationType = IdentificationType.findByIdAndEnabled(argRestCustomer.identificationType, Constants.ESTADO_ACTIVO);
+                tmpCustomerToUpdate.identificationType = IdentificationType.findByCodeAndEnabled(argRestCustomer.identificationType, Constants.ESTADO_ACTIVO);
                 tmpCustomerToUpdate.customerType = CustomerType.findByIdAndEnabled(argRestCustomer.customerType, Constants.ESTADO_ACTIVO);
 
                 tmpCustomerToUpdate.save(flush: true);

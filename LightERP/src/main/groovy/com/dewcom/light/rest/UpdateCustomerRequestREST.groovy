@@ -36,6 +36,7 @@ class UpdateCustomerRequestREST implements Validateable {
         email nullable: true
         mobile nullable: true
         phoneNumber2 nullable: true
+        phoneNumber1 nullable: true, blank:true
         website nullable: true
     }
 }
