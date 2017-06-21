@@ -24,6 +24,7 @@
             'app.product',
             'app.user',
             'app.bill',
+            'app.charts',
             'base64'
         ]);
 })();
@@ -59,7 +60,6 @@
 
     angular
         .module('app.client', [
-           // 'add.notify'
         ]);
 })();
 (function() {
@@ -67,7 +67,6 @@
 
     angular
         .module('app.product', [
-            //'add.notify'
         ]);
 })();
 (function() {
@@ -75,7 +74,6 @@
 
     angular
         .module('app.user', [
-            //'add.notify'
         ]);
 })();
 (function() {
@@ -83,7 +81,13 @@
 
     angular
         .module('app.bill', [
-            //'add.notify'
+        ]);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.charts', [
         ]);
 })();
 (function() {
@@ -3723,11 +3727,17 @@
             scripts: {
                 'modernizr': ['vendor/modernizr/modernizr.custom.js'],
                 'icons': ['vendor/fontawesome/css/font-awesome.min.css',
-                        'vendor/simple-line-icons/css/simple-line-icons.css']
+                        'vendor/simple-line-icons/css/simple-line-icons.css'],
+                'flot-chart':         ['vendor/Flot/jquery.flot.js'],
+                'flot-chart-plugins': ['vendor/flot.tooltip/js/jquery.flot.tooltip.min.js',
+                                        'vendor/Flot/jquery.flot.resize.js',
+                                        'vendor/Flot/jquery.flot.pie.js',
+                                        'vendor/Flot/jquery.flot.time.js',
+                                        'vendor/Flot/jquery.flot.categories.js',
+                                        'vendor/flot-spline/js/jquery.flot.spline.min.js']
             },
             // Angular based script (use the right module name)
             modules: [
-                // {name: 'toaster', files: ['vendor/angularjs-toaster/toaster.js', 'vendor/angularjs-toaster/toaster.css']}
                 {
                     name: 'datatables', files: ['vendor/datatables/media/css/jquery.dataTables.css',
                     'vendor/datatables/media/js/jquery.dataTables.js',
@@ -4147,7 +4157,7 @@
                 templateUrl: helper.basepath('billing-main.html'),
                 controller: 'BillController',
                 controllerAs: 'controller',
-                resolve: helper.resolveFor('datatables', 'ngDialog', 'ui.select')
+                resolve: helper.resolveFor('datatables', 'ngDialog', 'ui.select', 'flot-chart', 'flot-chart-plugins')
             })
             .state('app.billDetail', {
                 url: '/billDetail',

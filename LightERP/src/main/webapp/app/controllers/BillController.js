@@ -7,22 +7,20 @@
 
     BillController.$inject = ['DTOptionsBuilder', 'DTColumnDefBuilder', 'billService', 'customerService', 'productService', '$scope',
                                 '$uibModal', 'productTypeService', 'presentationTypeService', '$state', 'toaster', '$timeout', '$filter',
-                                'ngDialog', 'APP_CONSTANTS'];
+                                'ngDialog', '$rootScope', 'APP_CONSTANTS'];
     function BillController(DTOptionsBuilder, DTColumnDefBuilder, billService, customerService, productService, $scope, $uibModal,
-                            productTypeService, presentationTypeService, $state, toaster, $timeout, $filter, ngDialog, APP_CONSTANTS) {
+                            productTypeService, presentationTypeService, $state, toaster, $timeout, $filter, ngDialog, $rootScope, APP_CONSTANTS) {
         var vm = this;
         $scope.globalConstants = APP_CONSTANTS;
         // Se utiliza para tener disponible el tipo de cambio original traido de BD.
-        activate();
-
-
-        ////////////////
+        activateCalendar();
+        activateChart();
 
         /**=========================================================
-         * Esta funcion es para el calendario
+         * Inicializa el calendario
          =========================================================*/
 
-        function activate() {
+        function activateCalendar() {
             vm.today = function () {
                 vm.dt = new Date();
             };
@@ -56,6 +54,57 @@
 
             vm.initDate = new Date('2019-10-20');
             vm.format = 'dd-MM-yyyy'
+        }
+
+        /**=========================================================
+         * Inicializa el chart
+         =========================================================*/
+        function activateChart() {
+
+            // SPLINE
+            // -----------------------------------
+
+            vm.splineOptions = {
+                series: {
+                    lines: {
+                        show: false
+                    },
+                    points: {
+                        show: true,
+                        radius: 4
+                    },
+                    splines: {
+                        show: true,
+                        tension: 0.4,
+                        lineWidth: 1,
+                        fill: 0.5
+                    }
+                },
+                grid: {
+                    borderColor: '#eee',
+                    borderWidth: 1,
+                    hoverable: true,
+                    backgroundColor: '#fcfcfc'
+                },
+                tooltip: true,
+                tooltipOpts: {
+                    content: function (label, x, y) { return x + ' : ' + y; }
+                },
+                xaxis: {
+                    tickColor: '#fcfcfc',
+                    mode: 'categories'
+                },
+                yaxis: {
+                    min: 0,
+                    max: 150, // optional: use it for a clear represetation
+                    tickColor: '#eee',
+                    position: ($rootScope.app.layout.isRTL ? 'right' : 'left'),
+                    tickFormatter: function (v) {
+                        return v/* + ' visitors'*/;
+                    }
+                },
+                shadowSize: 0
+            };
         }
 
         vm.taxTotal = 0;
