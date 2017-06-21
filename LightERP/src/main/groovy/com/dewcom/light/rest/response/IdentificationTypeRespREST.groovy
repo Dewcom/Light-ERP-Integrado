@@ -8,4 +8,5 @@ class IdentificationTypeRespREST {
     String name
     Byte enabled
     Date registrationDate
+    int code
 }

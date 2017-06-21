@@ -256,6 +256,7 @@ class JSONMapper {
             tmpRestObject.name = pIdentificationType.name
             tmpRestObject.enabled = pIdentificationType.enabled
             tmpRestObject.registrationDate = pIdentificationType.registrationDate
+            tmpRestObject.code = pIdentificationType.code
             tmpRestObject.id = pIdentificationType.id
 
         tmpRestObject

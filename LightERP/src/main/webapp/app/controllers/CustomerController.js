@@ -8,12 +8,12 @@
 
     CustomerController.$inject = ['$uibModal', '$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder',
         'customerService', 'customerTypeService', 'identificationTypeService', 'toaster', '$state',
-        '$filter', '$timeout', 'ngDialog', '$scope', 'userService', 'LOCATION'];
+        '$filter', '$timeout', 'ngDialog', '$scope', 'userService', 'LOCATION', 'APP_CONSTANTS'];
     function CustomerController($uibModal, $resource, DTOptionsBuilder, DTColumnDefBuilder, customerService,
                                 customerTypeService, identificationTypeService, toaster, $state, $filter, $timeout,
-                                ngDialog, $scope, userService, LOCATION) {
+                                ngDialog, $scope, userService, LOCATION, APP_CONSTANTS) {
         var vm = this;
-
+        vm.globalConstants = APP_CONSTANTS
         vm.addresses = [];
 
         vm.addCustomerForm = {};
@@ -86,6 +86,22 @@
                 DTColumnDefBuilder.newColumnDef(3),
                 DTColumnDefBuilder.newColumnDef(4).notSortable()
             ];
+
+
+            //Funcion para definir un max y length para campo identificacion
+            //dependiendo del tipo de documento
+            vm.maxMinLength = function(){
+                switch(vm.selectedIdentificationType) {
+                    case vm.globalConstants.CUSTOMER_IDENT_TYPE_PHYSICAL:
+                        return 9
+                        break;
+                    case vm.globalConstants.CUSTOMER_IDENT_TYPE_JURIDICAL:
+                        return 10
+                        break;
+                    default:
+                        return -1
+                }
+            }
         }
 
         /**=========================================================
