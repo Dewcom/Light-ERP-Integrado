@@ -102,21 +102,6 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
             vm.customerContacts = response;
         });
 
-        //Funcion para definir un max y length para campo identificacion
-        //dependiendo del tipo de documento
-        vm.maxMinLength = function(){
-            switch($scope.currentCustomer.selectedIdentificationType) {
-                case vm.globalConstants.CUSTOMER_IDENT_TYPE_PHYSICAL:
-                    return 9
-                    break;
-                case vm.globalConstants.CUSTOMER_IDENT_TYPE_JURIDICAL:
-                    return 10
-                    break;
-                default:
-                    return -1
-            }
-        }
-
     }
 
     //REGRESA A LA PANTALLA DE LISTA DE CLIENTES
