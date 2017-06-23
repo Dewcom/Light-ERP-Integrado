@@ -83,7 +83,7 @@
                                     </div>
                                     <div ng-class="parentController.selectedIdentificationType == 2 ? 'col-md-12':'col-md-4'">
                                         <div class="form-group">
-                                            <label ng-show="parentController.selectedIdentificationType == 1">Nombre</label>
+                                            <label ng-show="parentController.selectedIdentificationType == 1 || parentController.selectedIdentificationType == 3">Nombre</label>
                                             <label ng-show="parentController.selectedIdentificationType == 2">Nombre de la Empresa</label>
                                             <div class="controls">
                                                 <input ng-show="parentController.selectedIdentificationType != null" type="text" name="name" ng-model="parentController.name" required="required"
@@ -93,7 +93,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4" ng-show="parentController.selectedIdentificationType == 1">
+                                    <div class="col-md-4" ng-show="parentController.selectedIdentificationType == 1 || parentController.selectedIdentificationType == 3">
                                         <div class="form-group">
                                             <label>Primer Apellido</label>
                                             <div class="controls">
@@ -102,7 +102,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4" ng-show="parentController.selectedIdentificationType == 1">
+                                    <div class="col-md-4" ng-show="parentController.selectedIdentificationType == 1 || parentController.selectedIdentificationType == 3">
                                         <div class="form-group">
                                             <label>Segundo Apellido</label>
                                             <div class="controls">
