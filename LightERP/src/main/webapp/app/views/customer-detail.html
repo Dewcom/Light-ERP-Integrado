@@ -26,7 +26,7 @@
                 <form name="customerForm.formValidate" ng-submit="form.submitForm()" novalidate="" class="form-validate form-horizontal">
                     <uib-tab-heading>INFORMACION</uib-tab-heading>
                     <div>
-                        <fieldset ng-form="clntInfoForm">
+                        <fieldset>
                             <legend>Cliente</legend>
                             <!-- START row-->
                             <div class="row">
@@ -61,12 +61,8 @@
                                     <div class="form-group">
                                         <label>Identificación</label>
                                         <div class="controls">
-                                            <input type="text" ng-minlength="{{parentController.maxMinLength()}}" ng-maxlength="{{parentController.maxMinLength()}}"  name="identification" ng-model="currentCustomer.identification" placeholder="110102020" required="required" class="form-control" />
-                                            <span ng-show="clntInfoForm.identification.$error.required" class="text-danger">Este campo es inválido</span>
-                                            <span ng-show="clntInfoForm.identification.$error.minlength"
-                                                  class="text-danger">Este campo no debería tener menos de {{parentController.maxMinLength()}} dígitos</span>
-                                            <span ng-show="clntInfoForm.identification.$error.maxlength"
-                                                  class="text-danger">Este campo no debería tener más de {{parentController.maxMinLength()}} dígitos</span>
+                                            <input type="text" name="identification" ng-model="currentCustomer.identification" placeholder="110102020" required="required" class="form-control" />
+                                            <span ng-show="formStep1.$submitted &amp;&amp; formStep1.identification.$invalid" class="text-danger">Este campo es inválido</span>
                                         </div>
                                     </div>
                                 </div>
