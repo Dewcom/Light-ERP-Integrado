@@ -559,9 +559,9 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
 
         var docDefinition = printService.createDocDefinition(bill);
 
-        pdfMake.createPdf(docDefinition).download('factura ' + billNumber + '.pdf');
+        //pdfMake.createPdf(docDefinition).download('factura ' + billNumber + '.pdf');
 
-        //pdfMake.createPdf(docDefinition).open();
+        pdfMake.createPdf(docDefinition).open();
 
         //pdfMake.createPdf(docDefinition).print();
     };

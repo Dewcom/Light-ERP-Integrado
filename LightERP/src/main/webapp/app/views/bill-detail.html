@@ -213,11 +213,11 @@
                                     <td>{{ controller.formatBillNumber(currentBill) }}</td>
                                     <td>{{ controller.paymentQuantity }}</td>
                                     <td ng-if="currentBill.currency.currencyCode == globalConstants.CURRENCY_COLONES_CODE">{{ currentBill.totalAmount | currency : "₡" : 2}}</td>
-                                    <td ng-if="currentBill.currency.currencyCode == globalConstants.CURRENCY_DOLARES_CODE">{{ currentBill.totalAmount | currency : "$" : 2}}</td>
+                                    <td ng-if="currentBill.currency.currencyCode == globalConstants.CURRENCY_DOLLARS_CODE">{{ currentBill.totalAmount | currency : "$" : 2}}</td>
                                     <td ng-if="currentBill.currency.currencyCode == globalConstants.CURRENCY_COLONES_CODE">{{ controller.paidTotal | currency : "₡" : 2}}</td>
-                                    <td ng-if="currentBill.currency.currencyCode == globalConstants.CURRENCY_DOLARES_CODE">{{ controller.paidTotal | currency : "$" : 2}}</td>
+                                    <td ng-if="currentBill.currency.currencyCode == globalConstants.CURRENCY_DOLLARS_CODE">{{ controller.paidTotal | currency : "$" : 2}}</td>
                                     <td class="text-right" ng-if="currentBill.currency.currencyCode == globalConstants.CURRENCY_COLONES_CODE">{{ controller.toBepaidTotal | currency : "₡" : 2}}</td>
-                                    <td class="text-right" ng-if="currentBill.currency.currencyCode == globalConstants.CURRENCY_DOLARES_CODE">{{ controller.toBepaidTotal | currency : "$" : 2}}</td>
+                                    <td class="text-right" ng-if="currentBill.currency.currencyCode == globalConstants.CURRENCY_DOLLARS_CODE">{{ controller.toBepaidTotal | currency : "$" : 2}}</td>
                                 </tr>
                                 </tbody>
                             </table>

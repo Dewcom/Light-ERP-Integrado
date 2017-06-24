@@ -11,7 +11,8 @@
                     <div class="panel-body col-lg-4">
                         <div class="form-group">
                             <label class="control-label">Monto</label>
-                            <input tabindex="1" type="number" name="amount" required="" ng-model="makePaymentForm.amount" class="form-control" />
+                            <input tabindex="1" type="number" name="amount" required="" ng-model="makePaymentForm.amount" class="form-control"
+                            min="0"/>
                             <span ng-show="modalCtrl.validateInput('add', 'amount', 'required')" class="text-danger">Este campo es requerido</span>
                         </div>
                     </div>

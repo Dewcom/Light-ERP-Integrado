@@ -30,7 +30,7 @@ angular
 
             var productList = [];
 
-            var totalSize = (35 - parseInt(bill.billDetails.length));
+            var totalSize = (11 - parseInt(bill.billDetails.length));
 
             // Hack para completar de celdas vacias la factura
             var fillingRowsList = [];
@@ -73,7 +73,7 @@ angular
                                 [
                                     {
                                         border: [false, false, false, false],
-                                        image :APP_CONSTANTS.logo, width: 50, height: 50
+                                        image :APP_CONSTANTS.logo, width: 211, height: 55
                                     },
                                     {
                                         border: [false, false, false, false],
