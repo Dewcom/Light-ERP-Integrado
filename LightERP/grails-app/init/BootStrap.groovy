@@ -22,10 +22,17 @@ class BootStrap {
           physicalClient.save()
         }
         if(!IdentificationType.findByCode(IdentificationType.COMPANY_CODE)){
-          def companyClient = new IdentificationType()
-          companyClient.name = "Cédula Jurídica"
-          companyClient.code = IdentificationType.COMPANY_CODE
-          companyClient.save()
+            def companyClient = new IdentificationType()
+            companyClient.name = "Cédula Jurídica"
+            companyClient.code = IdentificationType.COMPANY_CODE
+            companyClient.save()
+        }
+
+        if(!IdentificationType.findByCode(IdentificationType.PASSPORT_CODE)){
+            def companyClient = new IdentificationType()
+            companyClient.name = "Pasaporte"
+            companyClient.code = IdentificationType.PASSPORT_CODE
+            companyClient.save()
         }
 
         //Creacion de Tipos de Clientes por Defecto

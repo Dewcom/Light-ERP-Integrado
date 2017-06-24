@@ -98,6 +98,9 @@
                     case vm.globalConstants.CUSTOMER_IDENT_TYPE_JURIDICAL:
                         return 10
                         break;
+                    case vm.globalConstants.CUSTOMER_IDENT_TYPE_PASSPORT:
+                        return 19
+                        break;
                     default:
                         return -1
                 }

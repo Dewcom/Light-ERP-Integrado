@@ -66,9 +66,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div ng-class="currentCustomer.selectedIdentificationType == 2 ? 'col-md-12':'col-md-4'">
+                                <div ng-class="currentCustomer.selectedIdentificationType == 2  ? 'col-md-12':'col-md-4'">
                                     <div class="form-group">
-                                        <label ng-show="currentCustomer.selectedIdentificationType == 1">Nombre</label>
+                                        <label ng-show="currentCustomer.selectedIdentificationType == 1 || currentCustomer.selectedIdentificationType == 3">Nombre</label>
                                         <label ng-show="currentCustomer.selectedIdentificationType == 2">Nombre de la Empresa</label>
                                         <div class="controls">
                                             <input type="text" name="name" ng-model="currentCustomer.name" placeholder="Juan" required="required" class="form-control" />
@@ -76,7 +76,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4" ng-show="currentCustomer.selectedIdentificationType == 1">
+                                <div class="col-md-4" ng-show="currentCustomer.selectedIdentificationType == 1 || currentCustomer.selectedIdentificationType == 3">
                                     <div class="form-group">
                                         <label>Primer apellido</label>
                                         <div class="controls">
@@ -85,7 +85,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4" ng-show="currentCustomer.selectedIdentificationType == 1">
+                                <div class="col-md-4" ng-show="currentCustomer.selectedIdentificationType == 1 || currentCustomer.selectedIdentificationType == 3">
                                     <div class="form-group">
                                         <label>Segundo apellido</label>
                                         <div class="controls">
@@ -306,8 +306,10 @@
                                     </ul>
                                 </div>
                                 <div class="panel-footer clearfix">
-                                    <div class="pull-left"><a href="" class="btn btn-xs btn-primary">Enviar correo</a>
-                                    </div>
+                                    <button type="button" ng-click=""
+                                            class="btn btn-sm btn-primary  pull-left">
+                                        <em class="fa fa-envelope"></em>
+                                    </button>
                                    <!-- <div ng-click="contactController.open('md', customerContact)" class="pull-right"><a href="" class="btn btn-xs btn-default">Editar</a>
                                     </div>-->
 
