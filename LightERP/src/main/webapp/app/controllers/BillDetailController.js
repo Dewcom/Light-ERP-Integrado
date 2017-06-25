@@ -86,7 +86,8 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
 
     //REGRESA A LA PANTALLA DE LISTA DE FACTURAS
     vm.goBack = function () {
-        $state.go('app.billingMain');
+        var params = {tabIndex: 1}
+        $state.go('app.billingMain', params);
     };
 
     //CANCELA LOS CAMBIOS EN PANTALLA
@@ -188,7 +189,8 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
                 pop(toasterdata);
 
                 $timeout(function () {
-                    $state.go('app.billingMain');
+                    var params = {tabIndex: 1}
+                    $state.go('app.billingMain', params);
                 }, 3000);
 
             }, function (error) {
@@ -238,7 +240,8 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
                 pop(toasterdata);
 
                 $timeout(function () {
-                    $state.go('app.billingMain');
+                    var params = {tabIndex: 1}
+                    $state.go('app.billingMain', params);
                 }, 3000);
 
             }, function (error) {
@@ -712,28 +715,31 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
         var formatedBillNumber = "0";
         var zerosNeeded = 0;
 
-        if(bill.billNumber != null){
-            zerosNeeded = 5 - parseInt(bill.billNumber.toString().length);
+        if(bill != undefined){
+            if(bill.billNumber != null){
+                zerosNeeded = 5 - parseInt(bill.billNumber.toString().length);
 
-            for (var i = 0; i < zerosNeeded; i++) {
-                formatedBillNumber = formatedBillNumber.concat("0");
+                for (var i = 0; i < zerosNeeded; i++) {
+                    formatedBillNumber = formatedBillNumber.concat("0");
+                }
+
+                formatedBillNumber = formatedBillNumber.concat(bill.billNumber);
+            }else{
+                zerosNeeded = 4 - parseInt(bill.id.toString().length);
+
+                for (var i = 0; i < zerosNeeded; i++) {
+                    formatedBillNumber = formatedBillNumber.concat("0");
+                }
+
+                formatedBillNumber = formatedBillNumber.concat("B");
+
+                formatedBillNumber = formatedBillNumber.concat(bill.id);
+
             }
 
-            formatedBillNumber = formatedBillNumber.concat(bill.billNumber);
-        }else{
-            zerosNeeded = 4 - parseInt(bill.id.toString().length);
-
-            for (var i = 0; i < zerosNeeded; i++) {
-                formatedBillNumber = formatedBillNumber.concat("0");
-            }
-
-            formatedBillNumber = formatedBillNumber.concat("B");
-
-            formatedBillNumber = formatedBillNumber.concat(bill.id);
+            return formatedBillNumber;
 
         }
-
-        return formatedBillNumber;
 
     };
 

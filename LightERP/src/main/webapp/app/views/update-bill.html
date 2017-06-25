@@ -200,7 +200,9 @@
                                             <label>Dirección</label>
                                             <textarea style="resize: none" name="address"
                                                       ng-model="controller.currentBill.address.address"
-                                                      class="form-control" disabled></textarea>
+                                                      class="form-control" disabled maxlength="150">
+
+                                            </textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -243,14 +245,15 @@
                                         <div class="form-group">
                                             <label>Tipo de pago</label>
                                             <div class="controls">
-                                                <select name="controller.paymentType" ng-model="controller.currentBill.billPaymentType.id"
+                                                <select class="form-control" name="controller.paymentType"
+                                                        ng-model="controller.currentBill.billPaymentType.id"
                                                         ng-options="item.id as item.description for item in controller.paymentTypeList"
-                                                        class="form-control">
+                                                        ng-change="controller.resetCreditCondition()">
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-3" ng-hide="controller.currentBill.billPaymentType.code == globalConstants.PAYMENT_TYPE_CASH_CODE || controller.currentBill.billPaymentType.id == null ">
+                                    <div class="col-lg-3" ng-hide="controller.currentBill.billPaymentType.id == globalConstants.PAYMENT_TYPE_CASH_CODE || controller.currentBill.billPaymentType.id == null ">
                                         <div class="form-group">
                                             <label>Condición de crédito</label>
                                             <div class="controls">

@@ -176,7 +176,7 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
 
     //REGRESA A LA PANTALLA DE DETALLE DE FACTURAS
     vm.goBack = function () {
-        var params = {billId: vm.currentBill.id}
+        var params = {billId: vm.currentBill.id};
         $state.go('app.billDetail', params);
     };
 
@@ -317,7 +317,8 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
 
             pop(toasterdata);
             $timeout(function () {
-                callAtTimeout();
+                var params = {billId: vm.currentBill.id};
+                $state.go('app.billDetail', params);
             }, 3000);
         }, function (error) {
             console.log(error);
@@ -357,7 +358,8 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
                 pop(toasterdata);
 
                 $timeout(function () {
-                    $state.go('app.billingMain');
+                    var params = {tabIndex: 1};
+                    $state.go('app.billingMain', params);
                 }, 3000);
 
             }, function (error) {
@@ -401,7 +403,8 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
                 pop(toasterdata);
 
                 $timeout(function () {
-                    $state.go('app.billingMain');
+                    var params = {tabIndex: 1};
+                    $state.go('app.billingMain', params);
                 }, 3000);
 
             }, function (error) {
@@ -617,8 +620,6 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
      =========================================================*/
 
     function formatBillDetails(list) {
-        console.log(list);
-
         var formattedList = [];
 
         angular.forEach(list, function (value, key) {
@@ -637,6 +638,16 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
 
     }
 
+    /**=========================================================
+     * Resetea el tipo de condicion de credito
+     =========================================================*/
+
+    vm.resetCreditCondition = function () {
+        if(vm.currentBill.billPaymentType.id == APP_CONSTANTS.PAYMENT_TYPE_CASH_CODE){
+            vm.currentBill.creditCondition.id = null;
+        }
+    };
+
     function pop(toasterdata) {
         toaster.pop({
             type: toasterdata.type,
@@ -644,9 +655,5 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
             body: toasterdata.text,
             bodyOutputType: 'trustedHtml'
         });
-    }
-
-    function callAtTimeout() {
-        $state.go("app.billingMain");
     }
 }

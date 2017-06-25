@@ -4160,7 +4160,8 @@
                 templateUrl: helper.basepath('billing-main.html'),
                 controller: 'BillController',
                 controllerAs: 'controller',
-                resolve: helper.resolveFor('datatables', 'ngDialog', 'ui.select', 'flot-chart', 'flot-chart-plugins')
+                resolve: helper.resolveFor('datatables', 'ngDialog', 'ui.select', 'flot-chart', 'flot-chart-plugins'),
+                params : { tabIndex: 0 }
             })
             .state('app.billDetail', {
                 url: '/billDetail',

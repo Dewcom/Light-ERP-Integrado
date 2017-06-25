@@ -7,9 +7,10 @@
 
     BillController.$inject = ['DTOptionsBuilder', 'DTColumnDefBuilder', 'billService', 'customerService', 'productService', '$scope',
                                 '$uibModal', 'productTypeService', 'presentationTypeService', '$state', 'toaster', '$timeout', '$filter',
-                                'ngDialog', '$rootScope', 'APP_CONSTANTS'];
+                                'ngDialog', '$rootScope', '$stateParams', 'APP_CONSTANTS'];
     function BillController(DTOptionsBuilder, DTColumnDefBuilder, billService, customerService, productService, $scope, $uibModal,
-                            productTypeService, presentationTypeService, $state, toaster, $timeout, $filter, ngDialog, $rootScope, APP_CONSTANTS) {
+                            productTypeService, presentationTypeService, $state, toaster, $timeout, $filter, ngDialog, $rootScope, $stateParams,
+                            APP_CONSTANTS) {
         var vm = this;
         $scope.globalConstants = APP_CONSTANTS;
         // Se utiliza para tener disponible el tipo de cambio original traido de BD.
@@ -140,6 +141,12 @@
         ////////////////
 
         function init() {
+
+            if($stateParams.tabIndex == 0){
+                $scope.tab1 = true;
+            }else{
+                $scope.tab2 = true;
+            }
 
             /**=========================================================
              * Facturas
@@ -289,7 +296,8 @@
         //REGRESA A LA PANTALLA DE LISTA DE FACTURAS
         vm.goBack = function () {
             billService.resetAddedProductList();
-            $state.go('app.billingMain');
+            var params = {tabIndex: 1}
+            $state.go('app.billingMain', params);
         };
 
         //LLeva a la pantalla de nueva factura
@@ -706,6 +714,19 @@
             vm.taxTotal = calculateTotalTaxes(tmpList);
             vm.discountTotal = calculateTotalDiscount(tmpList);
         };
+
+        /**=========================================================
+         * Resetea el tipo de condicion de credito
+         =========================================================*/
+
+        vm.resetCreditCondicion = function () {
+
+            if(vm.paymentType == APP_CONSTANTS.PAYMENT_TYPE_CASH_CODE){
+                vm.creditCondition = null;
+            }
+
+        };
+
 
         function pop(toasterdata) {
             toaster.pop({

@@ -1,12 +1,10 @@
 <h2>Módulo de terceros</h2>
 <br>
-<uib-tabset justified="true">
-    <uib-tab>
-        <uib-tab-heading>DASHBOARD</uib-tab-heading>
+<uib-tabset justified="true" active="indextab">
+    <uib-tab heading="DASHBOARD" active="tab1">
         <div ng-include="'app/views/partials/billing-dashboard.html'"></div>
     </uib-tab>
-    <uib-tab>
-        <uib-tab-heading>FACTURAS</uib-tab-heading>
+    <uib-tab heading="FACTURAS" active="tab2">
         <div ng-include="'app/views/bill-list.html'"></div>
     </uib-tab>
 </uib-tabset>
