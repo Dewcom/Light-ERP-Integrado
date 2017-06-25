@@ -4170,7 +4170,7 @@
                 controller: 'BillDetailController',
                 controllerAs: 'controller',
                 resolve: helper.resolveFor('ngDialog'),
-                params : { billId: null }
+                params : { billId: null , tabIndex: 0}
             })
             .state('app.newBill', {
                 url: '/new-bill',

@@ -42,6 +42,15 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
 
     function init() {
         console.log($stateParams);
+
+
+
+        if($stateParams.tabIndex == 0){
+            $scope.tab1 = true;
+        }else{
+            $scope.tab2 = true;
+        }
+
         var bill;
         billService.get($stateParams.billId).then(function (response) {
             console.log(response.data);
@@ -298,7 +307,7 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
             "customerId": currentBill.customer.id,
             "exchangeRate": parseFloat(currentBill.exchangeRate),
             "billPaymentTypeId": currentBill.billPaymentType.code,
-            "creditConditionId": currentBill.creditCondition.id,
+            "creditConditionId": vm.creditCondition != null ? vm.creditCondition.id : null,
             "currencyId": currentBill.currency.id,
             "billStateId": APP_CONSTANTS.BILL_VALIDATED_STATE_CODE,
             "billDate": $filter('date')(currentBill.billDate, "dd-MM-yyyy"),
@@ -513,7 +522,8 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
                 pop(toasterdata);
 
                 $timeout(function () {
-                    $state.reload();
+                    var params = {billId : $scope.currentBill.id, tabIndex: 1};
+                    $state.go('app.billDetail', params);
                 }, 3000);
             } else {
                 toasterdata = {
