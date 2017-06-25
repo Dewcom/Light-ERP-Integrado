@@ -220,7 +220,8 @@
                                             <label>Dirección</label>
                                             <textarea style="resize: none" name="address"
                                                       ng-model="controller.chosenCustomer.chosenAddress.address"
-                                                      class="form-control"></textarea>
+                                                      class="form-control" maxlength="150">
+                                            </textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -263,21 +264,21 @@
                                             <label>Tipo de pago</label>
                                             <div class="controls">
                                                 <select name="controller.paymentType" ng-model="controller.paymentType" required=""
-                                                        ng-options="item.id as item.description for item in controller.paymentTypeList"
-                                                        class="form-control">
+                                                    ng-options="item.id as item.description for item in controller.paymentTypeList"
+                                                    class="form-control" ng-change="controller.resetCreditCondition()">
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-3"
-                                         ng-hide="controller.paymentType == 1 || controller.paymentType == null ">
+                                         ng-hide="controller.paymentType == globalConstants.PAYMENT_TYPE_CASH_CODE || controller.paymentType == null ">
                                         <div class="form-group">
                                             <label>Condición de crédito</label>
                                             <div class="controls">
                                                 <select name="controller.creditCondition"
                                                         ng-model="controller.creditCondition"
                                                         ng-options="item.id as item.description for item in controller.creditConditionList"
-                                                        class="form-control" ng-disabled="controller.paymentType == 1">
+                                                        class="form-control">
                                                 </select>
                                             </div>
                                         </div>

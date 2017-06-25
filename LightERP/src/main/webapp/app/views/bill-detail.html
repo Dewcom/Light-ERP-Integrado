@@ -6,7 +6,7 @@
     </div>
     <form class="panel" name="controller.billDetailForm" action="" method="post" novalidate="novalidate">
         <uib-tabset justified="true">
-            <uib-tab>
+            <uib-tab heading="DETALLES" active="tab1">
                 <div class="mb">
                     <hr class="hidden-print"/>
                     <div class="clearfix">
@@ -58,7 +58,6 @@
                     </div>
                 </div>
                 <hr>
-                <uib-tab-heading>DETALLES</uib-tab-heading>
                 <div class="panel">
                     <div class="panel-body">
                         <h3 class="mt0" ng-if="currentBill.billNumber != null">{{"Factura # " +
@@ -107,6 +106,10 @@
                                     <p class="pull-right mr" ng-if="currentBill.billNumber != null">
                                         {{controller.formatBillNumber(currentBill)}}</p>
                                     <p class="pull-right mr" ng-if="currentBill.billNumber == null">{{controller.formatBillNumber(currentBill)}}</p>
+                                </div>
+                                <div class="clearfix">
+                                    <p class="pull-left">Tipo de pago</p>
+                                    <p class="pull-right mr">{{currentBill.billPaymentType.description}}</p>
                                 </div>
                                 <div class="clearfix">
                                     <p class="pull-left">Fecha de facturación</p>
@@ -183,8 +186,7 @@
                     </div>
                 </div>
             </uib-tab>
-            <uib-tab ng-hide="currentBill.billState.code == globalConstants.BILL_SAVED_CODE">
-                <uib-tab-heading>PAGOS</uib-tab-heading>
+            <uib-tab heading="PAGOS" active="tab2" ng-hide="currentBill.billState.code == globalConstants.BILL_SAVED_STATE_CODE">
                 <div class="panel panel-default" ng-show="currentBill.billState.code != globalConstants.BILL_SAVED_STATE_CODE">
                     <div class="panel-body">
                         <div class="table-responsive mb-lg mr ml mb">

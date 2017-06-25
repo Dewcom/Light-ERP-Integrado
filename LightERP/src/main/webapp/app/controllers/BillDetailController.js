@@ -42,6 +42,15 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
 
     function init() {
         console.log($stateParams);
+
+
+
+        if($stateParams.tabIndex == 0){
+            $scope.tab1 = true;
+        }else{
+            $scope.tab2 = true;
+        }
+
         var bill;
         billService.get($stateParams.billId).then(function (response) {
             console.log(response.data);
@@ -86,7 +95,8 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
 
     //REGRESA A LA PANTALLA DE LISTA DE FACTURAS
     vm.goBack = function () {
-        $state.go('app.billingMain');
+        var params = {tabIndex: 1}
+        $state.go('app.billingMain', params);
     };
 
     //CANCELA LOS CAMBIOS EN PANTALLA
@@ -188,7 +198,8 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
                 pop(toasterdata);
 
                 $timeout(function () {
-                    $state.go('app.billingMain');
+                    var params = {tabIndex: 1}
+                    $state.go('app.billingMain', params);
                 }, 3000);
 
             }, function (error) {
@@ -238,7 +249,8 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
                 pop(toasterdata);
 
                 $timeout(function () {
-                    $state.go('app.billingMain');
+                    var params = {tabIndex: 1}
+                    $state.go('app.billingMain', params);
                 }, 3000);
 
             }, function (error) {
@@ -295,7 +307,7 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
             "customerId": currentBill.customer.id,
             "exchangeRate": parseFloat(currentBill.exchangeRate),
             "billPaymentTypeId": currentBill.billPaymentType.code,
-            "creditConditionId": currentBill.creditCondition.id,
+            "creditConditionId": vm.creditCondition != null ? vm.creditCondition.id : null,
             "currencyId": currentBill.currency.id,
             "billStateId": APP_CONSTANTS.BILL_VALIDATED_STATE_CODE,
             "billDate": $filter('date')(currentBill.billDate, "dd-MM-yyyy"),
@@ -510,7 +522,8 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
                 pop(toasterdata);
 
                 $timeout(function () {
-                    $state.reload();
+                    var params = {billId : $scope.currentBill.id, tabIndex: 1};
+                    $state.go('app.billDetail', params);
                 }, 3000);
             } else {
                 toasterdata = {
@@ -712,28 +725,31 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
         var formatedBillNumber = "0";
         var zerosNeeded = 0;
 
-        if(bill.billNumber != null){
-            zerosNeeded = 5 - parseInt(bill.billNumber.toString().length);
+        if(bill != undefined){
+            if(bill.billNumber != null){
+                zerosNeeded = 5 - parseInt(bill.billNumber.toString().length);
 
-            for (var i = 0; i < zerosNeeded; i++) {
-                formatedBillNumber = formatedBillNumber.concat("0");
+                for (var i = 0; i < zerosNeeded; i++) {
+                    formatedBillNumber = formatedBillNumber.concat("0");
+                }
+
+                formatedBillNumber = formatedBillNumber.concat(bill.billNumber);
+            }else{
+                zerosNeeded = 4 - parseInt(bill.id.toString().length);
+
+                for (var i = 0; i < zerosNeeded; i++) {
+                    formatedBillNumber = formatedBillNumber.concat("0");
+                }
+
+                formatedBillNumber = formatedBillNumber.concat("B");
+
+                formatedBillNumber = formatedBillNumber.concat(bill.id);
+
             }
 
-            formatedBillNumber = formatedBillNumber.concat(bill.billNumber);
-        }else{
-            zerosNeeded = 4 - parseInt(bill.id.toString().length);
-
-            for (var i = 0; i < zerosNeeded; i++) {
-                formatedBillNumber = formatedBillNumber.concat("0");
-            }
-
-            formatedBillNumber = formatedBillNumber.concat("B");
-
-            formatedBillNumber = formatedBillNumber.concat(bill.id);
+            return formatedBillNumber;
 
         }
-
-        return formatedBillNumber;
 
     };
 
