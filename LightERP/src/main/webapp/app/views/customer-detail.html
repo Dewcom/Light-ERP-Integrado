@@ -269,16 +269,34 @@
                 </form>
             </uib-tab>
             <uib-tab>
-                <uib-tab-heading>Contactos</uib-tab-heading>
+                <uib-tab-heading>CONTACTOS</uib-tab-heading>
+                <div ng-if="parentController.customerContacts.length == 0">
+                    <div class="row col-lg-12 col-xs-6 pv">
+                        <div class="col-lg-2">
+                            <em class="fa fa-warning fa-4x text-muted"></em>
+                        </div>
+                        <div class="col-lg-8">
+                            <h4>El cliente no posee contactos</h4>
+                        </div>
+                        <div class="col-lg-2 mt">
+                            <button ng-show="currentBill.billNumber == null" type="button"
+                                    ng-click="controller.disableBill(currentBill.id)"
+                                    class="btn btn-labeled btn-success pull-right">
+                                      <span class="btn-label">
+                                         <em class="fa fa-plus"></em>
+                                      </span>Agregar
+                            </button>
+                        </div>
+                    </div>
+                </div>
                 <div ng-controller="ContactController as contactController">
-                    <legend>Contactos</legend>
                     <div class="row">
                         <div ng-repeat="customerContact in parentController.customerContacts" class="col-md-4">
                             <div class="panel panel-default">
                                 <div class="panel-body text-left">
                                     <h4>{{customerContact.name + ' '+ customerContact.firstLastName + ' ' +customerContact.secondLastName}}</h4>
 
-                                    <ul   style="list-style: none;">
+                                    <ul style="list-style: none;">
                                         <li>Departamento: {{customerContact.department}}</li>
                                         <li>Puesto: {{customerContact.jobTitle}}</li>
                                         <li>Teléfono #1: {{customerContact.phoneNumber1}}</li>

@@ -166,6 +166,11 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
 
         billService.getAllExchangeRates().then(function (response) {
             vm.exchangeRateList = response;
+            vm.exchangeRate = APP_CONSTANTS.LOCAL_EXCHANGE_RATE_VALUE;
+
+            var rate = $filter("filter")(vm.exchangeRateList, {code: APP_CONSTANTS.EXCHANGE_RATE_DOLLARS_CODE});
+
+            vm.dollarExchangeRateFromDB = rate[0].value;
         });
     }
 
@@ -281,7 +286,7 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
             "customerId": vm.currentBill.customer.id,
             "exchangeRate": parseFloat(vm.currentBill.exchangeRate),
             "billPaymentTypeId": vm.currentBill.billPaymentType.code,
-            "creditConditionId": vm.currentBill.billPaymentType.code == APP_CONSTANTS.PAYMENT_TYPE_CREDIT_CODE ? vm.currentBill.creditCondition.code : null,
+            "creditConditionId": vm.currentBill.billPaymentType.code == APP_CONSTANTS.PAYMENT_TYPE_CREDIT_CODE ? vm.currentBill.creditCondition.id : null,
             "currencyId": vm.currentBill.currency.id,
             "billStateId": billStateId,
             "billDate": $filter('date')(vm.billDate, "dd-MM-yyyy"),
@@ -299,7 +304,7 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
             if (response.code == "0") {
                 toasterdata = {
                     type: 'success',
-                    title: 'Factura creada',
+                    title: 'Factura actualizada',
                     text: response.message
                 };
             } else {
@@ -317,8 +322,6 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
         }, function (error) {
             console.log(error);
         });
-
-
     };
 
     /**=========================================================
@@ -531,6 +534,10 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
         };
+
+        $scope.adjustDollarPrice = function () {
+            vm.selectedProduct.calcDollarPrice = vm.selectedProduct.priceInColones / rate;
+        }
     }
 
     function calculateSubtotal(quantity, price, discount, tax) {

@@ -56,9 +56,8 @@
             vm.format = 'dd-MM-yyyy'
         }
 
-        /**=========================================================
-         * Inicializa el chart
-         =========================================================*/
+        ////////////////
+
         function activateChart() {
 
             // SPLINE
@@ -568,7 +567,6 @@
             }
 
             $scope.selectProduct = function (product) {
-                console.log(product);
                 vm.selectedProduct = product;
                 vm.selectedProduct.quantity = 1;
                 vm.selectedProduct.discount = 0;
@@ -593,6 +591,10 @@
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
             };
+
+            $scope.adjustDollarPrice = function () {
+                vm.selectedProduct.calcDollarPrice = vm.selectedProduct.priceInColones / rate;
+            }
         }
 
         UpdateModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance'];
@@ -611,6 +613,10 @@
         }
 
         function addProductToBill(selectedProduct, linePrice) {
+
+            console.log(linePrice);
+
+            console.log(selectedProduct);
 
             var productToAdd = {
                 "productId": selectedProduct.id,
