@@ -17,4 +17,6 @@ class ContactRespREST {
     String email
     Byte enabled
     Date registrationDate
+    String customerName
+    String customerLastNames
 }

@@ -21,12 +21,14 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="contactObj in controller.contactList">
-                    <td>{{ contactObj.customer.name }}</td>
+                    <td>{{ contactObj.customerName +' '+ contactObj.customerLastNames  }}</td>
                     <td>{{ contactObj.name + ' ' + contactObj.firstLastName + ' ' + contactObj.secondLastName}}
                     </td>
-                    <td>{{ contactObj.jobTitle }}</td>
+                    <td ng-if="contactObj.jobTitle != null">{{ contactObj.jobTitle }}</td>
+                    <td ng-if="contactObj.jobTitle == null">**SIN PUESTO**</td>
                     <td>{{ contactObj.phoneNumber1 }}</td>
-                    <td>{{ contactObj.email }}</td>
+                    <td ng-if="contactObj.email != null">{{ contactObj.email }}</td>
+                    <td ng-if="contactObj.email == null">**SIN CORREO**</td>
                     <td>
                         <button type="button" ng-click="controller.open('md', contactObj, '/detailContactModal.html')" class="btn btn-sm btn-toolbar">
                             <em class="fa fa-search"></em>
