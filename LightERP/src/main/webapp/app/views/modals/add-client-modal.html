@@ -129,8 +129,10 @@
                                         <div class="form-group">
                                             <label>Teléfono #1</label>
                                             <div class="controls">
-                                                <input type="tel" name="phoneNumber1" ng-model="parentController.phoneNumber1"
-                                                        class="form-control" ui-mask="9999-9999"/>
+                                                <input type="tel" ng-maxlength="20" name="phoneNumber1" ng-model="parentController.phoneNumber1"
+                                                        class="form-control"/>
+                                                <span ng-show="formStep2.$submitted &amp;&amp; formStep2.phoneNumber1.$error.maxlength"
+                                                      class="text-danger">Este campo debería ser máximo de 20 dígitos</span>
                                             </div>
                                         </div>
                                     </div>
@@ -138,8 +140,10 @@
                                         <div class="form-group">
                                             <label>Teléfono #2</label>
                                             <div class="controls">
-                                                <input type="tel" name="phoneNumber2" ng-model="parentController.phoneNumber2"
-                                                       class="form-control" ui-mask="9999-9999"/>
+                                                <input type="tel" ng-maxlength="20" name="phoneNumber2" ng-model="parentController.phoneNumber2"
+                                                       class="form-control"/>
+                                                <span ng-show="formStep2.$submitted &amp;&amp; formStep2.phoneNumber2.$error.maxlength"
+                                                      class="text-danger">Este campo debería ser máximo de 20 dígitos</span>
                                             </div>
                                         </div>
                                     </div>
