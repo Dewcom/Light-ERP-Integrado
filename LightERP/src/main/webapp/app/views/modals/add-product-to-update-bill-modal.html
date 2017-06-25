@@ -66,13 +66,16 @@
                     <div class="panel-body col-lg-3">
                         <div class="form-group">
                             <label class="control-label">Nombre comercial</label>
-                            <input tabindex="3" type="text" name="productCommercialName" ng-model="modalCtrl.selectedProduct.commercialName"
+                            <input tabindex="3" type="text" name="productCommercialName"
+                                   ng-model="modalCtrl.selectedProduct.commercialName"
                                    class="form-control" disabled="true"/>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Precio</label>
-                            <input tabindex="7" type="text" name="priceInDollars" ng-value="modalCtrl.selectedProduct.priceInColones | currency : '₡' : 2"
-                                   class="form-control" disabled="true"/>
+                            <input tabindex="7" type="text" name="price" class="form-control"
+                                   ng-model="modalCtrl.selectedProduct.priceInColones"
+                                   ng-disabled="modalCtrl.selectedProduct.productCode == null"
+                                   ng-change="adjustDollarPrice()"/>
                         </div>
                         <div class="form-group" ng-show="modalCtrl.selectedProduct">
                             <label class="control-label">Impuestos</label>
@@ -91,7 +94,7 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label">Precio en dólares</label>
-                            <input tabindex="8" type="text" name="priceInColones" ng-value="modalCtrl.selectedProduct.calcDollarPrice | currency : '$' : 2"
+                            <input tabindex="8" type="text" name="calcDollarPrice" ng-value="modalCtrl.selectedProduct.calcDollarPrice | currency : '$' : 2"
                                    class="form-control" disabled="true"/>
                         </div>
                     </div>

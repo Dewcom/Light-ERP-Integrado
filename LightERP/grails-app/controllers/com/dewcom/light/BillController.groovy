@@ -174,8 +174,8 @@ class BillController extends RestController {
         UpdateBillRequestREST tmpUpdateBillRequest = new UpdateBillRequestREST(request.JSON);
         //path variable
         tmpUpdateBillRequest.billId = params.long('billId')
-        log.error request.JSON
-        log.error tmpUpdateBillRequest.billId
+        log.info request.JSON
+        log.info tmpUpdateBillRequest.billId
         try {
                 billService.updateBill(tmpUpdateBillRequest);
                 tmpResponse.message = messageSource.getMessage("update.bill.success", null, Locale.default)

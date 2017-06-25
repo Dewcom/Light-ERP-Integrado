@@ -210,7 +210,7 @@ class BillService {
                     tmpBillToUpdate.totalTaxAmount = calculateBillAmount(tmpBillToUpdate, Constants.FACTURA_TOTAL_IMPUESTOS)
                     tmpBillToUpdate.totalDiscount = calculateBillAmount(tmpBillToUpdate, Constants.FACTURA_TOTAL_DESCUENTOS)
                 }
-                tmpBillToUpdate.save(flush: true);
+                tmpBillToUpdate.save(flush: true, failOnError: true);
             } else {
                 throw new LightRuntimeException(messageSource.getMessage("update.bill.notFound.error", null, Locale.default));
             }

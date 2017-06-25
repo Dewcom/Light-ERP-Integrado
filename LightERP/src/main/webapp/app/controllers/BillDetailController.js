@@ -106,7 +106,7 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
     };
 
     /**=========================================================
-     * Eliminar facturas
+     * Clonar facturas
      =========================================================*/
 
     vm.cloneBill = function (billToClone) {
@@ -250,6 +250,88 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
     };
 
     /**=========================================================
+     * Validar facturas
+     =========================================================*/
+
+    vm.validateBill = function (currentBill) {
+        console.log(currentBill);
+
+        var result = billService.billCustomValidator(currentBill);
+
+        if (result.valid){
+
+            ngDialog.openConfirm({
+                template: 'validateBillModal',
+                className: 'ngdialog-theme-default',
+                closeByDocument: false,
+                closeByEscape: false
+            }).then(function (value) {
+                vm.updateBill(currentBill);
+            }, function (reason) {
+                console.log('Modal promise rejected. Reason: ', reason);
+            });
+        } else {
+            var toasterdata = {
+                type: 'warning',
+                title: 'Factura',
+                text: result.message
+            };
+
+            pop(toasterdata);
+            return false;
+        }
+
+    };
+
+    /**=========================================================
+     * Modificar facturas
+     =========================================================*/
+    vm.updateBill = function (currentBill) {
+
+        var userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
+
+        var billToUpdate = {
+            "billId" : currentBill.id,
+            "customerId": currentBill.customer.id,
+            "exchangeRate": parseFloat(currentBill.exchangeRate),
+            "billPaymentTypeId": currentBill.billPaymentType.code,
+            "creditConditionId": currentBill.creditCondition.id,
+            "currencyId": currentBill.currency.id,
+            "billStateId": APP_CONSTANTS.BILL_VALIDATED_STATE_CODE,
+            "billDate": $filter('date')(currentBill.billDate, "dd-MM-yyyy"),
+            "billDetails": formatBillDetails(currentBill.billDetails),
+            "addressId" : currentBill.address.id
+        };
+
+        console.log(billToUpdate);
+
+        billService.updateBill(billToUpdate).then(function (response) {
+            var toasterdata;
+
+            if (response.code == "0") {
+                toasterdata = {
+                    type: 'success',
+                    title: 'Factura actualizada',
+                    text: response.message
+                };
+            } else {
+                toasterdata = {
+                    type: 'warning',
+                    title: 'Factura',
+                    text: response.message
+                };
+            }
+
+            pop(toasterdata);
+            $timeout(function () {
+                $state.go("app.billingMain");
+            }, 3000);
+        }, function (error) {
+            console.log(error);
+        });
+    };
+
+    /**=========================================================
      * Make payment modal
      =========================================================*/
 
@@ -374,6 +456,31 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
             }
         }
     };
+
+    /**=========================================================
+     * Formateo de informacion de facturas
+     =========================================================*/
+
+    function formatBillDetails(list) {
+        console.log(list);
+
+        var formattedList = [];
+
+        angular.forEach(list, function (value, key) {
+
+            var item = {
+                'productId': value.productId,
+                'quantity': value.quantity,
+                'linePrice': parseFloat(value.linePrice),
+                'discountPercentage': value.discountPercentage,
+                'taxPercentage': value.taxPercentage
+            };
+            formattedList.push(item);
+        });
+
+        return formattedList;
+
+    }
 
     /**=========================================================
      * Emitir pago
@@ -537,7 +644,6 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
     }
 
     function pop(toasterdata) {
-        console.log(toasterdata);
         toaster.pop({
             type: toasterdata.type,
             title: toasterdata.title,

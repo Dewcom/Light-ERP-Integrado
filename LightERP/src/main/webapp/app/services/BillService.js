@@ -373,5 +373,43 @@ angular
             return updateBillResult;
         };
 
+        billService.billCustomValidator = function (currentBill) {
+
+            var msj = {
+                "valid":true,
+                "message": ""
+            };
+
+            if (currentBill.billDetails.length == 0){
+                return msj = {
+                    "valid":false,
+                    "message": "La factura no posee productos"
+                }
+            }
+
+            if (currentBill.address == null){
+                return msj = {
+                    "valid":false,
+                    "message": "La factura no tiene dirección"
+                }
+            }
+
+            if (currentBill.billPaymentType == null){
+                return msj = {
+                    "valid":false,
+                    "message": "La factura no tiene tipo de pago"
+                }
+            }
+
+            if (currentBill.creditCondition == null && currentBill.billPaymentType.code == APP_CONSTANTS.PAYMENT_TYPE_CREDIT_CODE ){
+                return msj = {
+                    "valid":false,
+                    "message": "La factura no tiene tipo de condición de crédito"
+                }
+            }
+
+            return msj;
+        };
+
         return billService;
     });
