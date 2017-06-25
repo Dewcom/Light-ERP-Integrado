@@ -74,10 +74,8 @@
                                                        placeholder="{{parentController.selectedIdentificationType == 2?'3101010101':'112340101'}}" required="required" class="form-control" maxlength="20"/>
                                                 <span ng-show="formStep1.$submitted &amp;&amp; formStep1.identification.$error.required"
                                                       class="text-danger">Este campo no puede ser vacío</span>
-                                                <span ng-show="formStep1.identification.$error.minlength"
-                                                      class="text-danger">Este campo no debería tener menos de {{parentController.maxMinLength()}} dígitos</span>
-                                                <span ng-show="formStep1.identification.$error.maxlength"
-                                                      class="text-danger">Este campo no debería tener más de {{parentController.maxMinLength()}} dígitos</span>
+                                                <span ng-show="formStep1.$submitted &amp;&amp; (formStep1.identification.$error.minlength || formStep1.identification.$error.maxlength)"
+                                                      class="text-danger">Este campo debería ser de {{parentController.maxMinLength()}} dígitos</span>
                                             </div>
                                         </div>
                                     </div>
@@ -151,8 +149,7 @@
                                             <div class="controls">
                                                 <input type="tel" name="mobile" ng-model="parentController.mobile" class="form-control"
                                                        ui-mask="9999-9999" />
-                                            </div>
-                                        </div>
+                                           \gv chbxΩ  </div>
                                     </div>
                                     <div class="col-md-12">
 
@@ -163,7 +160,7 @@
                                             <div class="controls">
                                                 <input type="email" name="email" ng-model="parentController.email" placeholder="cliente@empresa.com"
                                                        class="form-control" />
-                                                <span ng-show="formStep2.email.$invalid"
+                                                <span ng-show="formStep1.$submitted &amp;&amp; formStep1.email.$invalid"
                                                       class="text-danger">Correo inválido</span>
                                             </div>
                                         </div>
