@@ -6,7 +6,7 @@
                     <h3>Lista de clientes</h3>
                 </div>
                 <div class="col-md-3" ng-click="controller.open('lg')">
-                    <button type="submit" class="btn btn-labeled btn-success addButton">
+                    <button uib-tooltip="Agregar nuevo cliente" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="submit" class="btn btn-labeled btn-success addButton">
                           <span class="btn-label">
                              <em class="fa fa-plus"></em>
                           </span>Agregar
@@ -33,10 +33,10 @@
                     <td ng-if="customerObj.email == null" >**SIN CORREO**</td>
                     <td ng-if="customerObj.email != null" >{{ customerObj.email }}</td>
                     <td>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <button type="button" ui-sref="app.customerDetail({customerId: customerObj.id})" class="btn btn-sm btn-toolbar">
+                        <button uib-tooltip="Ver cliente" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ui-sref="app.customerDetail({customerId: customerObj.id})" class="btn btn-sm btn-toolbar">
                             <em class="fa fa-search"></em>
                         </button>
-                        <button type="button" ng-click="controller.disableCustomer(customerObj.id)"
+                        <button uib-tooltip="Eliminar cliente" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="controller.disableCustomer(customerObj.id)"
                                 class="btn btn-sm btn-danger">
                             <em class="fa fa-trash-o"></em>
                         </button>

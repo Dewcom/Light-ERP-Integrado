@@ -4,17 +4,17 @@
             <h3>Detalle del cliente</h3>
         </div>
         <div class="col-md-5 customButtonGroup">
-            <button type="submit" class="btn btn-labeled btn-info" ng-click="parentController.goBack()">
+            <button uib-tooltip="Regresar a la lista" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="submit" class="btn btn-labeled btn-info" ng-click="parentController.goBack()">
                 <span class="btn-label">
                     <em class="fa fa-mail-reply"></em>
                 </span>Regresar
             </button>
-            <button type="submit" class="btn btn-labeled btn-success" ng-click="parentController.updateCustomer()">
+            <button uib-tooltip="Guardar cambios" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="submit" class="btn btn-labeled btn-success" ng-click="parentController.updateCustomer()">
                 <span class="btn-label">
                     <em class="fa fa-plus"></em>
                 </span>Guardar
             </button>
-            <button type="button" class="btn btn-labeled btn-danger" ng-click="parentController.cancel()">
+            <button uib-tooltip="Cancelar cambios" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" class="btn btn-labeled btn-danger" ng-click="parentController.cancel()">
                    <span class="btn-label"><i class="fa fa-times"></i>
                    </span>Cancelar
             </button>
@@ -208,7 +208,7 @@
                                             </th>
                                             <th>
                                                 <div class="form-group">
-                                                    <button type="button" ng-click="addressTable.addAddress2Table()" class="btn btn-labeled btn-success" ng-disabled="!addressTable.address2Add.district">
+                                                    <button uib-tooltip="Agregar nueva dirección" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="addressTable.addAddress2Table()" class="btn btn-labeled btn-success" ng-disabled="!addressTable.address2Add.district">
                                                                     <span class="btn-label"><em class="fa fa-plus"></em>
                                                                     </span>Agregar
                                                     </button>
@@ -230,7 +230,7 @@
                                             <td>{{ address.district.name }}</td>
                                             <td>{{ address.address }}</td>
                                             <td>
-                                                <button type="button" ng-click="addressTable.removeTmpAddress($index)" class="btn btn-sm btn-danger">
+                                                <button uib-tooltip="Eliminar" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="addressTable.removeTmpAddress($index)" class="btn btn-sm btn-danger">
                                                     <em class="fa fa-trash-o"></em>
                                                 </button>
                                             </td>
@@ -279,7 +279,7 @@
                             <h4>El cliente no posee contactos</h4>
                         </div>
                         <div class="col-lg-2 mt">
-                            <button ng-show="currentBill.billNumber == null" type="button"
+                            <button uib-tooltip="Agregar nuevo contacto" uib-tooltip-trigger="focus" uib-tooltip-placement="top" ng-show="currentBill.billNumber == null" type="button"
                                     ng-click="controller.disableBill(currentBill.id)"
                                     class="btn btn-labeled btn-success pull-right">
                                       <span class="btn-label">
@@ -306,7 +306,7 @@
                                     </ul>
                                 </div>
                                 <div class="panel-footer clearfix">
-                                    <button type="button" ng-click=""
+                                    <button uib-tooltip="Enviar correo" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click=""
                                             class="btn btn-sm btn-primary  pull-left">
                                         <em class="fa fa-envelope"></em>
                                     </button>
@@ -314,11 +314,11 @@
                                     </div>-->
 
                                     <td>
-                                        <button type="button" ng-click="contactController.disableContact(customerContact.id)"
+                                        <button uib-tooltip="Eliminar" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="contactController.disableContact(customerContact.id)"
                                                 class="btn btn-sm btn-danger  pull-right">
                                             <em class="fa fa-trash-o"></em>
                                         </button>
-                                        <button type="button" ng-click="contactController.open('md', customerContact, '/editContactModal.html')" class="btn btn-sm btn-toolbar pull-right">
+                                        <button uib-tooltip="Ver contacto" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="contactController.open('md', customerContact, '/editContactModal.html')" class="btn btn-sm btn-toolbar pull-right">
                                             <em class="fa fa-search"></em>
                                         </button>
 

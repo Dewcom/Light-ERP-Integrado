@@ -10,45 +10,45 @@
                 <div class="mb">
                     <hr class="hidden-print"/>
                     <div class="clearfix">
-                        <button type="button" ng-click="controller.toPDF(currentBill)" class="btn btn-labeled btn-info pull-left">
+                        <button uib-tooltip="Imprimir factura" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="controller.toPDF(currentBill)" class="btn btn-labeled btn-info pull-left">
                           <span class="btn-label">
                              <em class="fa fa-print"></em>
                           </span>Imprimir
                         </button>
-                        <button type="button" ng-click="controller.cloneBill(currentBill)"
+                        <button uib-tooltip="Clonar factura" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="controller.cloneBill(currentBill)"
                                 class="btn btn-labeled btn-info pull-left ml">
                           <span class="btn-label">
                              <em class="fa fa-copy"></em>
                           </span>Clonar
                         </button>
-                        <button type="button" ng-click="controller.goBack()"
+                        <button uib-tooltip="Regresar a la lista" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="controller.goBack()"
                                 class="btn btn-labeled btn-info pull-left ml">
                           <span class="btn-label">
                              <em class="fa fa-mail-reply"></em>
                           </span>Regresar
                         </button>
-                        <button ng-show="currentBill.billNumber == null" type="button"
+                        <button uib-tooltip="Eliminar factura" uib-tooltip-trigger="focus" uib-tooltip-placement="top" ng-show="currentBill.billNumber == null" type="button"
                                 ng-click="controller.disableBill(currentBill.id)"
                                 class="btn btn-labeled btn-danger pull-right">
                           <span class="btn-label">
                              <em class="fa fa-times"></em>
                           </span>Eliminar
                         </button>
-                        <button ng-show="currentBill.billNumber == null" type="button"
+                        <button uib-tooltip="Modificar factura" uib-tooltip-trigger="focus" uib-tooltip-placement="top" ng-show="currentBill.billNumber == null" type="button"
                                 ui-sref="app.updateBill({billId: currentBill.id})"
                                 class="btn btn-labeled btn-warning pull-right mr">
-                          <span class="btn-label">
+                          <span  class="btn-label">
                              <em class="fa fa-pencil"></em>
                           </span>Modificar
                         </button>
-                        <button ng-show="currentBill.billNumber == null" type="button"
+                        <button uib-tooltip="Validar factura" uib-tooltip-trigger="focus" uib-tooltip-placement="top" ng-show="currentBill.billNumber == null" type="button"
                                 class="btn btn-labeled btn-success pull-right mr"
                                 ng-click="controller.validateBill(currentBill)">
                           <span class="btn-label">
                              <em class="fa fa-check-circle"></em>
                           </span>Validar
                         </button>
-                        <button ng-show="currentBill.billState.code == globalConstants.BILL_VALIDATED_STATE_CODE" type="button"
+                        <button uib-tooltip="Anular factura" uib-tooltip-trigger="focus" uib-tooltip-placement="top" ng-show="currentBill.billState.code == globalConstants.BILL_VALIDATED_STATE_CODE" type="button"
                                 ng-click="controller.voidBill(currentBill)"
                                 class="btn btn-labeled btn-danger pull-right">
                           <span class="btn-label">
@@ -195,7 +195,7 @@
                                     <h3>Pagos</h3>
                                 </div>
                                 <div ng-click="controller.open('lg')" class="pull-right" ng-show="currentBill.billState.code != globalConstants.BILL_PAID_STATE_CODE">
-                                    <button ng-show="currentBill.billState.code == globalConstants.BILL_VALIDATED_STATE_CODE || currentBill.billState.code == globalConstants.BILL_PARTIALLY_PAID_STATE_CODE" type="button"
+                                    <button uib-tooltip="Realizar un pago" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  ng-show="currentBill.billState.code == globalConstants.BILL_VALIDATED_STATE_CODE || currentBill.billState.code == globalConstants.BILL_PARTIALLY_PAID_STATE_CODE" type="button"
                                             ng-click="controller.openPaymentModal(currentBill)"
                                             class="btn btn-labeled btn-success">
                                           <span class="btn-label">
@@ -256,10 +256,10 @@
                                     <td ng-if="paymentObj.observation == null">**SIN OBSERVACIONES**</td>
                                     <td ng-if="paymentObj.observation != null">{{ paymentObj.observation }}</td>
                                     <td ng-show="currentBill.billState.code != 4">
-                                        <button type="button" ng-click="controller.openUpdatePaymentModal(paymentObj)" class="btn btn-sm btn-toolbar">
+                                        <button uib-tooltip="Ver pago" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="controller.openUpdatePaymentModal(paymentObj)" class="btn btn-sm btn-toolbar">
                                             <em class="fa fa-search"></em>
                                         </button>
-                                        <button type="button" ng-click="controller.deletePayment(paymentObj.id)"
+                                        <button uib-tooltip="Eliminar" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="controller.deletePayment(paymentObj.id)"
                                                 class="btn btn-sm btn-danger">
                                             <em class="fa fa-trash-o"></em>
                                         </button >

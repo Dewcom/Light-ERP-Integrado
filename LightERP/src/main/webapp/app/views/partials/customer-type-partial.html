@@ -14,7 +14,7 @@
                 <tr ng-repeat="customerType in adminConfigData.customerTypes">
                     <td class="text-center">{{ customerType.name }}</td>
                     <td class="text-center">
-                        <button type="button" ng-click="adminConfigData.disableCustomerType(customerType.id)" class="btn btn-sm btn-danger">
+                        <button uib-tooltip="Eliminar" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="adminConfigData.disableCustomerType(customerType.id)" class="btn btn-sm btn-danger">
                             <em class="fa fa-trash-o"></em>
                         </button>
                     </td>

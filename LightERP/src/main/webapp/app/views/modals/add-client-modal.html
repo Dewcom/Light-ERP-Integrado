@@ -260,7 +260,7 @@
                                                         </th>
                                                         <th>
                                                             <div class="form-group">
-                                                                <button type="button" ng-click="addressTable.addAddress2Table()" class="btn btn-labeled btn-success" ng-disabled="!addressTable.address2Add.district">
+                                                                <button uib-tooltip="Agregar nueva dirección" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="addressTable.addAddress2Table()" class="btn btn-labeled btn-success" ng-disabled="!addressTable.address2Add.district">
                                                                     <span class="btn-label"><em class="fa fa-plus" ></em>
                                                                     </span>Agregar
                                                                 </button>
@@ -566,8 +566,8 @@
                                         <!-- END panel-->
                                         <div>
                                             <p class="text-right">
-                                                <button type="button" ng-click="parentController.addCustomer()" class="btn btn-success btn-lg">Agregar</button>
-                                                <button type="button" ng-click="cancel()" class="btn btn-danger btn-lg">Cancelar</button>
+                                                <button uib-tooltip="Crear cliente" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="parentController.addCustomer()" class="btn btn-success btn-lg">Agregar</button>
+                                                <button uib-tooltip="Cancelar creación" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="cancel()" class="btn btn-danger btn-lg">Cancelar</button>
                                             </p>
                                         </div>
                                     </div>
