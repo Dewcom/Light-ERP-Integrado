@@ -230,13 +230,13 @@
              * Datatable productos agregados
              =========================================================*/
 
-            vm.dtOptionsAddedProductos = DTOptionsBuilder.newOptions()
+            vm.dtOptionsAddedProducts = DTOptionsBuilder.newOptions()
                 .withOption('bFilter', false)
                 .withOption('bInfo', false)
                 .withOption('bPaginate', false)
                 .withOption('bLengthChange', false)
                 .withLanguage(language);
-            vm.dtColumnDefsAddedProductos = [
+            vm.dtColumnDefsAddedProducts = [
                 DTColumnDefBuilder.newColumnDef(0),
                 DTColumnDefBuilder.newColumnDef(1),
                 DTColumnDefBuilder.newColumnDef(2),
@@ -245,7 +245,7 @@
             ];
 
             /**=========================================================
-             * Datatable productos agregados
+             * Datatable facturas
              =========================================================*/
 
             vm.dtOptionsBills = DTOptionsBuilder.newOptions()

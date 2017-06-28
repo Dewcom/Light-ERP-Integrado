@@ -4,13 +4,38 @@ angular
     .module('app.bill')
     .controller('UpdateBillController', UpdateBillController);
 
-UpdateBillController.$inject = ['$http', '$state', '$stateParams', '$scope', 'billService', '$timeout', 'ngDialog', 'toaster',
+UpdateBillController.$inject = ['DTOptionsBuilder', 'DTColumnDefBuilder', '$http', '$state', '$stateParams', '$scope', 'billService', '$timeout', 'ngDialog', 'toaster',
     'customerService', 'productService', 'productTypeService', 'presentationTypeService', '$filter', '$uibModal', 'APP_CONSTANTS'];
-function UpdateBillController($http, $state, $stateParams, $scope, billService, $timeout, ngDialog, toaster, customerService,
+function UpdateBillController(DTOptionsBuilder, DTColumnDefBuilder, $http, $state, $stateParams, $scope, billService, $timeout, ngDialog, toaster, customerService,
                               productService, productTypeService, presentationTypeService, $filter, $uibModal, APP_CONSTANTS) {
 
     var vm = this;
     $scope.globalConstants = APP_CONSTANTS;
+
+    var language = {
+        "sProcessing": "Procesando...",
+        "sLengthMenu": "Mostrar _MENU_ registros",
+        "sZeroRecords": "",
+        "sEmptyTable": "Ningún dato disponible en esta tabla",
+        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+        "sInfoPostFix": "",
+        "sSearch": "Buscar:",
+        "sUrl": "",
+        "sInfoThousands": ",",
+        "sLoadingRecords": "Cargando...",
+        "oPaginate": {
+            "sFirst": "Primero",
+            "sLast": "Último",
+            "sNext": "Siguiente",
+            "sPrevious": "Anterior"
+        },
+        "oAria": {
+            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+        }
+    };
 
     init();
 
@@ -172,6 +197,24 @@ function UpdateBillController($http, $state, $stateParams, $scope, billService, 
 
             vm.dollarExchangeRateFromDB = rate[0].value;
         });
+
+        /**=========================================================
+         * Datatable productos agregados
+         =========================================================*/
+
+        vm.dtOptionsAddedProducts = DTOptionsBuilder.newOptions()
+            .withOption('bFilter', false)
+            .withOption('bInfo', false)
+            .withOption('bPaginate', false)
+            .withOption('bLengthChange', false)
+            .withLanguage(language);
+        vm.dtColumnDefsAddedProducts = [
+            DTColumnDefBuilder.newColumnDef(0),
+            DTColumnDefBuilder.newColumnDef(1),
+            DTColumnDefBuilder.newColumnDef(2),
+            DTColumnDefBuilder.newColumnDef(3).notSortable()
+
+        ];
     }
 
     //REGRESA A LA PANTALLA DE DETALLE DE FACTURAS
