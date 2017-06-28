@@ -3,28 +3,31 @@
         <div class="col-md-7">
             <h3>Detalle del cliente</h3>
         </div>
-        <div class="col-md-5 customButtonGroup">
-            <button uib-tooltip="Regresar a la lista" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="submit" class="btn btn-labeled btn-info" ng-click="parentController.goBack()">
-                <span class="btn-label">
-                    <em class="fa fa-mail-reply"></em>
-                </span>Regresar
-            </button>
-            <button uib-tooltip="Guardar cambios" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="submit" class="btn btn-labeled btn-success" ng-click="parentController.updateCustomer()">
-                <span class="btn-label">
-                    <em class="fa fa-plus"></em>
-                </span>Guardar
-            </button>
-            <button uib-tooltip="Cancelar cambios" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" class="btn btn-labeled btn-danger" ng-click="parentController.cancel()">
-                   <span class="btn-label"><i class="fa fa-times"></i>
-                   </span>Cancelar
-            </button>
-        </div>
     </div>
     <form class="panel">
         <uib-tabset justified="true">
-            <uib-tab>
+            <uib-tab heading="INFORMACION">
                 <form name="customerForm.formValidate" ng-submit="form.submitForm()" novalidate="" class="form-validate form-horizontal">
-                    <uib-tab-heading>Información</uib-tab-heading>
+                    <div class="mb">
+                        <hr class="hidden-print"/>
+                        <div class="clearfix">
+                            <button uib-tooltip="Regresar a la lista" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" class="btn btn-labeled btn-info pull-right ml" ng-click="parentController.goBack()">
+                                <span class="btn-label">
+                                    <em class="fa fa-mail-reply"></em>
+                                </span>Regresar
+                            </button>
+                            <button uib-tooltip="Guardar cambios" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="submit" class="btn btn-labeled btn-success pull-right ml" ng-click="parentController.updateCustomer()">
+                                <span class="btn-label">
+                                    <em class="fa fa-plus"></em>
+                                </span>Guardar
+                            </button>
+                            <button uib-tooltip="Cancelar cambios" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" class="btn btn-labeled btn-danger pull-right" ng-click="parentController.cancel()">
+                                <span class="btn-label">
+                                   <em class="fa fa-plus"></em>
+                                </span>Cancelar
+                            </button>
+                        </div>
+                    </div>
                     <div>
                         <fieldset>
                             <legend>Cliente</legend>
@@ -268,8 +271,8 @@
                     </div>
                 </form>
             </uib-tab>
-            <uib-tab>
-                <uib-tab-heading>CONTACTOS</uib-tab-heading>
+            <uib-tab heading="CONTACTOS">
+                <hr class="hidden-print"/>
                 <div ng-if="parentController.customerContacts.length == 0">
                     <div class="row col-lg-12 col-xs-6 pv">
                         <div class="col-lg-2">
@@ -279,12 +282,13 @@
                             <h4>El cliente no posee contactos</h4>
                         </div>
                         <div class="col-lg-2 mt">
-                            <button uib-tooltip="Agregar nuevo contacto" uib-tooltip-trigger="focus" uib-tooltip-placement="top" ng-show="currentBill.billNumber == null" type="button"
-                                    ng-click="controller.disableBill(currentBill.id)"
-                                    class="btn btn-labeled btn-success pull-right">
-                                      <span class="btn-label">
-                                         <em class="fa fa-plus"></em>
-                                      </span>Agregar
+                            <button uib-tooltip="Agregar nuevo contacto" uib-tooltip-trigger="focus" uib-tooltip-placement="top"
+                                ng-show="currentBill.billNumber == null" type="button"
+                                ng-click="controller.disableBill(currentBill.id)"
+                                class="btn btn-labeled btn-success pull-right">
+                                    <span class="btn-label">
+                                     <em class="fa fa-plus"></em>
+                                    </span>Agregar
                             </button>
                         </div>
                     </div>
