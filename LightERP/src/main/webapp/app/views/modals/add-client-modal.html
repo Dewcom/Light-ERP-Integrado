@@ -152,7 +152,9 @@
                                             <label>Teléfono Móvil</label>
                                             <div class="controls">
                                                 <input type="tel" name="mobile" ng-model="parentController.mobile" class="form-control"
-                                                       ui-mask="9999-9999" />
+                                                       ng-maxlength="20" />
+                                                <span ng-show="formStep2.$submitted &amp;&amp; formStep2.mobile.$error.maxlength"
+                                                      class="text-danger">Este campo debería ser máximo de 20 dígitos</span>
                                             </div>
                                         </div>
                                     </div>
@@ -258,7 +260,7 @@
                                                         </th>
                                                         <th>
                                                             <div class="form-group">
-                                                                <button type="button" ng-click="addressTable.addAddress2Table()" class="btn btn-labeled btn-success" ng-disabled="!addressTable.address2Add.district">
+                                                                <button uib-tooltip="Agregar nueva dirección" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="addressTable.addAddress2Table()" class="btn btn-labeled btn-success" ng-disabled="!addressTable.address2Add.district">
                                                                     <span class="btn-label"><em class="fa fa-plus" ></em>
                                                                     </span>Agregar
                                                                 </button>
@@ -318,6 +320,10 @@
                                             <div class="controls">
                                                 <input type="number" name="creditLimit" ng-model="parentController.creditLimit"
                                                        placeholder="₡" class="form-control" min="0"/>
+                                                <span ng-show="formStep4.$submitted &amp;&amp; formStep4.creditLimit.$error.min"
+                                                      class="text-danger">El número no puede ser negativo</span>
+                                                <span ng-show="formStep4.$submitted &amp;&amp; formStep4.creditLimit.$error.number"
+                                                      class="text-danger">No se admiten letras</span>
                                             </div>
                                         </div>
                                     </div>
@@ -327,6 +333,12 @@
                                             <div class="controls">
                                                 <input type="number" name="discountPorcentage" ng-model="parentController.discountPercentage"
                                                        placeholder="%" class="form-control" min="0" max="99"/>
+                                                <span ng-show="formStep4.$submitted &amp;&amp; formStep4.discountPorcentage.$error.min"
+                                                class="text-danger">El número no puede ser negativo</span>
+                                                <span ng-show="formStep4.$submitted &amp;&amp; formStep4.discountPorcentage.$error.number"
+                                                      class="text-danger">No se admiten letras</span>
+                                                <span ng-show="formStep4.$submitted &amp;&amp; formStep4.discountPorcentage.$error.max"
+                                                      class="text-danger">El número no puede ser mayor a 99</span>
                                             </div>
                                         </div>
                                     </div>
@@ -418,7 +430,7 @@
                                                             <label>Teléfono</label>
                                                             <div class="controls">
                                                                 <input type="text" name="contactPhoneNumber1" ng-model="parentController.contactPhoneNumber1"
-                                                                       ui-mask="9999-9999" required="required" class="form-control" />
+                                                                        required="required" class="form-control" />
                                                                 <span ng-show="formStep5.$submitted &amp;&amp; formStep5.contactPhoneNumber1.$invalid"
                                                                       class="text-danger">Este campo es inválido</span>
                                                             </div>
@@ -438,7 +450,7 @@
                                                             <label>Teléfono móvil</label>
                                                             <div class="controls">
                                                                 <input type="text" name="contactMobile1" ng-model="parentController.contactMobile1"
-                                                                       ui-mask="9999-9999" required="required" class="form-control" />
+                                                                        required="required" class="form-control" />
                                                                 <span ng-show="formStep5.$submitted &amp;&amp; formStep5.contactMobile1.$invalid"
                                                                       class="text-danger">Este campo es inválido</span>
                                                             </div>
@@ -517,7 +529,7 @@
                                                             <label>Teléfono</label>
                                                             <div class="controls">
                                                                 <input type="text" name="contactPhoneNumber2" ng-model="parentController.contactPhoneNumber2"
-                                                                       ui-mask="9999-9999" class="form-control" />
+                                                                        class="form-control" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -535,7 +547,7 @@
                                                             <label>Teléfono móvil</label>
                                                             <div class="controls">
                                                                 <input type="text" name="contactMobile2" ng-model="parentController.contactMobile2"
-                                                                       ui-mask="9999-9999" class="form-control" />
+                                                                       class="form-control" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -554,8 +566,8 @@
                                         <!-- END panel-->
                                         <div>
                                             <p class="text-right">
-                                                <button type="button" ng-click="parentController.addCustomer()" class="btn btn-success btn-lg">Agregar</button>
-                                                <button type="button" ng-click="cancel()" class="btn btn-danger btn-lg">Cancelar</button>
+                                                <button uib-tooltip="Crear cliente" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="parentController.addCustomer()" class="btn btn-success btn-lg">Agregar</button>
+                                                <button uib-tooltip="Cancelar creación" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="cancel()" class="btn btn-danger btn-lg">Cancelar</button>
                                             </p>
                                         </div>
                                     </div>

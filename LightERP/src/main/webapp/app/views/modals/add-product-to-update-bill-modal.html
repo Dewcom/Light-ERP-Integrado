@@ -101,8 +101,8 @@
                     <div class="panel-footer">
                         <div class="clearfix">
                             <div class="pull-right">
-                                <button ng-disabled="modalCtrl.addProductToBillForm.$pristine || modalCtrl.addProductToBillForm.$invalid" type="submit" ng-click="ok()" class="btn btn-success btn-lg">Agregar</button>
-                                <button type="button" ng-click="cancel()" class="btn btn-danger btn-lg">Cancelar</button>
+                                <button uib-tooltip="Agregar producto" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  ng-disabled="modalCtrl.addProductToBillForm.$pristine || modalCtrl.addProductToBillForm.$invalid" type="submit" ng-click="ok()" class="btn btn-success btn-lg">Agregar</button>
+                                <button uib-tooltip="Cancelar" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="cancel()" class="btn btn-danger btn-lg">Cancelar</button>
                             </div>
                         </div>
                     </div>

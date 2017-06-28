@@ -7,7 +7,7 @@
     <div class="mb">
         <hr class="hidden-print"/>
         <div class="clearfix">
-            <button type="button" ng-click="controller.goBack()" class="btn btn-labeled btn-info pull-right">
+            <button uib-tooltip="Regresar a la lista" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="controller.goBack()" class="btn btn-labeled btn-info pull-right">
                 <span class="btn-label"> <em class="fa fa-mail-reply"></em></span>Regresar
             </button>
         </div>
@@ -19,7 +19,7 @@
                     <div class="panel-body">
                         <div class="pull-left text-bold text-dark col-md-6">FECHA</div>
                         <div class="pull-right col-md-6">
-                            <button type="button" ng-click="controller.open($event)" class="btn btn-default">
+                            <button uib-tooltip="Calendario" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="controller.open($event)" class="btn btn-default">
                                 <em class="fa fa-calendar"></em>
                             </button>
                         </div>
@@ -227,7 +227,7 @@
                                 </div>
                                 <div class="pt clearfix">
                                     <div class="pull-left">
-                                        <button type="button" ng-click="chk.step2 = true" class="btn btn-primary">
+                                        <button uib-tooltip="Expandir siguiente sección" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="chk.step2 = true" class="btn btn-primary">
                                             Siguiente
                                         </button>
                                     </div>
@@ -286,7 +286,7 @@
                                 </div>
                                 <div class="pt clearfix">
                                     <div class="pull-left">
-                                        <button type="button" ng-click="chk.step3 = true" class="btn btn-primary">
+                                        <button uib-tooltip="Expandir siguiente sección" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="chk.step3 = true" class="btn btn-primary">
                                             Siguiente
                                         </button>
                                     </div>
@@ -300,7 +300,7 @@
                                 <h4>Productos</h4>
                                 <div class="col-lg-12">
                                     <div class="pull-right">
-                                        <button type="button" ng-click="controller.openAddProductModal()"
+                                        <button uib-tooltip="Agregar nuevo producto" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="controller.openAddProductModal()"
                                                 class="btn btn-labeled btn-success addButton">
                                           <span class="btn-label">
                                              <em class="fa fa-plus"></em>
@@ -336,7 +336,7 @@
                                         <td ng-if="controller.currency == globalConstants.CURRENCY_COLONES_CODE">{{ addedProductObj.subtotal | currency : "₡" : 2 }}</td>
                                         <td ng-if="controller.currency == globalConstants.CURRENCY_DOLLARS_CODE">{{ addedProductObj.subtotal | currency : "$" : 2 }}</td>
                                         <td>
-                                            <button type="button" ng-click="controller.removeProduct($index)"
+                                            <button uib-tooltip="Eliminar" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="controller.removeProduct($index)"
                                                     class="btn btn-sm btn-danger">
                                                 <em class="fa fa-trash-o"></em>
                                             </button>

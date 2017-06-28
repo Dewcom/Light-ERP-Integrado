@@ -62,7 +62,8 @@ class JSONMapper {
         tmpRestObject.registrationDate = pContact.registrationDate
         tmpRestObject.enabled = pContact.enabled
         tmpRestObject.customerId = pContact.customer.id
-
+        tmpRestObject.customerName = pContact.customer.name
+        tmpRestObject.customerLastNames = pContact.customer.firstLastName + " " +  pContact.customer.secondLastName
         tmpRestObject
     }
 

@@ -6,7 +6,7 @@
                     <h3>Lista de productos</h3>
                 </div>
                 <div class="col-md-3" ng-click="controller.openAddModal()">
-                    <button type="submit" class="btn btn-labeled btn-success addButton">
+                    <button uib-tooltip="Agregar nuevo producto" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="submit" class="btn btn-labeled btn-success addButton">
                           <span class="btn-label">
                              <em class="fa fa-plus"></em>
                           </span>Agregar
@@ -31,10 +31,10 @@
                     <td>{{ productObj.productType.name }}</td>
                     <td>{{ productObj.presentationType.name }}</td>
                     <td>
-                        <button type="button" ng-click="controller.openUpdateModal(productObj)" class="btn btn-sm btn-toolbar">
+                        <button uib-tooltip="Ver producto" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="controller.openUpdateModal(productObj)" class="btn btn-sm btn-toolbar">
                             <em class="fa fa-search"></em>
                         </button>
-                        <button type="button" ng-click="controller.disableProduct(productObj.id)"
+                        <button uib-tooltip="Eliminar" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="controller.disableProduct(productObj.id)"
                                 class="btn btn-sm btn-danger">
                             <em class="fa fa-trash-o"></em>
                         </button>
@@ -50,7 +50,7 @@
             <h3>Eliminar producto</h3>
             <p>¿Está seguro que desea eliminar el producto?</p>
             <div>
-                <button type="button" ng-click="confirm(confirmValue)" class="btn btn-primary mr">Confirmar</button>
+                <button  type="button" ng-click="confirm(confirmValue)" class="btn btn-primary mr">Confirmar</button>
                 <button type="button" ng-click="closeThisDialog('button')" class="btn btn-default">Cancelar</button>
             </div>
         </div>

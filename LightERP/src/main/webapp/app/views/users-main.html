@@ -8,7 +8,7 @@
                     <h3>Lista de usuarios</h3>
                 </div>
                 <div class="col-md-3" ng-click="controller.openAddModal()">
-                    <button type="submit" class="btn btn-labeled btn-success addButton">
+                    <button uib-tooltip="Agregar nuevo usuario" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="submit" class="btn btn-labeled btn-success addButton">
                           <span class="btn-label">
                              <em class="fa fa-plus"></em>
                           </span>Agregar
@@ -40,10 +40,10 @@
                         <td ng-if="userObj.mobile == null" >**SIN CELULAR**</td>
                         <td ng-if="userObj.mobile != null" >{{ userObj.mobile }}</td>
                         <td>
-                            <button type="button" ng-click="controller.openUpdateModal(userObj)" class="btn btn-sm btn-toolbar">
+                            <button uib-tooltip="Ver usuario" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="controller.openUpdateModal(userObj)" class="btn btn-sm btn-toolbar">
                                 <em class="fa fa-search"></em>
                             </button>
-                            <button type="button" ng-click="controller.disableUser(userObj.id)"
+                            <button uib-tooltip="Eliminar usuario" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="controller.disableUser(userObj.id)"
                                     class="btn btn-sm btn-danger">
                                 <em class="fa fa-trash-o"></em>
                             </button>
