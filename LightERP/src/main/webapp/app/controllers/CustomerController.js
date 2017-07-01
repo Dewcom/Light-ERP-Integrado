@@ -93,10 +93,10 @@
             vm.maxMinLength = function(){
                 switch(vm.selectedIdentificationType) {
                     case vm.globalConstants.CUSTOMER_IDENT_TYPE_PHYSICAL:
-                        return 9
+                        return 9;
                         break;
                     case vm.globalConstants.CUSTOMER_IDENT_TYPE_JURIDICAL:
-                        return 10
+                        return 10;
                         break;
                     case vm.globalConstants.CUSTOMER_IDENT_TYPE_PASSPORT:
                         return 19
@@ -106,6 +106,19 @@
                 }
             }
         }
+
+        /**=========================================================
+         * Resetea los apellidos
+         =========================================================*/
+
+        vm.resetNames = function () {
+
+            if(vm.selectedIdentificationType == APP_CONSTANTS.CUSTOMER_IDENT_TYPE_JURIDICAL){
+                vm.firstLastName = null;
+                vm.secondLastName = null;
+            }
+
+        };
 
         /**=========================================================
          * Eliminar clientes
@@ -191,7 +204,8 @@
                 ]
             };
             console.log(newCustomer);
-            customerService.addCustomer(newCustomer).then(function (response) {
+
+            /*customerService.addCustomer(newCustomer).then(function (response) {
                 var toasterdata;
 
                 if (response.code == "0") {
@@ -214,7 +228,7 @@
                 }, 3000);
             }, function (error) {
                 console.log(error);
-            });
+            });*/
 
             //Se formatea la direccion para enviar al BE
             function formatAddreses() {

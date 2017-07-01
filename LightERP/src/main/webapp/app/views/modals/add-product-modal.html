@@ -7,7 +7,7 @@
             </div>
             <form name="modalCtrl.productForm" ng-submit="modalCtrl.submitForm('add')" novalidate="" class="form-validate">
                 <!-- START panel-->
-                <div class="panel panel-default">
+                <div class="panel panel-default col-lg-12">
                     <div class="panel-body col-lg-4">
                         <div class="form-group">
                             <label class="control-label">Código</label>
@@ -15,23 +15,32 @@
                             <span ng-show="modalCtrl.validateInput('add', 'productCode', 'required')" class="text-danger">Este campo es requerido</span>
                         </div>
                         <div class="form-group">
-                            <label class="control-label">Nombre</label>
-                            <input tabindex="4" type="text" name="productName" required="" ng-model="addProductForm.productName" class="form-control"/>
-                            <span ng-show="modalCtrl.validateInput('add', 'productName', 'required')" class="text-danger">Este campo es requerido</span>
-
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Nombre comercial</label>
-                            <input tabindex="7" type="text" name="productCommercialName" ng-model="addProductForm.productCommercialName"
-                                   class="form-control"/>
-                        </div>
-                        <div class="form-group">
                             <label class="control-label">Tipo de producto</label>
-                            <select tabindex="10" name="productType" ng-model="addProductForm.productType"
+                            <select tabindex="4" name="productType" ng-model="addProductForm.productType"
                                     ng-options="item.id as item.name for item in modalCtrl.productTypeList"
                                     class="form-control" required="">
                             </select>
                             <span ng-show="modalCtrl.validateInput('add', 'productType', 'required')" class="text-danger">Este campo es requerido</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Precio</label>
+                            <input tabindex="8" type="text" name="price" ng-model="addProductForm.price" ng-pattern="/^[0-9.,]+$/"
+                                   class="form-control" required=""/>
+                            <span ng-show="modalCtrl.validateInput('add', 'price', 'required')" class="text-danger">Este campo es requerido</span>
+                            <span ng-show="modalCtrl.validateInput('add', 'price', 'pattern')" class="text-danger">Solamente números permitidos</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Utilidad</label>
+                            <input tabindex="9" type="number" name="utilityPercentage" ng-model="addProductForm.utilityPercentage" ng-pattern="/^[0-9.,]+$/"
+                                   class="form-control" min="0"/>
+                            <span ng-show="modalCtrl.validateInput('add', 'utilityPercentage', 'pattern')" class="text-danger">Solamente números permitidos</span>
+                        </div>
+                    </div>
+                    <div class="panel-body col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label">Nombre</label>
+                            <input tabindex="4" type="text" name="productName" required="" ng-model="addProductForm.productName" class="form-control"/>
+                            <span ng-show="modalCtrl.validateInput('add', 'productName', 'required')" class="text-danger">Este campo es requerido</span>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Tipo de presentación</label>
@@ -41,8 +50,24 @@
                             </select>
                             <span ng-show="modalCtrl.validateInput('add', 'presentationType', 'required')" class="text-danger">Este campo es requerido</span>
                         </div>
+                        <div class="form-group">
+                            <label class="control-label">Costo</label>
+                            <input tabindex="13" type="text" name="cost" ng-model="addProductForm.cost" ng-pattern="/^[0-9.,]+$/"
+                                   class="form-control" />
+                            <span ng-show="modalCtrl.validateInput('add', 'cost', 'pattern')" class="text-danger">Solamente números permitidos</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Partida arancelaria</label>
+                            <input tabindex="6" type="text" name="tariffHeading" ng-model="addProductForm.tariffHeading" class="form-control"/>
+                        </div>
                     </div>
                     <div class="panel-body col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label">Nombre comercial</label>
+                            <input tabindex="7" type="text" name="productCommercialName" ng-model="addProductForm.productCommercialName"
+                                   class="form-control"/>
+                            <span ng-show="modalCtrl.validateInput('add', 'productCommercialName', 'required')" class="text-danger">Este campo es requerido</span>
+                        </div>
                         <div class="form-group">
                             <label class="control-label">Cantidad por bulto</label>
                             <input tabindex="2" type="text" name="bulkQuantity" ng-model="addProductForm.bulkQuantity" ng-pattern="/^[0-9.,]+$/"
@@ -50,55 +75,26 @@
                             <span ng-show="modalCtrl.validateInput('add', 'bulkQuantity', 'pattern')" class="text-danger">Solamente números permitidos</span>
                         </div>
                         <div class="form-group">
-                            <label class="control-label">Precio en dólares</label>
-                            <input tabindex="5" type="text" name="priceInDollars" ng-model="addProductForm.priceInDollars" ng-pattern="/^[0-9.,]+$/"
-                                   class="form-control" />
-                            <span ng-show="modalCtrl.validateInput('add', 'priceInDollars', 'pattern')" class="text-danger">Solamente números permitidos</span>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Precio en colones</label>
-                            <input tabindex="8" type="text" name="priceInColones" ng-model="addProductForm.priceInColones" ng-pattern="/^[0-9.,]+$/"
-                                   class="form-control" />
-                            <span ng-show="modalCtrl.validateInput('add', 'priceInColones', 'pattern')" class="text-danger">Solamente números permitidos</span>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Costo en dólares</label>
-                            <input tabindex="11" type="text" name="costInDollars" ng-model="addProductForm.costInDollars" ng-pattern="/^[0-9.,]+$/"
-                                   class="form-control" />
-                            <span ng-show="modalCtrl.validateInput('add', 'costInDollars', 'pattern')" class="text-danger">Solamente números permitidos</span>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Costo en colones</label>
-                            <input tabindex="13" type="text" name="costInColones" ng-model="addProductForm.costInColones" ng-pattern="/^[0-9.,]+$/"
-                                   class="form-control" />
-                            <span ng-show="modalCtrl.validateInput('add', 'costInColones', 'pattern')" class="text-danger">Solamente números permitidos</span>
-                        </div>
-                    </div>
-                    <div class="panel-body col-lg-4">
-                        <div class="form-group">
                             <label class="control-label">Costo sugerido</label>
                             <input tabindex="3" type="text" name="suggestedCost" ng-model="addProductForm.suggestedCost" ng-pattern="/^[0-9.,]+$/"
                                    class="form-control" />
                             <span ng-show="modalCtrl.validateInput('add', 'suggestedCost', 'pattern')" class="text-danger">Solamente números permitidos</span>
                         </div>
                         <div class="form-group">
-                            <label class="control-label">Partida arancelaria</label>
-                            <input tabindex="6" type="text" name="tariffHeading" ng-model="addProductForm.tariffHeading" class="form-control"/>
+                            <label class="control-label">Unidad de medida</label>
+                            <select tabindex="12" name="measureUnit" ng-model="addProductForm.measureUnit"
+                                    ng-options="item.id as item.name for item in modalCtrl.measureUnitList"
+                                    class="form-control" required="required">
+                            </select>
+                            <span ng-show="modalCtrl.validateInput('add', 'measureUnit', 'required')" class="text-danger">Este campo es requerido</span>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label">Utilidad</label>
-                            <input tabindex="9" type="text" name="utilityPercentage" ng-model="addProductForm.utilityPercentage" ng-pattern="/^[0-9.,]+$/"
-                                   class="form-control"/>
-                            <span ng-show="modalCtrl.validateInput('add', 'suggestedCost', 'pattern')" class="text-danger">Solamente números permitidos</span>
-                        </div>
-                        <br><br><br><br><br><br><br>
                     </div>
-                    <div class="panel-footer">
-                        <div class="clearfix">
-                            <div class="pull-right">
-                                <button uib-tooltip="Crear producto" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="submit" class="btn btn-success btn-lg">Agregar</button>
-                                <button uib-tooltip="Cancelar" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="cancel()" class="btn btn-danger btn-lg">Cancelar</button>
-                            </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="clearfix">
+                        <div class="pull-right">
+                            <button uib-tooltip="Crear producto" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="submit" class="btn btn-success btn-lg">Agregar</button>
+                            <button uib-tooltip="Cancelar" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="cancel()" class="btn btn-danger btn-lg">Cancelar</button>
                         </div>
                     </div>
                 </div>

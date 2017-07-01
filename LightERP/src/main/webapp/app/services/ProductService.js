@@ -101,5 +101,23 @@ angular
             return disableProductResult;
         };
 
+        productService.getAllMeasureTypes = function () {
+
+            var measureTypes = $http({
+                method: 'GET',
+                url: APP_CONSTANTS.appURL + 'product/getMeasureTypes',
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            }).then(function (response) {
+                return response.data.data;
+            }, function (error) {
+                console.log(error);
+                return error.status;
+            });
+
+            return measureTypes;
+        };
+
         return productService;
     });

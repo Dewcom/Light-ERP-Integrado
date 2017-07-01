@@ -53,7 +53,7 @@ class CustomerService {
                 it.enabled = Constants.ESTADO_INACTIVO
             }
             pcustomer.enabled = Constants.ESTADO_INACTIVO;
-            pcustomer.save(flush: true)
+            pcustomer.save(flush: true, failOnError:true)
         } catch (Exception e) {
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("delete.customer.error", null, Locale.default));
@@ -102,7 +102,7 @@ class CustomerService {
                 tmpCustomerToUpdate.identificationType = IdentificationType.findByCodeAndEnabled(argRestCustomer.identificationType, Constants.ESTADO_ACTIVO);
                 tmpCustomerToUpdate.customerType = CustomerType.findByIdAndEnabled(argRestCustomer.customerType, Constants.ESTADO_ACTIVO);
 
-                tmpCustomerToUpdate.save(flush: true);
+                tmpCustomerToUpdate.save(flush: true, failOnError:true);
             } else {
                 throw new LightRuntimeException(messageSource.getMessage("update.customer.notFound.error", null, Locale.default));
             }

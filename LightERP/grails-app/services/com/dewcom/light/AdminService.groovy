@@ -37,7 +37,7 @@ class AdminService {
 
     def createIdType(IdentificationType pidentificationType) {
         try{
-            pidentificationType.save(flush: true)
+            pidentificationType.save(flush: true, failOnError:true)
         }catch(Exception e){
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("create.identification.type.error", null, Locale.default));
@@ -47,7 +47,7 @@ class AdminService {
     def deleteIdType(IdentificationType pidentificationType) {
         try{
             pidentificationType.enabled = Constants.ESTADO_INACTIVO;
-            pidentificationType.save(flush: true)
+            pidentificationType.save(flush: true, failOnError:true)
         }catch(Exception e){
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("delete.identification.type.error", null, Locale.default));
@@ -57,7 +57,7 @@ class AdminService {
     def updateIdType(IdentificationType pidentificationType, UpdateIdentificationTypeREST pupdateIdentificationTypeREST) {
         try{
             pidentificationType.name = pupdateIdentificationTypeREST.name;
-            pidentificationType.save(flush: true)
+            pidentificationType.save(flush: true, failOnError:true)
         }catch(Exception e){
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("update.identification.type.error", null, Locale.default));
@@ -92,7 +92,7 @@ class AdminService {
 
     def createAgentType(AgentType pagentType) {
         try{
-            pagentType.save(flush: true)
+            pagentType.save(flush: true, failOnError:true)
         }catch(Exception e){
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("create.agent.type.error", null, Locale.default));
@@ -102,7 +102,7 @@ class AdminService {
     def deleteAgentType(AgentType pagentType) {
         try{
             pagentType.enabled = Constants.ESTADO_INACTIVO;
-            pagentType.save(flush: true)
+            pagentType.save(flush: true, failOnError:true)
         }catch(Exception e){
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("delete.agent.type.error", null, Locale.default));
@@ -112,7 +112,7 @@ class AdminService {
     def updateAgentType(AgentType pagentType, UpdateAgentTypeREST pupdateAgentTypeREST) {
         try{
             pagentType.positionName = pupdateAgentTypeREST.positionName;
-            pagentType.save(flush: true)
+            pagentType.save(flush: true, failOnError:true)
         }catch(Exception e){
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("update.agent.type.error", null, Locale.default));
@@ -146,7 +146,7 @@ class AdminService {
 
     def createCustomerType(CustomerType pcustomerType) {
         try{
-            pcustomerType.save(flush: true)
+            pcustomerType.save(flush: true, failOnError:true)
         }catch(Exception e){
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("create.customer.type.error", null, Locale.default));
@@ -156,7 +156,7 @@ class AdminService {
     def deleteCustomerType(CustomerType pcustomerType) {
         try{
             pcustomerType.enabled = Constants.ESTADO_INACTIVO;
-            pcustomerType.save(flush: true)
+            pcustomerType.save(flush: true, failOnError:true)
         }catch(Exception e){
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("delete.customer.type.error", null, Locale.default));
@@ -166,7 +166,7 @@ class AdminService {
     def updateCustomerType(CustomerType pcustomerType, UpdateCustomerTypeREST pupdateCustomerTypeREST) {
         try{
             pcustomerType.name = pupdateCustomerTypeREST.name;
-            pcustomerType.save(flush: true)
+            pcustomerType.save(flush: true, failOnError:true)
         }catch(Exception e){
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("update.customer.type.error", null, Locale.default));
@@ -200,7 +200,7 @@ class AdminService {
 
     def createProductType(ProductType pproductType) {
         try{
-            pproductType.save(flush: true)
+            pproductType.save(flush: true, failOnError:true)
         }catch(Exception e){
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("create.product.type.error", null, Locale.default));
@@ -210,7 +210,7 @@ class AdminService {
     def deleteProductType(ProductType pproductType) {
         try{
             pproductType.enabled = Constants.ESTADO_INACTIVO;
-            pproductType.save(flush: true)
+            pproductType.save(flush: true, failOnError:true)
         }catch(Exception e){
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("delete.product.type.error", null, Locale.default));
@@ -220,7 +220,7 @@ class AdminService {
     def updateProductType(ProductType pproductType, UpdateProductTypeREST pupdateProductTypeREST) {
         try{
             pproductType.name = pupdateProductTypeREST.name;
-            pproductType.save(flush: true)
+            pproductType.save(flush: true, failOnError:true)
         }catch(Exception e){
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("update.product.type.error", null, Locale.default));
@@ -255,7 +255,7 @@ class AdminService {
 
     def createPresentationType(PresentationType ppresentationType) {
         try{
-            ppresentationType.save(flush: true)
+            ppresentationType.save(flush: true, failOnError:true)
         }catch(Exception e){
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("create.presentation.type.error", null, Locale.default));
@@ -265,7 +265,7 @@ class AdminService {
     def deletePresentationType(PresentationType ppresentationType) {
         try{
             ppresentationType.enabled = Constants.ESTADO_INACTIVO;
-            ppresentationType.save(flush: true)
+            ppresentationType.save(flush: true, failOnError:true)
         }catch(Exception e){
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("delete.presentation.type.error", null, Locale.default));
@@ -275,7 +275,7 @@ class AdminService {
     def updatePresentationType(PresentationType ppresentationType, UpdatePresentationTypeREST pudatePresentationTypeREST) {
         try{
             ppresentationType.name = pudatePresentationTypeREST.name;
-            ppresentationType.save(flush: true)
+            ppresentationType.save(flush: true, failOnError:true)
         }catch(Exception e){
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("update.presentation.type.error", null, Locale.default));
@@ -287,7 +287,7 @@ class AdminService {
     def Configuration createConfiguration(Configuration argConfiguration) {
         def config
         try {
-            config = argConfiguration.save(flush: true)
+            config = argConfiguration.save(flush: true, failOnError:true)
         } catch (Exception e) {
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("create.configuration.error", null, Locale.default));
@@ -298,7 +298,7 @@ class AdminService {
     def deleteConfiguration(Configuration argConfiguration) {
         try {
             argConfiguration.enabled = Constants.ESTADO_INACTIVO;
-            argConfiguration.save(flush: true)
+            argConfiguration.save(flush: true, failOnError:true)
         } catch (Exception e) {
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("delete.configuration.error", null, Locale.default));
@@ -331,7 +331,7 @@ class AdminService {
 
     def updateConfiguration(Configuration argConfiguration) {
         try{
-            argConfiguration.save(flush: true)
+            argConfiguration.save(flush: true, failOnError:true)
         }catch(Exception e){
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("update.configuration.error", null, Locale.default));
@@ -410,7 +410,7 @@ class AdminService {
     def  createBillStateType(def pJSON) {
         try {
             def tmpBillState = new BillStateType(pJSON)
-            tmpBillState.save(flush: true)
+            tmpBillState.save(flush: true, failOnError:true)
         } catch (Exception e) {
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("create.constantReference.error", null, Locale.default));
@@ -420,7 +420,7 @@ class AdminService {
     def  createPaymentType(def pJSON) {
         try {
             def paymentType = new BillPaymentType(pJSON)
-            paymentType.save(flush: true)
+            paymentType.save(flush: true, failOnError:true)
         } catch (Exception e) {
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("create.constantReference.error", null, Locale.default));
@@ -431,7 +431,7 @@ class AdminService {
     def  createCurrency(def pJSON) {
         try {
             def tmpCurrency = new Currency(pJSON)
-           tmpCurrency.save(flush: true)
+           tmpCurrency.save(flush: true, failOnError:true)
         } catch (Exception e) {
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("create.constantReference.error", null, Locale.default));
@@ -443,7 +443,7 @@ class AdminService {
     def  createCreditCondition(def pJSON) {
         try {
             def creditCondition = new CreditCondition(pJSON)
-            creditCondition.save(flush: true)
+            creditCondition.save(flush: true, failOnError:true)
         } catch (Exception e) {
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("create.constantReference.error", null, Locale.default));

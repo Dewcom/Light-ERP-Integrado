@@ -70,6 +70,14 @@
             });
 
             /**=========================================================
+             * Unidades de medida
+             =========================================================*/
+
+            productService.getAllMeasureTypes().then(function (response) {
+                vm.measureUnitList = response;
+            });
+
+            /**=========================================================
              * Datatables
              =========================================================*/
 
@@ -132,7 +140,7 @@
                 var modalInstance = $uibModal.open({
                     templateUrl: '/addProductModal.html',
                     controller: AddModalInstanceCtrl,
-                    size: 'lg',
+                    size: 'md',
                     backdrop: 'static', // No cierra clickeando fuera
                     keyboard: false // No cierra con escape
                 });
@@ -220,10 +228,8 @@
                     "productType": $scope.addProductForm.productType,
                     "presentationType": $scope.addProductForm.presentationType,
                     "bulkQuantity": parseFloat($scope.addProductForm.bulkQuantity),
-                    "priceInDollars": parseFloat($scope.addProductForm.priceInDollars),
-                    "priceInColones": parseFloat($scope.addProductForm.priceInColones),
-                    "costInDollars": parseFloat($scope.addProductForm.costInDollars),
-                    "costInColones": parseFloat($scope.addProductForm.costInColones),
+                    "price": parseFloat($scope.addProductForm.price),
+                    "cost": parseFloat($scope.addProductForm.cost),
                     "suggestedCost": parseFloat($scope.addProductForm.suggestedCost),
                     "tariffHeading": $scope.addProductForm.tariffHeading,
                     "registrationDate": $scope.addProductForm.registrationDate,
@@ -273,10 +279,8 @@
                     "productType": $scope.currentProduct.productType.id,
                     "presentationType": $scope.currentProduct.presentationType.id,
                     "bulkQuantity": parseFloat($scope.currentProduct.bulkQuantity),
-                    "priceInDollars": parseFloat($scope.currentProduct.priceInDollars),
-                    "priceInColones": parseFloat($scope.currentProduct.priceInColones),
-                    "costInDollars": parseFloat($scope.currentProduct.costInDollars),
-                    "costInColones": parseFloat($scope.currentProduct.costInColones),
+                    "price": parseFloat($scope.currentProduct.price),
+                    "cost": parseFloat($scope.currentProduct.cost),
                     "suggestedCost": parseFloat($scope.currentProduct.suggestedCost),
                     "tariffHeading": $scope.currentProduct.tariffHeading,
                     "utilityPercentage": parseInt($scope.currentProduct.utilityPercentage)

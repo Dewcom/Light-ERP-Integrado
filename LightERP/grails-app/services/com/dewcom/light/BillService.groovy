@@ -116,7 +116,7 @@ class BillService {
     def deleteBill(Bill bill) {
         try {
             bill.enabled = Constants.ESTADO_INACTIVO;
-            bill.save(flush: true)
+            bill.save(flush: true, failOnError:true)
         } catch (Exception e) {
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("delete.bill.error", null, Locale.default));

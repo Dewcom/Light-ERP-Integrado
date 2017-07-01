@@ -245,7 +245,7 @@
             ];
 
             /**=========================================================
-             * Datatable facturas
+             * Datatable factuta
              =========================================================*/
 
             vm.dtOptionsBills = DTOptionsBuilder.newOptions()
