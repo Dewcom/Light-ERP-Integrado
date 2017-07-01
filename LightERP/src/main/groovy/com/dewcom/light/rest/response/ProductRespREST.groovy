@@ -10,13 +10,11 @@ class ProductRespREST {
     PresentationTypeRespREST presentationType
     double bulkQuantity
     ProductTypeRespREST productType
-    double costInDollars
-    double costInColones
+    double cost
     double suggestedCost
     String tariffHeading // partida arancelaria
     String commercialName
-    double priceInDollars
-    double priceInColones
+    double price
     double salesTax
     double utilityPercentage
     Byte enabled
