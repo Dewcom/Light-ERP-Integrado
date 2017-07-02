@@ -167,7 +167,7 @@ class ProductController extends RestController{
             def tmpId = params.id
 
             if(tmpId){
-                MeasureType measureTypeFromDB = productService.getMeasureType(tmpId)
+                MeasureUnit measureTypeFromDB = productService.getMeasureType(tmpId)
 
                 if(measureTypeFromDB){
                     tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default)

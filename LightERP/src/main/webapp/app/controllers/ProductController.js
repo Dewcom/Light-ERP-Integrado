@@ -158,7 +158,7 @@
                 var modalInstance = $uibModal.open({
                     templateUrl: '/updateProductModal.html',
                     controller: UpdateModalInstanceCtrl,
-                    size: 'lg',
+                    size: 'md',
                     resolve: {
                         product: function () {
                             return productObj;
@@ -233,7 +233,8 @@
                     "suggestedCost": parseFloat($scope.addProductForm.suggestedCost),
                     "tariffHeading": $scope.addProductForm.tariffHeading,
                     "registrationDate": $scope.addProductForm.registrationDate,
-                    "utilityPercentage": parseInt($scope.addProductForm.utilityPercentage)
+                    "utilityPercentage": parseInt($scope.addProductForm.utilityPercentage),
+                    "measureUnit": $scope.addProductForm.measureUnit
                 };
                 console.log(newProduct);
                 productService.addProduct(newProduct).then(function (response) {
@@ -283,7 +284,8 @@
                     "cost": parseFloat($scope.currentProduct.cost),
                     "suggestedCost": parseFloat($scope.currentProduct.suggestedCost),
                     "tariffHeading": $scope.currentProduct.tariffHeading,
-                    "utilityPercentage": parseInt($scope.currentProduct.utilityPercentage)
+                    "utilityPercentage": parseInt($scope.currentProduct.utilityPercentage),
+                    "measureUnit": $scope.currentProduct.measureUnit.id
                 };
                 console.log(updatedProduct);
                 productService.updateProduct(updatedProduct).then(function (response) {
@@ -333,6 +335,8 @@
             UpdateModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', 'product'];
             function UpdateModalInstanceCtrl($scope, $uibModalInstance, product) {
                 var vm = this;
+
+                console.log(product);
 
                 $scope.currentProduct = JSON.parse(JSON.stringify(product));
 

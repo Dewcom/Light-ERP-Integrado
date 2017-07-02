@@ -13,7 +13,7 @@ import com.dewcom.light.rest.response.CustomerRespREST
 import com.dewcom.light.rest.response.CustomerTypeRespREST
 import com.dewcom.light.rest.response.ExchangeRateRespREST
 import com.dewcom.light.rest.response.IdentificationTypeRespREST
-import com.dewcom.light.rest.response.MeasureTypeREST
+import com.dewcom.light.rest.response.MeasureUnitREST
 import com.dewcom.light.rest.response.PaymentRespREST
 import com.dewcom.light.rest.response.PresentationTypeRespREST
 import com.dewcom.light.rest.response.ProductRespREST
@@ -212,6 +212,7 @@ class JSONMapper {
             tmpRestObject.commercialName = pProduct.commercialName
             tmpRestObject.utilityPercentage = pProduct.utilityPercentage
             tmpRestObject.salesTax = pProduct.salesTax
+            tmpRestObject.measureUnit = from(pProduct.measureUnit)
         tmpRestObject
     }
 
@@ -255,8 +256,8 @@ class JSONMapper {
         tmpRestObject
     }
 
-    def static from(MeasureType pMeasureType){
-        def tmpMeasureTypeObj = new MeasureTypeREST()
+    def static from(MeasureUnit pMeasureType){
+        def tmpMeasureTypeObj = new MeasureUnitREST()
         tmpMeasureTypeObj.name = pMeasureType.name
         tmpMeasureTypeObj.enabled = pMeasureType.enabled
         tmpMeasureTypeObj.registrationDate = pMeasureType.registrationDate

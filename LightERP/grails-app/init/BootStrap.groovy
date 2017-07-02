@@ -1,13 +1,12 @@
 import com.dewcom.light.BillPaymentType
 import com.dewcom.light.BillStateType
 import com.dewcom.light.Configuration
-import com.dewcom.light.Constants
 import com.dewcom.light.CreditCondition
 import com.dewcom.light.Currency
 import com.dewcom.light.ExchangeRate
 import com.dewcom.light.CustomerType
 import com.dewcom.light.IdentificationType
-import com.dewcom.light.MeasureType
+import com.dewcom.light.MeasureUnit
 import com.dewcom.light.PresentationType
 import com.dewcom.light.ProductType
 import com.dewcom.light.Role
@@ -229,45 +228,45 @@ class BootStrap {
         }
 
         //Unidades de medida
-        if(!MeasureType.findByCode(MeasureType.KILOGRAMS)){
-            def measureType = new MeasureType()
+        if(!MeasureUnit.findByCode(MeasureUnit.KILOGRAMS)){
+            def measureType = new MeasureUnit()
             measureType.name = "Kilogramos"
-            measureType.code = MeasureType.KILOGRAMS
+            measureType.code = MeasureUnit.KILOGRAMS
             measureType.save()
         }
 
-        if(!MeasureType.findByCode(MeasureType.GRAMS)){
-            def measureType = new MeasureType()
+        if(!MeasureUnit.findByCode(MeasureUnit.GRAMS)){
+            def measureType = new MeasureUnit()
             measureType.name = "Gramos"
-            measureType.code = MeasureType.GRAMS
+            measureType.code = MeasureUnit.GRAMS
             measureType.save()
         }
 
-        if(!MeasureType.findByCode(MeasureType.LITERS)){
-            def measureType = new MeasureType()
+        if(!MeasureUnit.findByCode(MeasureUnit.LITERS)){
+            def measureType = new MeasureUnit()
             measureType.name = "Litros"
-            measureType.code = MeasureType.LITERS
+            measureType.code = MeasureUnit.LITERS
             measureType.save()
         }
 
-        if(!MeasureType.findByCode(MeasureType.MINILITERS)){
-            def measureType = new MeasureType()
+        if(!MeasureUnit.findByCode(MeasureUnit.MINILITERS)){
+            def measureType = new MeasureUnit()
             measureType.name = "Minilitros"
-            measureType.code = MeasureType.MINILITERS
+            measureType.code = MeasureUnit.MINILITERS
             measureType.save()
         }
 
-        if(!MeasureType.findByCode(MeasureType.OUNCES)){
-            def measureType = new MeasureType()
+        if(!MeasureUnit.findByCode(MeasureUnit.OUNCES)){
+            def measureType = new MeasureUnit()
             measureType.name = "Onzas"
-            measureType.code = MeasureType.OUNCES
+            measureType.code = MeasureUnit.OUNCES
             measureType.save()
         }
 
-        if(!MeasureType.findByCode(MeasureType.UNITS)){
-            def measureType = new MeasureType()
+        if(!MeasureUnit.findByCode(MeasureUnit.UNITS)){
+            def measureType = new MeasureUnit()
             measureType.name = "Unidades"
-            measureType.code = MeasureType.UNITS
+            measureType.code = MeasureUnit.UNITS
             measureType.save()
         }
 

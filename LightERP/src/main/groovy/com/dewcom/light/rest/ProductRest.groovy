@@ -24,6 +24,7 @@ class ProductRest implements Validateable{
     double utilityPercentage
     Byte enabled = Constants.ESTADO_ACTIVO
     Date registrationDate = new Date()
+    Integer measureUnit
 
     static constraints = {
         bulkQuantity nullable: true

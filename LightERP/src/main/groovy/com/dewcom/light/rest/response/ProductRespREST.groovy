@@ -19,4 +19,5 @@ class ProductRespREST {
     double utilityPercentage
     Byte enabled
     Date registrationDate
+    MeasureUnitREST measureUnit
 }

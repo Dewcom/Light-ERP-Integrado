@@ -65,9 +65,9 @@ class ProductService {
                 tmpProductToUpdate.commercialName = prestProduct.commercialName
                 tmpProductToUpdate.price = prestProduct.price
                 tmpProductToUpdate.utilityPercentage = prestProduct.utilityPercentage
-
                 tmpProductToUpdate.productType = ProductType.findByIdAndEnabled(prestProduct.productType, Constants.ESTADO_ACTIVO)
                 tmpProductToUpdate.presentationType = PresentationType.findByIdAndEnabled(prestProduct.presentationType, Constants.ESTADO_ACTIVO)
+                tmpProductToUpdate.measureUnit = MeasureUnit.findByIdAndEnabled(prestProduct.measureUnit, Constants.ESTADO_ACTIVO)
 
                 tmpProductToUpdate.save(flush: true, failOnError:true)
             } else {
@@ -89,7 +89,7 @@ class ProductService {
         log.info "====== Getting measure type from DB ======"
         log.info measureTypeId
         try {
-            MeasureType measureTypeFromDB = MeasureType.findByIdAndEnabled(measureTypeId, Constants.ESTADO_ACTIVO)
+            MeasureUnit measureTypeFromDB = MeasureUnit.findByIdAndEnabled(measureTypeId, Constants.ESTADO_ACTIVO)
             return measureTypeFromDB
         } catch (Exception e) {
             log.error(e)
@@ -101,7 +101,7 @@ class ProductService {
     def getAllMeasureTypes() {
         log.info "====== Getting all measure types from DB ======"
         try {
-            def measureTypesFromDB = MeasureType.findAllByEnabled(Constants.ESTADO_ACTIVO)
+            def measureTypesFromDB = MeasureUnit.findAllByEnabled(Constants.ESTADO_ACTIVO)
             return measureTypesFromDB
         } catch (Exception e) {
             log.error(e)

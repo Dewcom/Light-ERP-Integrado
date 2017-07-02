@@ -1,6 +1,6 @@
 package com.dewcom.light
 
-class MeasureType {
+class MeasureUnit {
     public static final Integer KILOGRAMS = 1
     public static final Integer GRAMS = 2
     public static final Integer LITERS = 3

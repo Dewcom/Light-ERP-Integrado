@@ -18,6 +18,7 @@ class Product {
     double utilityPercentage
     Byte enabled = Constants.ESTADO_ACTIVO
     Date registrationDate = new Date()
+    MeasureUnit measureUnit
 
     static constraints = {
         bulkQuantity nullable: true
@@ -44,6 +45,7 @@ class Product {
         tmpProduct.commercialName = pRestProduct.commercialName
         tmpProduct.price = pRestProduct.price
         tmpProduct.utilityPercentage = pRestProduct.utilityPercentage
+        tmpProduct.measureUnit = MeasureUnit.findByIdAndEnabled(pRestProduct.measureUnit, Constants.ESTADO_ACTIVO)
 
         tmpProduct.presentationType = PresentationType.findByIdAndEnabled(pRestProduct.presentationType, Constants.ESTADO_ACTIVO)
         tmpProduct.productType =  ProductType.findByIdAndEnabled(pRestProduct.productType, Constants.ESTADO_ACTIVO)
