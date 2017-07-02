@@ -85,8 +85,8 @@ class ProductService {
         }
     }
 
-    Product getMeasureType(def measureTypeId) {
-        log.info "====== Getting measure type from DB ======"
+    Product getMeasureUnit(def measureTypeId) {
+        log.info "====== Getting measure unit from DB ======"
         log.info measureTypeId
         try {
             MeasureUnit measureTypeFromDB = MeasureUnit.findByIdAndEnabled(measureTypeId, Constants.ESTADO_ACTIVO)
@@ -98,8 +98,8 @@ class ProductService {
     }
 
 
-    def getAllMeasureTypes() {
-        log.info "====== Getting all measure types from DB ======"
+    def getAllMeasureUnits() {
+        log.info "====== Getting all measure units from DB ======"
         try {
             def measureTypesFromDB = MeasureUnit.findAllByEnabled(Constants.ESTADO_ACTIVO)
             return measureTypesFromDB

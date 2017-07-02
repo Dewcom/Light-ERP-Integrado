@@ -189,6 +189,14 @@
             });
 
             /**=========================================================
+             * Unidades de medida
+             =========================================================*/
+
+            productService.getAllMeasureUnits().then(function (response) {
+                vm.measureUnitsList = response;
+            });
+
+            /**=========================================================
              * Tipos de pago
              =========================================================*/
 
@@ -245,7 +253,7 @@
             ];
 
             /**=========================================================
-             * Datatable factuta
+             * Datatable productos agregados
              =========================================================*/
 
             vm.dtOptionsBills = DTOptionsBuilder.newOptions()
@@ -406,9 +414,6 @@
 
         // Submit form
         vm.submitForm = function (registrationType) {
-
-            console.log(registrationType);
-
             var vm = this;
             vm.submitted = true;
 
@@ -434,7 +439,6 @@
                         title: 'Factura',
                         text: 'Por favor completar todos los campos'
                     };
-
                     console.log(toasterdata);
 
                     pop(toasterdata);
@@ -579,7 +583,7 @@
                 vm.selectedProduct.quantity = 1;
                 vm.selectedProduct.discount = 0;
                 vm.selectedProduct.tax = 0;
-                vm.selectedProduct.calcDollarPrice = product.priceInColones / rate;
+                vm.selectedProduct.calcDollarPrice = product.price / rate;
                 vm.currency = currency;
             };
 
@@ -587,7 +591,7 @@
                 var linePrice = 0;
 
                 if(currency == APP_CONSTANTS.CURRENCY_COLONES_CODE || currency == null){
-                    linePrice = vm.selectedProduct.priceInColones;
+                    linePrice = vm.selectedProduct.price;
                 }else{
                     linePrice = vm.selectedProduct.calcDollarPrice;
                 }
@@ -601,7 +605,7 @@
             };
 
             $scope.adjustDollarPrice = function () {
-                vm.selectedProduct.calcDollarPrice = vm.selectedProduct.priceInColones / rate;
+                vm.selectedProduct.calcDollarPrice = vm.selectedProduct.price / rate;
             }
         }
 
@@ -622,8 +626,6 @@
 
         function addProductToBill(selectedProduct, linePrice) {
 
-            console.log(linePrice);
-
             console.log(selectedProduct);
 
             var productToAdd = {
@@ -631,7 +633,7 @@
                 "productCode": selectedProduct.productCode,
                 "name": selectedProduct.name,
                 "quantity": selectedProduct.quantity,
-                "price": selectedProduct.priceInColones,
+                "price": selectedProduct.price,
                 "linePrice": linePrice,
                 "discountPercentage": selectedProduct.discount,
                 "taxPercentage": selectedProduct.tax,

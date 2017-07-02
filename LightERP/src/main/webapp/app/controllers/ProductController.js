@@ -73,7 +73,7 @@
              * Unidades de medida
              =========================================================*/
 
-            productService.getAllMeasureTypes().then(function (response) {
+            productService.getAllMeasureUnits().then(function (response) {
                 vm.measureUnitList = response;
             });
 

@@ -101,11 +101,11 @@ angular
             return disableProductResult;
         };
 
-        productService.getAllMeasureTypes = function () {
+        productService.getAllMeasureUnits = function () {
 
             var measureTypes = $http({
                 method: 'GET',
-                url: APP_CONSTANTS.appURL + 'product/getMeasureTypes',
+                url: APP_CONSTANTS.appURL + 'product/getMeasureUnits',
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }

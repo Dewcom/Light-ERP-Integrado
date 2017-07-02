@@ -39,7 +39,7 @@ class BootStrap {
         }
 
         //Creacion de Tipos de Clientes por Defecto
-        if(!CustomerType.findByName("Contado & Credito")){
+        if(!CustomerType.findByName("Contado & Crédito")){
             def companyClient = new CustomerType()
             companyClient.name = "Contado & Crédito"
             companyClient.save()
@@ -172,21 +172,21 @@ class BootStrap {
         //Tipo de producto
         if(!ProductType.findByCode(ProductType.NATIONAL)){
             def productType = new ProductType()
-            productType.name = "Producto nacional"
+            productType.name = "Nacional"
             productType.code = ProductType.NATIONAL
             productType.save()
         }
 
         if(!ProductType.findByCode(ProductType.IMPORTED)){
             def productType = new ProductType()
-            productType.name = "Producto importado"
+            productType.name = "Importado"
             productType.code = ProductType.IMPORTED
             productType.save()
         }
 
         if(!ProductType.findByCode(ProductType.MANUFACTURED)){
             def productType = new ProductType()
-            productType.name = "Producto manufacturado"
+            productType.name = "Manufacturado"
             productType.code = ProductType.MANUFACTURED
             productType.save()
         }

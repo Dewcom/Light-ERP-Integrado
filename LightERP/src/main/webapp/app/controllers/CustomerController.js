@@ -205,7 +205,7 @@
             };
             console.log(newCustomer);
 
-            /*customerService.addCustomer(newCustomer).then(function (response) {
+            customerService.addCustomer(newCustomer).then(function (response) {
                 var toasterdata;
 
                 if (response.code == "0") {
@@ -228,7 +228,7 @@
                 }, 3000);
             }, function (error) {
                 console.log(error);
-            });*/
+            });
 
             //Se formatea la direccion para enviar al BE
             function formatAddreses() {

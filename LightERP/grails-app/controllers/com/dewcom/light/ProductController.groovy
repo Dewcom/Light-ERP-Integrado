@@ -158,8 +158,8 @@ class ProductController extends RestController{
      * @author Mauricio Fernández Mora
      */
     @Secured(['ROLE_ANONYMOUS'])
-    def getMeasureTypes() {
-        log.info "========== Get measure types request =========="
+    def getMeasureUnits() {
+        log.info "========== Get measure units request =========="
 
         ResponseREST tmpResponse = new ResponseREST()
 
@@ -167,18 +167,18 @@ class ProductController extends RestController{
             def tmpId = params.id
 
             if(tmpId){
-                MeasureUnit measureTypeFromDB = productService.getMeasureType(tmpId)
+                MeasureUnit measureUnitFromDB = productService.getMeasureUnit(tmpId)
 
-                if(measureTypeFromDB){
+                if(measureUnitFromDB){
                     tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default)
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
-                    tmpResponse.data = JSONMapper.from(measureTypeFromDB)
+                    tmpResponse.data = JSONMapper.from(measureUnitFromDB)
                 }else{
                     tmpResponse.message = messageSource.getMessage("measure.type.not.found", null, Locale.default)
                     tmpResponse.code = Constants.REGISTER_NOT_FOUND
                 }
             }else{
-                def measureTypeFromDB = productService.getAllMeasureTypes()
+                def measureTypeFromDB = productService.getAllMeasureUnits()
                 tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default)
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
                 tmpResponse.data = JSONMapper.listFrom(measureTypeFromDB)

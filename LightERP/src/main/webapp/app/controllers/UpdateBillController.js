@@ -561,14 +561,14 @@ function UpdateBillController(DTOptionsBuilder, DTColumnDefBuilder, $http, $stat
             vm.selectedProduct.quantity = 1;
             vm.selectedProduct.discount = 0;
             vm.selectedProduct.tax = 0;
-            vm.selectedProduct.calcDollarPrice = product.priceInColones / rate;
+            vm.selectedProduct.calcDollarPrice = product.price / rate;
         };
 
         $scope.ok = function () {
             var linePrice = 0;
 
             if(currency == APP_CONSTANTS.CURRENCY_COLONES_CODE || currency == null){
-                linePrice = vm.selectedProduct.priceInColones;
+                linePrice = vm.selectedProduct.price;
             }else{
                 linePrice = vm.selectedProduct.calcDollarPrice;
             }
@@ -582,7 +582,7 @@ function UpdateBillController(DTOptionsBuilder, DTColumnDefBuilder, $http, $stat
         };
 
         $scope.adjustDollarPrice = function () {
-            vm.selectedProduct.calcDollarPrice = vm.selectedProduct.priceInColones / rate;
+            vm.selectedProduct.calcDollarPrice = vm.selectedProduct.price / rate;
         }
     }
 
@@ -647,7 +647,7 @@ function UpdateBillController(DTOptionsBuilder, DTColumnDefBuilder, $http, $stat
 
         angular.forEach(tmpList, function (value, key) {
 
-            value.linePrice = value.product.priceInColones / exchangeRate;
+            value.linePrice = value.product.price / exchangeRate;
             value.subTotal = calculateSubtotal(value.quantity, value.linePrice, value.discountPercentage, value.taxPercentage);
         });
 

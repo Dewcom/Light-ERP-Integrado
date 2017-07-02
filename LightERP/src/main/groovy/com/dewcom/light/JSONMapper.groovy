@@ -221,8 +221,7 @@ class JSONMapper {
         tmpRestObject.name = pProduct.name
         tmpRestObject.id = pProduct.id
         tmpRestObject.productCode = pProduct.productCode
-        tmpRestObject.priceInColones = pProduct.priceInColones
-        tmpRestObject.priceInDollars = pProduct.priceInDollars
+        tmpRestObject.price = pProduct.price
         tmpRestObject
     }
 
