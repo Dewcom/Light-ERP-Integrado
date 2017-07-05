@@ -549,7 +549,8 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
             "amount": parseFloat($scope.makePaymentForm.amount),
             "bankAccount": $scope.makePaymentForm.bankAccount,
             "bankReceipt": $scope.makePaymentForm.bankReceipt,
-            "observation": $scope.makePaymentForm.observation
+            "observation": $scope.makePaymentForm.observation,
+            "paymentType": $scope.makePaymentForm.paymentType
         };
         console.log(newPayment);
 
@@ -597,7 +598,8 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
             "amount": parseFloat($scope.currentPayment.amount),
             "bankAccount": $scope.currentPayment.bankAccount,
             "bankReceipt": $scope.currentPayment.bankReceipt,
-            "observation": $scope.currentPayment.observation
+            "observation": $scope.currentPayment.observation,
+            "paymentType": $scope.currentPayment.paymentType
         };
         console.log(updatedPayment);
 
