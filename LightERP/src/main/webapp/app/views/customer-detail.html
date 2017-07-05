@@ -273,7 +273,7 @@
             </uib-tab>
             <uib-tab heading="CONTACTOS">
                 <div ng-controller="ContactController as contactController">
-                <div class="mb">
+                <div ng-if="parentController.customerContacts.length > 0" class="mb">
                     <hr class="hidden-print"/>
                     <div class="clearfix">
                         <button uib-tooltip="Agregar nuevo contacto" uib-tooltip-trigger="focus" uib-tooltip-placement="top" ng-show="currentBill.billNumber == null" type="button"
