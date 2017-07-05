@@ -404,7 +404,7 @@ angular
             if (currentBill.creditCondition == null && currentBill.billPaymentType.code == APP_CONSTANTS.PAYMENT_TYPE_CREDIT_CODE ){
                 return msj = {
                     "valid":false,
-                    "message": "La factura no tiene tipo de condición de crédito"
+                    "message": "La factura no tiene de condición de crédito"
                 }
             }
 

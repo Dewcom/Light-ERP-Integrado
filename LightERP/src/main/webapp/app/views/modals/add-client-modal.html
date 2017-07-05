@@ -7,7 +7,7 @@
                 <h4 id="myModalLabel" class="modal-title">Agregar Cliente</h4>
             </div>
             <div class="panel-body">
-                <form action="/" form-wizard="" steps="6" validate-steps="true" name="addCustomerWizard">
+                <form action="/" form-wizard="" steps="5" validate-steps="true" name="addCustomerWizard">
                     <div class="form-wizard wizard-horizontal">
                         <!-- START wizard steps indicator-->
                         <ol class="row">
@@ -59,7 +59,7 @@
                                             <div class="controls">
                                                 <select name="selectedIdentificationType" ng-model="parentController.selectedIdentificationType"
                                                         ng-options="item.code as item.name for item in parentController.identificationTypeList"
-                                                        class="form-control" required="required">
+                                                        class="form-control" required="required" ng-change="parentController.resetNames()">
                                                 </select>
                                                 <span ng-show="formStep1.$submitted &amp;&amp; formStep1.selectedIdentificationType.$invalid"
                                                       class="text-danger">Este campo no puede ser vacío</span>
@@ -86,7 +86,7 @@
                                             <div class="controls">
                                                 <input ng-show="parentController.selectedIdentificationType != null" type="text" name="name" ng-model="parentController.name" required="required"
                                                        class="form-control" maxlength="50" replace="[^a-zA-Z]" with=""/>
-                                                <span ng-show="formStep1.$submitted &amp;&amp; formStep1.name.$invalid"
+                                                <span ng-show="formStep1.$submitted &amp;&amp; formStep1.name.$invalid && parentController.selectedIdentificationType != null"
                                                       class="text-danger">Este campo no puede ser vacío</span>
                                             </div>
                                         </div>
@@ -564,12 +564,6 @@
                                             </div>
                                         </div>
                                         <!-- END panel-->
-                                        <div>
-                                            <p class="text-right">
-                                                <button uib-tooltip="Crear cliente" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="parentController.addCustomer()" class="btn btn-success btn-lg">Agregar</button>
-                                                <button uib-tooltip="Cancelar creación" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="cancel()" class="btn btn-danger btn-lg">Cancelar</button>
-                                            </p>
-                                        </div>
                                     </div>
                                 </div>
                                 <!-- END row-->
@@ -581,6 +575,12 @@
                                     </a>
                                 </li>
                             </ul>
+                            <div>
+                                <p class="text-right">
+                                    <button uib-tooltip="Crear cliente" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="parentController.addCustomer()" class="btn btn-success btn-lg">Agregar</button>
+                                    <button uib-tooltip="Cancelar creación" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="cancel()" class="btn btn-danger btn-lg">Cancelar</button>
+                                </p>
+                            </div>
                         </div>
                         <!-- END Wizard Step inputs-->
                     </div>

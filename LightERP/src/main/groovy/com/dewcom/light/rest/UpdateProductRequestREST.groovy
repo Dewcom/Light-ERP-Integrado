@@ -1,6 +1,7 @@
 package com.dewcom.light.rest
 
 import com.dewcom.light.Constants
+import com.dewcom.light.MeasureUnit
 import grails.validation.Validateable
 
 /**
@@ -13,29 +14,28 @@ class UpdateProductRequestREST implements Validateable {
     Integer presentationType
     double bulkQuantity
     Integer productType
-    double costInDollars
-    double costInColones
+    double cost
     double suggestedCost
     String tariffHeading // partida arancelaria
     String commercialName
-    double priceInDollars
-    double priceInColones
+    double price
     double salesTax
     double utilityPercentage
     Byte enabled = Constants.ESTADO_ACTIVO
     Date registrationDate = new Date()
+    Integer measureUnit
 
     static constraints = {
-        productCode blank: false
-        name blank: false
-        bulkQuantity null: true
-        costInDollars null: true
-        costInColones null: true
-        suggestedCost null: true
-        tariffHeading blank: false
-        commercialName null: true, blank: true
-        priceInDollars null: true
-        priceInColones null: true
-        utilityPercentage null: true, blank: true
+        productCode blank: false, nullable: false
+        name blank: false, nullable: false
+        bulkQuantity nullable: true
+        cost nullable: true
+        suggestedCost nullable: true
+        tariffHeading blank: true
+        commercialName nullable: true, blank: true
+        price null: false
+        utilityPercentage nullable: true, blank: true
+        presentationType nullable: false
+        productType null: false
     }
 }

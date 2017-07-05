@@ -59,7 +59,7 @@ class ContactService {
     def deleteContact(Contact pcontact) {
         try {
             pcontact.enabled = Constants.ESTADO_INACTIVO;
-            pcontact.save(flush: true)
+            pcontact.save(flush: true, failOnError:true)
         } catch (Exception e) {
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("delete.contact.error", null, Locale.default));
@@ -80,7 +80,7 @@ class ContactService {
                 tmpContactToUpdate.mobile = argRestContact.mobile;
                 tmpContactToUpdate.email =  argRestContact.email;
 
-                tmpContactToUpdate.save(flush: true);
+                tmpContactToUpdate.save(flush: true, failOnError:true);
             } else {
                 throw new LightRuntimeException(messageSource.getMessage("update.contact.notFound.error", null, Locale.default));
             }

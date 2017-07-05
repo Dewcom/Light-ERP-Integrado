@@ -138,9 +138,9 @@
         // It is not the same as the $uibModal service used above.
 
             EditContactModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', 'contact'];
-            function EditContactModalInstanceCtrl($scope, $uibModalInstance,contact) {
+            function EditContactModalInstanceCtrl($scope, $uibModalInstance, contact) {
             $scope.currentContact = contact;
-            $scope.contactToUpdate = new Contact(contact.name, contact.firstLastName, contact.secondLastName, contact.email, contact.phoneNumber1, contact.phoneNumber2, contact.jobTitle, contact.department, contact.mobile);
+            $scope.contactToUpdate = new Contact(null, contact.name, contact.firstLastName, contact.secondLastName, contact.email, contact.phoneNumber1, contact.phoneNumber2, contact.jobTitle, contact.department, contact.mobile);
 
 
             $scope.close = function () {

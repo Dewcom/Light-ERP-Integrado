@@ -13,6 +13,7 @@ import com.dewcom.light.rest.response.CustomerRespREST
 import com.dewcom.light.rest.response.CustomerTypeRespREST
 import com.dewcom.light.rest.response.ExchangeRateRespREST
 import com.dewcom.light.rest.response.IdentificationTypeRespREST
+import com.dewcom.light.rest.response.MeasureUnitREST
 import com.dewcom.light.rest.response.PaymentRespREST
 import com.dewcom.light.rest.response.PresentationTypeRespREST
 import com.dewcom.light.rest.response.ProductRespREST
@@ -67,8 +68,6 @@ class JSONMapper {
         tmpRestObject
     }
 
-
-
     def static from(Address pAddress){
         def tmpRestObject = new AddressRespREST()
         tmpRestObject.id = pAddress.id
@@ -79,8 +78,6 @@ class JSONMapper {
 
         tmpRestObject
     }
-
-
 
     def static from(Bill pBill){
         def tmpRestObject = new BillRespREST()
@@ -107,7 +104,6 @@ class JSONMapper {
         tmpRestObject
     }
 
-
     def static from(Currency pCurrency){
         def tmpRestObject = new CurrencyRespREST()
         tmpRestObject.id = pCurrency.id
@@ -117,7 +113,6 @@ class JSONMapper {
         tmpRestObject
 
     }
-
 
     def static from(BillStateType pBillState){
         def tmpRestObject = new BillStateTypeRespREST()
@@ -129,8 +124,6 @@ class JSONMapper {
 
     }
 
-
-
     def static from(BillPaymentType pBillPayment){
         def tmpRestObject = new BillPaymentTypeRespREST()
         tmpRestObject.id = pBillPayment.id
@@ -140,7 +133,6 @@ class JSONMapper {
         tmpRestObject
 
     }
-
 
     def static from(ExchangeRate pExchangeRate){
         def tmpRestObject = new ExchangeRateRespREST()
@@ -154,7 +146,7 @@ class JSONMapper {
     }
 
     def static from(Payment pPayment){
-        def  tmpRestObject = new PaymentRespREST()
+        def tmpRestObject = new PaymentRespREST()
             tmpRestObject.id = pPayment.id
             tmpRestObject.bank = pPayment.bank
             tmpRestObject.bankReceipt = pPayment.bankReceipt
@@ -166,7 +158,6 @@ class JSONMapper {
         tmpRestObject
     }
 
-
     def static from(CreditCondition pCreditCondition){
         def tmpRestObject = new CreditConditionRespREST()
             tmpRestObject.id = pCreditCondition.id
@@ -176,9 +167,8 @@ class JSONMapper {
         tmpRestObject
     }
 
-
     def static from(BillDetail pBillDetail){
-        def  tmpRestObject = new BillDetailRespREST()
+        def tmpRestObject = new BillDetailRespREST()
             tmpRestObject.id = pBillDetail.id
             tmpRestObject.billId = pBillDetail.bill.id
             tmpRestObject.product = fromBillDetailProduct(pBillDetail.product)
@@ -195,7 +185,7 @@ class JSONMapper {
     }
 
     def static from(ProductType pProductType){
-        def  tmpRestObject = new ProductTypeRespREST()
+        def tmpRestObject = new ProductTypeRespREST()
             tmpRestObject.name = pProductType.name
             tmpRestObject.enabled = pProductType.enabled
             tmpRestObject.registrationDate = pProductType.registrationDate
@@ -204,9 +194,8 @@ class JSONMapper {
         tmpRestObject
     }
 
-
     def static from(Product pProduct){
-        def  tmpRestObject = new ProductRespREST()
+        def tmpRestObject = new ProductRespREST()
 
             tmpRestObject.name = pProduct.name
             tmpRestObject.enabled = pProduct.enabled
@@ -216,33 +205,28 @@ class JSONMapper {
             tmpRestObject.presentationType = from(pProduct.presentationType)
             tmpRestObject.bulkQuantity = pProduct.bulkQuantity
             tmpRestObject.productType = from(pProduct.productType)
-            tmpRestObject.costInColones = pProduct.costInColones
-            tmpRestObject.costInDollars = pProduct.costInDollars
-            tmpRestObject.priceInColones = pProduct.priceInColones
-            tmpRestObject.priceInDollars = pProduct.priceInDollars
+            tmpRestObject.cost = pProduct.cost
+            tmpRestObject.price = pProduct.price
             tmpRestObject.suggestedCost = pProduct.suggestedCost
             tmpRestObject.tariffHeading = pProduct.tariffHeading
             tmpRestObject.commercialName = pProduct.commercialName
             tmpRestObject.utilityPercentage = pProduct.utilityPercentage
             tmpRestObject.salesTax = pProduct.salesTax
+            tmpRestObject.measureUnit = from(pProduct.measureUnit)
         tmpRestObject
     }
 
-
-
     def static fromBillDetailProduct(Product pProduct){
-        def  tmpRestObject = new BillDetailProductRespREST()
+        def tmpRestObject = new BillDetailProductRespREST()
         tmpRestObject.name = pProduct.name
         tmpRestObject.id = pProduct.id
         tmpRestObject.productCode = pProduct.productCode
-        tmpRestObject.priceInColones = pProduct.priceInColones
-        tmpRestObject.priceInDollars = pProduct.priceInDollars
+        tmpRestObject.price = pProduct.price
         tmpRestObject
     }
 
-
     def static from(PresentationType pPresentationType){
-        def  tmpRestObject = new PresentationTypeRespREST()
+        def tmpRestObject = new PresentationTypeRespREST()
             tmpRestObject.name = pPresentationType.name
             tmpRestObject.enabled = pPresentationType.enabled
             tmpRestObject.registrationDate = pPresentationType.registrationDate
@@ -250,7 +234,6 @@ class JSONMapper {
 
         tmpRestObject
     }
-
 
     def static from(IdentificationType pIdentificationType){
         def tmpRestObject = new IdentificationTypeRespREST()
@@ -263,9 +246,8 @@ class JSONMapper {
         tmpRestObject
     }
 
-
     def static from(CustomerType pCustomerType){
-        def  tmpRestObject = new CustomerTypeRespREST()
+        def tmpRestObject = new CustomerTypeRespREST()
             tmpRestObject.name = pCustomerType.name
             tmpRestObject.enabled = pCustomerType.enabled
             tmpRestObject.registrationDate = pCustomerType.registrationDate
@@ -273,6 +255,15 @@ class JSONMapper {
         tmpRestObject
     }
 
+    def static from(MeasureUnit pMeasureType){
+        def tmpMeasureTypeObj = new MeasureUnitREST()
+        tmpMeasureTypeObj.name = pMeasureType.name
+        tmpMeasureTypeObj.enabled = pMeasureType.enabled
+        tmpMeasureTypeObj.registrationDate = pMeasureType.registrationDate
+        tmpMeasureTypeObj.code = pMeasureType.code
+        tmpMeasureTypeObj.id = pMeasureType.id
+        tmpMeasureTypeObj
+    }
 
     def static listFrom(def pListObject){
         def tmpList = new ArrayList()

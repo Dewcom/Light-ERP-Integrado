@@ -7,47 +7,73 @@
             </div>
             <form name="modalCtrl.paymentForm" ng-submit="modalCtrl.submitForm('add')" novalidate="" class="form-validate">
                 <!-- START panel-->
-                <div class="panel panel-default">
+                <div class="panel-body col-lg-12">
+                    <div class="form-group col-lg-6">
+                        <label class="control-label">Código</label>
+                        <input tabindex="1" type="text" name="productCode" ng-model="modalCtrl.selectedProduct.productCode"
+                               class="form-control" disabled="true"/>
+                    </div>
+                </div>
+                <div class="panel-body col-lg-12">
                     <div class="panel-body col-lg-4">
                         <div class="form-group">
-                            <label class="control-label">Monto</label>
-                            <input tabindex="1" type="number" name="amount" required="" ng-model="makePaymentForm.amount" class="form-control"
-                            min="0"/>
-                            <span ng-show="modalCtrl.validateInput('add', 'amount', 'required')" class="text-danger">Este campo es requerido</span>
+                            <label class="control-label">Código</label>
+                            <input tabindex="1" type="text" name="productCode" ng-model="modalCtrl.selectedProduct.productCode"
+                                   class="form-control" disabled="true"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Tipo de presentación</label>
+                            <select tabindex="5" name="presentationType" ng-model="modalCtrl.selectedProduct.presentationType.id"
+                                    ng-options="item.id as item.name for item in modalCtrl.presentationTypeList"
+                                    class="form-control" disabled="true">
+                            </select>
                         </div>
                     </div>
                     <div class="panel-body col-lg-4">
                         <div class="form-group">
-                            <label class="control-label">Banco</label>
-                            <input tabindex="2" type="text" name="bank" ng-model="makePaymentForm.bank" class="form-control" />
+                            <label class="control-label">Nombre</label>
+                            <input tabindex="2" type="text" name="productName" ng-model="modalCtrl.selectedProduct.name"
+                                   class="form-control" disabled="true"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Cantidad por bulto</label>
+                            <input tabindex="6" type="text" name="bulkQuantity" ng-model="modalCtrl.selectedProduct.bulkQuantity" class="form-control" disabled="true"/>
+                        </div>
+                        <div class="form-group" ng-show="modalCtrl.selectedProduct">
+                            <label class="control-label">Descuento</label>
+                            <input tabindex="10" type="number" name="discount" required="" ng-model="modalCtrl.selectedProduct.discount"
+                                   class="form-control" min="0" max="100" maxlength="2"/>
+                            <span ng-show="modalCtrl.validateInput('add', 'discount', 'required')" class="text-danger">Este campo es requerido</span>
                         </div>
                     </div>
                     <div class="panel-body col-lg-4">
                         <div class="form-group">
-                            <label class="control-label">Comprobante o recibo</label>
-                            <input tabindex="3" type="text" name="bankReceipt" ng-model="makePaymentForm.bankReceipt" class="form-control" />
+                            <label class="control-label">Nombre</label>
+                            <input tabindex="2" type="text" name="productName" ng-model="modalCtrl.selectedProduct.name"
+                                   class="form-control" disabled="true"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Cantidad por bulto</label>
+                            <input tabindex="6" type="text" name="bulkQuantity" ng-model="modalCtrl.selectedProduct.bulkQuantity" class="form-control" disabled="true"/>
+                        </div>
+                        <div class="form-group" ng-show="modalCtrl.selectedProduct">
+                            <label class="control-label">Descuento</label>
+                            <input tabindex="10" type="number" name="discount" required="" ng-model="modalCtrl.selectedProduct.discount"
+                                   class="form-control" min="0" max="100" maxlength="2"/>
+                            <span ng-show="modalCtrl.validateInput('add', 'discount', 'required')" class="text-danger">Este campo es requerido</span>
                         </div>
                     </div>
-                    <div class="panel panel-default">
-                        <div class="panel-body col-lg-12">
-                                <div class="form-group">
-                                    <label class="control-label">Observaciones</label>
-                                    <textarea tabindex="4" style="resize: none" name="observation" ng-model="makePaymentForm.observation" class="form-control"></textarea>
-                                </div>
-                        </div>
-                    </div>
-                    <div class="panel-footer">
-                        <div class="clearfix">
-                            <div class="pull-right">
-                                <button uib-tooltip="Crear pago" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="submit" class="btn btn-success btn-lg">Agregar</button>
-                                <button uib-tooltip="Cancelar" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="cancel()" class="btn btn-danger btn-lg">Cancelar</button>
-                            </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="clearfix">
+                        <div class="pull-right">
+                            <button ng-disabled="modalCtrl.addProductToBillForm.$pristine || modalCtrl.addProductToBillForm.$invalid" type="submit" ng-click="ok()" class="btn btn-success btn-lg">Agregar</button>
+                            <button type="button" ng-click="cancel()" class="btn btn-danger btn-lg">Cancelar</button>
                         </div>
                     </div>
                 </div>
                 <!-- END panel-->
             </form>
         </div>
-        <!-- END panel-->
     </script>
 </div>

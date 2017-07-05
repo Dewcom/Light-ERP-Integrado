@@ -7,6 +7,5 @@ class BillDetailProductRespREST {
     Long id
     String productCode
     String name
-    Double priceInColones
-    Double priceInDollars
+    Double price
 }

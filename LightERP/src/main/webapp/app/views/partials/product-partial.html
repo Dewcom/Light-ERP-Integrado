@@ -3,7 +3,7 @@
         <div>
             <div class="col-md-12 dataTableTop">
                 <div class="col-md-9">
-                    <h3>Lista de productos</h3>
+                    <h3>Lista de Productos</h3>
                 </div>
                 <div class="col-md-3" ng-click="controller.openAddModal()">
                     <button uib-tooltip="Agregar nuevo producto" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="submit" class="btn btn-labeled btn-success addButton">
@@ -21,6 +21,7 @@
                     <th>Nombre</th>
                     <th>Tipo de producto</th>
                     <th>Tipo de presentación</th>
+                    <th>Precio</th>
                     <th>Opciones</th>
                 </tr>
                 </thead>
@@ -30,6 +31,7 @@
                     <td>{{ productObj.name }}</td>
                     <td>{{ productObj.productType.name }}</td>
                     <td>{{ productObj.presentationType.name }}</td>
+                    <td>{{ productObj.price | currency : "₡" : 2}}</td>
                     <td>
                         <button uib-tooltip="Ver producto" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="controller.openUpdateModal(productObj)" class="btn btn-sm btn-toolbar">
                             <em class="fa fa-search"></em>
