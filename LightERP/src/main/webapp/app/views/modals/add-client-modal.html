@@ -70,12 +70,15 @@
                                         <div class="form-group">
                                             <label>Identificación</label>
                                             <div class="controls">
-                                                <input type="text" ng-minlength="{{parentController.maxMinLength()}}" ng-maxlength="{{parentController.maxMinLength()}}" name="identification" ng-model="parentController.identification"
-                                                       placeholder="{{parentController.selectedIdentificationType == 2?'3101010101':'112340101'}}" required="required" class="form-control" maxlength="20"/>
+                                                <input type="text" ng-minlength="{{parentController.selectedIdentificationType == 3 ? 9 : parentController.maxMinLength()}}"
+                                                       ng-maxlength="{{parentController.selectedIdentificationType == 3 ? 19 : parentController.maxMinLength()}}"
+                                                       name="identification" ng-model="parentController.identification"
+                                                       placeholder="{{parentController.selectedIdentificationType == 2?'3101010101':'112340101'}}" required="required"
+                                                       class="form-control" maxlength="20"/>
                                                 <span ng-show="formStep1.$submitted &amp;&amp; formStep1.identification.$error.required"
                                                       class="text-danger">Este campo no puede ser vacío</span>
                                                 <span ng-show="formStep1.$submitted &amp;&amp; (formStep1.identification.$error.minlength || formStep1.identification.$error.maxlength)"
-                                                      class="text-danger">Este campo debería ser de {{parentController.maxMinLength()}} dígitos</span>
+                                                      class="text-danger">Este campo debería ser de máximo {{parentController.maxMinLength()}} dígitos</span>
                                             </div>
                                         </div>
                                     </div>
