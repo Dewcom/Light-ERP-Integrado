@@ -1,7 +1,7 @@
 <div>
     <div class="row">
         <div class="col-md-7">
-            <h3>Detalle de factura</h3>
+            <h3>Detalle de Factura</h3>
         </div>
     </div>
     <form class="panel" name="controller.billDetailForm" action="" method="post" novalidate="novalidate">
@@ -239,18 +239,20 @@
                                    class="row-border hover">
                                 <thead>
                                 <tr>
+                                    <th>Fecha</th>
                                     <th>Monto</th>
-                                    <th>Banco</th>
-                                    <th>Recibo bancario</th>
+                                    <th>Cuenta Bancaria</th>
+                                    <th>Comprobante/Recibo</th>
                                     <th>Observaciones</th>
                                     <th ng-show="currentBill.billState.code != 4">Opciones</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr ng-repeat="paymentObj in currentBill.payments">
+                                    <td>{{ paymentObj.paymentDate | date:'dd-MM-yyyy' }}</td>
                                     <td>{{ paymentObj.amount }}</td>
-                                    <td ng-if="paymentObj.bank == null">**SIN BANCO**</td>
-                                    <td ng-if="paymentObj.bank != null">{{ paymentObj.bank }}</td>
+                                    <td ng-if="paymentObj.bankAccount == null">**SIN BANCO**</td>
+                                    <td ng-if="paymentObj.bankAccount != null">{{ paymentObj.bankAccount }}</td>
                                     <td ng-if="paymentObj.bankReceipt == null">**SIN COMPROBANTE**</td>
                                     <td ng-if="paymentObj.bankReceipt != null">{{ paymentObj.bankReceipt }}</td>
                                     <td ng-if="paymentObj.observation == null">**SIN OBSERVACIONES**</td>

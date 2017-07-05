@@ -370,7 +370,7 @@ angular
                 return error.status;
             });
 
-            return updateBillResult;
+            return updatePaymentResult;
         };
 
         billService.billCustomValidator = function (currentBill) {

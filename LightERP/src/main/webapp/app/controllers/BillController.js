@@ -54,7 +54,7 @@
             };
 
             vm.initDate = new Date('2019-10-20');
-            vm.format = 'dd-MM-yyyy'
+            vm.format = 'dd-MM-yyyy';
         }
 
         ////////////////

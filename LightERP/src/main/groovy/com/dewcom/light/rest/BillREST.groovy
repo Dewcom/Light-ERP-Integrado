@@ -5,7 +5,7 @@ import grails.validation.Validateable
 /**
  * Created by chen on 01/02/17.
  */
-class BillRest implements Validateable {
+class BillREST implements Validateable {
     String userName
     Long customerId
     Long billAddress

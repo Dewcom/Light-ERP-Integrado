@@ -124,9 +124,7 @@ class JSONMapper {
         tmpRestObject.id = pBillState.id
         tmpRestObject.code = pBillState.code
         tmpRestObject.description = pBillState.description
-
         tmpRestObject
-
     }
 
 
@@ -136,9 +134,7 @@ class JSONMapper {
         tmpRestObject.id = pBillPayment.id
         tmpRestObject.code = pBillPayment.code
         tmpRestObject.description = pBillPayment.description
-
         tmpRestObject
-
     }
 
 
@@ -154,15 +150,16 @@ class JSONMapper {
     }
 
     def static from(Payment pPayment){
-        def  tmpRestObject = new PaymentRespREST()
+        def tmpRestObject = new PaymentRespREST()
             tmpRestObject.id = pPayment.id
-            tmpRestObject.bank = pPayment.bank
+            tmpRestObject.bankAccount = pPayment.bankAccount
             tmpRestObject.bankReceipt = pPayment.bankReceipt
             tmpRestObject.amount = pPayment.amount
             tmpRestObject.paymentDate = pPayment.paymentDate
             tmpRestObject.billId = pPayment.bill.id
             tmpRestObject.enabled = pPayment.enabled
             tmpRestObject.observation = pPayment.observation
+            tmpRestObject.paymentType = pPayment.paymentType
         tmpRestObject
     }
 
@@ -178,7 +175,7 @@ class JSONMapper {
 
 
     def static from(BillDetail pBillDetail){
-        def  tmpRestObject = new BillDetailRespREST()
+        def tmpRestObject = new BillDetailRespREST()
             tmpRestObject.id = pBillDetail.id
             tmpRestObject.billId = pBillDetail.bill.id
             tmpRestObject.product = fromBillDetailProduct(pBillDetail.product)
@@ -265,7 +262,7 @@ class JSONMapper {
 
 
     def static from(CustomerType pCustomerType){
-        def  tmpRestObject = new CustomerTypeRespREST()
+        def tmpRestObject = new CustomerTypeRespREST()
             tmpRestObject.name = pCustomerType.name
             tmpRestObject.enabled = pCustomerType.enabled
             tmpRestObject.registrationDate = pCustomerType.registrationDate

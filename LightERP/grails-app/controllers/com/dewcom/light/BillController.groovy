@@ -1,6 +1,6 @@
 package com.dewcom.light
 
-import com.dewcom.light.rest.BillRest
+import com.dewcom.light.rest.BillREST
 import com.dewcom.light.rest.ResponseREST
 import com.dewcom.light.rest.UpdateBillRequestREST
 import grails.plugin.springsecurity.annotation.Secured
@@ -85,7 +85,7 @@ class BillController extends RestController {
         log.info request.JSON
 
         ResponseREST tmpResponse = new ResponseREST();
-        BillRest tmpBill = new BillRest(request.JSON.bill);
+        BillREST tmpBill = new BillREST(request.JSON.bill);
         try {
             tmpBill.validate();
             if (tmpBill.hasErrors()) {

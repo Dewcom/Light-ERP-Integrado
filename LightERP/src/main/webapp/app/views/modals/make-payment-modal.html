@@ -1,53 +1,81 @@
 <div class="form-group">
     <script type="text/ng-template" id="/makePaymentModal.html">
         <div ng-controller="BillDetailController as modalCtrl">
-            <div class="modal-header"><button type="button" data-dismiss="modal" aria-hidden="true" class="close"
+            <div class="modal-header">
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="close"
                                               ng-click="close()">×</button>
-                <h4 id="myModalLabel" class="modal-title">Emitir pago</h4>
+                <h4 id="myModalLabel" class="modal-title">Emitir Pago</h4>
             </div>
-            <form name="modalCtrl.paymentForm" ng-submit="modalCtrl.submitForm('add')" novalidate="" class="form-validate">
-                <!-- START panel-->
-                <div class="panel panel-default">
-                    <div class="panel-body col-lg-4">
-                        <div class="form-group">
-                            <label class="control-label">Monto</label>
-                            <input tabindex="1" type="number" name="amount" required="" ng-model="makePaymentForm.amount" class="form-control"
-                            min="0"/>
-                            <span ng-show="modalCtrl.validateInput('add', 'amount', 'required')" class="text-danger">Este campo es requerido</span>
-                        </div>
-                    </div>
-                    <div class="panel-body col-lg-4">
-                        <div class="form-group">
-                            <label class="control-label">Banco</label>
-                            <input tabindex="2" type="text" name="bank" ng-model="makePaymentForm.bank" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="panel-body col-lg-4">
-                        <div class="form-group">
-                            <label class="control-label">Comprobante o recibo</label>
-                            <input tabindex="3" type="text" name="bankReceipt" ng-model="makePaymentForm.bankReceipt" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-body col-lg-12">
+
+            <div class="clearfix panel panel-default">
+                <!---PAYMENT FORM-->
+                <form name="modalCtrl.paymentForm" ng-submit="modalCtrl.submitForm('add')" novalidate="" class="form-validate">
+
+                        <div class="panel-body">
+                            <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label class="control-label">Observaciones</label>
-                                    <textarea tabindex="4" style="resize: none" name="observation" ng-model="makePaymentForm.observation" class="form-control"></textarea>
+                                    <label class="control-label">Fecha</label>
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button uib-tooltip="Calendario" uib-tooltip-trigger="focus" uib-tooltip-placement="top"
+                                                    type="button" ng-click="modalCtrl.open($event)" class="btn btn-default">
+                                                <em class="fa fa-calendar"></em>
+                                            </button>
+                                        </span>
+                                        <input name="paymentDate" type="text" uib-datepicker-popup="{{modalCtrl.format}}"
+                                               ng-model="makePaymentForm.paymentDate" is-open="modalCtrl.opened"
+                                               min-date="modalCtrl.minDate" max-date="'2030-12-31'"
+                                               datepicker-options="modalCtrl.dateOptions" popup-placement="top" ng-required="true"
+                                               current-text="Hoy" clear-text="Limpiar" close-text="Salir" class="form-control"
+                                               onkeydown="return false"/>
+                                    </div>
                                 </div>
-                        </div>
-                    </div>
-                    <div class="panel-footer">
-                        <div class="clearfix">
-                            <div class="pull-right">
-                                <button uib-tooltip="Crear pago" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="submit" class="btn btn-success btn-lg">Agregar</button>
-                                <button uib-tooltip="Cancelar" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="cancel()" class="btn btn-danger btn-lg">Cancelar</button>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="control-label">Monto</label>
+                                    <input tabindex="1" type="number" name="amount" required="" ng-model="makePaymentForm.amount" class="form-control"
+                                           min="0"/>
+                                    <span ng-show="modalCtrl.validateInput('add', 'amount', 'required')" class="text-danger">Este campo es requerido</span>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="control-label">Tipo de Pago</label>
+                                    <input tabindex="1" type="text" name="amount" ng-model="makePaymentForm.paymentType" class="form-control"
+                                           min="0"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="control-label">Cuenta Bancaria</label>
+                                    <input tabindex="2" type="text" name="bank" ng-model="makePaymentForm.bankAccount" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="control-label">Comprobante/Recibo</label>
+                                    <input tabindex="3" type="text" name="bankReceipt" ng-model="makePaymentForm.bankReceipt" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-12">
+                                <label class="control-label">Observaciones</label>
+                                <textarea tabindex="4" style="resize: none" name="observation" ng-model="makePaymentForm.observation" class="form-control"></textarea>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <!-- END panel-->
-            </form>
+                        <div>
+                            <div class="panel-body">
+                                <div class="pull-right">
+                                    <button uib-tooltip="Crear pago" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="submit" class="btn btn-success btn-lg">Agregar</button>
+                                    <button uib-tooltip="Cancelar" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="cancel()" class="btn btn-danger btn-lg">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                <!---END PAYMENT FORM-->
+            </div>
         </div>
-        <!-- END panel-->
     </script>
 </div>

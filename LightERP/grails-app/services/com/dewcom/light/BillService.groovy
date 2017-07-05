@@ -1,7 +1,7 @@
 package com.dewcom.light
 
 import com.dewcom.light.rest.BillDetailRest
-import com.dewcom.light.rest.BillRest
+import com.dewcom.light.rest.BillREST
 import com.dewcom.light.rest.UpdateBillRequestREST
 import grails.transaction.Transactional
 
@@ -48,7 +48,7 @@ class BillService {
         }
     }
 
-    def createBill(BillRest argRestBill) {
+    def createBill(BillREST argRestBill) {
         def savedBill;
         try {
             def configConsecFactura

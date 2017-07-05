@@ -1,8 +1,5 @@
 package com.dewcom.light.rest
 
-import com.dewcom.light.Address
-import com.dewcom.light.Constants
-import com.dewcom.light.Contact
 import grails.validation.Validateable
 
 /**
@@ -10,18 +7,21 @@ import grails.validation.Validateable
  */
 class PaymentREST implements Validateable {
 
+    String paymentDate
     Double amount
-    String bank
+    String paymentType
+    String bankAccount
     String bankReceipt
     Long billId
     String observation
 
-
     static constraints = {
-        bank blank: true, nullable: true
+        bankAccount blank: true, nullable: true
         amount nullable: false
         bankReceipt blank: true, nullable: true
         billId  nullable: false
         observation  nullable: true, blank: true
+        paymentDate blank: false, nullable: false
+        paymentType blank: true, nullable: true
     }
 }

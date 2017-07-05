@@ -10,6 +10,48 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
                               DTOptionsBuilder, DTColumnDefBuilder, APP_CONSTANTS, printService) {
     var vm = this;
     $scope.globalConstants = APP_CONSTANTS;
+    activateCalendar();
+
+    /**=========================================================
+     * Inicializa el calendario
+     =========================================================*/
+
+    function activateCalendar() {
+        vm.today = function () {
+            vm.dt = new Date();
+        };
+        vm.today();
+
+        vm.clear = function () {
+            vm.dt = null;
+        };
+
+        // Disable weekend selection
+        vm.disabled = function (date, mode) {
+            return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
+        };
+
+        vm.toggleMin = function () {
+            vm.minDate = vm.minDate ? null : new Date();
+        };
+        vm.toggleMin();
+
+        vm.open = function ($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            vm.opened = true;
+        };
+
+        vm.dateOptions = {
+            formatYear: 'yy',
+            startingDay: 1
+        };
+
+        vm.initDate = new Date('2019-10-20');
+        vm.format = 'dd-MM-yyyy';
+    }
+
+    ////////////////
 
     var language = {
         "sProcessing": "Procesando...",
@@ -418,6 +460,7 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
     function UpdatePaymentModalInstanceCtrl($scope, $uibModalInstance, paymentObj) {
 
         $scope.currentPayment = JSON.parse(JSON.stringify(paymentObj));
+        $scope.currentPayment.paymentDate = new Date($scope.currentPayment.paymentDate);
 
         $scope.close = function () {
             $uibModalInstance.close('closed');
@@ -502,8 +545,9 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
 
         var newPayment = {
             "billId": $scope.currentBill.id,
+            "paymentDate": $filter('date')($scope.makePaymentForm.paymentDate, "dd-MM-yyyy"),
             "amount": parseFloat($scope.makePaymentForm.amount),
-            "bank": $scope.makePaymentForm.bank,
+            "bankAccount": $scope.makePaymentForm.bankAccount,
             "bankReceipt": $scope.makePaymentForm.bankReceipt,
             "observation": $scope.makePaymentForm.observation
         };
@@ -549,8 +593,9 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
 
         var updatedPayment = {
             "id": $scope.currentPayment.id,
+            "paymentDate": $filter('date')($scope.currentPayment.paymentDate, "dd-MM-yyyy"),
             "amount": parseFloat($scope.currentPayment.amount),
-            "bank": $scope.currentPayment.bank,
+            "bankAccount": $scope.currentPayment.bankAccount,
             "bankReceipt": $scope.currentPayment.bankReceipt,
             "observation": $scope.currentPayment.observation
         };

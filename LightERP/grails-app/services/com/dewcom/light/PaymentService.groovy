@@ -101,12 +101,13 @@ class PaymentService {
                 //actualizamos el objeto bill
                 tmpBill.save()
 
-                tmpPaymentToUpdate.amount = pPaymentREST.amount;
-                tmpPaymentToUpdate.observation = pPaymentREST.observation;
-                tmpPaymentToUpdate.bank = pPaymentREST.bank;
-                tmpPaymentToUpdate.bankReceipt = pPaymentREST.bankReceipt;
+                tmpPaymentToUpdate.amount = pPaymentREST.amount
+                tmpPaymentToUpdate.observation = pPaymentREST.observation
+                tmpPaymentToUpdate.bankAccount = pPaymentREST.bankAccount
+                tmpPaymentToUpdate.bankReceipt = pPaymentREST.bankReceipt
+                tmpPaymentToUpdate.paymentDate = LightUtils.stringToDate(pPaymentREST.paymentDate,"dd-MM-yyyy")
 
-                tmpPaymentToUpdate.save(flush: true, failOnError:true);
+                tmpPaymentToUpdate.save(flush: true, failOnError:true)
             } else {
                 throw new LightRuntimeException(messageSource.getMessage("update.payment.notFound.error", null, Locale.default));
             }
@@ -122,13 +123,16 @@ class PaymentService {
         }
     }
 
+
     def static fromRestPayment(PaymentREST pPaymentREST){
         Payment tmpPayment = new Payment();
+        tmpPayment.paymentDate =  LightUtils.stringToDate(pPaymentREST.paymentDate,"dd-MM-yyyy")
         tmpPayment.amount = pPaymentREST.amount;
-        tmpPayment.bank = pPaymentREST.bank;
+        tmpPayment.bankAccount = pPaymentREST.bankAccount;
         tmpPayment.bankReceipt = pPaymentREST.bankReceipt;
         tmpPayment.bill = Bill.findByIdAndEnabled(pPaymentREST.billId, Constants.ESTADO_ACTIVO);
         tmpPayment.observation = pPaymentREST.observation;
+        tmpPayment.paymentType = pPaymentREST.paymentType;
         return tmpPayment;
     }
 

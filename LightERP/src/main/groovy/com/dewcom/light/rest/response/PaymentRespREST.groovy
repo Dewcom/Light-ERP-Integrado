@@ -8,8 +8,9 @@ class PaymentRespREST {
     Date paymentDate
     byte enabled
     Double amount
-    String bank
+    String bankAccount
     String bankReceipt
     Long billId
     String observation
+    String paymentType
 }
