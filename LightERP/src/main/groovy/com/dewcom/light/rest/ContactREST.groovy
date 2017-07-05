@@ -1,6 +1,12 @@
-package com.dewcom.light
+package com.dewcom.light.rest
 
-class Contact {
+import grails.validation.Validateable
+
+/**
+ * Created by lchen on 6/27/17.
+ */
+class ContactREST implements Validateable {
+    Long customerId
     String name
     String firstLastName
     String secondLastName
@@ -10,11 +16,6 @@ class Contact {
     String phoneNumber2
     String mobile
     String email
-    Byte enabled = Constants.ESTADO_ACTIVO
-    Date registrationDate = new Date()
-    Customer customer
-    static belongsTo = [Customer]
-
     static constraints = {
         name blank: false
         firstLastName blank: false
@@ -26,5 +27,4 @@ class Contact {
         mobile nullable: true, blank: true
         email nullable: true, blank: true
     }
-
 }

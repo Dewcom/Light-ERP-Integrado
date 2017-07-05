@@ -1,12 +1,14 @@
 import com.dewcom.light.BillPaymentType
 import com.dewcom.light.BillStateType
 import com.dewcom.light.Configuration
-import com.dewcom.light.Constants
 import com.dewcom.light.CreditCondition
 import com.dewcom.light.Currency
 import com.dewcom.light.ExchangeRate
 import com.dewcom.light.CustomerType
 import com.dewcom.light.IdentificationType
+import com.dewcom.light.MeasureUnit
+import com.dewcom.light.PresentationType
+import com.dewcom.light.ProductType
 import com.dewcom.light.Role
 import com.dewcom.light.User
 import com.dewcom.light.UserRole
@@ -14,13 +16,14 @@ import com.dewcom.light.UserRole
 class BootStrap {
 
     def init = {
-        //Creacion de contantes por Defecto
+        //Creacion de constantes por defecto
         if(!IdentificationType.findByCode(IdentificationType.PHYSICAL_CODE)){
           def physicalClient = new IdentificationType()
           physicalClient.name = "Cédula Física"
           physicalClient.code = IdentificationType.PHYSICAL_CODE
           physicalClient.save()
         }
+
         if(!IdentificationType.findByCode(IdentificationType.COMPANY_CODE)){
             def companyClient = new IdentificationType()
             companyClient.name = "Cédula Jurídica"
@@ -36,7 +39,7 @@ class BootStrap {
         }
 
         //Creacion de Tipos de Clientes por Defecto
-        if(!CustomerType.findByName("Contado & Credito")){
+        if(!CustomerType.findByName("Contado & Crédito")){
             def companyClient = new CustomerType()
             companyClient.name = "Contado & Crédito"
             companyClient.save()
@@ -131,8 +134,6 @@ class BootStrap {
             tmpCreditCon.save()
         }
 
-
-
         if(!CreditCondition.findByCode(CreditCondition.CREDITO_TREINTA_DIAS)){
             def tmpCreditCon = new CreditCondition()
             tmpCreditCon.description = "30 días"
@@ -166,6 +167,107 @@ class BootStrap {
             tmpExchageRate.currency = Currency.findByCurrencyCode(Currency.MONEDA_COLONES)
             tmpExchageRate.value = 1D
             tmpExchageRate.save()
+        }
+
+        //Tipo de producto
+        if(!ProductType.findByCode(ProductType.NATIONAL)){
+            def productType = new ProductType()
+            productType.name = "Nacional"
+            productType.code = ProductType.NATIONAL
+            productType.save()
+        }
+
+        if(!ProductType.findByCode(ProductType.IMPORTED)){
+            def productType = new ProductType()
+            productType.name = "Importado"
+            productType.code = ProductType.IMPORTED
+            productType.save()
+        }
+
+        if(!ProductType.findByCode(ProductType.MANUFACTURED)){
+            def productType = new ProductType()
+            productType.name = "Manufacturado"
+            productType.code = ProductType.MANUFACTURED
+            productType.save()
+        }
+
+        //Tipo de presentacion
+        if(!PresentationType.findByCode(PresentationType.UNITS)){
+            def presentationType = new PresentationType()
+            presentationType.name = "Unidades"
+            presentationType.code = PresentationType.UNITS
+            presentationType.save()
+        }
+
+        if(!PresentationType.findByCode(PresentationType.SACK_50KG)){
+            def presentationType = new PresentationType()
+            presentationType.name = "Saco de 50 kg"
+            presentationType.code = PresentationType.SACK_50KG
+            presentationType.save()
+        }
+
+        if(!PresentationType.findByCode(PresentationType.BAG_5KG)){
+            def presentationType = new PresentationType()
+            presentationType.name = "Bolsa de 5 kg"
+            presentationType.code = PresentationType.BAG_5KG
+            presentationType.save()
+        }
+
+        if(!PresentationType.findByCode(PresentationType.BAG_10KG)){
+            def presentationType = new PresentationType()
+            presentationType.name = "Bolsa de 10 kg"
+            presentationType.code = PresentationType.BAG_10KG
+            presentationType.save()
+        }
+
+        if(!PresentationType.findByCode(PresentationType.BAG_25KG)){
+            def presentationType = new PresentationType()
+            presentationType.name = "Bolsa de 25 kg"
+            presentationType.code = PresentationType.BAG_25KG
+            presentationType.save()
+        }
+
+        //Unidades de medida
+        if(!MeasureUnit.findByCode(MeasureUnit.KILOGRAMS)){
+            def measureType = new MeasureUnit()
+            measureType.name = "Kilogramos"
+            measureType.code = MeasureUnit.KILOGRAMS
+            measureType.save()
+        }
+
+        if(!MeasureUnit.findByCode(MeasureUnit.GRAMS)){
+            def measureType = new MeasureUnit()
+            measureType.name = "Gramos"
+            measureType.code = MeasureUnit.GRAMS
+            measureType.save()
+        }
+
+        if(!MeasureUnit.findByCode(MeasureUnit.LITERS)){
+            def measureType = new MeasureUnit()
+            measureType.name = "Litros"
+            measureType.code = MeasureUnit.LITERS
+            measureType.save()
+        }
+
+        if(!MeasureUnit.findByCode(MeasureUnit.MINILITERS)){
+            def measureType = new MeasureUnit()
+            measureType.name = "Minilitros"
+            measureType.code = MeasureUnit.MINILITERS
+            measureType.save()
+        }
+
+        if(!MeasureUnit.findByCode(MeasureUnit.OUNCES)){
+            def measureType = new MeasureUnit()
+            measureType.name = "Onzas"
+            measureType.code = MeasureUnit.OUNCES
+            measureType.save()
+        }
+
+        if(!MeasureUnit.findByCode(MeasureUnit.UNITS)){
+            def measureType = new MeasureUnit()
+            measureType.name = "Unidades"
+            measureType.code = MeasureUnit.UNITS
+            measureType.save()
         }
 
         //se crea la configuracion de  num factura con el primer numero

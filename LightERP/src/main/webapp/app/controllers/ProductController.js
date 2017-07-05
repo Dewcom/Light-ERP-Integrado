@@ -70,6 +70,14 @@
             });
 
             /**=========================================================
+             * Unidades de medida
+             =========================================================*/
+
+            productService.getAllMeasureUnits().then(function (response) {
+                vm.measureUnitList = response;
+            });
+
+            /**=========================================================
              * Datatables
              =========================================================*/
 
@@ -132,7 +140,7 @@
                 var modalInstance = $uibModal.open({
                     templateUrl: '/addProductModal.html',
                     controller: AddModalInstanceCtrl,
-                    size: 'lg',
+                    size: 'md',
                     backdrop: 'static', // No cierra clickeando fuera
                     keyboard: false // No cierra con escape
                 });
@@ -150,7 +158,7 @@
                 var modalInstance = $uibModal.open({
                     templateUrl: '/updateProductModal.html',
                     controller: UpdateModalInstanceCtrl,
-                    size: 'lg',
+                    size: 'md',
                     resolve: {
                         product: function () {
                             return productObj;
@@ -220,14 +228,13 @@
                     "productType": $scope.addProductForm.productType,
                     "presentationType": $scope.addProductForm.presentationType,
                     "bulkQuantity": parseFloat($scope.addProductForm.bulkQuantity),
-                    "priceInDollars": parseFloat($scope.addProductForm.priceInDollars),
-                    "priceInColones": parseFloat($scope.addProductForm.priceInColones),
-                    "costInDollars": parseFloat($scope.addProductForm.costInDollars),
-                    "costInColones": parseFloat($scope.addProductForm.costInColones),
+                    "price": parseFloat($scope.addProductForm.price),
+                    "cost": parseFloat($scope.addProductForm.cost),
                     "suggestedCost": parseFloat($scope.addProductForm.suggestedCost),
                     "tariffHeading": $scope.addProductForm.tariffHeading,
                     "registrationDate": $scope.addProductForm.registrationDate,
-                    "utilityPercentage": parseInt($scope.addProductForm.utilityPercentage)
+                    "utilityPercentage": parseInt($scope.addProductForm.utilityPercentage),
+                    "measureUnit": $scope.addProductForm.measureUnit
                 };
                 console.log(newProduct);
                 productService.addProduct(newProduct).then(function (response) {
@@ -273,13 +280,12 @@
                     "productType": $scope.currentProduct.productType.id,
                     "presentationType": $scope.currentProduct.presentationType.id,
                     "bulkQuantity": parseFloat($scope.currentProduct.bulkQuantity),
-                    "priceInDollars": parseFloat($scope.currentProduct.priceInDollars),
-                    "priceInColones": parseFloat($scope.currentProduct.priceInColones),
-                    "costInDollars": parseFloat($scope.currentProduct.costInDollars),
-                    "costInColones": parseFloat($scope.currentProduct.costInColones),
+                    "price": parseFloat($scope.currentProduct.price),
+                    "cost": parseFloat($scope.currentProduct.cost),
                     "suggestedCost": parseFloat($scope.currentProduct.suggestedCost),
                     "tariffHeading": $scope.currentProduct.tariffHeading,
-                    "utilityPercentage": parseInt($scope.currentProduct.utilityPercentage)
+                    "utilityPercentage": parseInt($scope.currentProduct.utilityPercentage),
+                    "measureUnit": $scope.currentProduct.measureUnit.id
                 };
                 console.log(updatedProduct);
                 productService.updateProduct(updatedProduct).then(function (response) {
@@ -329,6 +335,8 @@
             UpdateModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', 'product'];
             function UpdateModalInstanceCtrl($scope, $uibModalInstance, product) {
                 var vm = this;
+
+                console.log(product);
 
                 $scope.currentProduct = JSON.parse(JSON.stringify(product));
 
