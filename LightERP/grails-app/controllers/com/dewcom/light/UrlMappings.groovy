@@ -37,5 +37,7 @@ class UrlMappings {
         post "/api/creditCondition"(controller: 'creditCondition', action: 'create')
         post "/api/currency"(controller: 'currency', action: 'create')
         post "/api/exchangeRate"(controller: 'exchangeRate', action: 'create')
+        //contact
+        post "/api/customer/contact"(controller: 'contact', action: 'create')
     }
 }

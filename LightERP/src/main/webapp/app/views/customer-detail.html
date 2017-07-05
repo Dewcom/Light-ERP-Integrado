@@ -272,6 +272,19 @@
                 </form>
             </uib-tab>
             <uib-tab heading="CONTACTOS">
+                <div ng-controller="ContactController as contactController">
+                <div ng-if="parentController.customerContacts.length > 0" class="mb">
+                    <hr class="hidden-print"/>
+                    <div class="clearfix">
+                        <button uib-tooltip="Agregar nuevo contacto" uib-tooltip-trigger="focus" uib-tooltip-placement="top" ng-show="currentBill.billNumber == null" type="button"
+                                ng-click="contactController.openCreateModal('/addContactModal.html','md',currentCustomer.id )"
+                                class="btn btn-labeled btn-success pull-right">
+                                      <span class="btn-label">
+                                         <em class="fa fa-plus"></em>
+                                      </span>Agregar
+                        </button>
+                    </div>
+                </div>
                 <hr class="hidden-print"/>
                 <div ng-if="parentController.customerContacts.length == 0">
                     <div class="row col-lg-12 col-xs-6 pv">
@@ -282,18 +295,17 @@
                             <h4>El cliente no posee contactos</h4>
                         </div>
                         <div class="col-lg-2 mt">
-                            <button uib-tooltip="Agregar nuevo contacto" uib-tooltip-trigger="focus" uib-tooltip-placement="top"
-                                ng-show="currentBill.billNumber == null" type="button"
-                                ng-click="controller.disableBill(currentBill.id)"
-                                class="btn btn-labeled btn-success pull-right">
-                                    <span class="btn-label">
-                                     <em class="fa fa-plus"></em>
-                                    </span>Agregar
+                            <button uib-tooltip="Agregar nuevo contacto" uib-tooltip-trigger="focus" uib-tooltip-placement="top" ng-show="currentBill.billNumber == null" type="button"
+                                    ng-click="contactController.openCreateModal('/addContactModal.html','md',currentCustomer.id )"
+                                    class="btn btn-labeled btn-success pull-right">
+                                      <span class="btn-label">
+                                         <em class="fa fa-plus"></em>
+                                      </span>Agregar
                             </button>
                         </div>
                     </div>
                 </div>
-                <div ng-controller="ContactController as contactController">
+
                     <div class="row">
                         <div ng-repeat="customerContact in parentController.customerContacts" class="col-md-4">
                             <div class="panel panel-default">
@@ -322,7 +334,7 @@
                                                 class="btn btn-sm btn-danger  pull-right">
                                             <em class="fa fa-trash-o"></em>
                                         </button>
-                                        <button uib-tooltip="Ver contacto" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="contactController.open('md', customerContact, '/editContactModal.html')" class="btn btn-sm btn-toolbar pull-right">
+                                        <button uib-tooltip="Ver contacto" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="contactController.openEditModal('md', customerContact, '/editContactModal.html')" class="btn btn-sm btn-toolbar pull-right">
                                             <em class="fa fa-search"></em>
                                         </button>
 

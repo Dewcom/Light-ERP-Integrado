@@ -42,6 +42,24 @@ angular
             return updateContactResult;
         }
 
+        contactService.createContact = function (newContact) {
+            var createContactResult = $http({
+                method: 'POST',
+                url: APP_CONSTANTS.appURL + 'customer/contact',
+                data: newContact,
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            }).then(function (response) {
+                return response.data;
+            }, function (error) {
+                console.log(error);
+                return error.status;
+            });
+
+            return createContactResult;
+        }
+
         contactService.disableContact = function (contactId) {
 
             var disableContactResutl = $http({
