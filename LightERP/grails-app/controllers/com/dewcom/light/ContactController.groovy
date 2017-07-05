@@ -5,6 +5,7 @@ import com.dewcom.light.rest.ResponseREST
 import com.dewcom.light.rest.UpdateContactRequestREST
 import com.dewcom.light.rest.UpdateCustomerRequestREST
 import grails.converters.JSON
+import com.dewcom.light.rest.ContactREST
 import grails.plugin.springsecurity.annotation.Secured
 
 class ContactController extends RestController {
@@ -86,9 +87,8 @@ class ContactController extends RestController {
         log.info request.JSON
 
         ResponseREST tmpResponse = new ResponseREST();
-        Contact  tmpContact = new Contact(request.JSON);
+        ContactREST  tmpContact = new ContactREST(request.JSON);
         try {
-
 
             tmpContact.validate();
             if (tmpContact.hasErrors()) {

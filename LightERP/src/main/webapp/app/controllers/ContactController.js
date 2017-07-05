@@ -74,7 +74,7 @@
             vm.submitted = false;
             vm.validateInput = function(action , name, type) {
                 if(action == 'add'){
-                    var input = vm.productForm[name];
+                    var input = vm.addContactForm[name];
                     return (input.$dirty || vm.submitted) && input.$error[type];
 
                 }else if(action == 'modify'){
@@ -88,8 +88,8 @@
                 vm.submitted = true;
 
                 if(action == 'add'){
-                    if (vm.productForm.$valid) {
-                        addProduct();
+                    if (vm.addContactForm.$valid) {
+                        addContact();
                     } else {
                         console.log('Not valid!!');
                         return false;
@@ -112,10 +112,10 @@
          * Module: EditContactModal
          =========================================================*/
 
-        vm.open = function (size,object, template) {
+        vm.openEditModal = function (size,object, template) {
             var modalInstance = $uibModal.open({
                 templateUrl: template,
-                controller: ModalInstanceCtrl,
+                controller: EditContactModalInstanceCtrl,
                 resolve: {
                     contact: function () {
                         return object;
@@ -137,8 +137,8 @@
         // Please note that $uibModalInstance represents a modal window (instance) dependency.
         // It is not the same as the $uibModal service used above.
 
-        ModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', 'contact'];
-        function ModalInstanceCtrl($scope, $uibModalInstance,contact) {
+            EditContactModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', 'contact'];
+            function EditContactModalInstanceCtrl($scope, $uibModalInstance,contact) {
             $scope.currentContact = contact;
             $scope.contactToUpdate = new Contact(contact.name, contact.firstLastName, contact.secondLastName, contact.email, contact.phoneNumber1, contact.phoneNumber2, contact.jobTitle, contact.department, contact.mobile);
 
@@ -151,6 +151,48 @@
                 $uibModalInstance.dismiss('cancel');
             };
         }
+
+            /**=========================================================
+             * Module: addContactModal
+             =========================================================*/
+
+            vm.openCreateModal = function (template, size, customerId) {
+
+                var modalInstance = $uibModal.open({
+                    templateUrl: template,
+                    controller: CreateContactModalInstanceCtrl,
+                    resolve: {
+                        customerId: function () {
+                            return customerId;
+                        }
+                        },
+                    size: size,
+                    backdrop: 'static', // No cierra clickeando fuera
+                    keyboard: false // No cierra con escape
+                });
+
+                var state = $('#modal-state');
+                modalInstance.result.then(function () {
+                    state.text('Modal dismissed with OK status');
+                }, function () {
+                    state.text('Modal dismissed with Cancel status');
+                });
+            };
+
+            // Please note that $uibModalInstance represents a modal window (instance) dependency.
+            // It is not the same as the $uibModal service used above.
+
+            CreateContactModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', 'customerId'];
+            function CreateContactModalInstanceCtrl($scope, $uibModalInstance, customerId) {
+                $scope.customerId = customerId
+                $scope.close = function () {
+                    $uibModalInstance.close('closed');
+                };
+
+                $scope.cancel = function () {
+                    $uibModalInstance.dismiss('cancel');
+                };
+            }
 
 
         /**=========================================================
@@ -198,6 +240,40 @@
             });
             $scope.close();
         };
+
+            /**=========================================================
+             * crear contacto
+             =========================================================*/
+            function addContact  () {
+
+                var newContact = new Contact($scope.customerId, $scope.contactToCreate.name, $scope.contactToCreate.firstLastName, $scope.contactToCreate.secondLastName, $scope.contactToCreate.email, $scope.contactToCreate.phoneNumber1, $scope.contactToCreate.phoneNumber2, $scope.contactToCreate.jobTitle, $scope.contactToCreate.department, $scope.contactToCreate.mobile);
+
+                contactService.createContact(newContact).then(function (response) {
+                    var toasterdata;
+
+                    if (response.code == "0") {
+                        toasterdata = {
+                            type: 'success',
+                            title: 'Contacto',
+                            text: response.message
+                        };
+                    } else {
+                        toasterdata = {
+                            type: 'warning',
+                            title: 'Contacto',
+                            text: response.message
+                        };
+
+                    }
+
+                    $timeout(function(){ pop(toasterdata); }, 1000);
+                    $state.reload();
+
+                }, function (error) {
+                    console.log(error);
+                });
+                $scope.close();
+            };
 
         /**=========================================================
          * Eliminar contacto
@@ -265,7 +341,7 @@
         }*/
 
         //defaultContructor
-        var Contact = function(name, firstLastName, secondLastName, email, phoneNumber1, phoneNumber2, jobTitle, department, mobile){
+        var Contact = function(customerId, name, firstLastName, secondLastName, email, phoneNumber1, phoneNumber2, jobTitle, department, mobile){
             this.name = name;
             this.firstLastName = firstLastName;
             this.secondLastName = secondLastName;
@@ -275,6 +351,7 @@
             this.jobTitle = jobTitle;
             this.department = department;
             this.mobile = mobile;
+            this.customerId = customerId;
         }
 
     }

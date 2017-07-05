@@ -1,6 +1,6 @@
 package com.dewcom.light
 
-import com.dewcom.light.rest.CustomerREST
+import com.dewcom.light.rest.ContactREST
 import com.dewcom.light.rest.UpdateContactRequestREST
 import com.dewcom.light.rest.UpdateCustomerRequestREST
 import grails.transaction.Transactional
@@ -46,10 +46,10 @@ class ContactService {
     }
 
 
-
-    def createContact(Contact pcontact) {
+    def createContact(ContactREST pcontact) {
         try {
-            pcontact.save(flush: true, failOnError:true)
+            def contact = fromRestContact(pcontact)
+            contact.save(flush: true, failOnError:true)
         } catch (Exception e) {
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("create.contact.error", null, Locale.default));
@@ -95,6 +95,21 @@ class ContactService {
               throw new LightRuntimeException(messageSource.getMessage("update.contact.error", null, Locale.default));
             }
         }
+    }
+
+    def static fromRestContact(ContactREST pContactRest){
+        Contact tmpContact = new Contact();
+        tmpContact.name = pContactRest.name;
+        tmpContact.firstLastName = pContactRest.firstLastName;
+        tmpContact.secondLastName = pContactRest.secondLastName;
+        tmpContact.phoneNumber1 = pContactRest.phoneNumber1;
+        tmpContact.phoneNumber2 = pContactRest.phoneNumber2;
+        tmpContact.mobile = pContactRest.mobile;
+        tmpContact.jobTitle = pContactRest.jobTitle;
+        tmpContact.department = pContactRest.department;
+        tmpContact.email = pContactRest.email;
+        tmpContact.customer = Customer.findById(pContactRest.customerId as Long);
+        return tmpContact;
     }
 
 

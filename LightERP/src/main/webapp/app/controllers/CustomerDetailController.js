@@ -4,10 +4,10 @@ angular
     .module('app.client')
     .controller('CustomerDetailController', CustomerDetailController);
 
-CustomerDetailController.$inject = ['$http', '$state', '$stateParams', '$scope', 'customerTypeService',
+CustomerDetailController.$inject = ['$uibModal', '$http', '$state', '$stateParams', '$scope', 'customerTypeService',
                                     'identificationTypeService', 'customerService', 'toaster', '$resource',
                                     '$timeout', '$filter', 'APP_CONSTANTS'];
-function CustomerDetailController($http, $state, $stateParams, $scope, customerTypeService,
+function CustomerDetailController( $uibModal, $http, $state, $stateParams, $scope, customerTypeService,
                                   identificationTypeService, customerService, toaster, $resource, $timeout, $filter, APP_CONSTANTS) {
     var vm = this;
 
@@ -101,7 +101,6 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
             console.log(response);
             vm.customerContacts = response;
         });
-
     }
 
     //REGRESA A LA PANTALLA DE LISTA DE CLIENTES
@@ -145,7 +144,7 @@ function CustomerDetailController($http, $state, $stateParams, $scope, customerT
             "discountPercentage": $scope.currentCustomer.discountPercentage,
             "creditLimit": $scope.currentCustomer.creditLimit,
             "identificationType": $scope.currentCustomer.selectedIdentificationType,
-            "customerType": $scope.currentCustomer.selectedCustomerType
+            "customerType": $scope.currentCustomer.selectedCustomerType,
         };
         console.log(updatedCustomer);
         customerService.updateCustomer(updatedCustomer).then(function (response) {
