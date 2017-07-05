@@ -13,7 +13,7 @@
                                 customerTypeService, identificationTypeService, toaster, $state, $filter, $timeout,
                                 ngDialog, $scope, userService, LOCATION, APP_CONSTANTS) {
         var vm = this;
-        vm.globalConstants = APP_CONSTANTS
+        vm.globalConstants = APP_CONSTANTS;
         vm.addresses = [];
 
         vm.addCustomerForm = {};
@@ -99,7 +99,7 @@
                         return 10;
                         break;
                     case vm.globalConstants.CUSTOMER_IDENT_TYPE_PASSPORT:
-                        return 19
+                        return 9;
                         break;
                     default:
                         return -1
