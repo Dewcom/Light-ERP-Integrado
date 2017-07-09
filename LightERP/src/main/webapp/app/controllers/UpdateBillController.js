@@ -329,7 +329,7 @@ function UpdateBillController(DTOptionsBuilder, DTColumnDefBuilder, $http, $stat
             "customerId": vm.currentBill.customer.id,
             "exchangeRate": parseFloat(vm.currentBill.exchangeRate),
             "billPaymentTypeId": vm.currentBill.billPaymentType.code,
-            "creditConditionId": vm.currentBill.billPaymentType.code == APP_CONSTANTS.PAYMENT_TYPE_CREDIT_CODE ? vm.currentBill.creditCondition.id : null,
+            "creditConditionId": vm.currentBill.billPaymentType.code == APP_CONSTANTS.PAYMENT_TYPE_CREDIT_CODE ? vm.currentBill.creditCondition.code : null,
             "currencyId": vm.currentBill.currency.id,
             "billStateId": billStateId,
             "billDate": $filter('date')(vm.billDate, "dd-MM-yyyy"),
@@ -504,6 +504,7 @@ function UpdateBillController(DTOptionsBuilder, DTColumnDefBuilder, $http, $stat
     };
 
     function addProductToUpdateBill(selectedProduct, linePrice, currentProduct) {
+        console.log(selectedProduct)
 
         var productToAdd = {
             "productId": selectedProduct.id,
@@ -683,8 +684,8 @@ function UpdateBillController(DTOptionsBuilder, DTColumnDefBuilder, $http, $stat
      =========================================================*/
 
     vm.resetCreditCondition = function () {
-        if(vm.currentBill.billPaymentType.id == APP_CONSTANTS.PAYMENT_TYPE_CASH_CODE){
-            vm.currentBill.creditCondition.id = null;
+        if(vm.currentBill.billPaymentType.code == APP_CONSTANTS.PAYMENT_TYPE_CASH_CODE){
+            vm.currentBill.creditCondition.code = null;
         }
     };
 

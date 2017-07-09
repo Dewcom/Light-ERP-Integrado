@@ -91,12 +91,12 @@ angular
                                     {
                                         border: [false, false, false, false],
                                         text: [
-                                            {text: 'EMPRESA' + '\n', fontSize: 10, bold: true},
+                                            {text: ' Espyco Inc. S.A' + '\n', fontSize: 10, bold: true},
                                             'CEDULA\n',
-                                            'DIRECCION\n',
-                                            'TELEFONO\n',
-                                            'CORREO\n',
-                                            'WEBSITE'
+                                            'Moravia, San Jeronimo, Costado Sur del Parque\n',
+                                            '+506 2292 4141\n',
+                                            'info@espyco.com\n',
+                                            'www.espyco.com'
                                         ]
                                     },
                                     {
