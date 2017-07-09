@@ -20,18 +20,15 @@ class ProductRest implements Validateable{
     String tariffHeading // partida arancelaria
     String commercialName
     double price
-    double salesTax = Constants.SALES_TAX
+    double productTax
     double utilityPercentage
     Byte enabled = Constants.ESTADO_ACTIVO
     Date registrationDate = new Date()
     Integer measureUnit
 
     static constraints = {
-        bulkQuantity nullable: true
-        suggestedCost nullable: true
         tariffHeading blank: true
         commercialName null: true, blank: true
-        utilityPercentage nullable: true
         productCode blank: false, nullable: false
         name blank: false, nullable: false
         presentationType nullable: false

@@ -31,7 +31,7 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label">Utilidad</label>
-                            <input tabindex=11 type="text" name="utilityPercentage" ng-model="currentProduct.utilityPercentage" ng-pattern="/^[0-9.,]+$/"
+                            <input tabindex="10" type="text" name="utilityPercentage" ng-model="currentProduct.utilityPercentage" ng-pattern="/^[0-9.,]+$/"
                                    class="form-control" min="0"/>
                             <span ng-show="modalCtrl.validateInput('modify', 'utilityPercentage', 'pattern')" class="text-danger">Solamente números permitidos</span>
                         </div>
@@ -57,8 +57,14 @@
                             <span ng-show="modalCtrl.validateInput('modify', 'cost', 'pattern')" class="text-danger">Solamente números permitidos</span>
                         </div>
                         <div class="form-group">
+                            <label class="control-label">Impuestos</label>
+                            <input tabindex="11" type="text" name="productTax" ng-model="currentProduct.productTax" ng-pattern="/^[0-9.,]+$/"
+                                   class="form-control" min="0"/>
+                            <span ng-show="modalCtrl.validateInput('modify', 'productTax', 'pattern')" class="text-danger">Solamente números permitidos</span>
+                        </div>
+                        <div class="form-group">
                             <label class="control-label">Partida arancelaria</label>
-                            <input tabindex="11" type="text" name="tariffHeading" ng-model="currentProduct.tariffHeading" class="form-control"/>
+                            <input tabindex="13" type="text" name="tariffHeading" ng-model="currentProduct.tariffHeading" class="form-control"/>
                         </div>
                     </div>
                     <div class="panel-body col-lg-4">

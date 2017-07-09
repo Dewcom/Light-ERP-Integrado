@@ -57,8 +57,14 @@
                             <span ng-show="modalCtrl.validateInput('add', 'cost', 'pattern')" class="text-danger">Solamente números permitidos</span>
                         </div>
                         <div class="form-group">
+                            <label class="control-label">Impuestos</label>
+                            <input tabindex="11" type="text" name="productTax" ng-model="addProductForm.productTax" ng-pattern="/^[0-9.,]+$/"
+                                   class="form-control" min="0"/>
+                            <span ng-show="modalCtrl.validateInput('add', 'productTax', 'pattern')" class="text-danger">Solamente números permitidos</span>
+                        </div>
+                        <div class="form-group">
                             <label class="control-label">Partida arancelaria</label>
-                            <input tabindex="11" type="text" name="tariffHeading" ng-model="addProductForm.tariffHeading" class="form-control"/>
+                            <input tabindex="13" type="text" name="tariffHeading" ng-model="addProductForm.tariffHeading" class="form-control"/>
                         </div>
                     </div>
                     <div class="panel-body col-lg-4">

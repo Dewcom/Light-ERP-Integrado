@@ -512,8 +512,8 @@ function UpdateBillController(DTOptionsBuilder, DTColumnDefBuilder, $http, $stat
             "quantity": selectedProduct.quantity,
             "linePrice": parseFloat(linePrice),
             "discountPercentage": selectedProduct.discount,
-            "taxPercentage": selectedProduct.tax,
-            "subTotal": parseFloat(calculateSubtotal(selectedProduct.quantity, linePrice, selectedProduct.discount, selectedProduct.tax)),
+            "taxPercentage": selectedProduct.productTax,
+            "subTotal": parseFloat(calculateSubtotal(selectedProduct.quantity, linePrice, selectedProduct.discount, selectedProduct.productTax)),
             "product" : currentProduct
         };
 
@@ -560,7 +560,6 @@ function UpdateBillController(DTOptionsBuilder, DTColumnDefBuilder, $http, $stat
             vm.selectedProduct = product;
             vm.selectedProduct.quantity = 1;
             vm.selectedProduct.discount = 0;
-            vm.selectedProduct.tax = 0;
             vm.selectedProduct.calcDollarPrice = product.price / rate;
         };
 
@@ -591,9 +590,7 @@ function UpdateBillController(DTOptionsBuilder, DTColumnDefBuilder, $http, $stat
 
         var totalAfterDiscount = tmpSubTotal - (tmpSubTotal * (discount / 100));
 
-        var subTotal = totalAfterDiscount + (totalAfterDiscount * (tax / 100));
-
-        return subTotal;
+        return totalAfterDiscount + (totalAfterDiscount * (tax / 100));
     }
 
     function calculateTotalAmount(addedProductList) {

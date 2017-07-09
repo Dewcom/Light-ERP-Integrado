@@ -582,7 +582,6 @@
                 vm.selectedProduct = product;
                 vm.selectedProduct.quantity = 1;
                 vm.selectedProduct.discount = 0;
-                vm.selectedProduct.tax = 0;
                 vm.selectedProduct.calcDollarPrice = product.price / rate;
                 vm.currency = currency;
             };
@@ -636,9 +635,9 @@
                 "price": selectedProduct.price,
                 "linePrice": linePrice,
                 "discountPercentage": selectedProduct.discount,
-                "taxPercentage": selectedProduct.tax,
+                "taxPercentage": selectedProduct.productTax,
                 "subtotal": calculateSubtotal(selectedProduct.quantity, linePrice,
-                    selectedProduct.discount, selectedProduct.tax)
+                    selectedProduct.discount, selectedProduct.productTax)
             };
 
             var tmpList = billService.getAddedProductList();

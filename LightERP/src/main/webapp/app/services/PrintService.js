@@ -7,6 +7,7 @@ angular
         var printService = {};
 
         printService.createDocDefinition = function (bill) {
+            console.log(bill);
             var vm = this;
             var billNumber = bill.billNumber;
             var billDate = $filter('date')(bill.billDate, "MM-dd-yyyy");
@@ -39,7 +40,7 @@ angular
 
             angular.forEach(bill.billDetails, function(value, key) {
                 productList.push({productName: value.product.name, taxAmount: value.totalTaxAmount, discountAmount : value.totalDiscount,
-                    price: value.product.priceInColones, quantity: value.quantity, subtotal: value.total});
+                    price: value.product.price, quantity: value.quantity, subtotal: value.total});
             });
 
             var items = productList.map(function(item) {
@@ -73,7 +74,7 @@ angular
                                 [
                                     {
                                         border: [false, false, false, false],
-                                        image :APP_CONSTANTS.logo, width: 211, height: 55
+                                        image :APP_CONSTANTS.logo, width: 150, height: 46
                                     },
                                     {
                                         border: [false, false, false, false],
