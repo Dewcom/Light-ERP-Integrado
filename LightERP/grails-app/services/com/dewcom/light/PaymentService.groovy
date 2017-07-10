@@ -106,6 +106,7 @@ class PaymentService {
                 tmpPaymentToUpdate.bankAccount = pPaymentREST.bankAccount
                 tmpPaymentToUpdate.bankReceipt = pPaymentREST.bankReceipt
                 tmpPaymentToUpdate.paymentDate = LightUtils.stringToDate(pPaymentREST.paymentDate,"dd-MM-yyyy")
+                tmpPaymentToUpdate.paymentType = pPaymentREST.paymentType
 
                 tmpPaymentToUpdate.save(flush: true, failOnError:true)
             } else {

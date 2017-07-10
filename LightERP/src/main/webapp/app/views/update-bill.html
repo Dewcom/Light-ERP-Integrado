@@ -246,14 +246,14 @@
                                             <label>Tipo de pago</label>
                                             <div class="controls">
                                                 <select class="form-control" name="controller.paymentType"
-                                                        ng-model="controller.currentBill.billPaymentType.id"
-                                                        ng-options="item.id as item.description for item in controller.paymentTypeList"
+                                                        ng-model="controller.currentBill.billPaymentType.code"
+                                                        ng-options="item.code as item.description for item in controller.paymentTypeList"
                                                         ng-change="controller.resetCreditCondition()">
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-3" ng-hide="controller.currentBill.billPaymentType.id == globalConstants.PAYMENT_TYPE_CASH_CODE || controller.currentBill.billPaymentType.id == null ">
+                                    <div class="col-lg-3" ng-hide="controller.currentBill.billPaymentType.code == globalConstants.PAYMENT_TYPE_CASH_CODE || controller.currentBill.billPaymentType.code == null ">
                                         <div class="form-group">
                                             <label>Condición de crédito</label>
                                             <div class="controls">

@@ -328,8 +328,8 @@ function UpdateBillController(DTOptionsBuilder, DTColumnDefBuilder, $http, $stat
             "billId" : vm.currentBill.id,
             "customerId": vm.currentBill.customer.id,
             "exchangeRate": parseFloat(vm.currentBill.exchangeRate),
-            "billPaymentTypeId": vm.currentBill.billPaymentType.id,
-            "creditConditionId": vm.currentBill.billPaymentType.id == APP_CONSTANTS.PAYMENT_TYPE_CREDIT_CODE ? vm.currentBill.creditCondition.id : null,
+            "billPaymentTypeId": vm.currentBill.billPaymentType.code,
+            "creditConditionId": vm.currentBill.billPaymentType.code == APP_CONSTANTS.PAYMENT_TYPE_CREDIT_CODE ? vm.currentBill.creditCondition.id : null,
             "currencyId": vm.currentBill.currency.id,
             "billStateId": billStateId,
             "billDate": $filter('date')(vm.billDate, "dd-MM-yyyy"),
@@ -686,7 +686,7 @@ function UpdateBillController(DTOptionsBuilder, DTColumnDefBuilder, $http, $stat
      =========================================================*/
 
     vm.resetCreditCondition = function () {
-        if(vm.currentBill.billPaymentType.id == APP_CONSTANTS.PAYMENT_TYPE_CASH_CODE){
+        if(vm.currentBill.billPaymentType.code == APP_CONSTANTS.PAYMENT_TYPE_CASH_CODE){
             vm.currentBill.creditCondition.id = null;
         }
     };

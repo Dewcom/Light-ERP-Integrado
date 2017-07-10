@@ -208,7 +208,7 @@ class JSONMapper {
             tmpRestObject.tariffHeading = pProduct.tariffHeading
             tmpRestObject.commercialName = pProduct.commercialName
             tmpRestObject.utilityPercentage = pProduct.utilityPercentage
-            tmpRestObject.salesTax = pProduct.salesTax
+            tmpRestObject.productTax = pProduct.productTax
             tmpRestObject.measureUnit = from(pProduct.measureUnit)
         tmpRestObject
     }

@@ -5,19 +5,20 @@ angular
     .controller('CustomerDetailController', CustomerDetailController);
 
 CustomerDetailController.$inject = ['$uibModal', '$http', '$state', '$stateParams', '$scope', 'customerTypeService',
-                                    'identificationTypeService', 'customerService', 'toaster', '$resource',
-                                    '$timeout', '$filter', 'APP_CONSTANTS'];
-function CustomerDetailController( $uibModal, $http, $state, $stateParams, $scope, customerTypeService,
+    'identificationTypeService', 'customerService', 'toaster', '$resource',
+    '$timeout', '$filter', 'APP_CONSTANTS'];
+function CustomerDetailController($uibModal, $http, $state, $stateParams, $scope, customerTypeService,
                                   identificationTypeService, customerService, toaster, $resource, $timeout, $filter, APP_CONSTANTS) {
     var vm = this;
 
     vm.addresses = [];
-    vm.globalConstants = APP_CONSTANTS
+    vm.globalConstants = APP_CONSTANTS;
     ////////////////
     init();
 
     function init() {
-        var customer; customerService.get($stateParams.customerId).then(function (response) {
+        var customer;
+        customerService.get($stateParams.customerId).then(function (response) {
             console.log(response);
 
             if (response.code == '0') {
@@ -34,7 +35,7 @@ function CustomerDetailController( $uibModal, $http, $state, $stateParams, $scop
                 });
 
 
-     }
+            }
         });
 
         /**=========================================================
@@ -103,6 +104,29 @@ function CustomerDetailController( $uibModal, $http, $state, $stateParams, $scop
         });
     }
 
+
+    /**=========================================================
+     * Validación de campos y patrones
+     =========================================================*/
+    vm.submitted = false;
+    vm.validateInput = function (name, type) {
+        var input = vm.customerDetailForm[name];
+        return (input.$dirty || vm.submitted) && input.$error[type];
+    };
+
+    // Submit form
+    vm.submitForm = function () {
+        vm.submitted = true;
+
+        if (vm.customerDetailForm.$valid) {
+            console.log($valid);
+            //updateCustomer();
+        } else {
+            console.log('Not valid!!');
+            return false;
+        }
+    };
+
     //REGRESA A LA PANTALLA DE LISTA DE CLIENTES
     vm.goBack = function () {
         $state.go('app.thirdPartyMain');
@@ -119,9 +143,10 @@ function CustomerDetailController( $uibModal, $http, $state, $stateParams, $scop
         };
 
         $scope.pop(toasterdata);
-        $timeout(function(){ $scope.callAtTimeout(); }, 3000);
+        $timeout(function () {
+            $scope.callAtTimeout();
+        }, 3000);
     };
-
 
 
     /**=========================================================
@@ -130,10 +155,10 @@ function CustomerDetailController( $uibModal, $http, $state, $stateParams, $scop
 
     vm.updateCustomer = function () {
         var updatedCustomer = {
-            "id" : $scope.currentCustomer.id,
+            "id": $scope.currentCustomer.id,
             "name": $scope.currentCustomer.name,
-            "firstLastName": $scope.currentCustomer.firstLastName != null ? $scope.currentCustomer.firstLastName : "" ,
-            "secondLastName": $scope.currentCustomer.secondLastName != null ? $scope.currentCustomer.secondLastName : "" ,
+            "firstLastName": $scope.currentCustomer.firstLastName != null ? $scope.currentCustomer.firstLastName : "",
+            "secondLastName": $scope.currentCustomer.secondLastName != null ? $scope.currentCustomer.secondLastName : "",
             "identification": $scope.currentCustomer.identification,
             "addresses": formatAddreses(),
             "phoneNumber1": $scope.currentCustomer.phoneNumber1,
@@ -170,18 +195,17 @@ function CustomerDetailController( $uibModal, $http, $state, $stateParams, $scop
 
     };
 
-    $scope.pop = function(toasterdata){
+    $scope.pop = function (toasterdata) {
         toaster.pop({
             type: toasterdata.type,
-            title : toasterdata.title,
+            title: toasterdata.title,
             body: toasterdata.text
         });
     };
 
-    $scope.callAtTimeout = function(){
+    $scope.callAtTimeout = function () {
         $state.reload();
     };
-
 
 
     //Se formatea la direccion para enviar al BE
@@ -190,7 +214,7 @@ function CustomerDetailController( $uibModal, $http, $state, $stateParams, $scop
 
         angular.forEach(vm.addresses, function (value, key) {
             console.log(value);
-            var finalAddressObj = { "id" : value.id, "idDistrict": value.district.idDistrict, "address":value.address};
+            var finalAddressObj = {"id": value.id, "idDistrict": value.district.idDistrict, "address": value.address};
             finalAddressList.push(finalAddressObj);
         });
 

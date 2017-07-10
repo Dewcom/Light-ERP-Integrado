@@ -15,7 +15,7 @@ class ProductRespREST {
     String tariffHeading // partida arancelaria
     String commercialName
     double price
-    double salesTax
+    double productTax
     double utilityPercentage
     Byte enabled
     Date registrationDate

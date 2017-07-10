@@ -135,7 +135,7 @@ class BillService {
                 tmpBillToUpdate.address = argUpdateBillRequest.addressId != null ?  Address.get(argUpdateBillRequest.addressId) : tmpBillToUpdate.address
 
                 if(argUpdateBillRequest.billPaymentTypeId != null){
-                    def tmpBillPaymentType = BillPaymentType.get(argUpdateBillRequest.billPaymentTypeId)
+                    def tmpBillPaymentType = BillPaymentType.findByCode(argUpdateBillRequest.billPaymentTypeId)
                     tmpBillToUpdate.billPaymentType = tmpBillPaymentType
                     if(tmpBillPaymentType.code == BillPaymentType.PAGO_CONTADO){
                         tmpBillToUpdate.dueDate = tmpBillToUpdate.billDate

@@ -6,12 +6,7 @@
   {
     "text": "Terceros",
     "sref": "app.thirdPartyMain",
-    "icon": "fa fa-file-o"
-  },
-  {
-    "text": "Comercial",
-    "sref": "app.commerce",
-    "icon": "fa fa-object-group"
+    "icon": "icon-user"
   },
   {
     "text": "Facturas",
@@ -21,7 +16,7 @@
   {
     "text": "Almacén",
     "sref": "app.warehouseMain",
-    "icon": "fa fa-book"
+    "icon": "fa fa-truck"
   },
   {
     "text": "Usuarios",

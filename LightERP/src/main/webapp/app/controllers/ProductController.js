@@ -234,7 +234,8 @@
                     "tariffHeading": $scope.addProductForm.tariffHeading,
                     "registrationDate": $scope.addProductForm.registrationDate,
                     "utilityPercentage": parseInt($scope.addProductForm.utilityPercentage),
-                    "measureUnit": $scope.addProductForm.measureUnit
+                    "measureUnit": $scope.addProductForm.measureUnit,
+                    "productTax": parseFloat($scope.addProductForm.productTax)
                 };
                 console.log(newProduct);
                 productService.addProduct(newProduct).then(function (response) {
@@ -263,6 +264,7 @@
                     console.log(error);
                 });
 
+
                 $scope.cancel();
             }
 
@@ -285,7 +287,8 @@
                     "suggestedCost": parseFloat($scope.currentProduct.suggestedCost),
                     "tariffHeading": $scope.currentProduct.tariffHeading,
                     "utilityPercentage": parseInt($scope.currentProduct.utilityPercentage),
-                    "measureUnit": $scope.currentProduct.measureUnit.id
+                    "measureUnit": $scope.currentProduct.measureUnit.id,
+                    "productTax": parseFloat($scope.currentProduct.productTax)
                 };
                 console.log(updatedProduct);
                 productService.updateProduct(updatedProduct).then(function (response) {

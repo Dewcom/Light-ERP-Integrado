@@ -14,23 +14,20 @@ class Product {
     String tariffHeading // partida arancelaria
     String commercialName
     double price
-    double salesTax = Constants.SALES_TAX
+    double productTax
     double utilityPercentage
     Byte enabled = Constants.ESTADO_ACTIVO
     Date registrationDate = new Date()
     MeasureUnit measureUnit
 
     static constraints = {
-        bulkQuantity nullable: true
-        suggestedCost nullable: true
         tariffHeading blank: true
         commercialName null: true, blank: true
-        utilityPercentage nullable: true
         productCode blank: false, nullable: false
         name blank: false, nullable: false
         presentationType nullable: false
-        productType null: false
-        price null: false
+        productType nullable: false
+        price nullable: false
     }
 
     def static fromRestProduct(ProductRest pRestProduct){
@@ -44,7 +41,9 @@ class Product {
         tmpProduct.tariffHeading = pRestProduct.tariffHeading
         tmpProduct.commercialName = pRestProduct.commercialName
         tmpProduct.price = pRestProduct.price
+        tmpProduct.cost = pRestProduct.cost
         tmpProduct.utilityPercentage = pRestProduct.utilityPercentage
+        tmpProduct.productTax = pRestProduct.productTax
         tmpProduct.measureUnit = MeasureUnit.findByIdAndEnabled(pRestProduct.measureUnit, Constants.ESTADO_ACTIVO)
 
         tmpProduct.presentationType = PresentationType.findByIdAndEnabled(pRestProduct.presentationType, Constants.ESTADO_ACTIVO)

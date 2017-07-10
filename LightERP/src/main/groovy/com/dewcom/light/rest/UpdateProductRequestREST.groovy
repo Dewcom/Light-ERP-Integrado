@@ -19,7 +19,7 @@ class UpdateProductRequestREST implements Validateable {
     String tariffHeading // partida arancelaria
     String commercialName
     double price
-    double salesTax
+    double productTax
     double utilityPercentage
     Byte enabled = Constants.ESTADO_ACTIVO
     Date registrationDate = new Date()
@@ -30,12 +30,13 @@ class UpdateProductRequestREST implements Validateable {
         name blank: false, nullable: false
         bulkQuantity nullable: true
         cost nullable: true
-        suggestedCost nullable: true
+        productType nullable: false
         tariffHeading blank: true
         commercialName nullable: true, blank: true
-        price null: false
+        price nullable: false
         utilityPercentage nullable: true, blank: true
         presentationType nullable: false
-        productType null: false
+        productType nullable: false
+        productTax nullable: true
     }
 }

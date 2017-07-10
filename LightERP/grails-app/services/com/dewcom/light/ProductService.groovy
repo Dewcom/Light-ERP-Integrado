@@ -64,6 +64,7 @@ class ProductService {
                 tmpProductToUpdate.tariffHeading = prestProduct.tariffHeading
                 tmpProductToUpdate.commercialName = prestProduct.commercialName
                 tmpProductToUpdate.price = prestProduct.price
+                tmpProductToUpdate.productTax = prestProduct.productTax
                 tmpProductToUpdate.utilityPercentage = prestProduct.utilityPercentage
                 tmpProductToUpdate.productType = ProductType.findByIdAndEnabled(prestProduct.productType, Constants.ESTADO_ACTIVO)
                 tmpProductToUpdate.presentationType = PresentationType.findByIdAndEnabled(prestProduct.presentationType, Constants.ESTADO_ACTIVO)
