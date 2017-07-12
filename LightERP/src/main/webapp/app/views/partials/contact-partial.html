@@ -30,7 +30,7 @@
                     <td ng-if="contactObj.email != null">{{ contactObj.email }}</td>
                     <td ng-if="contactObj.email == null">**SIN CORREO**</td>
                     <td>
-                        <button uib-tooltip="Ver contacto" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="controller.openEditModal('md', contactObj, '/detailContactModal.html')" class="btn btn-sm btn-toolbar">
+                        <button uib-tooltip="Ver contacto" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="controller.openDetailModal('md', contactObj, '/detailContactModal.html')" class="btn btn-sm btn-toolbar">
                             <em class="fa fa-search"></em>
                         </button>
                     </td>

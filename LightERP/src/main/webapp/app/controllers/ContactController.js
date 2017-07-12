@@ -35,7 +35,7 @@
                 "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
                 "sSortDescending": ": Activar para ordenar la columna de manera descendente"
             }
-        }
+        };
 
         init();
 
@@ -112,10 +112,10 @@
          * Module: EditContactModal
          =========================================================*/
 
-        vm.openEditModal = function (size,object, template) {
+        vm.openDetailModal = function (size,object, template) {
             var modalInstance = $uibModal.open({
                 templateUrl: template,
-                controller: EditContactModalInstanceCtrl,
+                controller: ContactDetailModalInstanceCtrl,
                 resolve: {
                     contact: function () {
                         return object;
@@ -137,8 +137,8 @@
         // Please note that $uibModalInstance represents a modal window (instance) dependency.
         // It is not the same as the $uibModal service used above.
 
-            EditContactModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', 'contact'];
-            function EditContactModalInstanceCtrl($scope, $uibModalInstance, contact) {
+            ContactDetailModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', 'contact'];
+            function ContactDetailModalInstanceCtrl($scope, $uibModalInstance, contact) {
             $scope.currentContact = contact;
             $scope.contactToUpdate = new Contact(null, contact.name, contact.firstLastName, contact.secondLastName, contact.email, contact.phoneNumber1, contact.phoneNumber2, contact.jobTitle, contact.department, contact.mobile);
 
@@ -327,20 +327,6 @@
             $state.reload();
         }
 
-        //defaultContructor
-       /* var Contact = function(){
-            this.name = "";
-            this.firstLastName = "";
-            this.secondLastName = "";
-            this.email = "";
-            this.phoneNumber1 = "";
-            this.phoneNumber2 = "";
-            this.jobTitle = "";
-            this.department = "";
-            this.mobile = "";
-        }*/
-
-        //defaultContructor
         var Contact = function(customerId, name, firstLastName, secondLastName, email, phoneNumber1, phoneNumber2, jobTitle, department, mobile){
             this.name = name;
             this.firstLastName = firstLastName;
