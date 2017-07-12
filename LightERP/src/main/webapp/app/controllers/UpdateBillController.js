@@ -329,7 +329,7 @@ function UpdateBillController(DTOptionsBuilder, DTColumnDefBuilder, $http, $stat
             "customerId": vm.currentBill.customer.id,
             "exchangeRate": parseFloat(vm.currentBill.exchangeRate),
             "billPaymentTypeId": vm.currentBill.billPaymentType.code,
-            "creditConditionId": vm.currentBill.billPaymentType.code == APP_CONSTANTS.PAYMENT_TYPE_CREDIT_CODE ? vm.currentBill.creditCondition.code : null,
+            "creditConditionId": vm.currentBill.billPaymentType.code == APP_CONSTANTS.PAYMENT_TYPE_CREDIT_CODE ? vm.currentBill.creditCondition.id : null,
             "currencyId": vm.currentBill.currency.id,
             "billStateId": billStateId,
             "billDate": $filter('date')(vm.billDate, "dd-MM-yyyy"),
@@ -504,7 +504,6 @@ function UpdateBillController(DTOptionsBuilder, DTColumnDefBuilder, $http, $stat
     };
 
     function addProductToUpdateBill(selectedProduct, linePrice, currentProduct) {
-        console.log(selectedProduct)
 
         var productToAdd = {
             "productId": selectedProduct.id,
@@ -513,8 +512,8 @@ function UpdateBillController(DTOptionsBuilder, DTColumnDefBuilder, $http, $stat
             "quantity": selectedProduct.quantity,
             "linePrice": parseFloat(linePrice),
             "discountPercentage": selectedProduct.discount,
-            "taxPercentage": selectedProduct.productTax,
-            "subTotal": parseFloat(calculateSubtotal(selectedProduct.quantity, linePrice, selectedProduct.discount, selectedProduct.productTax)),
+            "taxPercentage": selectedProduct.tax,
+            "subTotal": parseFloat(calculateSubtotal(selectedProduct.quantity, linePrice, selectedProduct.discount, selectedProduct.tax)),
             "product" : currentProduct
         };
 
@@ -561,6 +560,7 @@ function UpdateBillController(DTOptionsBuilder, DTColumnDefBuilder, $http, $stat
             vm.selectedProduct = product;
             vm.selectedProduct.quantity = 1;
             vm.selectedProduct.discount = 0;
+            vm.selectedProduct.tax = 0;
             vm.selectedProduct.calcDollarPrice = product.price / rate;
         };
 
@@ -591,7 +591,9 @@ function UpdateBillController(DTOptionsBuilder, DTColumnDefBuilder, $http, $stat
 
         var totalAfterDiscount = tmpSubTotal - (tmpSubTotal * (discount / 100));
 
-        return totalAfterDiscount + (totalAfterDiscount * (tax / 100));
+        var subTotal = totalAfterDiscount + (totalAfterDiscount * (tax / 100));
+
+        return subTotal;
     }
 
     function calculateTotalAmount(addedProductList) {
@@ -685,7 +687,7 @@ function UpdateBillController(DTOptionsBuilder, DTColumnDefBuilder, $http, $stat
 
     vm.resetCreditCondition = function () {
         if(vm.currentBill.billPaymentType.code == APP_CONSTANTS.PAYMENT_TYPE_CASH_CODE){
-            vm.currentBill.creditCondition.code = null;
+            vm.currentBill.creditCondition.id = null;
         }
     };
 
