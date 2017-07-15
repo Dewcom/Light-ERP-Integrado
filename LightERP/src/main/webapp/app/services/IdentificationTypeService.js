@@ -10,7 +10,7 @@ angular
 
             var identificationTypeList = $http({
                 method: 'GET',
-                url: 'http://localhost:8080/api/identificationType/get',
+                url: APP_CONSTANTS.appURL + 'identificationType/get',
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
