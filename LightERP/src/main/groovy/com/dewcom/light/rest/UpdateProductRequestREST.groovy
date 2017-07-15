@@ -28,15 +28,10 @@ class UpdateProductRequestREST implements Validateable {
     static constraints = {
         productCode blank: false, nullable: false
         name blank: false, nullable: false
-        bulkQuantity nullable: true
-        cost nullable: true
         productType nullable: false
-        tariffHeading blank: true
-        commercialName nullable: true, blank: true
-        price nullable: false
-        utilityPercentage nullable: true, blank: true
         presentationType nullable: false
-        productType nullable: false
-        productTax nullable: true
+        measureUnit nullable: false
+        tariffHeading nullable: true, blank: true
+        commercialName nullable: true, blank: true
     }
 }

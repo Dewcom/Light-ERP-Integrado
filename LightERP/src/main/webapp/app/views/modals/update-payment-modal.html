@@ -5,33 +5,28 @@
                                               ng-click="close()">×</button>
                 <h4 id="myModalLabel" class="modal-title">Modificar pago</h4>
             </div>
-
-            <div class="clearfix panel panel-default">
-                <!---PAYMENT FORM-->
-                <form name="modalCtrl.updatePaymentForm" ng-submit="modalCtrl.submitForm('modify')" novalidate="" class="form-validate">
-
-                    <div class="panel-body">
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label class="control-label">Fecha</label>
-                                <div class="input-group">
+            <form name="modalCtrl.updatePaymentForm" ng-submit="modalCtrl.submitForm('modify')" novalidate="" class="form-validate">
+                <!-- START panel-->
+                <div class="panel panel-default col-lg-12">
+                    <div class="panel col-lg-12">
+                        <div class="panel-body col-lg-6">
+                            <label class="control-label">Fecha</label>
+                            <div class="input-group">
                                         <span class="input-group-btn">
                                             <button uib-tooltip="Calendario" uib-tooltip-trigger="focus" uib-tooltip-placement="top"
                                                     type="button" ng-click="modalCtrl.open($event)" class="btn btn-default">
                                                 <em class="fa fa-calendar"></em>
                                             </button>
                                         </span>
-                                    <input name="paymentDate" type="text" uib-datepicker-popup="{{modalCtrl.format}}"
-                                           ng-model="currentPayment.paymentDate" is-open="modalCtrl.opened"
-                                           min-date="modalCtrl.minDate" max-date="'2030-12-31'"
-                                           datepicker-options="modalCtrl.dateOptions" popup-placement="top" ng-required="true"
-                                           current-text="Hoy" clear-text="Limpiar" close-text="Salir" class="form-control"
-                                           onkeydown="return false"/>
-                                </div>
+                                <input name="paymentDate" type="text" uib-datepicker-popup="{{modalCtrl.format}}"
+                                       ng-model="currentPayment.paymentDate" is-open="modalCtrl.opened"
+                                       min-date="modalCtrl.minDate" max-date="'2030-12-31'"
+                                       datepicker-options="modalCtrl.dateOptions" popup-placement="top" ng-required="true"
+                                       current-text="Hoy" clear-text="Limpiar" close-text="Salir" class="form-control"
+                                       onkeydown="return false"/>
                             </div>
                         </div>
-
-                        <div class="col-lg-6">
+                        <div class="panel-body col-lg-6">
                             <div class="form-group">
                                 <label class="control-label">Monto</label>
                                 <input tabindex="1" type="number" name="amount" required="" ng-model="currentPayment.amount" class="form-control"
@@ -39,43 +34,45 @@
                                 <span ng-show="modalCtrl.validateInput('modify', 'amount', 'required')" class="text-danger">Este campo es requerido</span>
                             </div>
                         </div>
-
-                        <div class="col-lg-4">
+                        <div class="panel-body col-lg-4">
                             <div class="form-group">
                                 <label class="control-label">Tipo de Pago</label>
-                                <input tabindex="1" type="text" name="amount" ng-model="currentPayment.paymentType" class="form-control"
+                                <input tabindex="1" type="text" name="paymentType" ng-model="currentPayment.paymentType" class="form-control"
                                        min="0"/>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="panel-body col-lg-4">
                             <div class="form-group">
                                 <label class="control-label">Cuenta Bancaria</label>
-                                <input tabindex="2" type="text" name="bank" ng-model="currentPayment.bankAccount" class="form-control" />
+                                <input tabindex="2" type="text" name="bankAccount" ng-model="currentPayment.bankAccount" class="form-control" />
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="panel-body col-lg-4">
                             <div class="form-group">
                                 <label class="control-label">Comprobante/Recibo</label>
                                 <input tabindex="3" type="text" name="bankReceipt" ng-model="currentPayment.bankReceipt" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group col-lg-12">
-                            <label class="control-label">Observaciones</label>
-                            <textarea tabindex="4" style="resize: none" name="observation" ng-model="currentPayment.observation" class="form-control"></textarea>
-                        </div>
-                    </div>
-                        <div class="panel-body">
-                            <div class="pull-right">
-                                <button uib-tooltip="Modificar pago" uib-tooltip-trigger="focus" uib-tooltip-placement="top"
-                                        type="submit" class="btn btn-success btn-lg">Modificar</button>
-                                <button uib-tooltip="Cancelar" uib-tooltip-trigger="focus" uib-tooltip-placement="top"
-                                        type="button" ng-click="cancel()" class="btn btn-danger btn-lg">Cancelar</button>
+                            <div class="form-group">
+                                <label class="control-label">Observaciones</label>
+                                <textarea tabindex="4" style="resize: none" name="observation" ng-model="currentPayment.observation" class="form-control"></textarea>
                             </div>
                         </div>
                     </div>
-                </form>
-                <!---END PAYMENT FORM-->
-            </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="clearfix">
+                        <div class="pull-right">
+                            <button uib-tooltip="Modificar pago" uib-tooltip-trigger="focus" uib-tooltip-placement="top"
+                                    type="submit" class="btn btn-success btn-lg">Modificar</button>
+                            <button uib-tooltip="Cancelar" uib-tooltip-trigger="focus" uib-tooltip-placement="top"
+                                    type="button" ng-click="cancel()" class="btn btn-danger btn-lg">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- END panel-->
+            </form>
         </div>
         <!-- END panel-->
     </script>

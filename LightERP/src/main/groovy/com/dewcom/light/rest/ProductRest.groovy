@@ -27,12 +27,12 @@ class ProductRest implements Validateable{
     Integer measureUnit
 
     static constraints = {
-        tariffHeading blank: true
-        commercialName null: true, blank: true
         productCode blank: false, nullable: false
         name blank: false, nullable: false
+        productType nullable: false
         presentationType nullable: false
-        productType null: false
-        price null: false
+        measureUnit nullable: false
+        tariffHeading nullable: true, blank: true
+        commercialName nullable: true, blank: true
     }
 }

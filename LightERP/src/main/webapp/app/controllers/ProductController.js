@@ -227,15 +227,14 @@
                     "commercialName": $scope.addProductForm.productCommercialName,
                     "productType": $scope.addProductForm.productType,
                     "presentationType": $scope.addProductForm.presentationType,
-                    "bulkQuantity": parseFloat($scope.addProductForm.bulkQuantity),
-                    "price": parseFloat($scope.addProductForm.price),
-                    "cost": parseFloat($scope.addProductForm.cost),
-                    "suggestedCost": parseFloat($scope.addProductForm.suggestedCost),
+                    "bulkQuantity": $scope.addProductForm.bulkQuantity != null ? parseFloat($scope.addProductForm.bulkQuantity) : $scope.addProductForm.bulkQuantity,
+                    "price": $scope.addProductForm.price != null ? parseFloat($scope.addProductForm.price) : $scope.addProductForm.price,
+                    "cost": $scope.addProductForm.cost != null ? parseFloat($scope.addProductForm.cost) : $scope.addProductForm.cost,
+                    "suggestedCost": $scope.addProductForm.suggestedCost != null ? parseFloat($scope.addProductForm.suggestedCost) : $scope.addProductForm.suggestedCost,
                     "tariffHeading": $scope.addProductForm.tariffHeading,
-                    "registrationDate": $scope.addProductForm.registrationDate,
-                    "utilityPercentage": parseInt($scope.addProductForm.utilityPercentage),
+                    "utilityPercentage": $scope.addProductForm.utilityPercentage != null ? parseFloat($scope.addProductForm.utilityPercentage) : $scope.addProductForm.utilityPercentage,
                     "measureUnit": $scope.addProductForm.measureUnit,
-                    "productTax": parseFloat($scope.addProductForm.productTax)
+                    "productTax": $scope.addProductForm.productTax != null ? parseFloat($scope.addProductForm.productTax) : $scope.addProductForm.productTax
                 };
                 console.log(newProduct);
                 productService.addProduct(newProduct).then(function (response) {

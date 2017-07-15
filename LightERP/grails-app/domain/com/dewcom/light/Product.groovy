@@ -21,13 +21,13 @@ class Product {
     MeasureUnit measureUnit
 
     static constraints = {
-        tariffHeading blank: true
-        commercialName null: true, blank: true
         productCode blank: false, nullable: false
         name blank: false, nullable: false
-        presentationType nullable: false
         productType nullable: false
-        price nullable: false
+        presentationType nullable: false
+        measureUnit nullable: false
+        tariffHeading nullable: true, blank: true
+        commercialName nullable: true, blank: true
     }
 
     def static fromRestProduct(ProductRest pRestProduct){

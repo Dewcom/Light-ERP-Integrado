@@ -492,7 +492,8 @@
 
                 pop(toasterdata);
                 $timeout(function () {
-                    callAtTimeout();
+                    var params = {tabIndex: 1};
+                    $state.go("app.billingMain", params);
                 }, 3000);
             }, function (error) {
                 console.log(error);

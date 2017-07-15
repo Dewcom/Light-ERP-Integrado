@@ -80,8 +80,9 @@
                         <div class="form-group" ng-show="modalCtrl.selectedProduct">
                             <label class="control-label">Descuento</label>
                             <input tabindex="10" type="number" name="discount" required="" ng-model="modalCtrl.selectedProduct.discount"
-                                   class="form-control" min="0" max="100" maxlength="2"/>
+                                   class="form-control" min="0" max="100" ng-maxlength="2" ng-pattern="/^[0-9]/"/>
                             <span ng-show="modalCtrl.validateInput('add', 'discount', 'required')" class="text-danger">Este campo es requerido</span>
+                            <span ng-show="modalCtrl.validateInput('add', 'discount', 'maxlength')" class="text-danger">Dos dígitos máximo</span>
                         </div>
                     </div>
                     <div class="panel-body col-lg-3">
@@ -101,8 +102,9 @@
                         <div class="form-group" ng-show="modalCtrl.selectedProduct">
                             <label class="control-label">Impuestos</label>
                             <input tabindex="11" type="number" name="productTax" required="" ng-model="modalCtrl.selectedProduct.productTax"
-                                   class="form-control" min="0" max="100"/>
+                                   ng-maxlength="2" ng-pattern="/^[0-9]/" class="form-control" min="0" max="99"  placeholder="%"/>
                             <span ng-show="modalCtrl.validateInput('add', 'productTax', 'required')" class="text-danger">Este campo es requerido</span>
+                            <span ng-show="modalCtrl.validateInput('add', 'productTax', 'maxlength')" class="text-danger">Dos dígitos máximo</span>
                         </div>
                     </div>
                 </div>

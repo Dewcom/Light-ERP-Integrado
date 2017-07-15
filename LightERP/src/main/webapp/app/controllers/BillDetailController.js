@@ -137,7 +137,7 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
 
     //REGRESA A LA PANTALLA DE LISTA DE FACTURAS
     vm.goBack = function () {
-        var params = {tabIndex: 1}
+        var params = {tabIndex: 1};
         $state.go('app.billingMain', params);
     };
 
@@ -240,7 +240,7 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
                 pop(toasterdata);
 
                 $timeout(function () {
-                    var params = {tabIndex: 1}
+                    var params = {tabIndex: 1};
                     $state.go('app.billingMain', params);
                 }, 3000);
 
@@ -291,7 +291,7 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
                 pop(toasterdata);
 
                 $timeout(function () {
-                    var params = {tabIndex: 1}
+                    var params = {tabIndex: 1};
                     $state.go('app.billingMain', params);
                 }, 3000);
 
@@ -378,7 +378,8 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
 
             pop(toasterdata);
             $timeout(function () {
-                $state.go("app.billingMain");
+                var params = {tabIndex: 1};
+                $state.go("app.billingMain", params);
             }, 3000);
         }, function (error) {
             console.log(error);
@@ -623,7 +624,8 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
             pop(toasterdata);
 
             $timeout(function () {
-                $state.reload();
+                var params = {billId : $scope.currentBill.id, tabIndex: 2};
+                $state.go('app.billDetail', params);
             }, 3000);
 
         }, function (error) {
