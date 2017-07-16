@@ -9,13 +9,49 @@ angular
         printService.createDocDefinition = function (bill) {
             console.log(bill);
             var vm = this;
-            var billNumber = bill.billNumber;
+            var billNumber = "0";
             var billDate = $filter('date')(bill.billDate, "MM-dd-yyyy");
             var dueDate = $filter('date')(bill.dueDate, "MM-dd-yyyy");
             var customerName = bill.customer.name;
             var identificationType = 'Cédula jurídica: ';
             var completeAddress = bill.address.district.name + ', ' + bill.address.canton.name +
                 ', ' + bill.address.province.name + ', ' + bill.address.address;
+            var paymentCondition = bill.billPaymentType != null ? bill.billPaymentType.description : "factura sin condición de crédito";
+            var pdfSubTotal = bill.subTotalAmount != null ? bill.subTotalAmount.toFixed(2) : "";
+            var pdfTotalDiscount = bill.totalDiscount != null ? bill.totalDiscount.toFixed(2) : "";
+            var pdfTotalTax = bill.totalTaxAmount != null ? bill.totalTaxAmount.toFixed(2) : "";
+            var pdfTotalAmount = bill.totalAmount != null ? bill.totalAmount.toFixed(2) : "";
+            var currencySymbol = '\u00A2';
+
+            var zerosNeeded = 0;
+
+            if(bill != undefined){
+                if(bill.billNumber != null){
+                    zerosNeeded = 5 - parseInt(bill.billNumber.toString().length);
+
+                    for (var i = 0; i < zerosNeeded; i++) {
+                        billNumber = billNumber.concat("0");
+                    }
+
+                    billNumber = billNumber.concat(bill.billNumber);
+                }else{
+                    zerosNeeded = 4 - parseInt(bill.id.toString().length);
+
+                    for (var i = 0; i < zerosNeeded; i++) {
+                        billNumber = billNumber.concat("0");
+                    }
+                    billNumber = billNumber.concat("B");
+                    billNumber = billNumber.concat(bill.id);
+                }
+            }
+
+            if(bill.currency.currencyCode == APP_CONSTANTS.CURRENCY_DOLLARS_CODE){
+                currencySymbol = '\u0024';
+            }
+
+            if(bill.billPaymentType != null && bill.billPaymentType.code == APP_CONSTANTS.PAYMENT_TYPE_CREDIT_CODE){
+                paymentCondition = 'Pago a ' + bill.creditCondition.description;
+            }
 
             if(billNumber == null){
                 billNumber = 'B' + bill.id;
@@ -39,12 +75,13 @@ angular
             var emptyList = Array.apply(null, Array(totalSize)).map(function () {});
 
             angular.forEach(bill.billDetails, function(value, key) {
-                productList.push({productName: value.product.name, taxAmount: value.totalTaxAmount, discountAmount : value.totalDiscount,
-                    price: value.product.price, quantity: value.quantity, subtotal: value.total});
+                productList.push({productName: value.product.name, taxAmount: value.totalTaxAmount.toFixed(2), discountAmount : value.totalDiscount.toFixed(2),
+                    price: value.linePrice.toFixed(2), quantity: value.quantity, subtotal: value.total.toFixed(2)});
             });
 
             var items = productList.map(function(item) {
-                return [{text: item.productName, alignment: 'left'}, item.taxAmount, item.discountAmount, item.price, item.quantity, item.subtotal ];
+                return [{text: item.productName, alignment: 'left'}, currencySymbol + item.taxAmount, currencySymbol + item.discountAmount,
+                    currencySymbol + item.price, item.quantity, currencySymbol + item.subtotal ];
             });
 
             //
@@ -82,8 +119,7 @@ angular
                                         text: [
                                             { text: 'Factura No ' + billNumber + '\n', fontSize: 10, bold: true },
                                             'Fecha de facturación: ' + billDate + '\n',
-                                            'Fecha de vencimiento: ' + dueDate + '\n',
-                                            'Código de cliente: CU' + bill.customer.id + '\n'
+                                            'Fecha de vencimiento: ' + dueDate + '\n'
                                         ]
                                     }
                                 ],
@@ -92,7 +128,7 @@ angular
                                         border: [false, false, false, false],
                                         text: [
                                             {text: ' Espyco Inc. S.A' + '\n', fontSize: 10, bold: true},
-                                            'CEDULA\n',
+                                            'Cédula jurídica: 3-101-341066-17\n',
                                             'Moravia, San Jeronimo, Costado Sur del Parque\n',
                                             '+506 2292 4141\n',
                                             'info@espyco.com\n',
@@ -105,6 +141,7 @@ angular
                                         text: [
                                             {text: customerName + '\n', fontSize: 10, bold: true},
                                             identificationType + bill.customer.identification + '\n',
+                                            'Teléfono: ' + + bill.customer.phoneNumber1 + '\n',
                                             'Dirección: ' + completeAddress
                                         ]
                                     }
@@ -118,41 +155,41 @@ angular
                     {
                         style: 'bodyTable',
                         table: {
-                            widths: ['70%', '6%', '6%', '6%', '6%', '6%'],
+                            widths: ['45%', '10%', '11%', '12%', '11%', '11%'],
                             body: [
                                 [
                                     {
-                                        border: [false, false, false, false],
+                                        border: [false, false, false, true],
                                         text: [
                                             {text: 'Descripción', alignment: 'left', bold: true, fontSize : 9}
                                         ]
                                     },
                                     {
-                                        border: [false, false, false, false],
+                                        border: [false, false, false, true],
                                         text: [
                                             {text: 'IVA', bold: true, fontSize : 9}
                                         ]
                                     },
                                     {
-                                        border: [false, false, false, false],
+                                        border: [false, false, false, true],
                                         text: [
-                                            {text: 'Desc.', bold: true, fontSize : 9}
+                                            {text: 'Descuento', bold: true, fontSize : 9}
                                         ]
                                     },
                                     {
-                                        border: [false, false, false, false],
+                                        border: [false, false, false, true],
                                         text: [
                                             {text: 'P.U.', bold: true, fontSize : 9}
                                         ]
                                     },
                                     {
-                                        border: [false, false, false, false],
+                                        border: [false, false, false, true],
                                         text: [
-                                            {text: 'Cant.', bold: true, fontSize : 9}
+                                            {text: 'Cantidad', bold: true, fontSize : 9}
                                         ]
                                     },
                                     {
-                                        border: [false, false, false, false],
+                                        border: [false, false, false, true],
                                         text: [
                                             {text: 'Subtotal', bold: true, fontSize : 9}
                                         ]
@@ -183,7 +220,7 @@ angular
                                     {
                                         border: [false, true, false, false],
                                         text: [
-                                            'Condición de pago: '
+                                            'Condición de pago: ' + paymentCondition
                                         ]
                                     },
                                     {
@@ -196,7 +233,7 @@ angular
                                     {
                                         border: [false, true, false, false],
                                         text: [
-                                            {text: bill.subTotalAmount, alignment: 'right'}
+                                            {text: currencySymbol + pdfSubTotal, alignment: 'right'}
                                         ],
                                         fillColor: '#dddddd'
                                     }
@@ -205,7 +242,7 @@ angular
                                     {
                                         border: [false, false, false, false],
                                         text: [
-                                            ''
+                                            {text: 'Autorizado mediante oficio N 4521000004272 del día 20/07/2009 de la dirección general de tributación directa.', bold: false, fontSize : 6}
                                         ]
                                     },
                                     {
@@ -218,7 +255,7 @@ angular
                                     {
                                         border: [false, false, false, false],
                                         text: [
-                                            {text: bill.totalDiscount, alignment: 'right'}
+                                            {text: currencySymbol + pdfTotalDiscount, alignment: 'right'}
                                         ],
                                         fillColor: '#dddddd'
                                     }
@@ -228,7 +265,7 @@ angular
                                         border: [false, false, false, false],
                                         text: [
                                             ''
-                                        ]
+                                        ],
                                     },
                                     {
                                         border: [false, false, false, false],
@@ -240,7 +277,7 @@ angular
                                     {
                                         border: [false, false, false, false],
                                         text: [
-                                            {text: bill.totalTaxAmount, alignment: 'right'}
+                                            {text: currencySymbol + pdfTotalTax, alignment: 'right'}
                                         ],
                                         fillColor: '#dddddd'
                                     }
@@ -262,7 +299,7 @@ angular
                                     {
                                         border: [false, false, false, false],
                                         text: [
-                                            {text: bill.totalAmount, alignment: 'right'}
+                                            {text: currencySymbol + pdfTotalAmount, alignment: 'right'}
                                         ],
                                         fillColor: '#dddddd'
                                     }
