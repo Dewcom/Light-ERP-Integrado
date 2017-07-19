@@ -14,8 +14,7 @@ angular
             var dueDate = $filter('date')(bill.dueDate, "MM-dd-yyyy");
             var customerName = bill.customer.name;
             var identificationType = 'Cédula jurídica: ';
-            var completeAddress = bill.address.district.name + ', ' + bill.address.canton.name +
-                ', ' + bill.address.province.name + ', ' + bill.address.address;
+            var completeAddress = "factura sin dirección";
             var paymentCondition = bill.billPaymentType != null ? bill.billPaymentType.description : "factura sin condición de crédito";
             var pdfSubTotal = bill.subTotalAmount != null ? bill.subTotalAmount.toFixed(2) : "";
             var pdfTotalDiscount = bill.totalDiscount != null ? bill.totalDiscount.toFixed(2) : "";
@@ -24,6 +23,11 @@ angular
             var currencySymbol = '\u00A2';
 
             var zerosNeeded = 0;
+
+            if(bill.address != null){
+                completeAddress = bill.address.district.name + ', ' + bill.address.canton.name +
+                    ', ' + bill.address.province.name + ', ' + bill.address.address;
+            }
 
             if(bill != undefined){
                 if(bill.billNumber != null){
