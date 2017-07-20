@@ -22,8 +22,8 @@ class UpdateContactRequestREST implements Validateable {
     static constraints = {
         id  nullable: false
         name blank: false
-        firstLastName blank: false
-        secondLastName blank: false
+        firstLastName nullable: true, blank: true
+        secondLastName nullable: true, blank: true
         jobTitle nullable: true, blank: true
         department nullable: true, blank: true
         phoneNumber1 blank: false
