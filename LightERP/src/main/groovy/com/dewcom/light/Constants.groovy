@@ -5,8 +5,6 @@ package com.dewcom.light
  */
 class Constants {
 
-    public static String CREATE_CAMPAIGN_STARTDATE_AND_ENDDATE_PATTERN = "YYYY-MM-dd";
-
     //Códigos para respuestas REST
     public static final String SUCCESS_RESPONSE = "0";
     public static final String ERROR_APLICACION_LIGHT = "50";
@@ -38,4 +36,26 @@ class Constants {
     public static final String ERROR_VALIDACION_DE_CAMPOS_TAMANO_MIN_ORIG = "minSize.notmet";
     public static final String ERROR_VALIDACION_DE_CAMPOS_NO_EN_LISTA_ORIG = "not.inList";
     public static final String ERROR_VALIDACION_DE_CAMPOS_VALOR_UNICO_ORIG = "unique";
+
+    //Contantes de negocio
+    public static final double SALES_TAX = 13;
+
+    //codigos de tipos de impuestos
+    public static final Integer IMPUESTO_VENTAS = 1;
+
+    //codigos de tipos de calculos SUMATORIOS
+    public static final Integer FACTURA_SUBTOTAL = 1;
+    public static final Integer FACTURA_TOTAL = 2;
+    public static final Integer FACTURA_TOTAL_DESCUENTOS = 3;
+    public static final Integer FACTURA_TOTAL_IMPUESTOS = 4;
+
+
+    //tipos registro factura
+    public static final Integer BILL_SAVED_STATE_CODE = 1;
+    public static final Integer BILL_VALIDATED_STATE_CODE = 2;
+    public static final Integer BILL_PARTIALLY_PAID_STATE_CODE = 3;
+    public static final Integer BILL_PAID_STATE_CODE = 4;
+    public static final Integer BILL_VOID_STATE_CODE = 5;
+
+
 }

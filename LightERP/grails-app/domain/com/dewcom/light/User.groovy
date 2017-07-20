@@ -1,5 +1,6 @@
 package com.dewcom.light
 
+import com.dewcom.light.rest.UserREST
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
@@ -13,11 +14,25 @@ class User implements Serializable {
 
 	String username
 	String password
-	boolean enabled = true
-	Date regitrationDate = new Date()
+	Byte enabled = Constants.ESTADO_ACTIVO
+	Date registrationDate = new Date()
 	boolean accountExpired
 	boolean accountLocked
 	boolean passwordExpired
+
+
+	static hasMany = [bills: Bill]
+
+	String userCode
+	String name
+	String firstLastName
+	String secondLastName
+	String email
+	String mobile
+	String phoneNumber
+	String extension
+	Double commissionPercentage
+
 
 	Set<Role> getAuthorities() {
 		UserRole.findAllByUser(this)*.role
@@ -42,9 +57,38 @@ class User implements Serializable {
 	static constraints = {
 		password blank: false, password: true
 		username blank: false, unique: true
+        userCode blank: false, nullable: false, maxSize: 5
+        name blank: false
+        firstLastName blank: true, nullable: true
+        secondLastName blank: true, nullable: true
+        phoneNumber blank: false
+        extension blank: true, nullable: true
+        mobile nullable: true, blank: true
+        email nullable: true, blank: true
+        commissionPercentage blank: true, nullable: true
 	}
 
 	static mapping = {
 		password column: '`password`'
 	}
+
+
+    def static fromRestUser(UserREST prestUser){
+
+        User tmpUser = new User();
+
+		tmpUser.username = prestUser.username;
+        tmpUser.password = prestUser.password;
+		tmpUser.userCode = prestUser.userCode;
+        tmpUser.name = prestUser.name;
+        tmpUser.firstLastName = prestUser.firstLastName;
+        tmpUser.secondLastName = prestUser.secondLastName;
+        tmpUser.email = prestUser.email;
+        tmpUser.mobile = prestUser.mobile;
+        tmpUser.phoneNumber = prestUser.phoneNumber;
+        tmpUser.extension = prestUser.extension;
+        tmpUser.commissionPercentage = prestUser.commissionPercentage;
+
+        return tmpUser;
+    }
 }

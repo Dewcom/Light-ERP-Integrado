@@ -1,0 +1,188 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="col-lg-9">
+            <!-- START panel tab-->
+            <div class="panel panel-transparent">
+                <uib-tabset justified="true" class="bg-white p0">
+                    <uib-tab>
+                        <uib-tab-heading>
+                            <em class="fa fa-clock-o fa-fw"></em>Recientes</uib-tab-heading>
+                        <div>
+                            <!-- START list group-->
+                            <div class="list-group mb0">
+                                <a href="#" class="list-group-item bt0">
+                                    <span class="label label-purple pull-right">just now</span>
+                                    <em class="fa fa-fw fa-calendar mr"></em>Calendar updated</a>
+                                <a href="#" class="list-group-item">
+                                    <span class="label label-purple pull-right">4 minutes ago</span>
+                                    <em class="fa fa-fw fa-comment mr"></em>Commented on a post</a>
+                                <a href="#" class="list-group-item">
+                                    <span class="label label-purple pull-right">23 minutes ago</span>
+                                    <em class="fa fa-fw fa-truck mr"></em>Order 392 shipped</a>
+                                <a href="#" class="list-group-item">
+                                    <span class="label label-purple pull-right">46 minutes ago</span>
+                                    <em class="fa fa-fw fa-money mr"></em>Invoice 653 has been paid</a>
+                                <a href="#" class="list-group-item">
+                                    <span class="label label-purple pull-right">1 hour ago</span>
+                                    <em class="fa fa-fw fa-user mr"></em>A new user has been added</a>
+                                <a href="#" class="list-group-item">
+                                    <span class="label label-purple pull-right">2 hours ago</span>
+                                    <em class="fa fa-fw fa-check mr"></em>Completed task: "pick up dry cleaning"</a>
+                                <a href="#" class="list-group-item">
+                                    <span class="label label-purple pull-right">yesterday</span>
+                                    <em class="fa fa-fw fa-globe mr"></em>Saved the world</a>
+                                <a href="#" class="list-group-item">
+                                    <span class="label label-purple pull-right">two days ago</span>
+                                    <em class="fa fa-fw fa-check mr"></em>Completed task: "fix error on sales page"</a>
+                                <a href="#" class="list-group-item">
+                                    <span class="label label-purple pull-right">two days ago</span>
+                                    <em class="fa fa-fw fa-check mr"></em>Completed task: "fix error on sales page"</a>
+                            </div>
+                            <!-- END list group-->
+                            <div class="panel-footer text-right"><a href="#" class="btn btn-default btn-sm">View All Activity </a>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab>
+                        <uib-tab-heading>
+                            <em class="fa fa-exclamation-triangle fa-fw"></em>Vencidas</uib-tab-heading>
+                        <div>
+                            <!-- START table responsive-->
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Order #</th>
+                                        <th>Order Date</th>
+                                        <th>Order Time</th>
+                                        <th>Amount (USD)</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>3326</td>
+                                        <td>10/21/2013</td>
+                                        <td>3:29 PM</td>
+                                        <td>$321.33</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3325</td>
+                                        <td>10/21/2013</td>
+                                        <td>3:20 PM</td>
+                                        <td>$234.34</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3324</td>
+                                        <td>10/21/2013</td>
+                                        <td>3:03 PM</td>
+                                        <td>$724.17</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3323</td>
+                                        <td>10/21/2013</td>
+                                        <td>3:00 PM</td>
+                                        <td>$23.71</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3322</td>
+                                        <td>10/21/2013</td>
+                                        <td>2:49 PM</td>
+                                        <td>$8345.23</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3321</td>
+                                        <td>10/21/2013</td>
+                                        <td>2:23 PM</td>
+                                        <td>$245.12</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3320</td>
+                                        <td>10/21/2013</td>
+                                        <td>2:15 PM</td>
+                                        <td>$5663.54</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3319</td>
+                                        <td>10/21/2013</td>
+                                        <td>2:13 PM</td>
+                                        <td>$943.45</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- END table responsive-->
+                            <div class="panel-footer text-right"><a href="#" class="btn btn-default btn-sm">Ir a lista de facturas</a>
+                            </div>
+                        </div>
+                    </uib-tab>
+                </uib-tabset>
+            </div>
+            <!-- END panel tab-->
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12">
+            <!-- START date widget-->
+            <div class="panel widget">
+                <div class="row row-table">
+                    <div class="col-xs-4 text-center bg-green pv-lg">
+                        <!-- See formats: https://docs.angularjs.org/api/ng/filter/date-->
+                        <now format="MMMM" class="text-sm"></now>
+                        <br/>
+                        <now format="d" class="h2 mt0"></now>
+                    </div>
+                    <div class="col-xs-8 pv-lg">
+                        <now format="EEEE" class="text-uppercase"></now>
+                        <br/>
+                        <now format="h:mm" class="h2 mt0"></now>
+                        <now format="a" class="text-muted text-sm"></now>
+                    </div>
+                </div>
+            </div>
+            <!-- END date widget    -->
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-12">
+            <!-- START widget-->
+            <div class="panel bg-info-light pt b0 widget">
+                <div class="ph">
+                    <em class="icon-cloud-upload fa-lg pull-right"></em>
+                    <div class="h2 mt0">1700</div>
+                    <div class="text-uppercase">Total de facturas</div>
+                </div>
+                <div sparkline="" data-type="line" data-width="100%" data-height="75px" data-line-color="{{colorByName('info')}}" data-chart-range-min="0" data-fill-color="{{colorByName('info')}}" data-spot-color="{{colorByName('info')}}" data-min-spot-color="{{colorByName('info')}}"
+                     data-max-spot-color="{{colorByName('info')}}" data-highlight-spot-color="{{colorByName('info')}}" data-highlight-line-color="{{colorByName('info')}}" values="2,5,3,7,4,5" style="margin-bottom: -2px" data-resize="true"></div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-12">
+            <!-- START widget-->
+            <div class="panel widget bg-purple-light pt b0 widget">
+                <div class="ph">
+                    <em class="icon-globe fa-lg pull-right"></em>
+                    <div class="h2 mt0">700</div>
+                    <div class="text-uppercase">Facturas vencidas</div>
+                </div>
+                <div sparkline="" data-type="line" data-width="100%" data-height="75px" data-line-color="{{colorByName('purple')}}" data-chart-range-min="0" data-fill-color="{{colorByName('purple')}}" data-spot-color="{{colorByName('purple')}}" data-min-spot-color="{{colorByName('purple')}}"
+                     data-max-spot-color="{{colorByName('purple')}}" data-highlight-spot-color="{{colorByName('purple')}}" data-highlight-line-color="{{colorByName('purple')}}" values="1,4,5,4,8,7,10" style="margin-bottom: -2px" data-resize="true"></div>
+            </div>
+        </div>
+
+        <!-- START chart-->
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- START widget-->
+                <div id="panelChart9" class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="panel-title">Tendencias de ventas</div>
+                    </div>
+                    <div uib-collapse="panelChart" class="panel-wrapper">
+                        <div class="panel-body">
+                            <flot src="'server/chart/splinev3.json'" options="controller.splineOptions" height="300px"></flot>
+                        </div>
+                    </div>
+                </div>
+                <!-- END widget-->
+            </div>
+        </div>
+        <!-- END chart-->
+    </div>
+</div>

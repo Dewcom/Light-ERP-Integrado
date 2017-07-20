@@ -4,10 +4,10 @@
    <div class="navbar-header">
       <a href="#/" class="navbar-brand">
          <div class="brand-logo">
-            <img src="app/img/logo.png" alt="App Logo" class="img-responsive" />
+            <img src="app/img/logos/white-logo-sm.png" alt="App Logo" class="img-responsive" />
          </div>
          <div class="brand-logo-collapsed">
-            <img src="app/img/logo-single.png" alt="App Logo" class="img-responsive" />
+            <img src="app/img/logos/white-logo-sm-collapsed.png" alt="App Logo" class="img-responsive" />
          </div>
       </a>
    </div>
@@ -29,21 +29,23 @@
       </ul>
       <!-- END Left navbar-->
       <!-- START Right Navbar-->
+      <div ng-controller="LoginController as login">
       <ul class="nav navbar-nav navbar-right">
          <!-- Search icon-->
-         <li>
+        <!-- <li>
             <a search-open="">
                <em class="icon-magnifier"></em>
             </a>
-         </li>
+         </li>-->
          <!-- START Offsidebar button-->
          <li>
-            <a href="" ng-click="app.offsidebarOpen = !app.offsidebarOpen">
-               <em class="icon-notebook"></em>
+            <a title="Cerrar sesi&oacute;n " href="#" ng-click="login.logout()">
+               <em class="icon-logout"></em>
             </a>
          </li>
          <!-- END Offsidebar menu-->
       </ul>
+      </div>
       <!-- END Right Navbar-->
    </div>
    <!-- END Nav wrapper-->

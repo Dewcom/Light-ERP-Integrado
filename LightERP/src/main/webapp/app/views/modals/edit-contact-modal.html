@@ -1,0 +1,85 @@
+<div>
+    <script type="text/ng-template" id="/editContactModal.html">
+        <div ng-controller="ContactController as contactController">
+            <div class="modal-header">
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="close"
+                        ng-click="close()">×
+                </button>
+                <h4 id="myModalLabel" class="modal-title">Información de Contacto</h4>
+            </div>
+            <form name="contactController.modifyContactForm" ng-submit="contactController.submitForm('modify')"
+                  novalidate="" class="form-validate">
+                <!-- START panel-->
+                <div class="panel panel-default col-lg-12">
+                    <div class="panel-body col-sm-6">
+                        <div class="form-group">
+                            <label for="inputContact1">Nombre</label>
+                            <input name="name" required="" id="inputContact1" type="text" placeholder=""
+                                   ng-value="currentContact.name" ng-model="contactToUpdate.name"
+                                   class="form-control"/>
+                            <span ng-show="contactController.validateInput('modify', 'name', 'required')"
+                                  class="text-danger">Este campo es requerido</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputContact2">Primer Apellido</label>
+                            <input name="firstLastName" required="" id="inputContact2" type="text"
+                                   ng-value="currentContact.firstLastName"
+                                   ng-model="contactToUpdate.firstLastName" class="form-control"/>
+                            <span ng-show="contactController.validateInput('modify', 'firstLastName', 'required')"
+                                  class="text-danger">Este campo es requerido</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputContact5">Teléfono #1</label>
+                            <input name="phoneNumber1" required="" id="inputContact5" type="text"
+                                   ng-value="currentContact.phoneNumber1"
+                                   ng-model="contactToUpdate.phoneNumber1" class="form-control"/>
+                            <span ng-show="contactController.validateInput('modify', 'phoneNumber1', 'required')"
+                                  class="text-danger">Este campo es requerido</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputContact6">Teléfono #2</label>
+                            <input id="inputContact6" type="text" ng-value="currentContact.phoneNumber2"
+                                   ng-model="contactToUpdate.phoneNumber2" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="panel-body col-sm-6">
+                        <div class="form-group">
+                            <label for="inputContact3">Segundo Apellido</label>
+                            <input name="secondLastName" required="" id="inputContact3" type="text"
+                                   ng-value="currentContact.secondLastName"
+                                   ng-model="contactToUpdate.secondLastName" class="form-control"/>
+                            <span ng-show="contactController.validateInput('modify', 'secondLastName', 'required')"
+                                  class="text-danger">Este campo es requerido</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputContact4">Correo</label>
+                            <input id="inputContact4" type="email" ng-value="currentContact.email"
+                            ng-model="contactToUpdate.email" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputContact7">Celular</label>
+                            <input id="inputContact7" type="text" ng-value="currentContact.mobile"
+                                   ng-model="contactToUpdate.mobile" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputContact8">Puesto</label>
+                            <input id="inputContact8" type="text" ng-value="currentContact.jobTitle"
+                                   ng-model="contactToUpdate.jobTitle" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="clearfix">
+                        <div class="pull-right">
+                            <button uib-tooltip="Guardar cambios" uib-tooltip-trigger="focus"
+                                    uib-tooltip-placement="top" type="submit" class="btn btn-info pull-right">
+                                Actualizar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- END panel-->
+            </form>
+        </div>
+    </script>
+</div>

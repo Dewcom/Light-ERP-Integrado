@@ -25,24 +25,24 @@ class IdentificationTypeController extends RestController {
             def tmpId = params.id
 
             if(tmpId){
-                IdentificationType idTypeFromDB = adminService.getIdType(tmpId);
+                IdentificationType idTypeFromDB = adminService.getIdentificationType(tmpId);
 
                 if(idTypeFromDB){
                     tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
-                    tmpResponse.data = idTypeFromDB
+                    tmpResponse.data = JSONMapper.from(idTypeFromDB)
                 }else{
                     tmpResponse.message = messageSource.getMessage("identification.type.not.found", null, Locale.default);
                     tmpResponse.code = Constants.REGISTER_NOT_FOUND
                 }
             }else{
-                def idTypesFromDB = adminService.getAllIdTypes();
+                def idTypesFromDB = adminService.getAllIdentificationTypes();
 
                 tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
-                tmpResponse.data = idTypesFromDB
+                tmpResponse.data = JSONMapper.listFrom(idTypesFromDB)
             }
-            log.info "====== Get identification types response ======"
+            log.info "====== Get identification type response ======"
             log.info tmpResponse as JSON
             render tmpResponse as JSON
         } catch (Exception e) {
@@ -93,7 +93,7 @@ class IdentificationTypeController extends RestController {
         ResponseREST tmpResponse = new ResponseREST();
         try {
             if (request.JSON && request.JSON != null) {
-                IdentificationType tmpIdType = adminService.getIdType(request.JSON.id);
+                IdentificationType tmpIdType = adminService.getIdentificationType(request.JSON.id);
 
                 if(tmpIdType) {
                     adminService.deleteIdType(tmpIdType);
@@ -132,7 +132,7 @@ class IdentificationTypeController extends RestController {
             if (tmpUpdateIdentificationTypeREST.hasErrors()) {
                 this.handleDataErrorsREST(messageSource, tmpUpdateIdentificationTypeREST.errors);
             } else {
-                IdentificationType tmpIdentificationType = adminService.getIdType(tmpUpdateIdentificationTypeREST.id);
+                IdentificationType tmpIdentificationType = adminService.getIdentificationType(tmpUpdateIdentificationTypeREST.id);
 
                 if(tmpIdentificationType) {
 

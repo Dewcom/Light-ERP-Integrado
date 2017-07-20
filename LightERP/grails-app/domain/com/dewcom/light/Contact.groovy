@@ -11,17 +11,20 @@ class Contact {
     String mobile
     String email
     Byte enabled = Constants.ESTADO_ACTIVO
-    Date regitrationDate = new Date()
+    Date registrationDate = new Date()
+    Customer customer
+    static belongsTo = [Customer]
 
     static constraints = {
         name blank: false
-        firstLastName blank: false
-        secondLastName blank: false
-        jobTitle nullabe: true, blank: true
-        department nullabe: true, blank: true
+        firstLastName nullable: true, blank: true
+        secondLastName nullable: true, blank: true
+        jobTitle nullable: true, blank: true
+        department nullable: true, blank: true
         phoneNumber1 blank: false
-        phoneNumber2 nullabe: true, blank: true
-        mobile nullabe: true, blank: true
-        email nullabe: true, blank: true
+        phoneNumber2 nullable: true, blank: true
+        mobile nullable: true, blank: true
+        email nullable: true, blank: true
     }
+
 }

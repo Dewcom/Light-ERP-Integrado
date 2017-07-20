@@ -1,0 +1,367 @@
+<div ng-controller="CustomerDetailController as parentController">
+    <div class="row">
+        <div class="col-md-7">
+            <h3>Detalle del cliente</h3>
+        </div>
+    </div>
+    <form class="panel" name="parentController.customerDetailForm">
+        <uib-tabset justified="true">
+            <uib-tab heading="INFORMACION">
+                <form ng-submit="parentController.submitForm()" novalidate="" class="form-validate form-horizontal">
+                    <div class="mb">
+                        <hr class="hidden-print"/>
+                        <div class="clearfix">
+                            <button uib-tooltip="Regresar a la lista" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" class="btn btn-labeled btn-info pull-right ml" ng-click="parentController.goBack()">
+                                <span class="btn-label">
+                                    <em class="fa fa-mail-reply"></em>
+                                </span>Regresar
+                            </button>
+                            <button uib-tooltip="Guardar cambios" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="submit" class="btn btn-labeled btn-success pull-right ml" ng-click="parentController.updateCustomer()">
+                                <span class="btn-label">
+                                    <em class="fa fa-plus"></em>
+                                </span>Guardar
+                            </button>
+                            <button uib-tooltip="Cancelar cambios" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" class="btn btn-labeled btn-danger pull-right" ng-click="parentController.cancel()">
+                                <span class="btn-label">
+                                   <em class="fa fa-times"></em>
+                                </span>Cancelar
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <fieldset>
+                            <legend>Cliente</legend>
+                            <!-- START row-->
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Tipo de cliente</label>
+                                        <select tabindex="1" name="selectedCustomerType" ng-model="currentCustomer.selectedCustomerType"
+                                                ng-options="item.id as item.name for item in parentController.customerTypeList"
+                                                class="form-control" required="">
+                                        </select>
+                                        <span ng-show="parentController.validateInput('selectedCustomerType', 'required')"
+                                              class="text-danger">Este campo es requerido</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Tipo de identificación</label>
+                                        <div class="controls">
+                                            <select tabindex="2" name="selectedIdentificationType" ng-model="currentCustomer.selectedIdentificationType"
+                                                    ng-options="item.code as item.name for item in parentController.identificationTypeList"
+                                                    class="form-control" required="">
+                                                <option value="?"></option>
+                                            </select>
+                                            <span ng-show="parentController.validateInput('selectedIdentificationType', 'required')"
+                                                  class="text-danger">Este campo es requerido</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Identificación</label>
+                                        <div class="controls">
+                                            <input tabindex="3" type="text" name="identification" ng-model="currentCustomer.identification"
+                                                   placeholder="110102020" required="required" class="form-control"/>
+                                            <span ng-show="parentController.validateInput('identification', 'required')"
+                                                  class="text-danger">Este campo es requerido</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-class="currentCustomer.selectedIdentificationType == parentController.globalConstants.CUSTOMER_IDENT_TYPE_JURIDICAL  ? 'col-md-12':'col-md-4'">
+                                    <div class="form-group">
+                                        <label ng-show="currentCustomer.selectedIdentificationType == parentController.globalConstants.CUSTOMER_IDENT_TYPE_PHYSICAL || currentCustomer.selectedIdentificationType == parentController.globalConstants.CUSTOMER_IDENT_TYPE_PASSPORT">Nombre</label>
+                                        <label ng-show="currentCustomer.selectedIdentificationType == parentController.globalConstants.CUSTOMER_IDENT_TYPE_JURIDICAL">Nombre de la Empresa</label>
+                                        <div class="controls">
+                                            <input tabindex="4" type="text" name="name" ng-model="currentCustomer.name" placeholder="Juan" required="" class="form-control" />
+                                            <span ng-show="parentController.validateInput('name', 'required')"
+                                                  class="text-danger">Este campo es requerido</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4" ng-show="currentCustomer.selectedIdentificationType == parentController.globalConstants.CUSTOMER_IDENT_TYPE_PHYSICAL ||
+                                    currentCustomer.selectedIdentificationType == parentController.globalConstants.CUSTOMER_IDENT_TYPE_PASSPORT">
+                                    <div class="form-group">
+                                        <label>Primer apellido</label>
+                                        <div class="controls">
+                                            <input tabindex="5" type="text" name="firstLastName" ng-model="currentCustomer.firstLastName" placeholder="Pérez" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4" ng-show="currentCustomer.selectedIdentificationType == parentController.globalConstants.CUSTOMER_IDENT_TYPE_PHYSICAL ||
+                                    currentCustomer.selectedIdentificationType == parentController.globalConstants.CUSTOMER_IDENT_TYPE_PASSPORT">
+                                    <div class="form-group">
+                                        <label>Segundo apellido</label>
+                                        <div class="controls">
+                                            <input tabindex="6" type="text" name="secondLastName" ng-model="currentCustomer.secondLastName" placeholder="Pérez" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END row-->
+                        </fieldset>
+                        <fieldset>
+                            <legend>Información de contacto</legend>
+                            <!-- START row-->
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Teléfono #1</label>
+                                        <div class="controls">
+                                            <input type="tel" name="phoneNumber1" ng-model="currentCustomer.phoneNumber1" placeholder="22221111" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Teléfono #2</label>
+                                        <div class="controls">
+                                            <input type="tel" name="phoneNumber2" ng-model="currentCustomer.phoneNumber2" placeholder="22221111" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Teléfono móvil</label>
+                                        <div class="controls">
+                                            <input type="tel" name="mobile" ng-model="currentCustomer.mobile" placeholder="88887777" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Correo electrónico</label>
+                                        <div class="controls">
+                                            <input type="email" name="email" ng-model="currentCustomer.email" placeholder="juan@gmail.com" class="form-control"/>
+                                            <span ng-show="parentController.validateInput('email', 'email')"
+                                                  class="text-danger">Correo inválido</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Website</label>
+                                        <div class="controls">
+                                            <input type="text" name="website" ng-model="currentCustomer.website" placeholder="www.website.com" class="form-control"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END row-->
+                        </fieldset>
+                        <fieldset>
+                            <legend>Direcciones</legend>
+                            <div ng-controller="AddressController as addressTable">
+                                <form class="form-inline">
+                                    <table datatable=" " dt-options="addressTable.dtOptions" dt-column-defs="addressTable.dtColumnDefs" class="row-border hover">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                <div>
+                                                    <div class="form-group">
+                                                        <label>Provincia</label>
+                                                        <div class="controls">
+                                                            <select name="selectedProvince" ng-model="addressTable.address2Add.province"
+                                                                    ng-options="item.name for item in addressTable.provinces" class="form-control"
+                                                                    ng-change="addressTable.loadCantons(addressTable.address2Add.province.idProvince)">
+                                                                <option value="?"></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                            <th>
+                                                <div>
+                                                    <div class="form-group">
+                                                        <label>Cantón</label>
+                                                        <div class="controls">
+                                                            <select name="selectedCanton" ng-model="addressTable.address2Add.canton"
+                                                                    ng-options="item.name for item in addressTable.cantons" class="form-control"
+                                                                    ng-change="addressTable.loadDistricts(addressTable.address2Add.canton.idCanton)">
+                                                                <option value="?"></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                            <th>
+                                                <div>
+                                                    <div class="form-group">
+                                                        <label>Distrito</label>
+                                                        <div class="controls">
+                                                            <select name="selectedDistrict" ng-model="addressTable.address2Add.district"
+                                                                    ng-options="item.name for item in addressTable.districts"class="form-control">
+                                                                <option value="?"></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                            <th>
+                                                <div>
+                                                    <div class="form-group">
+                                                        <label>Dirección</label>
+                                                        <div class="controls">
+                                                            <textarea style="resize: none" name="address" ng-model="addressTable.address2Add.address" class="form-control" maxlength="150"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </th>
+                                            <th>
+                                                <div class="form-group">
+                                                    <button uib-tooltip="Agregar nueva dirección" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="addressTable.addAddress2Table()" class="btn btn-labeled btn-success" ng-disabled="!addressTable.address2Add.district">
+                                                        <span class="btn-label"><em class="fa fa-plus"></em>
+                                                        </span>Agregar
+                                                    </button>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th>Provincia</th>
+                                            <th>Cantón</th>
+                                            <th>Distrito</th>
+                                            <th>Dirección</th>
+                                            <th>Opciones</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="address in parentController.addresses">
+                                            <td>{{ address.province.name }}</td>
+                                            <td>{{ address.canton.name }}</td>
+                                            <td>{{ address.district.name }}</td>
+                                            <td>{{ address.address }}</td>
+                                            <td>
+                                                <button uib-tooltip="Eliminar" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button"
+                                                        ng-click="addressTable.removeTmpAddress($index)" class="btn btn-sm btn-danger">
+                                                    <em class="fa fa-trash-o"></em>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </form>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Crédito</legend>
+                            <!-- START row-->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Límite de crédito</label>
+                                        <div class="controls">
+                                            <input type="number" name="creditLimit" ng-model="currentCustomer.creditLimit"
+                                                   placeholder="₡" ng-pattern="/^[0-9.,]+$/" class="form-control"/>
+                                            <span ng-show="modalCtrl.validateInput('creditLimit', 'pattern')" class="text-danger">Solamente números permitidos</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Porcentaje de descuento</label>
+                                        <div class="controls">
+                                            <input type="number" name="discountPorcentage" ng-model="currentCustomer.discountPercentage"
+                                                   placeholder="%" ng-pattern="/^[0-9.,]+$/" class="form-control"/>
+                                            <span ng-show="modalCtrl.validateInput('creditLimit', 'pattern')" class="text-danger">Solamente números permitidos</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END row-->
+                        </fieldset>
+                    </div>
+                </form>
+            </uib-tab>
+            <uib-tab heading="CONTACTOS">
+                <div ng-controller="ContactController as contactController">
+                <div ng-if="parentController.customerContacts.length > 0" class="mb">
+                    <hr class="hidden-print"/>
+                    <div class="clearfix">
+                        <button uib-tooltip="Agregar nuevo contacto" uib-tooltip-trigger="focus" uib-tooltip-placement="top"
+                                ng-show="currentBill.billNumber == null" type="button"
+                                ng-click="contactController.openCreateModal('/addContactModal.html','md',currentCustomer.id )"
+                                class="btn btn-labeled btn-success pull-right">
+                        <span class="btn-label">
+                            <em class="fa fa-plus"></em>
+                        </span>Agregar
+                        </button>
+                    </div>
+                </div>
+                <hr class="hidden-print"/>
+                <div ng-if="parentController.customerContacts.length == 0">
+                    <div class="row col-lg-12 col-xs-6 pv">
+                        <div class="col-lg-2">
+                            <em class="fa fa-warning fa-4x text-muted"></em>
+                        </div>
+                        <div class="col-lg-8">
+                            <h4>El cliente no posee contactos</h4>
+                        </div>
+                        <div class="col-lg-2 mt">
+                            <button uib-tooltip="Agregar nuevo contacto" uib-tooltip-trigger="focus" uib-tooltip-placement="top" ng-show="currentBill.billNumber == null" type="button"
+                                    ng-click="contactController.openCreateModal('/addContactModal.html','md',currentCustomer.id )"
+                                    class="btn btn-labeled btn-success pull-right">
+                                      <span class="btn-label">
+                                         <em class="fa fa-plus"></em>
+                                      </span>Agregar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                    <div class="row">
+                        <div ng-repeat="customerContact in parentController.customerContacts" class="col-md-4">
+                            <div class="panel panel-default">
+                                <div class="panel-body text-left">
+                                    <h4>{{customerContact.name + ' '+ customerContact.firstLastName + ' ' +customerContact.secondLastName}}</h4>
+
+                                    <ul style="list-style: none;">
+                                        <li>Departamento: {{customerContact.department}}</li>
+                                        <li>Puesto: {{customerContact.jobTitle}}</li>
+                                        <li>Teléfono #1: {{customerContact.phoneNumber1}}</li>
+                                        <li>Teléfono #2: {{customerContact.phoneNumber2}}</li>
+                                        <li>Celular    : {{customerContact.mobile}}</li>
+                                        <li>Correo: {{customerContact.email}}</li>
+                                    </ul>
+                                </div>
+                                <div class="panel-footer clearfix">
+                                    <button uib-tooltip="Enviar correo" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click=""
+                                            class="btn btn-sm btn-primary  pull-left">
+                                        <em class="fa fa-envelope"></em>
+                                    </button>
+                                   <!-- <div ng-click="contactController.open('md', customerContact)" class="pull-right"><a href="" class="btn btn-xs btn-default">Editar</a>
+                                    </div>-->
+
+                                    <td>
+                                        <button uib-tooltip="Eliminar" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="contactController.disableContact(customerContact.id)"
+                                                class="btn btn-sm btn-danger  pull-right">
+                                            <em class="fa fa-trash-o"></em>
+                                        </button>
+                                        <button uib-tooltip="Ver contacto" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="contactController.openEditModal('md', customerContact, '/editContactModal.html')" class="btn btn-sm btn-toolbar pull-right">
+                                            <em class="fa fa-search"></em>
+                                        </button>
+
+                                    </td>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </uib-tab>
+        </uib-tabset>
+    </form>
+    <toaster-container toaster-options="{'position-class': 'toast-bottom-right', 'close-button':true}"></toaster-container>
+    <script type="text/ng-template" id="disableContactModal">
+        <div class="ngdialog-message text-center">
+            <h3>Eliminar contacto</h3>
+            <p>¿Está seguro que desea eliminar al contacto?</p>
+            <div>
+                <button type="button" ng-click="confirm(confirmValue)" class="btn btn-primary mr">Confirmar</button>
+                <button type="button" ng-click="closeThisDialog('button')" class="btn btn-default">Cancelar</button>
+            </div>
+        </div>
+    </script>
+</div>

@@ -1,25 +1,31 @@
 [
   {
-    "text": "Menu Heading",
-    "heading": "true",
-    "translate": "sidebar.heading.HEADER"
+    "text": "Menú",
+    "heading": "true"
   },
   {
-    "text": "Single View",
-    "sref": "app.singleview",
-    "icon": "fa fa-file-o",
-    "translate": "sidebar.nav.SINGLEVIEW"
+    "text": "Terceros",
+    "sref": "app.thirdPartyMain",
+    "icon": "icon-user"
   },
   {
-    "text": "Menu",
-    "sref": "#",
-    "icon": "icon-folder",
-    "submenu": [
-      { "text": "Sub Menu", 
-        "sref": "app.submenu", 
-        "translate": "sidebar.nav.menu.SUBMENU" 
-      }    
-    ],
-    "translate": "sidebar.nav.menu.MENU"
+    "text": "Facturas",
+    "sref": "app.billingMain",
+    "icon": "fa fa-pencil-square-o"
+  },
+  {
+    "text": "Almacén",
+    "sref": "app.warehouseMain",
+    "icon": "fa fa-truck"
+  },
+  {
+    "text": "Usuarios",
+    "sref": "app.usersMain",
+    "icon": "fa fa-group"
+  },
+  {
+    "text": "Configuración",
+    "sref": "app.configuration",
+    "icon": "fa fa-cogs"
   }
 ]

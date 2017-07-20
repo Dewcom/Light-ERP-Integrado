@@ -1,0 +1,44 @@
+<div class="panel panel-default" ng-controller="ContactController as controller">
+    <div class="panel-body">
+        <div>
+            <div class="col-md-12 dataTableTop">
+                <div class="col-md-9">
+                    <h3>Lista de contactos</h3>
+                </div>
+            </div>
+            <table datatable="ng" dt-options="controller.dtOptions" dt-column-defs="controller.dtColumnDefs"
+                   class="row-border hover">
+                <thead>
+                <tr>
+                    <th>Empresa / Cliente</th>
+                    <th>Nombre</th>
+                    <th>Puesto</th>
+                    <th>Teléfono</th>
+                    <th>Correo electrónico</th>
+                    <th>Opciones</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="contactObj in controller.contactList">
+                    <td>{{ contactObj.customerName +' '+ contactObj.customerLastNames  }}</td>
+                    <td>{{ contactObj.name + ' ' + contactObj.firstLastName + ' ' + contactObj.secondLastName}}
+                    </td>
+                    <td ng-if="contactObj.jobTitle != null">{{ contactObj.jobTitle }}</td>
+                    <td ng-if="contactObj.jobTitle == null">**SIN PUESTO**</td>
+                    <td>{{ contactObj.phoneNumber1 }}</td>
+                    <td ng-if="contactObj.email != null">{{ contactObj.email }}</td>
+                    <td ng-if="contactObj.email == null">**SIN CORREO**</td>
+                    <td>
+                        <button uib-tooltip="Ver contacto" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="controller.openDetailModal('md', contactObj, '/detailContactModal.html')" class="btn btn-sm btn-toolbar">
+                            <em class="fa fa-search"></em>
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            </form>
+        </div>
+    </div>
+    <div ng-include="'app/views/modals/detail-contact-modal.html'"></div>
+</div>

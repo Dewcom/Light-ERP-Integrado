@@ -1,5 +1,5 @@
 {
-  "name": "Angle",
+  "name": "angle",
   "version": "0.0.0",
   "authors": [
     "@themicon_co"
@@ -43,7 +43,8 @@
     "angular-resource": "1.5.0",
     "simple-line-icons": "2.2.3",
     "angular-touch": "1.5.0",
-    "jquery.browser": "master"
+    "jquery.browser": "master",
+    "angular-base64": "^2.0.5"
   },
   "resolutions": {
     "angular": "1.5.0",

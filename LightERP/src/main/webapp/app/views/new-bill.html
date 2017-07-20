@@ -1,0 +1,368 @@
+<div>
+    <div class="row">
+        <div class="col-md-7">
+            <h3>Nueva Factura</h3>
+        </div>
+    </div>
+    <div class="mb">
+        <hr class="hidden-print"/>
+        <div class="clearfix">
+            <button uib-tooltip="Regresar a la lista" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="controller.goBack()" class="btn btn-labeled btn-info pull-right">
+                <span class="btn-label"> <em class="fa fa-mail-reply"></em></span>Regresar
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="panel b">
+                <div class="panel-body">
+                    <div class="panel-body">
+                        <div class="pull-left text-bold text-dark col-md-6">FECHA</div>
+                        <div class="pull-right col-md-6">
+                            <button uib-tooltip="Calendario" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="controller.open($event)" class="btn btn-default">
+                                <em class="fa fa-calendar"></em>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="input-group">
+                        <input type="text" uib-datepicker-popup="{{controller.format}}" ng-model="controller.billDate"
+                               is-open="controller.opened" min-date="controller.minDate" max-date="'2020-12-31'"
+                               datepicker-options="controller.dateOptions" popup-placement="top" ng-required="true"
+                               current-text="Hoy" clear-text="Limpiar" close-text="Salir" class="form-control"
+                               onkeydown="return false"/>
+                    </p>
+                </div>
+                <div class="panel-heading bb">
+                    <h4 class="panel-title">Totales</h4>
+                </div>
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <td>Impuestos</td>
+                        <td>
+                            <div ng-if="controller.currency == 2" class="text-bold">
+                                {{controller.taxTotal | currency : "$" : 2}}
+                            </div>
+                            <div ng-if="controller.currency == 1" class="text-bold">
+                                {{controller.taxTotal | currency : "₡" : 2}}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Descuentos</td>
+                        <td>
+                            <div ng-if="controller.currency == 2" class="text-bold">
+                                {{controller.discountTotal | currency : "$" : 2}}
+                            </div>
+                            <div ng-if="controller.currency == 1" class="text-bold">
+                                {{controller.discountTotal | currency : "₡" : 2}}
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="panel-body">
+                    <div class="clearfix">
+                        <div class="pull-right text-right">
+                            <div ng-if="controller.currency == 2" class="text-bold">
+                                {{controller.billTotal | currency : "$" : 2}}
+                            </div>
+                            <div ng-if="controller.currency == 1" class="text-bold">
+                                {{controller.billTotal | currency : "₡" : 2}}
+                            </div>
+                        </div>
+                        <div class="pull-left text-bold text-dark">TOTAL</div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <p ng-show="controller.billDate != null && controller.chosenCustomer.name != null">
+                        <button type="button" class="btn btn-primary btn-block"
+                                ng-click="controller.submitForm(globalConstants.BILL_SAVED_STATE_CODE)">
+                            Guardar
+                        </button>
+                        <button type="button" class="btn btn-primary btn-block"
+                                ng-click="controller.submitForm(globalConstants.BILL_VALIDATED_STATE_CODE)">
+                            Validar
+                        </button>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="container-md">
+                <!-- Información del cliente-->
+                <form name="controller.newBillForm" action="" method="post" novalidate="novalidate">
+                    <uib-accordion close-others="true">
+                        <uib-accordion-group is-open="chk.step1" ng-init="chk.step1 = true" panel-class="b">
+                            <uib-accordion-heading>1. Información del cliente</uib-accordion-heading>
+                            <div id="collapse01">
+                                <h4>Buscar cliente</h4>
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-lg-6">
+                                            <ui-select ng-model="controller.chosenCustomer" theme="bootstrap">
+                                                <ui-select-match
+                                                        placeholder="Buscar por nombre o identificación..."></ui-select-match>
+                                                <ui-select-choices
+                                                        repeat="customer in controller.customerList | propsFilter: {name: $select.search, identification: $select.search}">
+                                                    <div ng-click="controller.getCustomerAddresses(customer.id)">
+                                                        <div ng-bind-html="customer.name + ' ' + customer.firstLastName + ' ' + customer.secondLastName  | highlight: $select.search"></div>
+                                                        <small>email: {{customer.email === null ? '*SIN CORREO*' :
+                                                            customer.email}} identificación:
+                                                            <span ng-bind-html="''+ customer.identification | highlight: $select.search"></span>
+                                                        </small>
+                                                    </div>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Informacion del cliente-->
+                                <div ng-show="controller.chosenCustomer != null">
+                                    <h4>Información general</h4>
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label>Nombre</label>
+                                                <input type="text" name="name" ng-model="controller.chosenCustomer.name"
+                                                       class="form-control" disabled/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Identificación</label>
+                                                <input type="text" name="identification"
+                                                       ng-model="controller.chosenCustomer.identification"
+                                                       class="form-control" disabled/>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label>Primer apellido</label>
+                                                <input type="text" name="name"
+                                                       ng-model="controller.chosenCustomer.firstLastName"
+                                                       class="form-control" disabled/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Teléfono</label>
+                                                <input type="text" name="phone"
+                                                       ng-model="controller.chosenCustomer.phoneNumber1"
+                                                       class="form-control" disabled/>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label>Segundo apellido</label>
+                                                <input type="text" name="name"
+                                                       ng-model="controller.chosenCustomer.secondLastName"
+                                                       class="form-control" disabled/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Teléfono celular</label>
+                                                <input type="text" name="mobile"
+                                                       ng-model="controller.chosenCustomer.mobile"
+                                                       class="form-control" disabled/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Dirección del cliente-->
+                                <div ng-show="controller.chosenCustomer != null">
+                                    <h4>Escoger dirección</h4>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-lg-6">
+                                                <ui-select ng-model="controller.chosenCustomer.chosenAddress"
+                                                           theme="bootstrap">
+                                                    <ui-select-match placeholder="Buscar provincia o dirección...">
+                                                        {{$select.chosenAddress.provincia}}
+                                                    </ui-select-match>
+                                                    <ui-select-choices
+                                                            repeat="address in controller.customerAddresses | propsFilter: {address: $select.search, address: $select.search}">
+                                                        <div ng-bind-html="address.province.name | highlight: $select.search"></div>
+                                                        <small>Cantón: {{address.canton.name}} Dirección:
+                                                            <span ng-bind-html="''+ address.address | highlight: $select.search"></span>
+                                                        </small>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" ng-show="controller.chosenCustomer.chosenAddress != null">
+                                    <div class="col-lg-12">
+                                        <h4>Dirección escogida</h4>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Provincia</label>
+                                            <input type="text" name="province"
+                                                   ng-model="controller.chosenCustomer.chosenAddress.province.name"
+                                                   required=""
+                                                   class="form-control" disabled/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Distrito</label>
+                                            <input type="text" name="district"
+                                                   ng-model="controller.chosenCustomer.chosenAddress.district.name"
+                                                   required=""
+                                                   class="form-control" disabled/>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Cantón</label>
+                                            <input type="text" name="canton"
+                                                   ng-model="controller.chosenCustomer.chosenAddress.canton.name"
+                                                   required=""
+                                                   class="form-control" disabled/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Dirección</label>
+                                            <textarea style="resize: none" name="address"
+                                                      ng-model="controller.chosenCustomer.chosenAddress.address"
+                                                      class="form-control" maxlength="150" disabled>
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pt clearfix">
+                                    <div class="pull-left">
+                                        <button uib-tooltip="Expandir siguiente sección" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="chk.step2 = true" class="btn btn-primary">
+                                            Siguiente
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </uib-accordion-group>
+                        <!-- Detalles de pago -->
+                        <uib-accordion-group is-open="chk.step2" panel-class="b">
+                            <uib-accordion-heading>2. Detalles de pago</uib-accordion-heading>
+                            <div id="collapse02">
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label>Moneda</label>
+                                            <div class="controls">
+                                                <select name="controller.currency" ng-model="controller.currency"
+                                                        ng-options="item.currencyCode as item.description for item in controller.currencyList"
+                                                        class="form-control"
+                                                        ng-change="controller.changeExchangeRate(controller.currency)">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label>Tipo de cambio</label>
+                                            <input type="text" name="controller.exchangeRate" ng-change="controller.updateProductListPrices(controller.exchangeRate)"
+                                                   ng-model="controller.exchangeRate" required="" class="form-control"
+                                                   ng-disabled="controller.currency == globalConstants.CURRENCY_COLONES_CODE"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label>Tipo de pago</label>
+                                            <div class="controls">
+                                                <select name="controller.paymentType" ng-model="controller.paymentType" required=""
+                                                    ng-options="item.id as item.description for item in controller.paymentTypeList"
+                                                    class="form-control" ng-change="controller.resetCreditCondition()">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3"
+                                         ng-hide="controller.paymentType == globalConstants.PAYMENT_TYPE_CASH_CODE || controller.paymentType == null ">
+                                        <div class="form-group">
+                                            <label>Condición de crédito</label>
+                                            <div class="controls">
+                                                <select name="controller.creditCondition"
+                                                        ng-model="controller.creditCondition"
+                                                        ng-options="item.id as item.description for item in controller.creditConditionList"
+                                                        class="form-control">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="pt clearfix">
+                                    <div class="pull-left">
+                                        <button uib-tooltip="Expandir siguiente sección" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="chk.step3 = true" class="btn btn-primary">
+                                            Siguiente
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </uib-accordion-group>
+                        <!-- Lista de productos -->
+                        <uib-accordion-group is-open="chk.step3" panel-class="b">
+                            <uib-accordion-heading>3. Lista de productos</uib-accordion-heading>
+                            <div id="collapse03">
+                                <h4>Productos</h4>
+                                <div class="col-lg-12">
+                                    <div class="pull-right">
+                                        <button uib-tooltip="Agregar nuevo producto" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="controller.openAddProductModal()"
+                                                class="btn btn-labeled btn-success addButton">
+                                          <span class="btn-label">
+                                             <em class="fa fa-plus"></em>
+                                          </span>Agregar producto
+                                        </button>
+                                    </div>
+                                </div>
+                                <h4>Productos escogidos</h4>
+                                <table datatable="ng" dt-options="controller.dtOptionsAddedProducts"
+                                       dt-column-defs="controller.dtColumnDefsAddedProducts"
+                                       class="row-border hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Cantidad</th>
+                                        <th>Código</th>
+                                        <th>Nombre</th>
+                                        <th>Precio unitario</th>
+                                        <th>Descuento</th>
+                                        <th>Impuestos</th>
+                                        <th>Subtotal</th>
+                                        <th>Eliminar</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="addedProductObj in controller.addedProductList">
+                                        <td>{{ addedProductObj.quantity }}</td>
+                                        <td>{{ addedProductObj.productCode }}</td>
+                                        <td>{{ addedProductObj.name }}</td>
+                                        <td ng-if="controller.currency == globalConstants.CURRENCY_COLONES_CODE">{{ addedProductObj.linePrice | currency : "₡" : 2 }}</td>
+                                        <td ng-if="controller.currency == globalConstants.CURRENCY_DOLLARS_CODE">{{ addedProductObj.linePrice | currency : "$" : 2 }}</td>
+                                        <td>{{ addedProductObj.discountPercentage}} %</td>
+                                        <td>{{ addedProductObj.taxPercentage}} %</td>
+                                        <td ng-if="controller.currency == globalConstants.CURRENCY_COLONES_CODE">{{ addedProductObj.subtotal | currency : "₡" : 2 }}</td>
+                                        <td ng-if="controller.currency == globalConstants.CURRENCY_DOLLARS_CODE">{{ addedProductObj.subtotal | currency : "$" : 2 }}</td>
+                                        <td>
+                                            <button uib-tooltip="Eliminar" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="controller.removeProduct($index)"
+                                                    class="btn btn-sm btn-danger">
+                                                <em class="fa fa-trash-o"></em>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </uib-accordion-group>
+                    </uib-accordion>
+                </form>
+                <toaster-container
+                        toaster-options="{'position-class': 'toast-bottom-right', 'close-button':true, 'body-output-type': 'trustedHtml'}"></toaster-container>
+
+            </div>
+        </div>
+        <script type="text/ng-template" id="validateBillModal">
+            <div class="ngdialog-message text-center">
+                <h3>Validar factura</h3>
+                <p>¿Está seguro que desea validar la factura?</p>
+                <div>
+                    <button type="button" ng-click="confirm(confirmValue)" class="btn btn-primary mr">Confirmar</button>
+                    <button type="button" ng-click="closeThisDialog('button')" class="btn btn-default">Cancelar</button>
+                </div>
+            </div>
+        </script>
+        <div ng-include="'app/views/modals/add-product-to-bill-modal.html'"></div>
+    </div>
+</div>

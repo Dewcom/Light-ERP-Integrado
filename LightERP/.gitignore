@@ -45,18 +45,22 @@ stacktrace.log
 /cobertura.ser
 .DS_Store
 /target/
+bower_components/
+node_modules/
 /out/
 /web-app/plugins
 /.link_to_grails_plugins/
 /target-eclipse/
-.idea/
 *.iml
 
 # IntelliJ
+.idea/
+**/.idea/
 /out/
 .idea_modules
 .gradle
 bin/
+test/
 tmp/
 build/
 .idea/gradle.xml
