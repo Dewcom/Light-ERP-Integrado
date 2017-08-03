@@ -133,7 +133,7 @@ angular
                                         text: [
                                             {text: ' Espyco Inc. S.A' + '\n', fontSize: 10, bold: true},
                                             'Cédula jurídica: 3-101-341066-17\n',
-                                            'Moravia, San Jeronimo, Costado Sur del Parque\n',
+                                            'Moravia, San Jerónimo, Costado Sur del Parque\n',
                                             '+506 2292 4141\n',
                                             'info@espyco.com\n',
                                             'www.espyco.com'
@@ -145,7 +145,7 @@ angular
                                         text: [
                                             {text: customerName + '\n', fontSize: 10, bold: true},
                                             identificationType + bill.customer.identification + '\n',
-                                            'Teléfono: ' + + bill.customer.phoneNumber1 + '\n',
+                                            'Teléfono: '  + bill.customer.phoneNumber1 + '\n',
                                             'Dirección: ' + completeAddress
                                         ]
                                     }

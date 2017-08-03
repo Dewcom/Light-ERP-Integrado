@@ -30,7 +30,7 @@ class BillController extends RestController {
                 if(billFromBd){
                     tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
-                    tmpResponse.data = JSONMapper.from(billFromBd)
+                    tmpResponse.data = JSONMapper.from(billFromBd, true)
                 }else{
                     tmpResponse.message = messageSource.getMessage("bill.not.found", null, Locale.default);
                     tmpResponse.code = Constants.REGISTER_NOT_FOUND
@@ -40,7 +40,7 @@ class BillController extends RestController {
 
                 tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
-                tmpResponse.data = JSONMapper.listFrom(billsFromDb)
+                tmpResponse.data = JSONMapper.listFrom(billsFromDb, true)
             }
             log.info "====== Get bill response ======"
             log.info tmpResponse.code
@@ -64,7 +64,7 @@ class BillController extends RestController {
             }
             tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
             tmpResponse.code = Constants.SUCCESS_RESPONSE
-            tmpResponse.data = JSONMapper.listFrom(tmpBills)
+            tmpResponse.data = JSONMapper.listFrom(tmpBills, true)
 
             log.info "====== Get bills by client id response ======"
             log.info tmpResponse as JSON
@@ -94,7 +94,7 @@ class BillController extends RestController {
               def newBill =  billService.createBill(tmpBill);
 
                 tmpResponse.message = messageSource.getMessage("create.bill.success", null, Locale.default)
-                tmpResponse.data = JSONMapper.from(newBill)
+                tmpResponse.data = JSONMapper.from(newBill, true)
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
             }
             log.info "====== Create bill response ======"

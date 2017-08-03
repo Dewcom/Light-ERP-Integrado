@@ -21,13 +21,12 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="contactObj in controller.contactList">
-                    <td>{{ contactObj.customerName +' '+ contactObj.customerLastNames  }}</td>
-                    <td>{{ contactObj.name + ' ' + contactObj.firstLastName + ' ' + contactObj.secondLastName}}
-                    </td>
-                    <td ng-if="contactObj.jobTitle != null">{{ contactObj.jobTitle }}</td>
+                    <td><span ng-bind="contactObj.customerName +' '+ contactObj.customerLastNames"></span></td>
+                    <td><span ng-bind="contactObj.name + ' ' + contactObj.firstLastName + ' ' + contactObj.secondLastName"></span></td>
+                    <td ng-if="contactObj.jobTitle != null">{{::contactObj.jobTitle }}</td>
                     <td ng-if="contactObj.jobTitle == null">**SIN PUESTO**</td>
-                    <td>{{ contactObj.phoneNumber1 }}</td>
-                    <td ng-if="contactObj.email != null">{{ contactObj.email }}</td>
+                    <td>{{::contactObj.phoneNumber1 }}</td>
+                    <td ng-if="contactObj.email != null">{{::contactObj.email }}</td>
                     <td ng-if="contactObj.email == null">**SIN CORREO**</td>
                     <td>
                         <button uib-tooltip="Ver contacto" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="controller.openDetailModal('md', contactObj, '/detailContactModal.html')" class="btn btn-sm btn-toolbar">

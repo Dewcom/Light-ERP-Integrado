@@ -30,7 +30,7 @@ class IdentificationTypeController extends RestController {
                 if(idTypeFromDB){
                     tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
-                    tmpResponse.data = JSONMapper.from(idTypeFromDB)
+                    tmpResponse.data = JSONMapper.from(idTypeFromDB, true)
                 }else{
                     tmpResponse.message = messageSource.getMessage("identification.type.not.found", null, Locale.default);
                     tmpResponse.code = Constants.REGISTER_NOT_FOUND
@@ -40,7 +40,7 @@ class IdentificationTypeController extends RestController {
 
                 tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
-                tmpResponse.data = JSONMapper.listFrom(idTypesFromDB)
+                tmpResponse.data = JSONMapper.listFrom(idTypesFromDB, true)
             }
             log.info "====== Get identification type response ======"
             log.info tmpResponse as JSON

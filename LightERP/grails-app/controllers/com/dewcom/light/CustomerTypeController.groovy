@@ -30,7 +30,7 @@ class CustomerTypeController extends RestController {
                 if(customerTypeFromDB){
                     tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
-                    def object = JSONMapper.from(customerTypeFromDB)
+                    def object = JSONMapper.from(customerTypeFromDB, true)
                     tmpResponse.data = object
                 }else{
                     tmpResponse.message = messageSource.getMessage("customer.type.not.found", null, Locale.default);
@@ -41,7 +41,7 @@ class CustomerTypeController extends RestController {
 
                 tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
-                tmpResponse.data = JSONMapper.listFrom(customerTypesFromDB)
+                tmpResponse.data = JSONMapper.listFrom(customerTypesFromDB, true)
             }
             log.info "====== Get customer types response ======"
             log.info tmpResponse as JSON
