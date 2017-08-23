@@ -145,7 +145,7 @@ angular
                                         text: [
                                             {text: customerName + '\n', fontSize: 10, bold: true},
                                             identificationType + bill.customer.identification + '\n',
-                                            'Teléfono: ' + + bill.customer.phoneNumber1 + '\n',
+                                            'Teléfono: ' + bill.customer.phoneNumber1 + '\n',
                                             'Dirección: ' + completeAddress
                                         ]
                                     }
