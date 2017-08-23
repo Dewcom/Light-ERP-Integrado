@@ -30,7 +30,7 @@ class CustomerController extends RestController {
                 if(customerFromDB){
                     tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
-                    tmpResponse.data = JSONMapper.from(customerFromDB)
+                    tmpResponse.data = JSONMapper.from(customerFromDB, true)
                 }else{
                     tmpResponse.message = messageSource.getMessage("customer.not.found", null, Locale.default);
                     tmpResponse.code = Constants.REGISTER_NOT_FOUND
@@ -39,7 +39,7 @@ class CustomerController extends RestController {
                 def customersFromDB = customerService.getAllCustomers();
                 tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
-                tmpResponse.data = JSONMapper.listFrom(customersFromDB)
+                tmpResponse.data = JSONMapper.listFrom(customersFromDB, false)
             }
             log.info "====== Get customer response ======"
             render tmpResponse as JSON
@@ -74,7 +74,7 @@ class CustomerController extends RestController {
             if (restCustomer.hasErrors()) {
                 this.handleDataErrorsREST(messageSource, restCustomer.errors);
             } else {
-                tmpCustomer = Customer.fromRestCustomer(restCustomer);
+                tmpCustomer = Customer.fromRestCustomer(restCustomer, true);
                 customerService.createCustomer(tmpCustomer);
 
                 tmpResponse.message = messageSource.getMessage("create.customer.success", null, Locale.default)
@@ -167,7 +167,7 @@ class CustomerController extends RestController {
             }
             tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
             tmpResponse.code = Constants.SUCCESS_RESPONSE
-            tmpResponse.data = JSONMapper.listFrom(tmpContactsList)
+            tmpResponse.data = JSONMapper.listFrom(tmpContactsList, true)
 
             log.info "====== Get contacts by client id response ======"
             log.info tmpResponse as JSON
@@ -191,7 +191,7 @@ class CustomerController extends RestController {
             }
             tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
             tmpResponse.code = Constants.SUCCESS_RESPONSE
-            tmpResponse.data = JSONMapper.listFrom(tmpAddressesList)
+            tmpResponse.data = JSONMapper.listFrom(tmpAddressesList, true)
 
             log.info "====== Get addresses by client id response ======"
             log.info tmpResponse as JSON

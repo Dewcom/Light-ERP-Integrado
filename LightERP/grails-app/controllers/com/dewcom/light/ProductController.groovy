@@ -30,7 +30,7 @@ class ProductController extends RestController{
                 if(productFromDB){
                     tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default)
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
-                    tmpResponse.data = JSONMapper.from(productFromDB)
+                    tmpResponse.data = JSONMapper.from(productFromDB, true)
                 }else{
                     tmpResponse.message = messageSource.getMessage("product.not.found", null, Locale.default)
                     tmpResponse.code = Constants.REGISTER_NOT_FOUND
@@ -39,7 +39,7 @@ class ProductController extends RestController{
                 def productsFromDB = productService.getAllProducts()
                 tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default)
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
-                tmpResponse.data = JSONMapper.listFrom(productsFromDB)
+                tmpResponse.data = JSONMapper.listFrom(productsFromDB, true)
             }
             log.info "====== Get product response ======"
             JSON.use('deep')
@@ -172,7 +172,7 @@ class ProductController extends RestController{
                 if(measureUnitFromDB){
                     tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default)
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
-                    tmpResponse.data = JSONMapper.from(measureUnitFromDB)
+                    tmpResponse.data = JSONMapper.from(measureUnitFromDB, true)
                 }else{
                     tmpResponse.message = messageSource.getMessage("measure.type.not.found", null, Locale.default)
                     tmpResponse.code = Constants.REGISTER_NOT_FOUND
@@ -181,7 +181,7 @@ class ProductController extends RestController{
                 def measureTypeFromDB = productService.getAllMeasureUnits()
                 tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default)
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
-                tmpResponse.data = JSONMapper.listFrom(measureTypeFromDB)
+                tmpResponse.data = JSONMapper.listFrom(measureTypeFromDB, true)
             }
             log.info "====== Get measure types response ======"
             JSON.use('deep')

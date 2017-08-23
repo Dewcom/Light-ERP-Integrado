@@ -31,7 +31,7 @@ class PresentationTypeController extends RestController {
                 if(presentationTypeFromDB){
                     tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
-                    tmpResponse.data = JSONMapper.from(presentationTypeFromDB)
+                    tmpResponse.data = JSONMapper.from(presentationTypeFromDB, true)
                 }else{
                     tmpResponse.message = messageSource.getMessage("presentation.type.not.found", null, Locale.default);
                     tmpResponse.code = Constants.REGISTER_NOT_FOUND
@@ -41,7 +41,7 @@ class PresentationTypeController extends RestController {
 
                 tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
-                tmpResponse.data = JSONMapper.listFrom(presentationTypesFromDB)
+                tmpResponse.data = JSONMapper.listFrom(presentationTypesFromDB, true)
             }
 
             log.info "====== Get presentation type response ======"
