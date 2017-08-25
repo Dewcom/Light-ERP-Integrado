@@ -168,7 +168,7 @@ class JSONMapper {
         def tmpRestObject = new BillDetailRespREST()
             tmpRestObject.id = pBillDetail.id
             tmpRestObject.billId = pBillDetail.bill.id
-            tmpRestObject.product = fromBillDetailProduct(pBillDetail.product)
+            tmpRestObject.product = fromBillDetailProduct(pBillDetail.product, true)
             tmpRestObject.quantity = pBillDetail.quantity
             tmpRestObject.linePrice = pBillDetail.linePrice
             tmpRestObject.discountPercentage = pBillDetail.discountPercentage
@@ -271,7 +271,7 @@ class JSONMapper {
     }
 
     //used for null params
-    def static from(def pNull){
-        pNull
+    def static from(def pNull1, Boolean pull2){
+        pNull1
     }
 }
