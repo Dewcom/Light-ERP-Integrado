@@ -351,7 +351,7 @@ gulp.task('browsersync', function() {
         notify: false,
         port: 3010,
         server: {
-            baseDir: '..'
+            baseDir: '.'
         }
     });
 
