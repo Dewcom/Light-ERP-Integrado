@@ -25,7 +25,7 @@ class ExchangeRateController extends RestController {
                 if(exchangeRateFromDB){
                     tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
-                    tmpResponse.data = JSONMapper.from(exchangeRateFromDB, true)
+                    tmpResponse.data = JSONMapper.from(exchangeRateFromDB)
                 }else{
                     tmpResponse.message = messageSource.getMessage("exchange.rate.not.found", null, Locale.default);
                     tmpResponse.code = Constants.REGISTER_NOT_FOUND
@@ -35,7 +35,7 @@ class ExchangeRateController extends RestController {
 
                 tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
-                tmpResponse.data = JSONMapper.listFrom(exchangeRatesFromDB, true)
+                tmpResponse.data = JSONMapper.listFrom(exchangeRatesFromDB)
             }
             log.info "====== Get exchange rate response ======"
             log.info tmpResponse as JSON

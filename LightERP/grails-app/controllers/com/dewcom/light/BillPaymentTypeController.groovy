@@ -19,7 +19,7 @@ class BillPaymentTypeController extends RestController {
 
                 tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
-                tmpResponse.data = JSONMapper.listFrom(paymentTypes, true)
+                tmpResponse.data = JSONMapper.listFrom(paymentTypes)
 
             log.info tmpResponse as JSON
             render tmpResponse as JSON

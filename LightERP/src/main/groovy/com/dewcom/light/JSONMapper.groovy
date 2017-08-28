@@ -24,7 +24,7 @@ import com.dewcom.light.rest.response.ProductTypeRespREST
  */
 class JSONMapper {
 
-    def static from(Customer pCustomer, boolean isDeep){
+    def static from(Customer pCustomer){
         def tmpRestObject = new CustomerRespREST()
         tmpRestObject.id = pCustomer.id
         tmpRestObject.name = pCustomer.name
@@ -38,17 +38,17 @@ class JSONMapper {
         tmpRestObject.creditLimit = pCustomer.creditLimit
         tmpRestObject.mobile = pCustomer.mobile
         tmpRestObject.discountPercentage = pCustomer.discountPercentage
-        tmpRestObject.identificationType = from(pCustomer.identificationType, true)
+        tmpRestObject.identificationType = from(pCustomer.identificationType)
         tmpRestObject.enabled = pCustomer.enabled
-        tmpRestObject.customerType = from(pCustomer.customerType, true)
-        tmpRestObject.contacts = isDeep ? listFrom(pCustomer.contacts, true) : []
-        tmpRestObject.addresses = isDeep ? listFrom(pCustomer.addresses, true) : []
+        tmpRestObject.customerType = from(pCustomer.customerType)
+        tmpRestObject.contacts = listFrom(pCustomer.contacts)
+        tmpRestObject.addresses = listFrom(pCustomer.addresses)
         tmpRestObject.registrationDate = pCustomer.registrationDate
 
         tmpRestObject
     }
 
-    def static from(Contact pContact, boolean isDeep){
+    def static from(Contact pContact){
         def tmpRestObject = new ContactRespREST()
         tmpRestObject.id = pContact.id
         tmpRestObject.name = pContact.name
@@ -68,7 +68,7 @@ class JSONMapper {
         tmpRestObject
     }
 
-    def static from(Address pAddress, boolean isDeep){
+    def static from(Address pAddress){
         def tmpRestObject = new AddressRespREST()
         tmpRestObject.id = pAddress.id
         tmpRestObject.idDistrict = pAddress.idDistrict
@@ -79,14 +79,14 @@ class JSONMapper {
         tmpRestObject
     }
 
-    def static from(Bill pBill, boolean isDeep){
+    def static from(Bill pBill){
         def tmpRestObject = new BillRespREST()
         tmpRestObject.id = pBill.id
-        tmpRestObject.currency = from(pBill.currency, true)
-        tmpRestObject.billState = from(pBill.billState, true)
-        tmpRestObject.billPaymentType = from(pBill.billPaymentType, true)
-        tmpRestObject.creditCondition = from(pBill.creditCondition, true)
-        tmpRestObject.address = from(pBill.address, true)
+        tmpRestObject.currency = from(pBill.currency)
+        tmpRestObject.billState = from(pBill.billState)
+        tmpRestObject.billPaymentType = from(pBill.billPaymentType)
+        tmpRestObject.creditCondition = from(pBill.creditCondition)
+        tmpRestObject.address = from(pBill.address)
         tmpRestObject.enabled = pBill.enabled
         tmpRestObject.totalTaxAmount = pBill.totalTaxAmount
         tmpRestObject.totalDiscount = pBill.totalDiscount
@@ -97,14 +97,14 @@ class JSONMapper {
         tmpRestObject.billNumber = pBill.billNumber
         tmpRestObject.dueDate = pBill.dueDate
         tmpRestObject.creationDate = pBill.creationDate
-        tmpRestObject.billDetails = listFrom(pBill.billDetails, true)
-        tmpRestObject.payments = listFrom(pBill.payments, true)
-        tmpRestObject.customer = from(pBill.customer, true)
+        tmpRestObject.billDetails = listFrom(pBill.billDetails)
+        tmpRestObject.payments = listFrom(pBill.payments)
+        tmpRestObject.customer = from(pBill.customer)
 
         tmpRestObject
     }
 
-    def static from(Currency pCurrency, boolean isDeep){
+    def static from(Currency pCurrency){
         def tmpRestObject = new CurrencyRespREST()
         tmpRestObject.id = pCurrency.id
         tmpRestObject.currencyCode = pCurrency.currencyCode
@@ -114,7 +114,7 @@ class JSONMapper {
 
     }
 
-    def static from(BillStateType pBillState, boolean isDeep){
+    def static from(BillStateType pBillState){
         def tmpRestObject = new BillStateTypeRespREST()
         tmpRestObject.id = pBillState.id
         tmpRestObject.code = pBillState.code
@@ -122,7 +122,7 @@ class JSONMapper {
         tmpRestObject
     }
 
-    def static from(BillPaymentType pBillPayment, boolean isDeep){
+    def static from(BillPaymentType pBillPayment){
         def tmpRestObject = new BillPaymentTypeRespREST()
         tmpRestObject.id = pBillPayment.id
         tmpRestObject.code = pBillPayment.code
@@ -130,18 +130,18 @@ class JSONMapper {
         tmpRestObject
     }
 
-    def static from(ExchangeRate pExchangeRate, boolean isDeep){
+    def static from(ExchangeRate pExchangeRate){
         def tmpRestObject = new ExchangeRateRespREST()
         tmpRestObject.id = pExchangeRate.id
         tmpRestObject.code = pExchangeRate.code
         tmpRestObject.description = pExchangeRate.description
         tmpRestObject.value = pExchangeRate.value
-        tmpRestObject.currency = from(pExchangeRate.currency, true)
+        tmpRestObject.currency = from(pExchangeRate.currency)
 
         tmpRestObject
     }
 
-    def static from(Payment pPayment, boolean isDeep){
+    def static from(Payment pPayment){
         def tmpRestObject = new PaymentRespREST()
             tmpRestObject.id = pPayment.id
             tmpRestObject.bankAccount = pPayment.bankAccount
@@ -155,7 +155,7 @@ class JSONMapper {
         tmpRestObject
     }
 
-    def static from(CreditCondition pCreditCondition, boolean isDeep){
+    def static from(CreditCondition pCreditCondition){
         def tmpRestObject = new CreditConditionRespREST()
             tmpRestObject.id = pCreditCondition.id
             tmpRestObject.code = pCreditCondition.code
@@ -164,11 +164,11 @@ class JSONMapper {
         tmpRestObject
     }
 
-    def static from(BillDetail pBillDetail, boolean isDeep){
+    def static from(BillDetail pBillDetail){
         def tmpRestObject = new BillDetailRespREST()
             tmpRestObject.id = pBillDetail.id
             tmpRestObject.billId = pBillDetail.bill.id
-            tmpRestObject.product = fromBillDetailProduct(pBillDetail.product, true)
+            tmpRestObject.product = fromBillDetailProduct(pBillDetail.product)
             tmpRestObject.quantity = pBillDetail.quantity
             tmpRestObject.linePrice = pBillDetail.linePrice
             tmpRestObject.discountPercentage = pBillDetail.discountPercentage
@@ -181,7 +181,7 @@ class JSONMapper {
         tmpRestObject
     }
 
-    def static from(ProductType pProductType, boolean isDeep){
+    def static from(ProductType pProductType){
         def tmpRestObject = new ProductTypeRespREST()
             tmpRestObject.name = pProductType.name
             tmpRestObject.enabled = pProductType.enabled
@@ -191,7 +191,7 @@ class JSONMapper {
         tmpRestObject
     }
 
-    def static from(Product pProduct, boolean isDeep){
+    def static from(Product pProduct){
         def tmpRestObject = new ProductRespREST()
 
             tmpRestObject.name = pProduct.name
@@ -199,9 +199,9 @@ class JSONMapper {
             tmpRestObject.registrationDate = pProduct.registrationDate
             tmpRestObject.id = pProduct.id
             tmpRestObject.productCode = pProduct.productCode
-            tmpRestObject.presentationType = from(pProduct.presentationType, true)
+            tmpRestObject.presentationType = from(pProduct.presentationType)
             tmpRestObject.bulkQuantity = pProduct.bulkQuantity
-            tmpRestObject.productType = from(pProduct.productType, true)
+            tmpRestObject.productType = from(pProduct.productType)
             tmpRestObject.cost = pProduct.cost
             tmpRestObject.price = pProduct.price
             tmpRestObject.suggestedCost = pProduct.suggestedCost
@@ -209,11 +209,11 @@ class JSONMapper {
             tmpRestObject.commercialName = pProduct.commercialName
             tmpRestObject.utilityPercentage = pProduct.utilityPercentage
             tmpRestObject.productTax = pProduct.productTax
-            tmpRestObject.measureUnit = from(pProduct.measureUnit, true)
+            tmpRestObject.measureUnit = from(pProduct.measureUnit)
         tmpRestObject
     }
 
-    def static fromBillDetailProduct(Product pProduct, boolean isDeep){
+    def static fromBillDetailProduct(Product pProduct){
         def tmpRestObject = new BillDetailProductRespREST()
         tmpRestObject.name = pProduct.name
         tmpRestObject.id = pProduct.id
@@ -222,7 +222,7 @@ class JSONMapper {
         tmpRestObject
     }
 
-    def static from(PresentationType pPresentationType, boolean isDeep){
+    def static from(PresentationType pPresentationType){
         def tmpRestObject = new PresentationTypeRespREST()
             tmpRestObject.name = pPresentationType.name
             tmpRestObject.enabled = pPresentationType.enabled
@@ -232,7 +232,7 @@ class JSONMapper {
         tmpRestObject
     }
 
-    def static from(IdentificationType pIdentificationType, boolean isDeep){
+    def static from(IdentificationType pIdentificationType){
         def tmpRestObject = new IdentificationTypeRespREST()
             tmpRestObject.name = pIdentificationType.name
             tmpRestObject.enabled = pIdentificationType.enabled
@@ -243,7 +243,7 @@ class JSONMapper {
         tmpRestObject
     }
 
-    def static from(CustomerType pCustomerType, boolean isDeep){
+    def static from(CustomerType pCustomerType){
         def tmpRestObject = new CustomerTypeRespREST()
             tmpRestObject.name = pCustomerType.name
             tmpRestObject.enabled = pCustomerType.enabled
@@ -252,7 +252,7 @@ class JSONMapper {
         tmpRestObject
     }
 
-    def static from(MeasureUnit pMeasureType, boolean isDeep){
+    def static from(MeasureUnit pMeasureType){
         def tmpMeasureTypeObj = new MeasureUnitREST()
         tmpMeasureTypeObj.name = pMeasureType.name
         tmpMeasureTypeObj.enabled = pMeasureType.enabled
@@ -262,16 +262,16 @@ class JSONMapper {
         tmpMeasureTypeObj
     }
 
-    def static listFrom(def pListObject, def isDeep){
+    def static listFrom(def pListObject){
         def tmpList = new ArrayList()
-        pListObject.each{
-            tmpList.add(from(it, isDeep))
+        pListObject.each{ it ->
+            tmpList.add(from(it))
         }
         tmpList
     }
 
     //used for null params
-    def static from(def pNull1, Boolean pull2){
+    def static from(def pNull1){
         pNull1
     }
 }

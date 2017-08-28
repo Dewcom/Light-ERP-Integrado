@@ -35,7 +35,7 @@ class PaymentController extends  RestController {
                 if (tmpPayment) {
                     tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
-                    tmpResponse.data = JSONMapper.from(tmpPayment, true)
+                    tmpResponse.data = JSONMapper.from(tmpPayment)
                 } else {
                     tmpResponse.message = messageSource.getMessage("payment.not.found", null, Locale.default);
                     tmpResponse.code = Constants.REGISTER_NOT_FOUND
@@ -44,7 +44,7 @@ class PaymentController extends  RestController {
                 def paymentsFromDb = paymentService.getAllPayments();
                 tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
-                tmpResponse.data = JSONMapper.listFrom(paymentsFromDb, true)
+                tmpResponse.data = JSONMapper.listFrom(paymentsFromDb)
             }
             log.info "====== Get payment response ======"
             render tmpResponse as JSON

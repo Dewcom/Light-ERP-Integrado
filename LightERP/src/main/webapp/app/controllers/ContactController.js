@@ -50,11 +50,10 @@
 
             // Ajax
 
-          /*  contactService.getAll().then(function(response) {
-                console.log(response);
+            contactService.getAll().then(function(response) {
+                vm.contactList = response;
+            });
 
-            });*/
-            vm.contactList = [];
 
             vm.dtOptions = DTOptionsBuilder.newOptions()
                 .withPaginationType('full_numbers')
