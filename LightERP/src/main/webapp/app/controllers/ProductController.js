@@ -221,6 +221,8 @@
 
             function addProduct() {
 
+                console.log($scope.addProductForm.utilityPercentage);
+
                 var newProduct = {
                     "productCode": $scope.addProductForm.productCode,
                     "name": $scope.addProductForm.productName,
@@ -232,7 +234,7 @@
                     "cost": $scope.addProductForm.cost != null ? parseFloat($scope.addProductForm.cost) : $scope.addProductForm.cost,
                     "suggestedCost": $scope.addProductForm.suggestedCost != null ? parseFloat($scope.addProductForm.suggestedCost) : $scope.addProductForm.suggestedCost,
                     "tariffHeading": $scope.addProductForm.tariffHeading,
-                    "utilityPercentage": $scope.addProductForm.utilityPercentage != null ? parseFloat($scope.addProductForm.utilityPercentage) : $scope.addProductForm.utilityPercentage,
+                    "utilityPercentage": $scope.addProductForm.utilityPercentage != undefined ? parseFloat($scope.addProductForm.utilityPercentage) : $scope.addProductForm.utilityPercentage,
                     "measureUnit": $scope.addProductForm.measureUnit,
                     "productTax": $scope.addProductForm.productTax != null ? parseFloat($scope.addProductForm.productTax) : $scope.addProductForm.productTax
                 };
@@ -273,6 +275,8 @@
 
             function updateProduct() {
 
+                console.log($scope.currentProduct.utilityPercentage);
+
                 var updatedProduct = {
                     "id": $scope.currentProduct.id,
                     "productCode": $scope.currentProduct.productCode,
@@ -285,7 +289,7 @@
                     "cost": parseFloat($scope.currentProduct.cost),
                     "suggestedCost": parseFloat($scope.currentProduct.suggestedCost),
                     "tariffHeading": $scope.currentProduct.tariffHeading,
-                    "utilityPercentage": parseInt($scope.currentProduct.utilityPercentage),
+                    "utilityPercentage": $scope.currentProduct.utilityPercentage != undefined &&  $scope.currentProduct.utilityPercentage != ""? parseFloat($scope.currentProduct.utilityPercentage) : 0,
                     "measureUnit": $scope.currentProduct.measureUnit.id,
                     "productTax": parseFloat($scope.currentProduct.productTax)
                 };

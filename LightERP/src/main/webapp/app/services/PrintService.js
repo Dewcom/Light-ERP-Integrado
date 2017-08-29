@@ -24,7 +24,7 @@ angular
 
             var zerosNeeded = 0;
 
-            if(bill.address != null){
+            if(bill.address != null && bill.address.province.name != null){
                 completeAddress = bill.address.district.name + ', ' + bill.address.canton.name +
                     ', ' + bill.address.province.name + ', ' + bill.address.address;
             }
@@ -79,12 +79,12 @@ angular
             var emptyList = Array.apply(null, Array(totalSize)).map(function () {});
 
             angular.forEach(bill.billDetails, function(value, key) {
-                productList.push({productName: value.product.name, taxAmount: value.totalTaxAmount.toFixed(2), discountAmount : value.totalDiscount.toFixed(2),
+                productList.push({productName: value.product.name, productCode: value.product.productCode, taxAmount: value.totalTaxAmount.toFixed(2), discountAmount : value.totalDiscount.toFixed(2),
                     price: value.linePrice.toFixed(2), quantity: value.quantity, subtotal: value.total.toFixed(2)});
             });
 
             var items = productList.map(function(item) {
-                return [{text: item.productName, alignment: 'left'}, currencySymbol + item.taxAmount, currencySymbol + item.discountAmount,
+                return [{text: item.productName, alignment: 'left'}, item.productCode, currencySymbol + item.taxAmount, currencySymbol + item.discountAmount,
                     currencySymbol + item.price, item.quantity, currencySymbol + item.subtotal ];
             });
 
@@ -153,49 +153,55 @@ angular
                             ]
                         },
                         layout: {
-                            defaultBorder: false,
+                            defaultBorder: false
                         }
                     },
                     {
                         style: 'bodyTable',
                         table: {
-                            widths: ['45%', '10%', '11%', '12%', '11%', '11%'],
+                            widths: ['46%', '9%', '9%', '9%', '9%', '9%', '9%'],
                             body: [
                                 [
                                     {
                                         border: [false, false, false, true],
                                         text: [
-                                            {text: 'Descripción', alignment: 'left', bold: true, fontSize : 9}
+                                            {text: 'Descripción', alignment: 'left', bold: true, fontSize : 8}
                                         ]
                                     },
                                     {
                                         border: [false, false, false, true],
                                         text: [
-                                            {text: 'IVA', bold: true, fontSize : 9}
+                                            {text: 'Código', bold: true, fontSize : 8}
                                         ]
                                     },
                                     {
                                         border: [false, false, false, true],
                                         text: [
-                                            {text: 'Descuento', bold: true, fontSize : 9}
+                                            {text: 'IVA', bold: true, fontSize : 8}
                                         ]
                                     },
                                     {
                                         border: [false, false, false, true],
                                         text: [
-                                            {text: 'P.U.', bold: true, fontSize : 9}
+                                            {text: 'Descuento', bold: true, fontSize : 8}
                                         ]
                                     },
                                     {
                                         border: [false, false, false, true],
                                         text: [
-                                            {text: 'Cantidad', bold: true, fontSize : 9}
+                                            {text: 'P.U.', bold: true, fontSize : 8}
                                         ]
                                     },
                                     {
                                         border: [false, false, false, true],
                                         text: [
-                                            {text: 'Subtotal', bold: true, fontSize : 9}
+                                            {text: 'Cantidad', bold: true, fontSize : 8}
+                                        ]
+                                    },
+                                    {
+                                        border: [false, false, false, true],
+                                        text: [
+                                            {text: 'Subtotal', bold: true, fontSize : 8}
                                         ]
                                     }
                                 ]
