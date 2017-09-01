@@ -1,0 +1,42 @@
+<div ng-controller="CustomerController as controller">
+    <div>
+        <div class="form-group">
+            <label>Buscar</label>
+            <div class="controls">
+                <input type="text" name="search" ng-model="controller.search"
+                       class="form-control" ng-change="controller.filterCustomers()"/>
+            </div>
+        </div>
+    </div>
+    <div infinite-scroll="controller.loadMore()" infinite-scroll-distance="0" infinite-scroll-disabled="controller.getAllReady" class="row">
+        <div class="row">
+            <div ng-repeat="customerObj in controller.customerListInf" class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-body text-left">
+                        <h4>{{customerObj.name + ' '+ customerObj.firstLastName + ' ' +customerObj.secondLastName}}</h4>
+                        <ul style="list-style: none;">
+                            <li>Identificación: {{customerObj.identification}}</li>
+                            <li>Teléfono: {{customerObj.phoneNumber1}}</li>
+                            <li>Correo: {{customerObj.email}}</li>
+                        </ul>
+                    </div>
+                    <div class="panel-footer clearfix">
+                        <button uib-tooltip="Enviar correo" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click=""
+                                class="btn btn-sm btn-primary  pull-left">
+                            <em class="fa fa-envelope"></em>
+                        </button>
+                        <td>
+                            <button uib-tooltip="Eliminar" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="contactController.disableContact(customerContact.id)"
+                                    class="btn btn-sm btn-danger  pull-right">
+                                <em class="fa fa-trash-o"></em>
+                            </button>
+                            <button uib-tooltip="Ver contacto" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="contactController.openEditModal('md', customerContact, '/editContactModal.html')" class="btn btn-sm btn-toolbar pull-right">
+                                <em class="fa fa-search"></em>
+                            </button>
+                        </td>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

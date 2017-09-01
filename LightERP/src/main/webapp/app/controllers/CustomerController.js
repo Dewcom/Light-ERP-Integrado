@@ -7,14 +7,15 @@
         .directive('formWizard', formWizard);
 
     CustomerController.$inject = ['$uibModal', '$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder',
-        'customerService', 'customerTypeService', 'identificationTypeService', 'toaster', '$state',
-        '$filter', '$timeout', 'ngDialog', '$scope', 'userService', 'LOCATION', 'APP_CONSTANTS'];
+        'customerService', 'customerTypeService', 'identificationTypeService', 'toaster', '$state', '$filter',
+        '$timeout', 'ngDialog', '$scope', 'userService', 'LOCATION', 'APP_CONSTANTS'];
     function CustomerController($uibModal, $resource, DTOptionsBuilder, DTColumnDefBuilder, customerService,
                                 customerTypeService, identificationTypeService, toaster, $state, $filter, $timeout,
                                 ngDialog, $scope, userService, LOCATION, APP_CONSTANTS) {
         var vm = this;
         vm.globalConstants = APP_CONSTANTS;
         vm.addresses = [];
+        vm.getAllReady = true;
 
         vm.addCustomerForm = {};
 
@@ -73,6 +74,8 @@
             customerService.getAll().then(function (response) {
                 console.log(response);
                 vm.customerList = response;
+                vm.customerListInf = response.slice(0,10);
+                vm.getAllReady = false;
             });
 
 
@@ -104,8 +107,18 @@
                     default:
                         return -1
                 }
-            }
+            };
         }
+
+        vm.loadMore = function() {
+            vm.customerListInf = vm.customerList.slice(0, vm.customerListInf.length + 10);
+        };
+
+        vm.filterCustomers = function(){
+            vm.customerListInf = vm.customerList;
+            vm.customerListInf = $filter('filter')(vm.customerList, {name: vm.search });
+
+        };
 
         /**=========================================================
          * Resetea los apellidos
