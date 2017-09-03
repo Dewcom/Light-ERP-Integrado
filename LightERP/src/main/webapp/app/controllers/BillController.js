@@ -154,6 +154,7 @@
 
             billService.getAll().then(function (response) {
                 vm.billList = response;
+                vm.billListInf = response.slice(0,10);
             });
 
             /**=========================================================
@@ -267,6 +268,27 @@
                 DTColumnDefBuilder.newColumnDef(3)
             ];
         }
+
+        vm.loadMoreBills = function() {
+            vm.billListInf = vm.billList.slice(0, vm.billListInf.length + 10);
+        };
+
+        vm.filterBills = function(){
+            var searchCriteria;
+            vm.billListInf = vm.billList;
+
+            if(isNaN(vm.search)){
+                searchCriteria = vm.search;
+            }else{
+                searchCriteria = vm.search.replace(/^[0]+/g,"");
+            }
+
+            console.log(searchCriteria);
+            var listByNumber = $filter('filter')(vm.billList, {billNumber: searchCriteria });
+            var listByCustomer = $filter('filter')(vm.billList, {customer: {name : searchCriteria }});
+            vm.billListInf = listByNumber.concat(listByCustomer);
+
+        };
 
         /**=========================================================
          * Formatea el numero de factura para que muestre 6 caracteres

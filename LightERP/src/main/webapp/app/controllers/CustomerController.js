@@ -15,7 +15,6 @@
         var vm = this;
         vm.globalConstants = APP_CONSTANTS;
         vm.addresses = [];
-        vm.getAllReady = true;
 
         vm.addCustomerForm = {};
 
@@ -72,10 +71,8 @@
              =========================================================*/
 
             customerService.getAll().then(function (response) {
-                console.log(response);
                 vm.customerList = response;
                 vm.customerListInf = response.slice(0,10);
-                vm.getAllReady = false;
             });
 
 
@@ -110,13 +107,15 @@
             };
         }
 
-        vm.loadMore = function() {
+        vm.loadMoreCustomers = function() {
             vm.customerListInf = vm.customerList.slice(0, vm.customerListInf.length + 10);
         };
 
         vm.filterCustomers = function(){
             vm.customerListInf = vm.customerList;
-            vm.customerListInf = $filter('filter')(vm.customerList, {name: vm.search });
+            var listByName = $filter('filter')(vm.customerList, {name: vm.search });
+            var listById = $filter('filter')(vm.customerList, {identification: vm.search });
+            vm.customerListInf = listByName.concat(listById);
 
         };
 

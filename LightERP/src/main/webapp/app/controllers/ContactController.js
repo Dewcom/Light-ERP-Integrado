@@ -8,8 +8,9 @@
         .controller('ContactController', ContactController);
 
     ContactController.$inject = ['$uibModal','$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder',
-        'contactService','$state', 'toaster', 'ngDialog', '$timeout', '$scope'];
-    function ContactController($uibModal, $resource, DTOptionsBuilder, DTColumnDefBuilder, contactService, $state, toaster, ngDialog, $timeout, $scope) {
+        'contactService','$state', 'toaster', 'ngDialog', '$timeout', '$scope', '$filter'];
+    function ContactController($uibModal, $resource, DTOptionsBuilder, DTColumnDefBuilder, contactService, $state, toaster,
+                               ngDialog, $timeout, $scope, $filter) {
         var vm = this;
 
         var language = {
@@ -43,7 +44,6 @@
 
         function init() {
 
-
             /**=========================================================
              * Datatables
              =========================================================*/
@@ -52,6 +52,7 @@
 
             contactService.getAll().then(function(response) {
                 vm.contactList = response;
+                vm.contactListInf = response.slice(0,10);
             });
 
 
@@ -104,7 +105,18 @@
                     }
 
                 }
-            }
+            };
+
+            vm.loadMoreContacts = function() {
+                vm.contactListInf = vm.contactList.slice(0, vm.contactListInf.length + 10);
+            };
+
+            vm.filterContacts = function(){
+                vm.contactListInf = vm.contactList;
+                var listByCustomer = $filter('filter')(vm.contactList, {customerName: vm.search });
+                var listByContact = $filter('filter')(vm.contactList, {name: vm.search });
+                vm.contactListInf = listByCustomer.concat(listByContact);
+            };
 
 
 

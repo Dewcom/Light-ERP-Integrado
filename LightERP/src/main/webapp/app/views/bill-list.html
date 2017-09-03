@@ -12,45 +12,62 @@
                           </span>Agregar
                     </button>
                 </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Buscar</label>
+                        <div class="controls">
+                            <input type="text" name="search" ng-model="controller.search"
+                                   class="form-control" ng-change="controller.filterBills()"/>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <table datatable="ng" dt-options="controller.dtOptionsBills" dt-column-defs="controller.dtColumnDefsBills"
-                   class="row-border hover">
-                <thead>
-                <tr>
-                    <th>Número de factura</th>
-                    <th>Estado</th>
-                    <th>Cliente</th>
-                    <th>Fecha de factura</th>
-                    <th>Fecha vencimiento</th>
-                    <th>Total</th>
-                    <th>Opciones</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="billObj in controller.billList">
-                    <td ng-if="billObj.billNumber == null" >{{"B" + billObj.id }}</td>
-                    <td ng-if="billObj.billNumber != null" >{{controller.formatBillNumber(billObj)}}</td>
-                    <td>{{ billObj.billState.description }}</td>
-                    <td>{{billObj.customer.name + " " + billObj.customer.firstLastName + " " + billObj.customer.secondLastName}}</td>
-                    <td>{{ billObj.billDate | date :  "dd-MM-yyyy" }}</td>
-                    <td ng-if="billObj.billPaymentType.id != 1" >{{ billObj.dueDate | date :  "dd-MM-yyyy" }}</td>
-                    <td ng-if="billObj.billPaymentType.id == 1" >{{ "Pago de contado"}}</td>
-                    <td ng-if="billObj.totalAmount == null">{{ '**SIN PRODUCTOS**'}}</td>
-                    <td ng-if="billObj.currency.currencyCode == 2 && billObj.totalAmount != null">{{ billObj.totalAmount | currency : "$" : 2}}</td>
-                    <td ng-if="billObj.currency.currencyCode != 2 && billObj.totalAmount != null">{{ billObj.totalAmount | currency : "₡" : 2}}</td>
-                    <td>
-                        <button uib-tooltip="Ver factura" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ui-sref="app.billDetail({billId: billObj.id})" class="btn btn-sm btn-toolbar">
-                            <em class="fa fa-search"></em>
-                        </button>
-                        <button uib-tooltip="Eliminar factura" uib-tooltip-trigger="focus" uib-tooltip-placement="top" ng-disabled="billObj.billState.code != 1" type="button" ng-click="controller.disableBill(billObj.id)"
-                                class="btn btn-sm btn-danger">
-                            <em class="fa fa-trash-o"></em>
-                        </button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            </form>
+            <div infinite-scroll="controller.loadMoreBills()" infinite-scroll-distance="0" infinite-scroll-immediate-check="false" class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Número de factura</th>
+                                            <th>Estado</th>
+                                            <th>Cliente</th>
+                                            <th>Fecha de factura</th>
+                                            <th>Fecha vencimiento</th>
+                                            <th>Total</th>
+                                            <th>Opciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="billObj in controller.billListInf track by $index">
+                                            <td ng-if="billObj.billNumber == null" >{{"B" + billObj.id }}</td>
+                                            <td ng-if="billObj.billNumber != null" >{{controller.formatBillNumber(billObj)}}</td>
+                                            <td>{{ billObj.billState.description }}</td>
+                                            <td>{{billObj.customer.name + " " + billObj.customer.firstLastName + " " + billObj.customer.secondLastName}}</td>
+                                            <td>{{ billObj.billDate | date :  "dd-MM-yyyy" }}</td>
+                                            <td ng-if="billObj.billPaymentType.id != 1" >{{ billObj.dueDate | date :  "dd-MM-yyyy" }}</td>
+                                            <td ng-if="billObj.billPaymentType.id == 1" >{{ "Pago de contado"}}</td>
+                                            <td ng-if="billObj.totalAmount == null">{{ '**SIN PRODUCTOS**'}}</td>
+                                            <td ng-if="billObj.currency.currencyCode == 2 && billObj.totalAmount != null">{{ billObj.totalAmount | currency : "$" : 2}}</td>
+                                            <td ng-if="billObj.currency.currencyCode != 2 && billObj.totalAmount != null">{{ billObj.totalAmount | currency : "₡" : 2}}</td>
+                                            <td>
+                                                <button uib-tooltip="Ver factura" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ui-sref="app.billDetail({billId: billObj.id})" class="btn btn-sm btn-toolbar">
+                                                    <em class="fa fa-search"></em>
+                                                </button>
+                                                <button uib-tooltip="Eliminar factura" uib-tooltip-trigger="focus" uib-tooltip-placement="top" ng-disabled="billObj.billState.code != 1" type="button" ng-click="controller.disableBill(billObj.id)"
+                                                        class="btn btn-sm btn-danger">
+                                                    <em class="fa fa-trash-o"></em>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <toaster-container
