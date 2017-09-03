@@ -3758,8 +3758,10 @@
                 {
                     name: 'ui.select', files: ['vendor/angular-ui-select/dist/select.js',
                     'vendor/angular-ui-select/dist/select.css']
+                },
+                {
+                    name: 'infinite-scroll', files: ['vendor/ngInfiniteScroll/build/ng-infinite-scroll.js']
                 }
-
             ]
         })
     ;
@@ -4141,7 +4143,7 @@
                 url: '/thirdPartyMain',
                 title: 'Clientes',
                 templateUrl: helper.basepath('third-party-main.html'),
-                resolve: helper.resolveFor('datatables', 'ngDialog')
+                resolve: helper.resolveFor('datatables', 'ngDialog', 'infinite-scroll')
             })
             .state('app.customerDetail', {
                 url: '/customerDetail',

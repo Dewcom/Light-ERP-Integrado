@@ -7,8 +7,8 @@
         .directive('formWizard', formWizard);
 
     CustomerController.$inject = ['$uibModal', '$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder',
-        'customerService', 'customerTypeService', 'identificationTypeService', 'toaster', '$state',
-        '$filter', '$timeout', 'ngDialog', '$scope', 'userService', 'LOCATION', 'APP_CONSTANTS'];
+        'customerService', 'customerTypeService', 'identificationTypeService', 'toaster', '$state', '$filter',
+        '$timeout', 'ngDialog', '$scope', 'userService', 'LOCATION', 'APP_CONSTANTS'];
     function CustomerController($uibModal, $resource, DTOptionsBuilder, DTColumnDefBuilder, customerService,
                                 customerTypeService, identificationTypeService, toaster, $state, $filter, $timeout,
                                 ngDialog, $scope, userService, LOCATION, APP_CONSTANTS) {
@@ -71,8 +71,8 @@
              =========================================================*/
 
             customerService.getAll().then(function (response) {
-                console.log(response);
                 vm.customerList = response;
+                vm.customerListInf = response.slice(0,10);
             });
 
 
@@ -104,8 +104,20 @@
                     default:
                         return -1
                 }
-            }
+            };
         }
+
+        vm.loadMoreCustomers = function() {
+            vm.customerListInf = vm.customerList.slice(0, vm.customerListInf.length + 10);
+        };
+
+        vm.filterCustomers = function(){
+            vm.customerListInf = vm.customerList;
+            var listByName = $filter('filter')(vm.customerList, {name: vm.search });
+            var listById = $filter('filter')(vm.customerList, {identification: vm.search });
+            vm.customerListInf = listByName.concat(listById);
+
+        };
 
         /**=========================================================
          * Resetea los apellidos
