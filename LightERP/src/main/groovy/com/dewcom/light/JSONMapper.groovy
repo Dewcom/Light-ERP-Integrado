@@ -264,14 +264,14 @@ class JSONMapper {
 
     def static listFrom(def pListObject){
         def tmpList = new ArrayList()
-        pListObject.each{
+        pListObject.each{ it ->
             tmpList.add(from(it))
         }
         tmpList
     }
 
     //used for null params
-    def static from(def pNull){
-        pNull
+    def static from(def pNull1){
+        pNull1
     }
 }

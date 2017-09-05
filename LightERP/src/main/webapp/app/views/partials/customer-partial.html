@@ -12,38 +12,56 @@
                           </span>Agregar
                     </button>
                 </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Buscar</label>
+                        <div class="controls">
+                            <input type="text" name="search" ng-model="controller.search"
+                                   class="form-control" ng-change="controller.filterCustomers()"/>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <table datatable="ng" dt-options="controller.dtOptions" dt-column-defs="controller.dtColumnDefs"
-                   class="row-border hover">
-                <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Identificación</th>
-                    <th>Teléfono</th>
-                    <th>Correo electrónico</th>
-                    <th>Opciones</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="customerObj in controller.customerList">
-                    <td ng-if="customerObj.firstLastName == null" >{{ customerObj.name }}</td>
-                    <td ng-if="customerObj.firstLastName != null" >{{ customerObj.name + ' ' + customerObj.firstLastName + ' ' + customerObj.secondLastName}}</td>
-                    <td>{{ customerObj.identification }}</td>
-                    <td>{{ customerObj.phoneNumber1 }}</td>
-                    <td ng-if="customerObj.email == null" >**SIN CORREO**</td>
-                    <td ng-if="customerObj.email != null" >{{ customerObj.email }}</td>
-                    <td>
-                        <button uib-tooltip="Ver cliente" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ui-sref="app.customerDetail({customerId: customerObj.id})" class="btn btn-sm btn-toolbar">
-                            <em class="fa fa-search"></em>
-                        </button>
-                        <button uib-tooltip="Eliminar cliente" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="controller.disableCustomer(customerObj.id)"
-                                class="btn btn-sm btn-danger">
-                            <em class="fa fa-trash-o"></em>
-                        </button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <div infinite-scroll="controller.loadMoreCustomers()" infinite-scroll-distance="0" infinite-scroll-immediate-check="false" class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Identificación</th>
+                                        <th>Teléfono</th>
+                                        <th>Correo electrónico</th>
+                                        <th>Opciones</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="customerObj in controller.customerListInf track by $index">
+                                        <td ng-if="customerObj.firstLastName == null" >{{ ::customerObj.name }}</td>
+                                        <td ng-if="customerObj.firstLastName != null"><span ng-bind="customerObj.name + ' ' + customerObj.firstLastName + ' ' + customerObj.secondLastName"></span></td>
+                                        <td>{{ ::customerObj.identification }}</td>
+                                        <td>{{ ::customerObj.phoneNumber1 }}</td>
+                                        <td ng-if="customerObj.email == null" >**SIN CORREO**</td>
+                                        <td ng-if="customerObj.email != null" >{{ ::customerObj.email }}</td>
+                                        <td>
+                                            <button uib-tooltip="Ver cliente" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ui-sref="app.customerDetail({customerId: customerObj.id})" class="btn btn-sm btn-toolbar">
+                                                <em class="fa fa-search"></em>
+                                            </button>
+                                            <button uib-tooltip="Eliminar cliente" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="controller.disableCustomer(customerObj.id)"
+                                                    class="btn btn-sm btn-danger">
+                                                <em class="fa fa-trash-o"></em>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <toaster-container toaster-options="{'position-class': 'toast-bottom-right', 'close-button':true}"></toaster-container>
