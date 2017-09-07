@@ -6,15 +6,15 @@
         .controller('CustomerController', CustomerController)
         .directive('formWizard', formWizard);
 
-    CustomerController.$inject = ['$uibModal', '$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder',
-        'customerService', 'customerTypeService', 'identificationTypeService', 'toaster', '$state', '$filter',
+    CustomerController.$inject = ['$uibModal', '$resource', 'customerService', 'customerTypeService', 'identificationTypeService', 'toaster', '$state', '$filter',
         '$timeout', 'ngDialog', '$scope', 'userService', 'LOCATION', 'APP_CONSTANTS'];
-    function CustomerController($uibModal, $resource, DTOptionsBuilder, DTColumnDefBuilder, customerService,
-                                customerTypeService, identificationTypeService, toaster, $state, $filter, $timeout,
-                                ngDialog, $scope, userService, LOCATION, APP_CONSTANTS) {
+    function CustomerController($uibModal, $resource, customerService, customerTypeService, identificationTypeService,
+                                toaster, $state, $filter, $timeout, ngDialog, $scope, userService, LOCATION, APP_CONSTANTS) {
+
         var vm = this;
         vm.globalConstants = APP_CONSTANTS;
         vm.addresses = [];
+        vm.lockInfiniteScroll = false;
 
         vm.addCustomerForm = {};
 
@@ -65,27 +65,13 @@
                 vm.identificationTypeList = response;
             });
 
-
             /**=========================================================
-             * Datatables
+             * Clientes
              =========================================================*/
-
             customerService.getAll().then(function (response) {
                 vm.customerList = response;
                 vm.customerListInf = response.slice(0,10);
             });
-
-
-            vm.dtOptions = DTOptionsBuilder.newOptions()
-                .withPaginationType('full_numbers')
-                .withLanguage(language);
-            vm.dtColumnDefs = [
-                DTColumnDefBuilder.newColumnDef(0),
-                DTColumnDefBuilder.newColumnDef(1),
-                DTColumnDefBuilder.newColumnDef(2),
-                DTColumnDefBuilder.newColumnDef(3),
-                DTColumnDefBuilder.newColumnDef(4).notSortable()
-            ];
 
 
             //Funcion para definir un max y length para campo identificacion
@@ -113,9 +99,16 @@
 
         vm.filterCustomers = function(){
             vm.customerListInf = vm.customerList;
-            var listByName = $filter('filter')(vm.customerList, {name: vm.search });
-            var listById = $filter('filter')(vm.customerList, {identification: vm.search });
-            vm.customerListInf = listByName.concat(listById);
+
+            if(vm.search == undefined || vm.search == ''){
+                vm.customerListInf = vm.customerList.slice(0,10);
+                vm.lockInfiniteScroll = false;
+            }else{
+                var listByName = $filter('filter')(vm.customerList, {name: vm.search });
+                var listById = $filter('filter')(vm.customerList, {identification: vm.search });
+                vm.customerListInf = listByName.concat(listById);
+                vm.lockInfiniteScroll = true;
+            }
 
         };
 

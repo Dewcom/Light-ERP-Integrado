@@ -16,6 +16,7 @@
         // Se utiliza para tener disponible el tipo de cambio original traido de BD.
         activateCalendar();
         activateChart();
+        vm.lockInfiniteScroll = false;
 
         /**=========================================================
          * Inicializa el calendario
@@ -153,6 +154,7 @@
              =========================================================*/
 
             billService.getAll().then(function (response) {
+                console.log(response);
                 vm.billList = response;
                 vm.billListInf = response.slice(0,10);
             });
@@ -252,21 +254,6 @@
                 DTColumnDefBuilder.newColumnDef(3).notSortable()
 
             ];
-
-            /**=========================================================
-             * Datatable productos agregados
-             =========================================================*/
-
-            vm.dtOptionsBills = DTOptionsBuilder.newOptions()
-                .withPaginationType('full_numbers')
-                .withOption('order', [1 , 'desc'])
-                .withLanguage(language);
-            vm.dtColumnDefsBills = [
-                DTColumnDefBuilder.newColumnDef(0),
-                DTColumnDefBuilder.newColumnDef(1),
-                DTColumnDefBuilder.newColumnDef(2),
-                DTColumnDefBuilder.newColumnDef(3)
-            ];
         }
 
         vm.loadMoreBills = function() {
@@ -277,16 +264,23 @@
             var searchCriteria;
             vm.billListInf = vm.billList;
 
-            if(isNaN(vm.search)){
-                searchCriteria = vm.search;
+            if(vm.search == undefined || vm.search == ''){
+                vm.billListInf = vm.billList.slice(0,10);
+                vm.lockInfiniteScroll = false;
             }else{
-                searchCriteria = vm.search.replace(/^[0]+/g,"");
-            }
 
-            console.log(searchCriteria);
-            var listByNumber = $filter('filter')(vm.billList, {billNumber: searchCriteria });
-            var listByCustomer = $filter('filter')(vm.billList, {customer: {name : searchCriteria }});
-            vm.billListInf = listByNumber.concat(listByCustomer);
+                if(isNaN(vm.search)){
+                    searchCriteria = vm.search;
+                }else{
+                    searchCriteria = vm.search.replace(/^[0]+/g,"");
+                }
+
+                console.log(searchCriteria);
+                var listByNumber = $filter('filter')(vm.billList, {billNumber: searchCriteria });
+                var listByCustomer = $filter('filter')(vm.billList, {customer: {name : searchCriteria }});
+                vm.billListInf = listByNumber.concat(listByCustomer);
+
+            }
 
         };
 
