@@ -12,7 +12,7 @@
     function ProductController($uibModal, $resource, productService, productTypeService, presentationTypeService, toaster,
                                $state, $filter, $timeout, ngDialog, $scope) {
         var vm = this;
-        vm.lockInfiniteScroll = false;
+        vm.disableInfScroll = false;
 
         var language = {
             "sProcessing": "Procesando...",
@@ -89,12 +89,12 @@
 
             if(vm.search == undefined || vm.search == ''){
                 vm.productListInf = vm.productList.slice(0,10);
-                vm.lockInfiniteScroll = false;
+                vm.disableInfScroll = false;
             }else{
                 var listByCode = $filter('filter')(vm.productList, {productCode: vm.search });
                 var listByName = $filter('filter')(vm.productList, {name: vm.search });
                 vm.productListInf = listByName.concat(listByCode);
-                vm.lockInfiniteScroll = true;
+                vm.disableInfScroll = true;
             }
         };
 

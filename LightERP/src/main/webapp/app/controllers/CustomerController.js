@@ -14,7 +14,7 @@
         var vm = this;
         vm.globalConstants = APP_CONSTANTS;
         vm.addresses = [];
-        vm.lockInfiniteScroll = false;
+        vm.disableInfScroll = false;
 
         vm.addCustomerForm = {};
 
@@ -102,12 +102,12 @@
 
             if(vm.search == undefined || vm.search == ''){
                 vm.customerListInf = vm.customerList.slice(0,10);
-                vm.lockInfiniteScroll = false;
+                vm.disableInfScroll = false;
             }else{
                 var listByName = $filter('filter')(vm.customerList, {name: vm.search });
                 var listById = $filter('filter')(vm.customerList, {identification: vm.search });
                 vm.customerListInf = listByName.concat(listById);
-                vm.lockInfiniteScroll = true;
+                vm.disableInfScroll = true;
             }
 
         };

@@ -13,22 +13,24 @@
                     </button>
                 </div>
                 <div class="col-md-12">
-                    <button uib-tooltip="Agregar nuevo cliente" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="submit"
-                            class="btn btn-labeled btn-primary pull-left mb" ng-click="controller.filterProducts()">
-                          <span class="btn-label">
-                             <em class="fa fa-search"></em>
-                          </span>Buscar
-                    </button>
-                    <div>
+                    <form ng-submit="controller.filterProducts()">
+                        <button uib-tooltip="Buscar productos" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="submit"
+                                class="btn btn-labeled btn-primary pull-left mb" ng-click="controller.filterProducts()">
+                              <span class="btn-label">
+                                 <em class="fa fa-search"></em>
+                              </span>Buscar
+                        </button>
                         <div>
-                            <input type="text" name="search" ng-model="controller.search"
-                                   class="form-control"/>
+                            <div>
+                                <input type="text" name="search" ng-model="controller.search"
+                                       class="form-control"/>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
             <div infinite-scroll="controller.loadMoreProducts()" infinite-scroll-distance="0" infinite-scroll-immediate-check="false"
-                 infinite-scroll-disabled = "controller.lockInfiniteScroll" class="row">
+                 infinite-scroll-disabled = "controller.disableInfScroll" class="row">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-body">

@@ -105,7 +105,8 @@
                                                 <ui-select-match
                                                         placeholder="Buscar por nombre o identificación..."></ui-select-match>
                                                 <ui-select-choices
-                                                        repeat="customer in controller.customerList | propsFilter: {name: $select.search, identification: $select.search}">
+                                                        repeat="customer in controller.customerList | propsFilter: {name: $select.search,
+                                                        identification: $select.search} | limitTo: ($select.search.length <= 2) ? 50 : undefined">
                                                     <div ng-click="controller.getCustomerAddresses(customer.id)">
                                                         <div ng-bind-html="customer.name + ' ' + customer.firstLastName + ' ' + customer.secondLastName  | highlight: $select.search"></div>
                                                         <small>email: {{customer.email === null ? '*SIN CORREO*' :
