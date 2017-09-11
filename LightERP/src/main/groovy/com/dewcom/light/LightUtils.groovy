@@ -51,4 +51,31 @@ class LightUtils {
             e.printStackTrace();
         }
     }
+    /**
+     * Metodo usado para parsear fecha en date a objeto String
+     * @return Devuelve la fecha formateada
+     */
+    public static Date dateToString(Date argDate, String datePattern) {
+        SimpleDateFormat formatter = new SimpleDateFormat(datePattern);
+        String tmpDate;
+        try {
+            if(argDate != null){
+                tmpDate = formatter.format(argDate);
+            }
+            return tmpDate
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Metodo usado para revisar si un string no es blank ni nulo
+     * @return Devuelve la fecha formateada
+     */
+    public static boolean isNotBlank(String pStringToCheck) {
+      if(pStringToCheck == null || pStringToCheck.length() == 0){
+          return false
+      }
+         return true
+    }
 }
