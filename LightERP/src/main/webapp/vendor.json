@@ -1,5 +1,6 @@
 [
   "bower_components/modernizr/modernizr.custom.js",
+  "bower_components/ngInfiniteScroll/build/ng-infinite-scroll.min.js",
   "bower_components/fontawesome/css/font-awesome.min.css",
   "bower_components/fontawesome/fonts/*",
   "bower_components/simple-line-icons/css/simple-line-icons.css",

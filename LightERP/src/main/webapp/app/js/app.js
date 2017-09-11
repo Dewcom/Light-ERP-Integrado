@@ -3760,7 +3760,7 @@
                     'vendor/angular-ui-select/dist/select.css']
                 },
                 {
-                    name: 'infinite-scroll', files: ['vendor/ngInfiniteScroll/build/ng-infinite-scroll.js']
+                    name: 'infinite-scroll', files: ['vendor/ngInfiniteScroll/build/ng-infinite-scroll.min.js']
                 }
             ]
         })

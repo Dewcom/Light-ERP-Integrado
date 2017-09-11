@@ -57,7 +57,7 @@ var vendor = {
     // vendor scripts to make the app work. Usually via lazy loading
     app: {
         source: require('./vendor.json'),
-        dest: '../vendor'
+        dest: './vendor'
     }
 };
 
