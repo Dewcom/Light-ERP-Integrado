@@ -39,5 +39,8 @@ class UrlMappings {
         post "/api/exchangeRate"(controller: 'exchangeRate', action: 'create')
         //contact
         post "/api/customer/contact"(controller: 'contact', action: 'create')
+
+        //reports
+        get "/api/customer/purchaseReport"(controller: 'customerReport', action: 'getCustomerProductPurchases')
     }
 }
