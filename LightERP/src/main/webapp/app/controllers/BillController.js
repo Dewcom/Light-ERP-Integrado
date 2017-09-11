@@ -16,6 +16,7 @@
         // Se utiliza para tener disponible el tipo de cambio original traido de BD.
         activateCalendar();
         activateChart();
+        vm.disableInfScroll = false;
 
         /**=========================================================
          * Inicializa el calendario
@@ -252,21 +253,6 @@
                 DTColumnDefBuilder.newColumnDef(3).notSortable()
 
             ];
-
-            /**=========================================================
-             * Datatable productos agregados
-             =========================================================*/
-
-            vm.dtOptionsBills = DTOptionsBuilder.newOptions()
-                .withPaginationType('full_numbers')
-                .withOption('order', [1 , 'desc'])
-                .withLanguage(language);
-            vm.dtColumnDefsBills = [
-                DTColumnDefBuilder.newColumnDef(0),
-                DTColumnDefBuilder.newColumnDef(1),
-                DTColumnDefBuilder.newColumnDef(2),
-                DTColumnDefBuilder.newColumnDef(3)
-            ];
         }
 
         vm.loadMoreBills = function() {
@@ -276,17 +262,60 @@
         vm.filterBills = function(){
             var searchCriteria;
             vm.billListInf = vm.billList;
+            var finalFilteredList = [];
+            // Regex para facturas en borrador
+            var re = new RegExp('^[bB]{1}\\d{1,}$');
 
-            if(isNaN(vm.search)){
-                searchCriteria = vm.search;
+
+            //Valida que el criterio de busqueda sea un codigo de factura borrador (b12, B23, etc)
+            if (re.test(vm.search)) {
+                //Si es de factura borrador la lista final solo incluye busquedas por id y que el billNumber sea nulo
+                var searchCriteria  = vm.search.replace(vm.search.charAt(0), '');
+                var listById = $filter('filter')(vm.billList, {id: searchCriteria });
+
+                angular.forEach(listById, function (value, key) {
+
+                    if(value.billNumber == null){
+                        finalFilteredList.push(value);
+                    }
+                });
+                vm.disableInfScroll = true;
+            } else if(vm.search == undefined || vm.search == '') {
+                // Si el criterio de busqueda es undefined o vacio devuelve la lista al estado original y habilita el infinite scroll
+                finalFilteredList = vm.billList.slice(0, 10);
+                vm.disableInfScroll = false;
+            } else if(vm.search.toUpperCase() == 'B'){
+                // Si el criterio de busqueda es solamente una 'B' busca las facturas borrador y las empresas con B
+                var tmpListById = [];
+
+                angular.forEach(vm.billList, function (value, key) {
+
+                    if(value.billNumber == null){
+                        tmpListById.push(value);
+                    }
+                });
+
+                var listByCustomer = $filter('filter')(vm.billList, {customer: {name : vm.search }});
+                finalFilteredList = tmpListById.concat(listByCustomer);
+                vm.disableInfScroll = true;
+
             }else{
-                searchCriteria = vm.search.replace(/^[0]+/g,"");
+
+                if(isNaN(vm.search)){
+                    // Si el criterio de busqueda no es un numero busca normalmente
+                    searchCriteria = vm.search;
+                }else{
+                    // Si es un numero remueve los 0
+                    searchCriteria = vm.search.replace(/^[0]+/g,"");
+                }
+                //Si es busqueda de factura validada o por nombre la lista si incluye ambas listas
+                var listByNumber = $filter('filter')(vm.billList, {billNumber: searchCriteria });
+                var listByCustomer = $filter('filter')(vm.billList, {customer: {name : searchCriteria }});
+                finalFilteredList = listByNumber.concat(listByCustomer);
+                vm.disableInfScroll = true;
             }
 
-            console.log(searchCriteria);
-            var listByNumber = $filter('filter')(vm.billList, {billNumber: searchCriteria });
-            var listByCustomer = $filter('filter')(vm.billList, {customer: {name : searchCriteria }});
-            vm.billListInf = listByNumber.concat(listByCustomer);
+            vm.billListInf = finalFilteredList;
 
         };
 

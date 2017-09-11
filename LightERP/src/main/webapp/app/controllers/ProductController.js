@@ -7,12 +7,12 @@
         .module('app.product')
         .controller('ProductController', ProductController);
 
-    ProductController.$inject = ['$uibModal', '$resource', 'DTOptionsBuilder', 'DTColumnDefBuilder',
-        'productService', 'productTypeService', 'presentationTypeService', 'toaster', '$state',
-        '$filter', '$timeout', 'ngDialog', '$scope'];
-    function ProductController($uibModal, $resource, DTOptionsBuilder, DTColumnDefBuilder, productService,
-                               productTypeService, presentationTypeService, toaster, $state, $filter, $timeout, ngDialog, $scope) {
+    ProductController.$inject = ['$uibModal', '$resource','productService', 'productTypeService', 'presentationTypeService',
+        'toaster', '$state', '$filter', '$timeout', 'ngDialog', '$scope'];
+    function ProductController($uibModal, $resource, productService, productTypeService, presentationTypeService, toaster,
+                               $state, $filter, $timeout, ngDialog, $scope) {
         var vm = this;
+        vm.disableInfScroll = false;
 
         var language = {
             "sProcessing": "Procesando...",
@@ -78,21 +78,6 @@
             productService.getAllMeasureUnits().then(function (response) {
                 vm.measureUnitList = response;
             });
-
-            /**=========================================================
-             * Datatables
-             =========================================================*/
-
-            vm.dtOptions = DTOptionsBuilder.newOptions()
-                .withPaginationType('full_numbers')
-                .withLanguage(language);
-            vm.dtColumnDefs = [
-                DTColumnDefBuilder.newColumnDef(0),
-                DTColumnDefBuilder.newColumnDef(1),
-                DTColumnDefBuilder.newColumnDef(2),
-                DTColumnDefBuilder.newColumnDef(3),
-                DTColumnDefBuilder.newColumnDef(4).notSortable()
-            ];
         }
 
         vm.loadMoreProducts = function() {
@@ -101,9 +86,16 @@
 
         vm.filterProducts = function(){
             vm.productListInf = vm.productList;
-            var listByCode = $filter('filter')(vm.productList, {productCode: vm.search });
-            var listByName = $filter('filter')(vm.productList, {name: vm.search });
-            vm.productListInf = listByCode.concat(listByName);
+
+            if(vm.search == undefined || vm.search == ''){
+                vm.productListInf = vm.productList.slice(0,10);
+                vm.disableInfScroll = false;
+            }else{
+                var listByCode = $filter('filter')(vm.productList, {productCode: vm.search });
+                var listByName = $filter('filter')(vm.productList, {name: vm.search });
+                vm.productListInf = listByName.concat(listByCode);
+                vm.disableInfScroll = true;
+            }
         };
 
 

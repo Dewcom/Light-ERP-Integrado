@@ -24,7 +24,7 @@ angular
 
             var zerosNeeded = 0;
 
-            if(bill.address != null && bill.address.province.name != null){
+            if(bill.address != null && bill.address.province != null){
                 completeAddress = bill.address.district.name + ', ' + bill.address.canton.name +
                     ', ' + bill.address.province.name + ', ' + bill.address.address;
             }
@@ -71,7 +71,7 @@ angular
 
             var productList = [];
 
-            var totalSize = (11 - parseInt(bill.billDetails.length));
+            var totalSize = (35 - parseInt(bill.billDetails.length));
 
             // Hack para completar de celdas vacias la factura
             var fillingRowsList = [];

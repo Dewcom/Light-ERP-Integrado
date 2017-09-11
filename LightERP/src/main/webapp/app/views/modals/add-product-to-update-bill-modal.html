@@ -14,7 +14,7 @@
                             <div class="col-lg-6">
                                 <ui-select ng-model="modalCtrl.selectedProduct" theme="bootstrap">
                                     <ui-select-match placeholder="Buscar por nombre o código...">{{modalCtrl.selectedProduct.productCode + ' ' + modalCtrl.selectedProduct.name}}</ui-select-match>
-                                    <ui-select-choices repeat="product in modalCtrl.productList | propsFilter: {name: $select.search, productCode: $select.search}">
+                                    <ui-select-choices repeat="product in modalCtrl.productList | propsFilter: {name: $select.search, productCode: $select.search} | limitTo: ($select.search.length <= 2) ? 50 : undefined">
                                         <div ng-click="selectProduct(product)">
                                             <div ng-bind-html="product.productCode | highlight: $select.search"></div>
                                             <small>Nombre: {{product.name}} Código:

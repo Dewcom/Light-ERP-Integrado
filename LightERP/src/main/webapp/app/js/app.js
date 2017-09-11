@@ -4162,7 +4162,8 @@
                 templateUrl: helper.basepath('billing-main.html'),
                 controller: 'BillController',
                 controllerAs: 'controller',
-                resolve: helper.resolveFor('datatables', 'ngDialog', 'ui.select', 'flot-chart', 'flot-chart-plugins'),
+                resolve: helper.resolveFor('datatables', 'ngDialog', 'ui.select',
+                    'flot-chart', 'flot-chart-plugins', 'infinite-scroll'),
                 params : { tabIndex: 0 }
             })
             .state('app.billDetail', {
@@ -4205,7 +4206,7 @@
                 templateUrl: helper.basepath('warehouse-main.html'),
                 controller: 'ProductController',
                 controllerAs: 'controller',
-                resolve: helper.resolveFor('datatables', 'ngDialog')
+                resolve: helper.resolveFor('datatables', 'ngDialog', 'infinite-scroll')
             })
             .state('app.configuration', {
                 url: '/configuration',
