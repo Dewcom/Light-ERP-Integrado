@@ -7,10 +7,10 @@
 
     BillController.$inject = ['DTOptionsBuilder', 'DTColumnDefBuilder', 'billService', 'customerService', 'productService', '$scope',
                                 '$uibModal', 'productTypeService', 'presentationTypeService', '$state', 'toaster', '$timeout', '$filter',
-                                'ngDialog', '$rootScope', '$stateParams', 'APP_CONSTANTS'];
+                                'ngDialog', '$rootScope', '$stateParams', 'APP_CONSTANTS', 'usSpinnerService'];
     function BillController(DTOptionsBuilder, DTColumnDefBuilder, billService, customerService, productService, $scope, $uibModal,
                             productTypeService, presentationTypeService, $state, toaster, $timeout, $filter, ngDialog, $rootScope, $stateParams,
-                            APP_CONSTANTS) {
+                            APP_CONSTANTS, usSpinnerService) {
         var vm = this;
         $scope.globalConstants = APP_CONSTANTS;
         // Se utiliza para tener disponible el tipo de cambio original traido de BD.
@@ -156,6 +156,7 @@
             billService.getAll().then(function (response) {
                 vm.billList = response;
                 vm.billListInf = response.slice(0,10);
+                usSpinnerService.stop('billsSpinner');
             });
 
             /**=========================================================

@@ -7,9 +7,9 @@
         .directive('formWizard', formWizard);
 
     CustomerController.$inject = ['$uibModal', '$resource', 'customerService', 'customerTypeService', 'identificationTypeService', 'toaster', '$state', '$filter',
-        '$timeout', 'ngDialog', '$scope', 'userService', 'LOCATION', 'APP_CONSTANTS'];
+        '$timeout', 'ngDialog', '$scope', 'userService', 'LOCATION', 'APP_CONSTANTS','usSpinnerService'];
     function CustomerController($uibModal, $resource, customerService, customerTypeService, identificationTypeService,
-                                toaster, $state, $filter, $timeout, ngDialog, $scope, userService, LOCATION, APP_CONSTANTS) {
+                                toaster, $state, $filter, $timeout, ngDialog, $scope, userService, LOCATION, APP_CONSTANTS, usSpinnerService) {
 
         var vm = this;
         vm.globalConstants = APP_CONSTANTS;
@@ -71,6 +71,7 @@
             customerService.getAll().then(function (response) {
                 vm.customerList = response;
                 vm.customerListInf = response.slice(0,10);
+                usSpinnerService.stop('customersSpinner');
             });
 
 
@@ -92,6 +93,7 @@
                 }
             };
         }
+
 
         vm.loadMoreCustomers = function() {
             vm.customerListInf = vm.customerList.slice(0, vm.customerListInf.length + 10);

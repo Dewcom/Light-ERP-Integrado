@@ -3760,7 +3760,12 @@
                     'vendor/angular-ui-select/dist/select.css']
                 },
                 {
-                    name: 'infinite-scroll', files: ['vendor/ngInfiniteScroll/build/ng-infinite-scroll.min.js']
+                    name: 'infinite-scroll',
+                    files: ['vendor/ngInfiniteScroll/build/ng-infinite-scroll.min.js']
+                },
+                {
+                    name: 'angular-spinner',
+                    files: ['bower_components/angular-spinner/dist/angular-spinner.min.js']
                 }
             ]
         })
@@ -4143,7 +4148,7 @@
                 url: '/thirdPartyMain',
                 title: 'Clientes',
                 templateUrl: helper.basepath('third-party-main.html'),
-                resolve: helper.resolveFor('datatables', 'ngDialog', 'infinite-scroll')
+                resolve: helper.resolveFor('datatables', 'ngDialog', 'infinite-scroll', 'angular-spinner')
             })
             .state('app.customerDetail', {
                 url: '/customerDetail',
@@ -4163,7 +4168,7 @@
                 controller: 'BillController',
                 controllerAs: 'controller',
                 resolve: helper.resolveFor('datatables', 'ngDialog', 'ui.select',
-                    'flot-chart', 'flot-chart-plugins', 'infinite-scroll'),
+                    'flot-chart', 'flot-chart-plugins', 'infinite-scroll', 'angular-spinner'),
                 params : { tabIndex: 0 }
             })
             .state('app.billDetail', {
@@ -4206,7 +4211,7 @@
                 templateUrl: helper.basepath('warehouse-main.html'),
                 controller: 'ProductController',
                 controllerAs: 'controller',
-                resolve: helper.resolveFor('datatables', 'ngDialog', 'infinite-scroll')
+                resolve: helper.resolveFor('datatables', 'ngDialog', 'infinite-scroll', 'angular-spinner')
             })
             .state('app.configuration', {
                 url: '/configuration',
