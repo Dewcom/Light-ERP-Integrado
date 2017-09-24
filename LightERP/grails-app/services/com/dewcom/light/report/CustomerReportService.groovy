@@ -1,11 +1,12 @@
 package com.dewcom.light.report
 
-import com.dewcom.light.*
-import com.dewcom.light.rest.*
 import com.dewcom.light.rest.report.customer.request.CustomerPurchasesReportReq
 import com.dewcom.light.rest.report.customer.response.CustomerPurchasesReport
 import com.dewcom.light.rest.report.customer.response.CustomerPurchasesReportResp
 import com.dewcom.light.rest.report.customer.response.PurchasesReportHeader
+import com.dewcom.light.thirdparty.Customer
+import com.dewcom.light.utils.LightUtils
+import com.dewcom.light.warehouse.Product
 import grails.transaction.Transactional
 
 @Transactional

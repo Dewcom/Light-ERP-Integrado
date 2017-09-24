@@ -1,5 +1,6 @@
 package com.dewcom.light
 
+import com.dewcom.light.billing.Bill
 import grails.test.mixin.TestFor
 import spock.lang.Specification
 

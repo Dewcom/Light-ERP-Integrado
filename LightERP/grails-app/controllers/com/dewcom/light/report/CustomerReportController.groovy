@@ -1,11 +1,8 @@
 package com.dewcom.light.report
 
-import com.dewcom.light.Constants
-import com.dewcom.light.Contact
-import com.dewcom.light.RestController
-import com.dewcom.light.rest.ContactREST
+import com.dewcom.light.utils.Constants
+import com.dewcom.light.rest.RestController
 import com.dewcom.light.rest.ResponseREST
-import com.dewcom.light.rest.UpdateContactRequestREST
 import com.dewcom.light.rest.report.customer.request.CustomerPurchasesReportReq
 import com.dewcom.light.utils.ParamsMapperUtil
 import grails.converters.JSON

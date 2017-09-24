@@ -1,6 +1,6 @@
 package lighterp
 
-import com.dewcom.light.ProductService
+import com.dewcom.light.warehouse.ProductService
 import grails.test.mixin.TestFor
 import spock.lang.Specification
 

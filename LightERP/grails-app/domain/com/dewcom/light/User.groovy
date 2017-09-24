@@ -1,6 +1,8 @@
 package com.dewcom.light
 
-import com.dewcom.light.rest.UserREST
+import com.dewcom.light.billing.Bill
+import com.dewcom.light.rest.user.UserRequest
+import com.dewcom.light.utils.Constants
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
@@ -73,7 +75,7 @@ class User implements Serializable {
 	}
 
 
-    def static fromRestUser(UserREST prestUser){
+    def static fromRestUser(UserRequest prestUser){
 
         User tmpUser = new User();
 

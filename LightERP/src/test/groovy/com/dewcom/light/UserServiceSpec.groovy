@@ -1,5 +1,6 @@
 package com.dewcom.light
 
+import com.dewcom.light.user.UserService
 import grails.test.mixin.TestFor
 import spock.lang.Specification
 
