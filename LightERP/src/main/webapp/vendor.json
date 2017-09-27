@@ -4,5 +4,9 @@
   "bower_components/fontawesome/css/font-awesome.min.css",
   "bower_components/fontawesome/fonts/*",
   "bower_components/simple-line-icons/css/simple-line-icons.css",
-  "bower_components/simple-line-icons/fonts/*"
+  "bower_components/simple-line-icons/fonts/*",
+  "bower_components/ag-grid/dist/ag-grid.js",
+  "bower_components/ag-grid/dist/styles/ag-grid.css",
+  "bower_components/ag-grid/dist/styles/theme-dark.css",
+  "bower_components/ag-grid/dist/styles/theme-fresh.css"
 ]

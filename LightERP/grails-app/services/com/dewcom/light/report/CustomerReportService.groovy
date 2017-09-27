@@ -6,6 +6,7 @@ import com.dewcom.light.rest.report.customer.request.CustomerPurchasesReportReq
 import com.dewcom.light.rest.report.customer.response.CustomerPurchasesReport
 import com.dewcom.light.rest.report.customer.response.CustomerPurchasesReportResp
 import com.dewcom.light.rest.report.customer.response.PurchasesReportHeader
+import com.dewcom.light.rest.report.customer.response.PurchasesReportSummary
 import grails.transaction.Transactional
 
 @Transactional
@@ -20,7 +21,7 @@ class CustomerReportService {
             CustomerPurchasesReportResp purchasesReportResponse = new CustomerPurchasesReportResp()
             String hqlQuery = "select new map (b.billNumber as billNumber, c.identification as customerId, b.billDate as buyDate," +
                     " p.productCode as productCode, p.name as productName, d.subTotal as buyPrice, " +
-                    "d.total as totalAmount,  c.name as customerName, " +
+                    "d.total as totalAmount, c.name as customerName, " +
                     "c.firstLastName as customerFirstLastName, c.secondLastName as customerSecondLastName , " +
                     "d.quantity as quantity, bs.description as billState)" +
                     " from BillDetail d join  d.bill b  " +
@@ -55,9 +56,15 @@ class CustomerReportService {
             query.setParameter("startDate", tmpStartDate)
             query.setParameter("endDate", tmpEndDate)
 
+            def results = query.list()
 
             purchasesReportResponse.reportHeader = reportHeader
-            purchasesReportResponse.reportData = buildPurchasesReportResults(query.list())
+            def purchasesReportSummary = new PurchasesReportSummary()
+            purchasesReportResponse.reportData = buildPurchasesReportResults(results)
+            purchasesReportSummary.totalGrossPrice = purchasesReportResponse.reportData.buyPrice.sum()
+            purchasesReportSummary.totalQuantity = purchasesReportResponse.reportData.quantity.sum()
+            purchasesReportSummary.totalNetPrice = purchasesReportResponse.reportData.totalAmount.sum()
+            purchasesReportResponse.reportSummary = purchasesReportSummary
 
             purchasesReportResponse
 
@@ -69,10 +76,12 @@ class CustomerReportService {
 
     //builds report data objects
     def buildPurchasesReportResults(def pQueryResults){
-        def List<CustomerPurchasesReport> results = new ArrayList<>();
+        def List<CustomerPurchasesReport> results = new ArrayList<>()
         if(pQueryResults != null) {
             pQueryResults.each { it ->
-                results.add(new CustomerPurchasesReport(it))
+                def tmpReportObj = new CustomerPurchasesReport(it)
+                tmpReportObj.nullSafeSetCustomerFullName()
+                results.add(tmpReportObj)
             }
         }
         results

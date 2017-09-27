@@ -5,5 +5,6 @@ package com.dewcom.light.rest.report.customer.response
  */
 class CustomerPurchasesReportResp {
     PurchasesReportHeader reportHeader
-    List reportData
+    List<CustomerPurchasesReport> reportData
+    PurchasesReportSummary reportSummary
 }

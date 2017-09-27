@@ -3632,6 +3632,16 @@
 
     function appRun($rootScope, $state, $stateParams, $window, $templateCache, Colors) {
 
+        // Hook into ocLazyLoad to setup AngularGrid before inject into the app
+        // See "Creating the AngularJS Module" at
+        // https://www.ag-grid.com/best-angularjs-data-grid/index.php
+        var offevent = $rootScope.$on('ocLazyLoad.fileLoaded', function(e, file) {
+            if (file.indexOf('ag-grid.js') > -1) {
+                agGrid.initialiseAgGridWithAngular1(angular);
+                offevent();
+            }
+        });
+
         // Set reference to access them from any scope
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
@@ -3761,7 +3771,11 @@
                 },
                 {
                     name: 'infinite-scroll', files: ['vendor/ngInfiniteScroll/build/ng-infinite-scroll.min.js']
-                }
+                },
+                {name: 'angularGrid', files: ['vendor/ag-grid/dist/styles/ag-grid.css',
+                    'vendor/ag-grid/dist/ag-grid.js',
+                    'vendor/ag-grid/dist/styles/theme-dark.css',
+                    'vendor/ag-grid/dist/styles/theme-fresh.css']}
             ]
         })
     ;
@@ -4166,6 +4180,16 @@
                     'flot-chart', 'flot-chart-plugins', 'infinite-scroll'),
                 params : { tabIndex: 0 }
             })
+            .state('app.customerReports', {
+                url: '/customerReports',
+                title: 'Reportes Cliente',
+                templateUrl: helper.basepath('customer-reports.html'),
+                //controller: 'BillController',
+                //controllerAs: 'controller',
+                resolve: helper.resolveFor('datatables', 'ngDialog', 'ui.select',
+                    'flot-chart', 'flot-chart-plugins', 'infinite-scroll', 'angularGrid'),
+                params : { tabIndex: 0 }
+            })
             .state('app.billDetail', {
                 url: '/billDetail',
                 title: 'Detalle factura',
@@ -4213,6 +4237,11 @@
                 title: 'Configuración',
                 templateUrl: helper.basepath('configuration.html'),
                 resolve: helper.resolveFor('datatables')
+            })
+            .state('app.reports', {
+                url: '/reports',
+                title: 'Reportes',
+                templateUrl: helper.basepath('reports-dashboard.html')
             })
             .state('app.agent', {
                 url: '/agent',
