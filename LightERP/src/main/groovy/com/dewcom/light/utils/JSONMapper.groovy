@@ -9,7 +9,7 @@ import com.dewcom.light.billing.Currency
 import com.dewcom.light.billing.ExchangeRate
 import com.dewcom.light.billing.Payment
 import com.dewcom.light.rest.response.AddressRespREST
-import com.dewcom.light.rest.response.BillDetailProductRespREST
+import com.dewcom.light.rest.billing.BillDetailProductResponse
 import com.dewcom.light.rest.response.BillDetailRespREST
 import com.dewcom.light.rest.response.BillPaymentTypeRespREST
 import com.dewcom.light.rest.response.BillRespREST
@@ -231,7 +231,7 @@ class JSONMapper {
     }
 
     def static fromBillDetailProduct(Product pProduct){
-        def tmpRestObject = new BillDetailProductRespREST()
+        def tmpRestObject = new BillDetailProductResponse()
         tmpRestObject.name = pProduct.name
         tmpRestObject.id = pProduct.id
         tmpRestObject.productCode = pProduct.productCode

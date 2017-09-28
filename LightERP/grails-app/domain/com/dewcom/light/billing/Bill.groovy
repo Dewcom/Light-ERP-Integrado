@@ -3,7 +3,7 @@ package com.dewcom.light.billing
 import com.dewcom.light.thirdparty.Address
 import com.dewcom.light.utils.Constants
 import com.dewcom.light.thirdparty.Customer
-import com.dewcom.light.User
+import com.dewcom.light.user.User
 
 class Bill {
     Address address

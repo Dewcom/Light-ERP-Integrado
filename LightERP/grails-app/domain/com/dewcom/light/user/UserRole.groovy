@@ -1,4 +1,4 @@
-package com.dewcom.light
+package com.dewcom.light.user
 
 import grails.gorm.DetachedCriteria
 import groovy.transform.ToString

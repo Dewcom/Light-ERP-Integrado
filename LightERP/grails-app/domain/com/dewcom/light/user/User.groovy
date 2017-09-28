@@ -1,4 +1,4 @@
-package com.dewcom.light
+package com.dewcom.light.user
 
 import com.dewcom.light.billing.Bill
 import com.dewcom.light.rest.user.UserRequest

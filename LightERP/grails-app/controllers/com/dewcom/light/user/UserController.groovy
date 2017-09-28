@@ -1,7 +1,6 @@
 package com.dewcom.light.user
 
 import com.dewcom.light.utils.Constants
-import com.dewcom.light.User
 import com.dewcom.light.rest.RestController
 import com.dewcom.light.rest.user.UserRequest
 import com.dewcom.light.rest.ResponseREST

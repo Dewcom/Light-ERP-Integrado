@@ -5,7 +5,7 @@ import com.dewcom.light.utils.Constants
 import com.dewcom.light.exception.LightException
 import com.dewcom.light.exception.LightRuntimeException
 import com.dewcom.light.utils.LightUtils
-import com.dewcom.light.User
+import com.dewcom.light.user.User
 import com.dewcom.light.rest.billing.BillDetailRequest
 import com.dewcom.light.rest.billing.BillRequest
 import com.dewcom.light.rest.billing.UpdateBillRequest

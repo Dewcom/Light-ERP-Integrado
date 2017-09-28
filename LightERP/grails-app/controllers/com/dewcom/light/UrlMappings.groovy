@@ -1,4 +1,4 @@
-package com.dewcom.light.rest
+package com.dewcom.light
 
 class UrlMappings {
 

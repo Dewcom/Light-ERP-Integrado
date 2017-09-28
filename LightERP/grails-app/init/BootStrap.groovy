@@ -9,9 +9,9 @@ import com.dewcom.light.thirdparty.IdentificationType
 import com.dewcom.light.warehouse.MeasureUnit
 import com.dewcom.light.warehouse.PresentationType
 import com.dewcom.light.warehouse.ProductType
-import com.dewcom.light.Role
-import com.dewcom.light.User
-import com.dewcom.light.UserRole
+import com.dewcom.light.user.Role
+import com.dewcom.light.user.User
+import com.dewcom.light.user.UserRole
 
 class BootStrap {
 

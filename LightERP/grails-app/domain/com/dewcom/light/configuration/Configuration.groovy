@@ -10,9 +10,9 @@ class Configuration implements Validateable {
     //codigo config parametro
     public static final Integer CONFIG_CONSECUTIVO_FACTURA = 0;
     Integer code
-    String  description
-    String  value
-    boolean  enabled = Constants.ESTADO_ACTIVO
+    String description
+    String value
+    boolean enabled = Constants.ESTADO_ACTIVO
     static constraints = {
     }
 }

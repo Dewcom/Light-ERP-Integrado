@@ -2,7 +2,6 @@ package com.dewcom.light.user
 
 import com.dewcom.light.utils.Constants
 import com.dewcom.light.exception.LightRuntimeException
-import com.dewcom.light.User
 import com.dewcom.light.rest.user.UpdateUserRequest
 import grails.transaction.Transactional
 

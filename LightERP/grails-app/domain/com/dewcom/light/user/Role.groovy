@@ -1,4 +1,4 @@
-package com.dewcom.light
+package com.dewcom.light.user
 
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString

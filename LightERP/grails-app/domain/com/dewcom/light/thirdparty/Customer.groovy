@@ -1,7 +1,7 @@
 package com.dewcom.light.thirdparty
 
 import com.dewcom.light.utils.Constants
-import com.dewcom.light.User
+import com.dewcom.light.user.User
 import com.dewcom.light.billing.Bill
 import com.dewcom.light.rest.thirdparty.CustomerRequest
 
