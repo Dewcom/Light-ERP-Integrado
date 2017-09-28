@@ -4189,10 +4189,8 @@
                 url: '/customerReports',
                 title: 'Reportes Cliente',
                 templateUrl: helper.basepath('customer-reports.html'),
-                //controller: 'BillController',
-                //controllerAs: 'controller',
-                resolve: helper.resolveFor('datatables', 'ngDialog', 'ui.select',
-                    'flot-chart', 'flot-chart-plugins', 'infinite-scroll', 'angularGrid'),
+                resolve: helper.resolveFor('ngDialog', 'ui.select',
+                    'flot-chart', 'flot-chart-plugins','angular-spinner', 'infinite-scroll', 'angularGrid'),
                 params : { tabIndex: 0 }
             })
             .state('app.billDetail', {

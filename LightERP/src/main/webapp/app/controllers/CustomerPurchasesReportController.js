@@ -6,9 +6,9 @@
         .controller('CustomerPurchasesReportController', CustomerPurchasesReportController);
 
 
-    CustomerPurchasesReportController.$inject = [ '$http','$uibModal', '$resource', 'customerReportService', 'toaster', '$state', '$filter',
+    CustomerPurchasesReportController.$inject = ['usSpinnerService','$http','$uibModal', '$resource', 'customerReportService', 'toaster', '$state', '$filter',
         '$timeout', 'ngDialog', '$scope', 'userService', 'LOCATION', 'APP_CONSTANTS'];
-    function CustomerPurchasesReportController($http, $uibModal, $resource, customerReportService,
+    function CustomerPurchasesReportController(usSpinnerService, $http, $uibModal, $resource, customerReportService,
                                 toaster, $state, $filter, $timeout, ngDialog, $scope, userService, LOCATION, APP_CONSTANTS) {
 
         var vm = this;
@@ -78,16 +78,16 @@
             };
             // Basic
             var columnDefs = [
+                {headerName: 'Código producto', field: 'productCode', minWidth: 150},
+                {headerName: 'Nombre producto', field: 'productName', minWidth: 200},
+                {headerName: 'Fecha', field: 'buyDate', minWidth: 110},
                 {headerName: 'N.factura', field: 'billNumber', minWidth: 90},
                 {headerName: 'Estado factura', field: 'billState', minWidth: 140},
                 {headerName: 'Cédula cliente', field: 'customerId', minWidth: 120},
                 {headerName: 'Nombre cliente', field: 'customerFullName', minWidth: 250},
-                {headerName: 'Código producto', field: 'productCode', minWidth: 150},
-                {headerName: 'Nombre producto', field: 'productName', minWidth: 200},
                 {headerName: 'Cantidad', field: 'quantity', filter: 'number', minWidth: 90},
-                {headerName: 'Fecha', field: 'buyDate', minWidth: 110},
                 {headerName: 'Precio bruto', field: 'buyPrice', filter: 'number', minWidth: 120},
-                {headerName: 'Precio neto', field: 'totalAmount', filter: 'number', minWidth: 120},
+                {headerName: 'Precio neto', field: 'totalAmount', filter: 'number', minWidth: 120}
             ];
 
             vm.gridOptions1 = {
@@ -100,9 +100,19 @@
                 onGridReady: function(params){
                     params.api.setRowData([]);
                 },
+                getRowHeight: function(params) {
+                if (params.node.floating) {
+                    return 50;
+                } else {
+                    return 28;
+                }
+            },
                 getRowStyle: function(params) {
                     if (params.node.floating) {
-                        return {'font-weight': 'bold', 'background-color': '#EDF1F2'}
+                        return {'font-weight': 'bold', 'background-color': '#EDF1F2','font-size': '20px',
+                                'border-style': 'solid none none none', 'border-width': '2px', 'text-align': 'center'}
+                    }else{
+                        return {'text-align': 'center'}
                     }
                 },
                 // no rows to pin to start with
@@ -110,6 +120,7 @@
             };
 
             vm.fillTable = function () {
+                usSpinnerService.spin('customersSpinner');
                 customerReportService.getPurchasesReport(vm.customerIdentification == undefined ? "" : vm.customerIdentification,
                     vm.productCode == undefined ? "" : vm.productCode ,
                     $filter('date')(vm.startDate, "dd-MM-yyyy"), $filter('date')(vm.endDate, "dd-MM-yyyy"))
@@ -117,10 +128,16 @@
                     vm.reportData =  response == null ? [] : response.reportData.size == 0 ? [] : response.reportData;
                     vm.reportSummary = response == null ? [] : response.reportData.size == 0 ? [] : response.reportSummary;
                     vm.gridOptions1.api.setRowData(vm.reportData);
-                    vm.gridOptions1.api.sizeColumnsToFit();
-                    _autoSizeColumns(columnDefs);
+                    if(vm.showBillCustomerInfo){
+                        vm.gridOptions1.api.sizeColumnsToFit();
+                        _autoSizeColumns(columnDefs);
+                    }
+                    else{
+                        vm.gridOptions1.api.sizeColumnsToFit();
+                    }
                     vm.dateRange = $filter('date')(vm.startDate, "dd-MM-yyyy") +'/'+$filter('date')(vm.endDate, "dd-MM-yyyy");
                     vm.gridOptions1.api.setFloatingBottomRowData(_createTableFooterData());
+                    usSpinnerService.stop('customersSpinner');
                 });
             };
 
@@ -147,7 +164,7 @@
                     columnSeparator: ','
                 };
 
-                params.customFooter = 'TOTALES:,,,,,,'+vm.reportSummary.totalQuantity+',,'+vm.reportSummary.totalGrossPrice+','+vm.reportSummary.totalNetPrice;
+                params.customFooter = 'TOTALES:,,,,,,,'+vm.reportSummary.totalQuantity+','+vm.reportSummary.totalGrossPrice+','+vm.reportSummary.totalNetPrice;
 
 
                 vm.gridOptions1.api.exportDataAsCsv(params);
@@ -164,14 +181,14 @@
         function _createTableFooterData() {
             var result = [];
                 result.push({
+                    productCode: 'TOTALES:',
+                    productName: '',
+                    buyDate: '',
                     billNumber: '',
                     billState: '',
                     customerId: '',
                     customerFullName: '',
-                    productCode: '',
-                    productName: '',
                     quantity: vm.reportSummary.totalQuantity,
-                    buyDate: '',
                     buyPrice: vm.reportSummary.totalGrossPrice,
                     totalAmount: vm.reportSummary.totalNetPrice,
                 });
