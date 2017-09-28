@@ -8,9 +8,9 @@
         .controller('ProductController', ProductController);
 
     ProductController.$inject = ['$uibModal', '$resource','productService', 'productTypeService', 'presentationTypeService',
-        'toaster', '$state', '$filter', '$timeout', 'ngDialog', '$scope'];
+        'toaster', '$state', '$filter', '$timeout', 'ngDialog', '$scope', 'usSpinnerService'];
     function ProductController($uibModal, $resource, productService, productTypeService, presentationTypeService, toaster,
-                               $state, $filter, $timeout, ngDialog, $scope) {
+                               $state, $filter, $timeout, ngDialog, $scope, usSpinnerService) {
         var vm = this;
         vm.disableInfScroll = false;
 
@@ -66,9 +66,9 @@
              =========================================================*/
 
             productService.getAll().then(function (response) {
-                console.log(response);
                 vm.productList = response;
                 vm.productListInf = response.slice(0,10);
+                usSpinnerService.stop('productsSpinner');
             });
 
             /**=========================================================

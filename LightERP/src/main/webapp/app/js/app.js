@@ -3772,10 +3772,15 @@
                 {
                     name: 'infinite-scroll', files: ['vendor/ngInfiniteScroll/build/ng-infinite-scroll.min.js']
                 },
+                {
+                    name: 'angular-spinner',
+                    files: ['bower_components/angular-spinner/dist/angular-spinner.min.js']
+                },
                 {name: 'angularGrid', files: ['vendor/ag-grid/dist/styles/ag-grid.css',
                     'vendor/ag-grid/dist/ag-grid.js',
                     'vendor/ag-grid/dist/styles/theme-dark.css',
                     'vendor/ag-grid/dist/styles/theme-fresh.css']}
+
             ]
         })
     ;
@@ -4157,7 +4162,7 @@
                 url: '/thirdPartyMain',
                 title: 'Clientes',
                 templateUrl: helper.basepath('third-party-main.html'),
-                resolve: helper.resolveFor('datatables', 'ngDialog', 'infinite-scroll')
+                resolve: helper.resolveFor('datatables', 'ngDialog', 'infinite-scroll', 'angular-spinner')
             })
             .state('app.customerDetail', {
                 url: '/customerDetail',
@@ -4177,7 +4182,7 @@
                 controller: 'BillController',
                 controllerAs: 'controller',
                 resolve: helper.resolveFor('datatables', 'ngDialog', 'ui.select',
-                    'flot-chart', 'flot-chart-plugins', 'infinite-scroll'),
+                    'flot-chart', 'flot-chart-plugins', 'infinite-scroll', 'angular-spinner'),
                 params : { tabIndex: 0 }
             })
             .state('app.customerReports', {
@@ -4230,7 +4235,7 @@
                 templateUrl: helper.basepath('warehouse-main.html'),
                 controller: 'ProductController',
                 controllerAs: 'controller',
-                resolve: helper.resolveFor('datatables', 'ngDialog', 'infinite-scroll')
+                resolve: helper.resolveFor('datatables', 'ngDialog', 'infinite-scroll', 'angular-spinner')
             })
             .state('app.configuration', {
                 url: '/configuration',
