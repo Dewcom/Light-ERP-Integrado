@@ -3632,6 +3632,16 @@
 
     function appRun($rootScope, $state, $stateParams, $window, $templateCache, Colors) {
 
+        // Hook into ocLazyLoad to setup AngularGrid before inject into the app
+        // See "Creating the AngularJS Module" at
+        // https://www.ag-grid.com/best-angularjs-data-grid/index.php
+        var offevent = $rootScope.$on('ocLazyLoad.fileLoaded', function(e, file) {
+            if (file.indexOf('ag-grid.js') > -1) {
+                agGrid.initialiseAgGridWithAngular1(angular);
+                offevent();
+            }
+        });
+
         // Set reference to access them from any scope
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
@@ -3760,13 +3770,17 @@
                     'vendor/angular-ui-select/dist/select.css']
                 },
                 {
-                    name: 'infinite-scroll',
-                    files: ['vendor/ngInfiniteScroll/build/ng-infinite-scroll.min.js']
+                    name: 'infinite-scroll', files: ['vendor/ngInfiniteScroll/build/ng-infinite-scroll.min.js']
                 },
                 {
                     name: 'angular-spinner',
                     files: ['bower_components/angular-spinner/dist/angular-spinner.min.js']
-                }
+                },
+                {name: 'angularGrid', files: ['vendor/ag-grid/dist/styles/ag-grid.css',
+                    'vendor/ag-grid/dist/ag-grid.js',
+                    'vendor/ag-grid/dist/styles/theme-dark.css',
+                    'vendor/ag-grid/dist/styles/theme-fresh.css']}
+
             ]
         })
     ;
@@ -4147,13 +4161,13 @@
             .state('app.thirdPartyMain', {
                 url: '/thirdPartyMain',
                 title: 'Clientes',
-                templateUrl: helper.basepath('third-party-main.html'),
+                templateUrl: helper.basepath('thirdparty/third-party-main.html'),
                 resolve: helper.resolveFor('datatables', 'ngDialog', 'infinite-scroll', 'angular-spinner')
             })
             .state('app.customerDetail', {
                 url: '/customerDetail',
                 title: 'Detalle cliente',
-                templateUrl: helper.basepath('customer-detail.html'),
+                templateUrl: helper.basepath('thirdparty/customer-detail.html'),
                 params : { customerId: null }
             })
             .state('app.commerce', {
@@ -4164,17 +4178,25 @@
             .state('app.billingMain', {
                 url: '/billing',
                 title: 'Facturas',
-                templateUrl: helper.basepath('billing-main.html'),
+                templateUrl: helper.basepath('billing/billing-main.html'),
                 controller: 'BillController',
                 controllerAs: 'controller',
                 resolve: helper.resolveFor('datatables', 'ngDialog', 'ui.select',
                     'flot-chart', 'flot-chart-plugins', 'infinite-scroll', 'angular-spinner'),
                 params : { tabIndex: 0 }
             })
+            .state('app.customerReports', {
+                url: '/customerReports',
+                title: 'Reportes Cliente',
+                templateUrl: helper.basepath('customer-reports.html'),
+                resolve: helper.resolveFor('ngDialog', 'ui.select',
+                    'flot-chart', 'flot-chart-plugins','angular-spinner', 'infinite-scroll', 'angularGrid'),
+                params : { tabIndex: 0 }
+            })
             .state('app.billDetail', {
                 url: '/billDetail',
                 title: 'Detalle factura',
-                templateUrl: helper.basepath('bill-detail.html'),
+                templateUrl: helper.basepath('billing/bill-detail.html'),
                 controller: 'BillDetailController',
                 controllerAs: 'controller',
                 resolve: helper.resolveFor('ngDialog'),
@@ -4183,7 +4205,7 @@
             .state('app.newBill', {
                 url: '/new-bill',
                 title: 'Nueva factura',
-                templateUrl: helper.basepath('new-bill.html'),
+                templateUrl: helper.basepath('billing/new-bill.html'),
                 controller: 'BillController',
                 controllerAs: 'controller',
                 resolve: helper.resolveFor('ngDialog')
@@ -4191,7 +4213,7 @@
             .state('app.updateBill', {
                 url: '/update-bill',
                 title: 'Modificar factura',
-                templateUrl: helper.basepath('update-bill.html'),
+                templateUrl: helper.basepath('billing/update-bill.html'),
                 controller: 'UpdateBillController',
                 controllerAs: 'controller',
                 resolve: helper.resolveFor('ngDialog'),
@@ -4200,7 +4222,7 @@
             .state('app.usersMain', {
                 url: '/usersMain',
                 title: 'Usuarios',
-                templateUrl: helper.basepath('users-main.html'),
+                templateUrl: helper.basepath('user/users-main.html'),
                 controller: 'UserController',
                 controllerAs: 'controller',
                 resolve: helper.resolveFor('datatables', 'ngDialog')
@@ -4208,7 +4230,7 @@
             .state('app.warehouseMain', {
                 url: '/warehouseMain',
                 title: 'Almacén',
-                templateUrl: helper.basepath('warehouse-main.html'),
+                templateUrl: helper.basepath('warehouse/warehouse-main.html'),
                 controller: 'ProductController',
                 controllerAs: 'controller',
                 resolve: helper.resolveFor('datatables', 'ngDialog', 'infinite-scroll', 'angular-spinner')
@@ -4216,28 +4238,13 @@
             .state('app.configuration', {
                 url: '/configuration',
                 title: 'Configuración',
-                templateUrl: helper.basepath('configuration.html'),
+                templateUrl: helper.basepath('configuration/configuration.html'),
                 resolve: helper.resolveFor('datatables')
             })
-            .state('app.agent', {
-                url: '/agent',
-                title: 'Agentes',
-                templateUrl: helper.basepath('agent.html')
-            })
-            .state('app.supplier', {
-                url: '/supplier',
-                title: 'Proveedores',
-                templateUrl: helper.basepath('supplier.html')
-            })
-            .state('app.contact', {
-                url: '/contact',
-                title: 'Contactos',
-                templateUrl: helper.basepath('contact.html')
-            })
-            .state('app.submenu', {
-                url: '/submenu',
-                title: 'Submenu',
-                templateUrl: helper.basepath('submenu.html')
+            .state('app.reports', {
+                url: '/reports',
+                title: 'Reportes',
+                templateUrl: helper.basepath('reports-dashboard.html')
             })
             //
             // Single Page Routes

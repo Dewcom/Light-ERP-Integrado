@@ -27,5 +27,10 @@
     "text": "Configuración",
     "sref": "app.configuration",
     "icon": "fa fa-cogs"
+  },
+  {
+    "text": "Reportes",
+    "sref": "app.reports",
+    "icon": "fa fa-bar-chart"
   }
 ]

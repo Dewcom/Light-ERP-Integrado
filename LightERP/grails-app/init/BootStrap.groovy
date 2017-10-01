@@ -4,6 +4,7 @@ import com.dewcom.light.configuration.Configuration
 import com.dewcom.light.billing.CreditCondition
 import com.dewcom.light.billing.Currency
 import com.dewcom.light.billing.ExchangeRate
+import com.dewcom.light.rest.report.customer.response.CustomerPurchasesReport
 import com.dewcom.light.thirdparty.CustomerType
 import com.dewcom.light.thirdparty.IdentificationType
 import com.dewcom.light.warehouse.MeasureUnit
@@ -12,6 +13,7 @@ import com.dewcom.light.warehouse.ProductType
 import com.dewcom.light.user.Role
 import com.dewcom.light.user.User
 import com.dewcom.light.user.UserRole
+import grails.converters.JSON
 
 class BootStrap {
 
@@ -287,6 +289,23 @@ class BootStrap {
         UserRole.withSession {
             it.flush()
             it.clear()
+        }
+
+
+        //Register Review domain for JSON rendering
+        JSON.registerObjectMarshaller(CustomerPurchasesReport) {
+            def output = [:]
+            output['billNumber'] = it.billNumber
+            output['customerFullName'] = it.customerFullName
+            output['customerId'] = it.customerId
+            output['productCode'] = it.productCode
+            output['productName'] = it.productName
+            output['quantity'] = it.quantity
+            output['buyDate'] = it.buyDate.format( 'dd-MM-yyyy' )
+            output['buyPrice'] = it.buyPrice
+            output['totalAmount'] = it.totalAmount
+            output['billState'] = it.billState
+            return output;
         }
 
         def destroy = {
