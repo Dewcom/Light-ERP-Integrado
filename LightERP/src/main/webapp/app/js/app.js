@@ -3738,9 +3738,9 @@
         .constant('APP_REQUIRES', {
             // jQuery based and standalone scripts
             scripts: {
-                'modernizr': ['vendor/modernizr/modernizr.custom.js'],
-                'icons': ['vendor/fontawesome/css/font-awesome.min.css',
-                        'vendor/simple-line-icons/css/simple-line-icons.css'],
+                'modernizr': ['bower_components/modernizr/modernizr.custom.js'],
+                'icons': ['bower_components/fontawesome/css/font-awesome.min.css',
+                        'bower_components/simple-line-icons/css/simple-line-icons.css'],
                 'flot-chart':         ['vendor/Flot/jquery.flot.js'],
                 'flot-chart-plugins': ['vendor/flot.tooltip/js/jquery.flot.tooltip.min.js',
                                         'vendor/Flot/jquery.flot.resize.js',
@@ -3757,29 +3757,29 @@
                     'vendor/angular-datatables/dist/angular-datatables.js'], serie: true
                 },
                 {
-                    name: 'ngDialog', files: ['vendor/ngDialog/js/ngDialog.min.js',
-                    'vendor/ngDialog/css/ngDialog.min.css',
-                    'vendor/ngDialog/css/ngDialog-theme-default.min.css']
+                    name: 'ngDialog', files: ['bower_components/ng-dialog/js/ngDialog.min.js',
+                    'bower_components/ng-dialog/css/ngDialog.min.css',
+                    'bower_components/ng-dialog/css/ngDialog-theme-default.min.css']
                 },
                 {
-                    name: 'toaster', files: ['vendor/angularjs-toaster/toaster.js',
-                    'vendor/angularjs-toaster/toaster.css']
+                    name: 'toaster', files: ['bower_components/AngularJS-Toaster/toaster.js',
+                    'bower_components/AngularJS-Toaster/toaster.css']
                 },
                 {
-                    name: 'ui.select', files: ['vendor/angular-ui-select/dist/select.js',
-                    'vendor/angular-ui-select/dist/select.css']
+                    name: 'ui.select', files: ['bower_components/angular-ui-select/dist/select.js',
+                    'bower_components/angular-ui-select/dist/select.css']
                 },
                 {
-                    name: 'infinite-scroll', files: ['vendor/ngInfiniteScroll/build/ng-infinite-scroll.min.js']
+                    name: 'infinite-scroll', files: ['bower_components/ngInfiniteScroll/build/ng-infinite-scroll.min.js']
                 },
                 {
                     name: 'angular-spinner',
                     files: ['bower_components/angular-spinner/dist/angular-spinner.min.js']
                 },
-                {name: 'angularGrid', files: ['vendor/ag-grid/dist/styles/ag-grid.css',
-                    'vendor/ag-grid/dist/ag-grid.js',
-                    'vendor/ag-grid/dist/styles/theme-dark.css',
-                    'vendor/ag-grid/dist/styles/theme-fresh.css']}
+                {name: 'angularGrid', files: ['bower_components/ag-grid/dist/styles/ag-grid.css',
+                    'bower_components/ag-grid/dist/ag-grid.js',
+                    'bower_components/ag-grid/dist/styles/theme-dark.css',
+                    'bower_components/ag-grid/dist/styles/theme-fresh.css']}
 
             ]
         })
