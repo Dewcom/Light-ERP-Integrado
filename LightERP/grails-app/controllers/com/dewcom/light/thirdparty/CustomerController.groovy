@@ -66,12 +66,12 @@ class CustomerController extends RestController {
         CustomerRequest restCustomer = new CustomerRequest(request.JSON.customer);
         try {
             def tmpCustomerToCheck = Customer.findByIdentificationAndEnabled(restCustomer.identification, Constants.ESTADO_ACTIVO)
-           if(tmpCustomerToCheck){
-               tmpResponse.code = Constants.ERROR_UNDECLARED_EXCEPTION
-               tmpResponse.message =  messageSource.getMessage("create.customer.id.nonUnique", null, Locale.default)
-               render tmpResponse as JSON
-               return
-           }
+            if (tmpCustomerToCheck) {
+                tmpResponse.code = Constants.ERROR_UNDECLARED_EXCEPTION
+                tmpResponse.message = messageSource.getMessage("create.customer.id.nonUnique", null, Locale.default)
+                render tmpResponse as JSON
+                return
+            }
 
             restCustomer.validate();
             if (restCustomer.hasErrors()) {
