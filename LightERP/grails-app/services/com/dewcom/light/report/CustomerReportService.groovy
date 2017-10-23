@@ -2,6 +2,7 @@ package com.dewcom.light.report
 
 import com.dewcom.light.rest.report.customer.request.CustomerPurchasesReportReq
 import com.dewcom.light.rest.report.customer.response.CustomerPurchasesReport
+import com.dewcom.light.rest.report.customer.response.CustomerPurchasesReportDto
 import com.dewcom.light.rest.report.customer.response.CustomerPurchasesReportResp
 import com.dewcom.light.rest.report.customer.response.PurchasesReportHeader
 import com.dewcom.light.rest.report.customer.response.PurchasesReportSummary
@@ -61,7 +62,7 @@ class CustomerReportService {
 
             purchasesReportResponse.reportHeader = reportHeader
             def purchasesReportSummary = new PurchasesReportSummary()
-            purchasesReportResponse.reportData = buildPurchasesReportResults(results)
+            purchasesReportResponse.reportData = buildPurchasesReportDtoObjects(buildPurchasesReportDomainObjects(results))
             purchasesReportSummary.totalGrossPrice = purchasesReportResponse.reportData.buyPrice.sum()
             purchasesReportSummary.totalQuantity = purchasesReportResponse.reportData.quantity.sum()
             purchasesReportSummary.totalNetPrice = purchasesReportResponse.reportData.totalAmount.sum()
@@ -75,16 +76,50 @@ class CustomerReportService {
         }
     }
 
-    //builds report data objects
-    def buildPurchasesReportResults(def pQueryResults){
+    //builds report domain objects
+    def buildPurchasesReportDomainObjects(def pQueryResults){
         def List<CustomerPurchasesReport> results = new ArrayList<>()
         if(pQueryResults != null) {
             pQueryResults.each { it ->
                 def tmpReportObj = new CustomerPurchasesReport(it)
-                tmpReportObj.nullSafeSetCustomerFullName()
                 results.add(tmpReportObj)
             }
         }
         results
+    }
+
+
+    //builds report dto objects
+    def buildPurchasesReportDtoObjects(def pDomainObjects){
+        def List<CustomerPurchasesReportDto> results = new ArrayList<>()
+        if(pDomainObjects != null) {
+            pDomainObjects.each { it ->
+                def tmpReportObj = new CustomerPurchasesReportDto()
+                tmpReportObj.customerFullName = tmpReportObj.nullSafeSetCustomerFullName(it)
+                tmpReportObj.buyDate = LightUtils.dateToString(it.buyDate, "dd-MM-yyyy")
+                tmpReportObj.buyPrice = it.buyPrice
+                tmpReportObj.customerId = it.customerId
+                tmpReportObj.totalAmount = it.totalAmount
+                tmpReportObj.productCode = it.productCode
+                tmpReportObj.productName = it.productName
+                tmpReportObj.billState = it.billState
+                tmpReportObj.billNumber = formatBillNumber(6, it.billNumber.toString())
+                tmpReportObj.quantity = it.quantity
+                results.add(tmpReportObj)
+            }
+        }
+        results
+    }
+
+    def formatBillNumber(Integer pCantidadZeros, String pBillNumber){
+        int zeros = pCantidadZeros - (pBillNumber.length())
+        def result = "";
+        String zerosToConcat = "";
+        for(int i = 1; i <= zeros;i++){
+            zerosToConcat = zerosToConcat.concat("0")
+        }
+        //return
+        result =  (zerosToConcat + pBillNumber)
+        result
     }
 }
