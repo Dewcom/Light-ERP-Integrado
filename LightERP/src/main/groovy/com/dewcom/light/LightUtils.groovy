@@ -55,7 +55,7 @@ class LightUtils {
      * Metodo usado para parsear fecha en date a objeto String
      * @return Devuelve la fecha formateada
      */
-    public static Date dateToString(Date argDate, String datePattern) {
+    public static String dateToString(Date argDate, String datePattern) {
         SimpleDateFormat formatter = new SimpleDateFormat(datePattern);
         String tmpDate;
         try {

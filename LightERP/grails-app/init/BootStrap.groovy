@@ -292,23 +292,6 @@ class BootStrap {
             it.clear()
         }
 
-
-        //Register Review domain for JSON rendering
-        JSON.registerObjectMarshaller(CustomerPurchasesReport) {
-            def output = [:]
-            output['billNumber'] = it.billNumber
-            output['customerFullName'] = it.customerFullName
-            output['customerId'] = it.customerId
-            output['productCode'] = it.productCode
-            output['productName'] = it.productName
-            output['quantity'] = it.quantity
-            output['buyDate'] = it.buyDate.format( 'dd-MM-yyyy' )
-            output['buyPrice'] = it.buyPrice
-            output['totalAmount'] = it.totalAmount
-            output['billState'] = it.billState
-            return output;
-        }
-
         def destroy = {
         }
     }

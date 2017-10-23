@@ -60,6 +60,7 @@
 
 
         function activate() {
+            vm.showTable = false;
             vm.showBillCustomerInfo = true;
             vm.submitted = false;
             vm.dateRange = "";
@@ -120,6 +121,7 @@
             };
 
             vm.fillTable = function () {
+                vm.showTable = true;
                 usSpinnerService.spin('customersSpinner');
                 customerReportService.getPurchasesReport(vm.customerIdentification == undefined ? "" : vm.customerIdentification,
                     vm.productCode == undefined ? "" : vm.productCode ,

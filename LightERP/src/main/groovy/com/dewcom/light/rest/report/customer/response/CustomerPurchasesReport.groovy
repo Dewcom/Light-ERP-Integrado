@@ -15,14 +15,5 @@ class CustomerPurchasesReport {
     def billNumber
     def customerFirstLastName
     def customerSecondLastName
-    def customerFullName
     def billState
-
-
-    def nullSafeSetCustomerFullName(){
-        def name = this.customerName != null ? this.customerName : ""
-        def firstLastName = this.customerFirstLastName != null ? this.customerFirstLastName : ""
-        def secondLastName =  this.customerSecondLastName != null ? this.customerSecondLastName : ""
-        this.customerFullName = name + " " + firstLastName + " " + secondLastName
-    }
 }
