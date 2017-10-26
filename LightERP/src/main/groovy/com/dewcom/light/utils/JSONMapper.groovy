@@ -26,6 +26,7 @@ import com.dewcom.light.rest.response.PaymentRespREST
 import com.dewcom.light.rest.response.PresentationTypeRespREST
 import com.dewcom.light.rest.response.ProductRespREST
 import com.dewcom.light.rest.response.ProductTypeRespREST
+import com.dewcom.light.rest.response.StorehouseRespREST
 import com.dewcom.light.thirdparty.Address
 import com.dewcom.light.thirdparty.Contact
 import com.dewcom.light.thirdparty.Customer
@@ -35,6 +36,7 @@ import com.dewcom.light.warehouse.MeasureUnit
 import com.dewcom.light.warehouse.PresentationType
 import com.dewcom.light.warehouse.Product
 import com.dewcom.light.warehouse.ProductType
+import com.dewcom.light.warehouse.Storehouse
 
 /**
  * Created by lchen on 5/20/17.
@@ -230,12 +232,24 @@ class JSONMapper {
         tmpRestObject
     }
 
+    def static from(Storehouse storehouse){
+        def tmpRestObject = new StorehouseRespREST()
+        tmpRestObject.id = storehouse.id
+        tmpRestObject.name = storehouse.name
+        tmpRestObject.address = storehouse.address
+        tmpRestObject.enabled = storehouse.enabled
+        tmpRestObject.registrationDate = storehouse.registrationDate
+
+        tmpRestObject
+    }
+
     def static fromBillDetailProduct(Product pProduct){
         def tmpRestObject = new BillDetailProductResponse()
         tmpRestObject.name = pProduct.name
         tmpRestObject.id = pProduct.id
         tmpRestObject.productCode = pProduct.productCode
         tmpRestObject.price = pProduct.price
+
         tmpRestObject
     }
 
