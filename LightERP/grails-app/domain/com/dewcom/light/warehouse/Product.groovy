@@ -20,6 +20,8 @@ class Product {
     Date registrationDate = new Date()
     MeasureUnit measureUnit
 
+    static hasMany = [productLot: ProductLot]
+
     static constraints = {
         productCode blank: false, nullable: false
         name blank: false, nullable: false

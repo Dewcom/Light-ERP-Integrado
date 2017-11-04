@@ -3,7 +3,7 @@ package com.dewcom.light.rest.response
 /**
  * Created by Mauricio Fernández Mora on 01/07/17.
  */
-public class MeasureUnitREST {
+public class MeasureUnitRespREST {
     Long id
     Integer code
     String name

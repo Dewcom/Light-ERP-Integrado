@@ -21,9 +21,10 @@ import com.dewcom.light.rest.response.CustomerRespREST
 import com.dewcom.light.rest.response.CustomerTypeRespREST
 import com.dewcom.light.rest.response.ExchangeRateRespREST
 import com.dewcom.light.rest.response.IdentificationTypeRespREST
-import com.dewcom.light.rest.response.MeasureUnitREST
+import com.dewcom.light.rest.response.MeasureUnitRespREST
 import com.dewcom.light.rest.response.PaymentRespREST
 import com.dewcom.light.rest.response.PresentationTypeRespREST
+import com.dewcom.light.rest.response.ProductLotRespREST
 import com.dewcom.light.rest.response.ProductRespREST
 import com.dewcom.light.rest.response.ProductTypeRespREST
 import com.dewcom.light.rest.response.StorehouseRespREST
@@ -35,6 +36,7 @@ import com.dewcom.light.thirdparty.IdentificationType
 import com.dewcom.light.warehouse.MeasureUnit
 import com.dewcom.light.warehouse.PresentationType
 import com.dewcom.light.warehouse.Product
+import com.dewcom.light.warehouse.ProductLot
 import com.dewcom.light.warehouse.ProductType
 import com.dewcom.light.warehouse.Storehouse
 
@@ -232,6 +234,23 @@ class JSONMapper {
         tmpRestObject
     }
 
+    def static from(ProductLot productLot){
+        def tmpRestObject = new ProductLotRespREST()
+
+        tmpRestObject.id = productLot.id
+        tmpRestObject.lotNumber = productLot.lotNumber
+        tmpRestObject.expirationDate = productLot.expirationDate
+        tmpRestObject.lotDate = productLot.lotDate
+        tmpRestObject.productOrigin = productLot.productOrigin
+        tmpRestObject.quantity = productLot.quantity
+        tmpRestObject.product = from(productLot.product)
+        tmpRestObject.storehouse = from(productLot.storehouse)
+        tmpRestObject.enabled = productLot.enabled
+        tmpRestObject.registrationDate = productLot.registrationDate
+
+        tmpRestObject
+    }
+
     def static from(Storehouse storehouse){
         def tmpRestObject = new StorehouseRespREST()
         tmpRestObject.id = storehouse.id
@@ -284,7 +303,7 @@ class JSONMapper {
     }
 
     def static from(MeasureUnit pMeasureType){
-        def tmpMeasureTypeObj = new MeasureUnitREST()
+        def tmpMeasureTypeObj = new MeasureUnitRespREST()
         tmpMeasureTypeObj.name = pMeasureType.name
         tmpMeasureTypeObj.enabled = pMeasureType.enabled
         tmpMeasureTypeObj.registrationDate = pMeasureType.registrationDate
