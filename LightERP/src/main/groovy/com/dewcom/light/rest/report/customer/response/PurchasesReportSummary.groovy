@@ -5,6 +5,6 @@ package com.dewcom.light.rest.report.customer.response
  */
 class PurchasesReportSummary {
     Integer totalQuantity
-    Double totalNetPrice
-    Double totalGrossPrice
+    String totalNetPrice
+    String totalGrossPrice
 }
