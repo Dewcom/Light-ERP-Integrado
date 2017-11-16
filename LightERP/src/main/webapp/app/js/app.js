@@ -22,6 +22,7 @@
             'app.adminConfig',
             'app.client',
             'app.product',
+            'app.storehouse',
             'app.user',
             'app.bill',
             'app.charts',
@@ -67,6 +68,13 @@
 
     angular
         .module('app.product', [
+        ]);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.storehouse', [
         ]);
 })();
 (function() {
@@ -219,12 +227,6 @@
 
     angular
         .module('app.client', []);
-})();
-(function() {
-    'use strict';
-
-    angular
-        .module('app.product', []);
 })();
 (function() {
     'use strict';
@@ -4231,9 +4233,16 @@
                 url: '/warehouseMain',
                 title: 'Almacén',
                 templateUrl: helper.basepath('warehouse/warehouse-main.html'),
-                controller: 'ProductController',
-                controllerAs: 'controller',
                 resolve: helper.resolveFor('datatables', 'ngDialog', 'infinite-scroll', 'angular-spinner')
+            })
+            .state('app.storehouseDetail', {
+                url: '/storehouseDetail',
+                title: 'Detalle bodega',
+                templateUrl: helper.basepath('warehouse/storehouse-detail.html'),
+                controller: 'StorehuoseDetailController',
+                controllerAs: 'controller',
+                resolve: helper.resolveFor('ngDialog'),
+                params : {storehouseId: null}
             })
             .state('app.configuration', {
                 url: '/configuration',
