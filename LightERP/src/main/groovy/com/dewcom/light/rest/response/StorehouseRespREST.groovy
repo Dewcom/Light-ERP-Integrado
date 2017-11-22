@@ -9,4 +9,5 @@ class StorehouseRespREST {
     String address
     Byte enabled
     Date registrationDate
+    List<ProductLotRespREST> productLots
 }

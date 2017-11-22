@@ -6,6 +6,7 @@ import com.dewcom.light.rest.warehouse.UpdateProductLotRequest
 import com.dewcom.light.utils.Constants
 import com.dewcom.light.utils.LightUtils
 import grails.transaction.Transactional
+import org.apache.catalina.Store
 
 @Transactional
 class ProductLotService {
@@ -39,6 +40,7 @@ class ProductLotService {
     def createProductLot(ProductLotRequest productLotRequest) {
         try {
             def productLot = ProductLot.fromRestProductLot(productLotRequest)
+
             productLot.save(flush: true, failOnError:true)
         } catch (Exception e) {
             log.error(e);

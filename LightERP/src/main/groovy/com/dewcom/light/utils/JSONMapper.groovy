@@ -244,7 +244,6 @@ class JSONMapper {
         tmpRestObject.productOrigin = productLot.productOrigin
         tmpRestObject.quantity = productLot.quantity
         tmpRestObject.product = from(productLot.product)
-        tmpRestObject.storehouse = from(productLot.storehouse)
         tmpRestObject.enabled = productLot.enabled
         tmpRestObject.registrationDate = productLot.registrationDate
 
@@ -258,6 +257,7 @@ class JSONMapper {
         tmpRestObject.address = storehouse.address
         tmpRestObject.enabled = storehouse.enabled
         tmpRestObject.registrationDate = storehouse.registrationDate
+        tmpRestObject.productLots = listFrom(storehouse.productLots)
 
         tmpRestObject
     }
@@ -305,6 +305,7 @@ class JSONMapper {
     def static from(MeasureUnit pMeasureType){
         def tmpMeasureTypeObj = new MeasureUnitRespREST()
         tmpMeasureTypeObj.name = pMeasureType.name
+        tmpMeasureTypeObj.symbol = pMeasureType.symbol
         tmpMeasureTypeObj.enabled = pMeasureType.enabled
         tmpMeasureTypeObj.registrationDate = pMeasureType.registrationDate
         tmpMeasureTypeObj.code = pMeasureType.code

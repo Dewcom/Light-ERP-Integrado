@@ -7,6 +7,7 @@ public class MeasureUnitRespREST {
     Long id
     Integer code
     String name
+    String symbol
     Byte enabled
     Date registrationDate
 }

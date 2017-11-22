@@ -8,7 +8,6 @@ class Storehouse {
     String address
     Byte enabled = Constants.ESTADO_ACTIVO
     Date registrationDate = new Date()
-    ProductLot productLot
 
     static hasMany = [productLots: ProductLot]
 

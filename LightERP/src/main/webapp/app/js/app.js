@@ -23,6 +23,7 @@
             'app.client',
             'app.product',
             'app.storehouse',
+            'app.productLot',
             'app.user',
             'app.bill',
             'app.charts',
@@ -75,6 +76,13 @@
 
     angular
         .module('app.storehouse', [
+        ]);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.productLot', [
         ]);
 })();
 (function() {
@@ -4233,16 +4241,28 @@
                 url: '/warehouseMain',
                 title: 'Almacén',
                 templateUrl: helper.basepath('warehouse/warehouse-main.html'),
-                resolve: helper.resolveFor('datatables', 'ngDialog', 'infinite-scroll', 'angular-spinner')
+                controller: 'StorehouseController',
+                controllerAs: 'controller',
+                resolve: helper.resolveFor('datatables', 'ngDialog', 'infinite-scroll', 'angular-spinner'),
+                params : {tabIndex: 0}
             })
             .state('app.storehouseDetail', {
                 url: '/storehouseDetail',
                 title: 'Detalle bodega',
                 templateUrl: helper.basepath('warehouse/storehouse-detail.html'),
-                controller: 'StorehuoseDetailController',
+                controller: 'StorehouseDetailController',
                 controllerAs: 'controller',
                 resolve: helper.resolveFor('ngDialog'),
                 params : {storehouseId: null}
+            })
+            .state('app.productLotDetail', {
+                url: '/productLotDetail',
+                title: 'Lote',
+                templateUrl: helper.basepath('warehouse/productlot-detail.html'),
+                controller: 'ProductLotController',
+                controllerAs: 'controller',
+                resolve: helper.resolveFor('datatables', 'ngDialog', 'infinite-scroll', 'angular-spinner'),
+                params : {filteredProductLotList: null}
             })
             .state('app.configuration', {
                 url: '/configuration',

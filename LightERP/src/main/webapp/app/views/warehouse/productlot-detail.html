@@ -1,0 +1,131 @@
+<div>
+    <div class="row">
+        <div class="col-md-7">
+            <h3>Detalle de lotes de producto</h3>
+        </div>
+    </div>
+    <div class="panel">
+        <uib-tabset justified="true">
+            <uib-tab heading="" active="tab1">
+                <div class="mb">
+                    <hr class="hidden-print"/>
+                    <div class="clearfix">
+                        <button uib-tooltip="Regresar a la lista" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" class="btn btn-labeled btn-info pull-right ml" ng-click="parentController.goBack()">
+                                <span class="btn-label">
+                                    <em class="fa fa-mail-reply"></em>
+                                </span>Regresar
+                        </button>
+                        <button uib-tooltip="Guardar cambios" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="submit" class="btn btn-labeled btn-success pull-right ml" ng-click="parentController.updateCustomer()">
+                                <span class="btn-label">
+                                    <em class="fa fa-plus"></em>
+                                </span>Guardar
+                        </button>
+                        <button uib-tooltip="Cancelar cambios" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" class="btn btn-labeled btn-danger pull-right" ng-click="parentController.cancel()">
+                                <span class="btn-label">
+                                   <em class="fa fa-times"></em>
+                                </span>Cancelar
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <fieldset>
+                        <legend>Producto</legend>
+                        <div class="col-lg-12">
+                            <div class="panel-body col-lg-3">
+                                <div class="form-group">
+                                    <label class="control-label">Código</label>
+                                    <input type="text" name="productCode" ng-model="controller.currentProduct.productCode" disabled="true" class="form-control"/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Tipo de presentación</label>
+                                    <input type="text" name="presentationType" ng-model="controller.currentProduct.presentationType.name" disabled="true" class="form-control"/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Precio</label>
+                                    <input type="text" name="price" ng-model="controller.currentProduct.price" disabled="true" class="form-control"/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Patida arancelaria</label>
+                                    <input type="text" name="tariffHeading" ng-model="controller.currentProduct.tariffHeading" disabled="true" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="panel-body col-lg-3">
+                                <div class="form-group">
+                                    <label class="control-label">Nombre</label>
+                                    <input type="text" name="name" ng-model="controller.currentProduct.name" disabled="true" class="form-control"/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Cantidad por bulto</label>
+                                    <input type="text" name="bulkQuantity" ng-model="controller.currentProduct.bulkQuantity" disabled="true" class="form-control"/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Costo</label>
+                                    <input type="text" name="cost" ng-model="controller.currentProduct.cost" disabled="true" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="panel-body col-lg-3">
+                                <div class="form-group">
+                                    <label class="control-label">Nombre comercial</label>
+                                    <input type="text" name="commercialName" ng-model="controller.currentProduct.commercialName" disabled="true" class="form-control"/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Unidad de medida</label>
+                                    <input type="text" name="measureUnit" ng-model="controller.currentProduct.measureUnit.name" disabled="true" class="form-control"/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Costo sugerido</label>
+                                    <input type="text" name="suggestedCost" ng-model="controller.currentProduct.suggestedCost" disabled="true" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="panel-body col-lg-3">
+                                <div class="form-group">
+                                    <label class="control-label">Tipo de producto</label>
+                                    <input type="text" name="productType" ng-model="controller.currentProduct.productType.name" disabled="true" class="form-control"/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Utilidad</label>
+                                    <input type="text" name="utilityPercentage" ng-model="controller.currentProduct.utilityPercentage" disabled="true" class="form-control"/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Impuestos</label>
+                                    <input type="text" name="productTax" ng-model="controller.currentProduct.productTax" disabled="true" class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Lista de lotes</legend>
+                        <!-- START row-->
+                        <div class="row">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>Número de lote</th>
+                                    <th>Fecha de lote</th>
+                                    <th>Cantidad</th>
+                                    <th>Origen de ingreso</th>
+                                    <th>Detalle</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="productLotObj in controller.productLotList">
+                                    <td>{{ productLotObj.lotNumber }}</td>
+                                    <td>{{ productLotObj.lotDate | date:'MM/dd/yyyy'}}</td>
+                                    <td>{{ productLotObj.quantity }}</td>
+                                    <td>{{ productLotObj.productOrigin }}</td>
+                                    <td>
+                                        <button uib-tooltip="Ver lote" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="controller.goToProductLotDetail(productObj.productObj)" class="btn btn-sm btn-toolbar">
+                                            <em class="fa fa-search"></em>
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- END row-->
+                    </fieldset>
+                </div>
+            </uib-tab>
+        </uib-tabset>
+    </div>
+</div>
