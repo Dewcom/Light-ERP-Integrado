@@ -6,18 +6,26 @@
                     <h3>Lista de Productos</h3>
                 </div>
                 <div class="col-md-12">
+                        <button uib-tooltip="Regresar" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="controller.goBack()"
+                                class="btn btn-labeled btn-info pull-left">
+                          <span class="btn-label">
+                             <em class="fa fa-mail-reply"></em>
+                          </span>Regresar
+                        </button>
+                        <button uib-tooltip="Agregar lote" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="submit" class="btn btn-labeled btn-success pull-right ml" ng-click="controller.openAddProductLotModal()">
+                                <span class="btn-label">
+                                    <em class="fa fa-plus"></em>
+                                </span>Agregar
+                        </button>
+                    </form>
+                </div>
+                <div class="col-md-12">
                     <form ng-submit="controller.filterProducts()">
                         <button uib-tooltip="Buscar productos" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="submit"
                                 class="btn btn-labeled btn-primary pull-left mb" ng-click="controller.filterProducts()">
                               <span class="btn-label">
                                  <em class="fa fa-search"></em>
                               </span>Buscar
-                        </button>
-                        <button uib-tooltip="Regresar" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="controller.goBack()"
-                                class="btn btn-labeled btn-info pull-left ml">
-                          <span class="btn-label">
-                             <em class="fa fa-mail-reply"></em>
-                          </span>Regresar
                         </button>
                         <div>
                             <div>
@@ -70,4 +78,6 @@
             </div>
         </div>
     </div>
+    <toaster-container toaster-options="{'position-class': 'toast-bottom-right', 'close-button':true}"></toaster-container>
+    <div ng-include="'app/views/warehouse/modal/add-product-lot-modal.html'"></div>
 </div>

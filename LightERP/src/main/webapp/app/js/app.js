@@ -4252,17 +4252,17 @@
                 templateUrl: helper.basepath('warehouse/storehouse-detail.html'),
                 controller: 'StorehouseDetailController',
                 controllerAs: 'controller',
-                resolve: helper.resolveFor('ngDialog'),
+                resolve: helper.resolveFor('ngDialog', 'ui.select'),
                 params : {storehouseId: null}
             })
             .state('app.productLotDetail', {
                 url: '/productLotDetail',
                 title: 'Lote',
-                templateUrl: helper.basepath('warehouse/productlot-detail.html'),
+                templateUrl: helper.basepath('warehouse/product-lot-detail.html'),
                 controller: 'ProductLotController',
                 controllerAs: 'controller',
                 resolve: helper.resolveFor('datatables', 'ngDialog', 'infinite-scroll', 'angular-spinner'),
-                params : {filteredProductLotList: null}
+                params : {filteredProductLotList: null, storehouseId : null}
             })
             .state('app.configuration', {
                 url: '/configuration',

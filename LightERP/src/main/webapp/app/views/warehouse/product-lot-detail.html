@@ -10,20 +10,10 @@
                 <div class="mb">
                     <hr class="hidden-print"/>
                     <div class="clearfix">
-                        <button uib-tooltip="Regresar a la lista" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" class="btn btn-labeled btn-info pull-right ml" ng-click="parentController.goBack()">
+                        <button uib-tooltip="Regresar a la lista" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" class="btn btn-labeled btn-info pull-left ml" ng-click="controller.goBack()">
                                 <span class="btn-label">
                                     <em class="fa fa-mail-reply"></em>
                                 </span>Regresar
-                        </button>
-                        <button uib-tooltip="Guardar cambios" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="submit" class="btn btn-labeled btn-success pull-right ml" ng-click="parentController.updateCustomer()">
-                                <span class="btn-label">
-                                    <em class="fa fa-plus"></em>
-                                </span>Guardar
-                        </button>
-                        <button uib-tooltip="Cancelar cambios" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" class="btn btn-labeled btn-danger pull-right" ng-click="parentController.cancel()">
-                                <span class="btn-label">
-                                   <em class="fa fa-times"></em>
-                                </span>Cancelar
                         </button>
                     </div>
                 </div>
@@ -103,6 +93,7 @@
                                     <th>Número de lote</th>
                                     <th>Fecha de lote</th>
                                     <th>Cantidad</th>
+                                    <th>Fecha de expiración</th>
                                     <th>Origen de ingreso</th>
                                     <th>Detalle</th>
                                 </tr>
@@ -112,9 +103,10 @@
                                     <td>{{ productLotObj.lotNumber }}</td>
                                     <td>{{ productLotObj.lotDate | date:'MM/dd/yyyy'}}</td>
                                     <td>{{ productLotObj.quantity }}</td>
+                                    <td>{{ productLotObj.expirationDate | date:'MM/dd/yyyy'}}</td>
                                     <td>{{ productLotObj.productOrigin }}</td>
                                     <td>
-                                        <button uib-tooltip="Ver lote" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="controller.goToProductLotDetail(productObj.productObj)" class="btn btn-sm btn-toolbar">
+                                        <button uib-tooltip="Ver producto" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="controller.openUpdateProductLotModal(productLotObj)" class="btn btn-sm btn-toolbar">
                                             <em class="fa fa-search"></em>
                                         </button>
                                     </td>
@@ -128,4 +120,6 @@
             </uib-tab>
         </uib-tabset>
     </div>
+    <toaster-container toaster-options="{'position-class': 'toast-bottom-right', 'close-button':true}"></toaster-container>
+    <div ng-include="'app/views/warehouse/modal/update-product-lot-modal.html'"></div>
 </div>

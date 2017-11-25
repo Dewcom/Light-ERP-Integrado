@@ -1,0 +1,103 @@
+<div class="form-group">
+    <script type="text/ng-template" id="/addProductLotModal.html">
+        <div ng-controller="StorehouseDetailController as modalCtrl">
+            <div class="modal-header"><button type="button" data-dismiss="modal" aria-hidden="true" class="close"
+                                              ng-click="close()">×</button>
+                <h4 id="myModalLabel" class="modal-title">Agregar lote de producto</h4>
+            </div>
+            <form name="modalCtrl.productLotForm" ng-submit="modalCtrl.submitForm()" novalidate="" class="form-validate">
+                <!-- START panel-->
+                <div class="panel panel-default col-lg-12">
+                    <div class="panel col-lg-12">
+                        <h4>Buscar productos</h4>
+                        <div class="form-group">
+                            <ui-select name="product" ng-model="modalCtrl.selectedProduct" theme="bootstrap">
+                                <ui-select-match placeholder="Buscar por nombre o código...">
+                                    {{modalCtrl.selectedProduct.productCode + ' ' + modalCtrl.selectedProduct.name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                        repeat="product in modalCtrl.productList | propsFilter: {name: $select.search, productCode: $select.search} | limitTo: ($select.search.length <= 2) ? 50 : undefined">
+                                    <div ng-click="selectProduct(product)">
+                                        <div ng-bind-html="product.productCode | highlight: $select.search"></div>
+                                        <small>Nombre: {{product.name}} Código:
+                                            <span ng-bind-html="''+product.productCode | highlight: $select.search"></span>
+                                        </small>
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <span ng-show="modalCtrl.validateInput('product', 'required')" class="text-danger">Este campo es requerido</span>
+                    </div>
+                    <div class="panel col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label">Número de lote</label>
+                            <input tabindex="1" type="text" name="lotNumber" required="" ng-model="addProductLotForm.lotNumber" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Cantidad</label>
+                            <input tabindex="4" type="text" name="quantity" required="" ng-model="addProductLotForm.quantity" class="form-control" />
+                            <span ng-show="modalCtrl.validateInput('quantity', 'required')" class="text-danger">Este campo es requerido</span>
+                        </div>
+                    </div>
+                    <div class="panel col-lg-4">
+                        <div class="form-group">
+                            <label class="control-label">Fecha de lote</label>
+                            <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button uib-tooltip-trigger="focus" uib-tooltip-placement="top"
+                                                    type="button" ng-click="modalCtrl.open($event)" class="btn btn-default">
+                                                <em class="fa fa-calendar"></em>
+                                            </button>
+                                        </span>
+                                <input tabindex="2" name="lotDate" type="text" uib-datepicker-popup="{{modalCtrl.format}}"
+                                       ng-model="addProductLotForm.lotDate" is-open="modalCtrl.opened"
+                                       min-date="modalCtrl.minDate" max-date="'2030-12-31'"
+                                       datepicker-options="modalCtrl.dateOptions" popup-placement="top" ng-required="true"
+                                       current-text="Hoy" clear-text="Limpiar" close-text="Salir" class="form-control"
+                                       onkeydown="return false"/>
+                            </div>
+                            <span ng-show="modalCtrl.validateInput('lotDate', 'required')" class="text-danger">Este campo es requerido</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Origen del producto</label>
+                            <input tabindex="5" type="text" name="productOrigin" required="" ng-model="addProductLotForm.productOrigin" class="form-control" />
+                            <span ng-show="modalCtrl.validateInput('productOrigin', 'required')" class="text-danger">Este campo es requerido</span>
+                        </div>
+                    </div>
+                    <div class="panel col-lg-4">
+                            <div class="form-group">
+                                <label class="control-label">Fecha de expiración</label>
+                                <div class="input-group">
+                                            <span class="input-group-btn">
+                                                <button uib-tooltip-trigger="focus" uib-tooltip-placement="top"
+                                                        type="button" ng-click="modalCtrl.openExpDate($event)" class="btn btn-default">
+                                                    <em class="fa fa-calendar"></em>
+                                                </button>
+                                            </span>
+                                    <input tabindex="3" name="expirationDate" type="text" uib-datepicker-popup="{{modalCtrl.formatExpDate}}"
+                                           ng-model="addProductLotForm.expirationDate" is-open="modalCtrl.openedExpDate"
+                                           min-date="modalCtrl.minDateExpDate" max-date="'2030-12-31'"
+                                           datepicker-options="modalCtrl.dateOptionsExpDate" popup-placement="top" ng-required="true"
+                                           current-text="Hoy" clear-text="Limpiar" close-text="Salir" class="form-control"
+                                           onkeydown="return false"/>
+                                </div>
+
+                            </div>
+                        <span ng-show="modalCtrl.validateInput('expirationDate', 'required')" class="text-danger">Este campo es requerido</span>
+                        </div>
+                </div>
+
+                <div class="panel-footer">
+                    <div class="clearfix">
+                        <div class="pull-right">
+                            <button uib-tooltip="Crear producto" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="submit" class="btn btn-success btn-lg">Agregar</button>
+                            <button uib-tooltip="Cancelar" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="cancel()" class="btn btn-danger btn-lg">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- END panel-->
+            </form>
+        </div>
+        <!-- END panel-->
+    </script>
+</div>
