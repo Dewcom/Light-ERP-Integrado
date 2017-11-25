@@ -12,6 +12,7 @@ class MeasureUnit {
 
     Integer code
     String name
+    String symbol
     Byte enabled = Constants.ESTADO_ACTIVO
     Date registrationDate = new Date()
 

@@ -7,19 +7,24 @@
         .module('app.storehouse')
         .controller('StorehouseController', StorehouseController);
 
-    StorehouseController.$inject = ['storehouseService'];
-    function StorehouseController(storehouseService) {
+    StorehouseController.$inject = ['$scope','storehouseService', '$stateParams'];
+    function StorehouseController($scope, storehouseService, $stateParams) {
         var vm = this;
         init();
 
         function init() {
+
+            if($stateParams.tabIndex == 0){
+                $scope.tab1 = true;
+            }else{
+                $scope.tab2 = true;
+            }
 
             /**=========================================================
              * Bodegas
              =========================================================*/
 
             storehouseService.getAll().then(function (response) {
-                console.log(response);
                 vm.storehousesList = response;
             });
         }

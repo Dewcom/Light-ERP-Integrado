@@ -4,9 +4,9 @@ angular
     .module('app.services')
     .factory("storehouseService", function ($http, $state, APP_CONSTANTS) {
 
-        var productService = {};
+        var storehouseService = {};
 
-        productService.getAll = function () {
+        storehouseService.getAll = function () {
 
             var storehouseList = $http({
                 method: 'GET',
@@ -24,6 +24,23 @@ angular
             return storehouseList;
         };
 
-        return productService;
+        storehouseService.get = function (storehouseId) {
 
+            var storehouse = $http({
+                method: 'GET',
+                url: APP_CONSTANTS.appURL + 'storehouse/get?id=' + storehouseId,
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            }).then(function (response) {
+                return response.data;
+            }, function (error) {
+                console.log(error);
+                return error.status;
+            });
+
+            return storehouse;
+        };
+
+        return storehouseService;
     });

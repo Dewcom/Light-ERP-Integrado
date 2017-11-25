@@ -227,8 +227,6 @@
 
         function addProduct() {
 
-            console.log($scope.addProductForm.utilityPercentage);
-
             var newProduct = {
                 "productCode": $scope.addProductForm.productCode,
                 "name": $scope.addProductForm.productName,
@@ -265,13 +263,11 @@
                 }
                 pop(toasterdata);
                 $timeout(function () {
-                    callAtTimeout();
+                    $state.reload();
                 }, 3000);
             }, function (error) {
                 console.log(error);
             });
-
-
             $scope.cancel();
         }
 
@@ -348,8 +344,6 @@
         function UpdateModalInstanceCtrl($scope, $uibModalInstance, product) {
             var vm = this;
 
-            console.log(product);
-
             $scope.currentProduct = JSON.parse(JSON.stringify(product));
 
             $scope.close = function () {
@@ -360,7 +354,6 @@
                 $uibModalInstance.dismiss('cancel');
             };
         }
-
 
         function pop(toasterdata) {
             toaster.pop({

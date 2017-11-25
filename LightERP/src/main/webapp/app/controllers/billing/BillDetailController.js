@@ -85,8 +85,6 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
     function init() {
         console.log($stateParams);
 
-
-
         if($stateParams.tabIndex == 0){
             $scope.tab1 = true;
         }else{

@@ -233,6 +233,7 @@ class BootStrap {
         if(!MeasureUnit.findByCode(MeasureUnit.KILOGRAMS)){
             def measureType = new MeasureUnit()
             measureType.name = "Kilogramos"
+            measureType.symbol = "Kg"
             measureType.code = MeasureUnit.KILOGRAMS
             measureType.save()
         }
@@ -240,6 +241,7 @@ class BootStrap {
         if(!MeasureUnit.findByCode(MeasureUnit.GRAMS)){
             def measureType = new MeasureUnit()
             measureType.name = "Gramos"
+            measureType.symbol = "g"
             measureType.code = MeasureUnit.GRAMS
             measureType.save()
         }
@@ -247,12 +249,14 @@ class BootStrap {
         if(!MeasureUnit.findByCode(MeasureUnit.LITERS)){
             def measureType = new MeasureUnit()
             measureType.name = "Litros"
+            measureType.symbol = "L"
             measureType.code = MeasureUnit.LITERS
             measureType.save()
         }
 
         if(!MeasureUnit.findByCode(MeasureUnit.MINILITERS)){
             def measureType = new MeasureUnit()
+            measureType.symbol = "mL"
             measureType.name = "Minilitros"
             measureType.code = MeasureUnit.MINILITERS
             measureType.save()
@@ -260,6 +264,7 @@ class BootStrap {
 
         if(!MeasureUnit.findByCode(MeasureUnit.OUNCES)){
             def measureType = new MeasureUnit()
+            measureType.symbol = "oz"
             measureType.name = "Onzas"
             measureType.code = MeasureUnit.OUNCES
             measureType.save()
@@ -267,6 +272,7 @@ class BootStrap {
 
         if(!MeasureUnit.findByCode(MeasureUnit.UNITS)){
             def measureType = new MeasureUnit()
+            measureType.symbol = "uds"
             measureType.name = "Unidades"
             measureType.code = MeasureUnit.UNITS
             measureType.save()
