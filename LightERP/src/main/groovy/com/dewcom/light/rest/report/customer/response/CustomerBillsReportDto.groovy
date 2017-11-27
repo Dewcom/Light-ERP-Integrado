@@ -3,20 +3,20 @@ package com.dewcom.light.rest.report.customer.response
 /**
  * Created by lchen on 10/17/17.
  */
-class CustomerPurchasesReportDto {
+class CustomerBillsReportDto {
+    def customerFullName
     def customerId
-    def productCode
-    def productName
-    def quantity
+    def totalDiscount
+    def totalTaxes
+    def subTotal
     String buyDate
-    def buyPrice
     def totalAmount
     def billNumber
-    def customerFullName
-    def billState
+    def billStateDesc
+    def balance
+    def paymentsPerformed
 
-
-    def nullSafeSetCustomerFullName(CustomerPurchasesReport pDomain){
+    def nullSafeSetCustomerFullName(CustomerBillsReport pDomain){
         def name = pDomain.customerName != null ? pDomain.customerName : ""
         def firstLastName = pDomain.customerFirstLastName != null ? pDomain.customerFirstLastName : ""
         def secondLastName =  pDomain.customerSecondLastName != null ? pDomain.customerSecondLastName : ""

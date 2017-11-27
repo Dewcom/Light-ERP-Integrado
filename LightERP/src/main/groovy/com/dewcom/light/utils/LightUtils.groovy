@@ -1,5 +1,8 @@
 package com.dewcom.light.utils
 
+import java.math.RoundingMode
+import java.text.DecimalFormat
+import java.text.NumberFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.time.Instant
@@ -77,5 +80,28 @@ class LightUtils {
           return false
       }
          return true
+    }
+
+    /**
+     * Metodo usado para formatear un decimal a un numero deseado de decimales
+     * @return Devuelve el numero aleatorio
+     */
+    public static String formatDouble(Double argDouble, int zeros) {
+        def result= "0"
+        if(argDouble != null){
+        String pattern = "0.";
+        for(int i = 0; i< zeros; i++ ){
+            pattern += "0";
+        }
+
+        Locale costaRicaLocale = new Locale("es", "CR");
+        NumberFormat nf = NumberFormat.getNumberInstance(costaRicaLocale);
+        DecimalFormat df = (DecimalFormat)nf;
+        df.setRoundingMode(RoundingMode.DOWN);
+        df.applyPattern(pattern);
+            result = df.format(argDouble)
+        }
+
+        return  result
     }
 }

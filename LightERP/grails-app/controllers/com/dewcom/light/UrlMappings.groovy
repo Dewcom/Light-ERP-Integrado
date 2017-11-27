@@ -42,5 +42,6 @@ class UrlMappings {
 
         //reports
         get "/api/customer/purchaseReport"(controller: 'customerReport', action: 'getCustomerProductPurchases')
+        get "/api/customer/billingReport"(controller: 'customerReport', action: 'getCustomerBills')
     }
 }
