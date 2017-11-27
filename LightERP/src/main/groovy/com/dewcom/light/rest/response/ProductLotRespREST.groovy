@@ -13,7 +13,6 @@ class ProductLotRespREST {
     String productOrigin
     Double quantity
     ProductRespREST product
-    StorehouseRespREST storehouse
     Byte enabled = Constants.ESTADO_ACTIVO
     Date registrationDate = new Date()
 }

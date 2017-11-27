@@ -1,0 +1,104 @@
+<div class="panel panel-default" ng-controller="StorehouseController as controller">
+    <div class="panel-body">
+        <div>
+            <div class="col-md-12">
+                <div class="col-lg-6" ng-repeat="storehouseObj in controller.storehousesList track by $index">
+                    <div>
+                        <h3>{{storehouseObj.name}}</h3>
+                    </div>
+                    <!-- START List group-->
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <div class="row row-table pv-lg">
+                                <div class="col-xs-6">
+                                    <p class="m0 lead">1204</p>
+                                    <p class="m0">
+                                        <small>Total de productos</small>
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row row-table pv-lg">
+                                <div class="col-xs-6">
+                                    <p class="m0 lead">$ 3,200.00</p>
+                                    <p class="m0">
+                                        <small>Available budget</small>
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="row row-table pv-lg">
+                                <div class="col-xs-6">
+                                    <p class="m0 lead">67</p>
+                                    <p class="m0">
+                                        <small>New followers</small>
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <!-- END List group-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- START Multiple List group-->
+
+    <div ng-repeat="storehouseObj in controller.storehousesList track by $index">
+        <div class="list-group">
+            <a class="list-group-item">
+                <table class="wd-wide">
+                    <tbody>
+                    <tr>
+                        <td class="wd-xs">
+                            <div class="ph">
+                                <img src="app/img/dummy.png" alt=""
+                                     class="media-box-object img-responsive img-rounded thumb64"/>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ph">
+                                <h4 class="media-box-heading">{{storehouseObj.name}}</h4>
+                                <small class="text-muted">{{storehouseObj.address}}</small>
+                            </div>
+                        </td>
+                        <td class="wd-sm hidden-xs hidden-sm">
+                            <div class="ph">
+                                <p class="m0">Último ingreso</p>
+                                <small class="text-muted">12 mayo 2017</small>
+                            </div>
+                        </td>
+                        <td class="wd-xs hidden-xs hidden-sm">
+                            <div class="ph">
+                                <p class="m0 text-muted">
+                                    <em class="icon-present mr fa-lg"></em>106</p>
+                                <small class="text-muted">Lotes</small>
+                            </div>
+                        </td>
+                        <td class="wd-xs hidden-xs hidden-sm">
+                            <div class="ph">
+                                <p class="m0 text-muted">
+                                    <em class="icon-basket-loaded mr fa-lg"></em>56</p>
+                                <small class="text-muted">Productos</small>
+                            </div>
+                        </td>
+                        <td class="wd-sm">
+                            <div class="ph">
+                                <uib-progressbar value="80" type="success" class="m0 progress-xs">80%</uib-progressbar>
+                                <small class="text-muted">Capacidad</small>
+                            </div>
+                        </td>
+                        <td><button uib-tooltip="Ver bodega" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ui-sref="app.storehouseDetail({storehouseId: storehouseObj.id})" class="btn btn-sm btn-toolbar">
+                            <em class="fa fa-search"></em>
+                        </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </a>
+        </div>
+    </div>
+</div>

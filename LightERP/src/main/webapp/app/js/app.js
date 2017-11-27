@@ -22,6 +22,8 @@
             'app.adminConfig',
             'app.client',
             'app.product',
+            'app.storehouse',
+            'app.productLot',
             'app.user',
             'app.bill',
             'app.charts',
@@ -67,6 +69,20 @@
 
     angular
         .module('app.product', [
+        ]);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.storehouse', [
+        ]);
+})();
+(function() {
+    'use strict';
+
+    angular
+        .module('app.productLot', [
         ]);
 })();
 (function() {
@@ -219,12 +235,6 @@
 
     angular
         .module('app.client', []);
-})();
-(function() {
-    'use strict';
-
-    angular
-        .module('app.product', []);
 })();
 (function() {
     'use strict';
@@ -4238,9 +4248,28 @@
                 url: '/warehouseMain',
                 title: 'Almacén',
                 templateUrl: helper.basepath('warehouse/warehouse-main.html'),
-                controller: 'ProductController',
+                controller: 'StorehouseController',
                 controllerAs: 'controller',
-                resolve: helper.resolveFor('datatables', 'ngDialog', 'infinite-scroll', 'angular-spinner')
+                resolve: helper.resolveFor('datatables', 'ngDialog', 'infinite-scroll', 'angular-spinner'),
+                params : {tabIndex: 0}
+            })
+            .state('app.storehouseDetail', {
+                url: '/storehouseDetail',
+                title: 'Detalle bodega',
+                templateUrl: helper.basepath('warehouse/storehouse-detail.html'),
+                controller: 'StorehouseDetailController',
+                controllerAs: 'controller',
+                resolve: helper.resolveFor('ngDialog', 'ui.select'),
+                params : {storehouseId: null}
+            })
+            .state('app.productLotDetail', {
+                url: '/productLotDetail',
+                title: 'Lote',
+                templateUrl: helper.basepath('warehouse/product-lot-detail.html'),
+                controller: 'ProductLotController',
+                controllerAs: 'controller',
+                resolve: helper.resolveFor('datatables', 'ngDialog', 'infinite-scroll', 'angular-spinner'),
+                params : {filteredProductLotList: null, storehouseId : null}
             })
             .state('app.configuration', {
                 url: '/configuration',

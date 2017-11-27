@@ -12,13 +12,11 @@ class ProductLot {
     String productOrigin
     Double quantity
     Product product
-    Storehouse storehouse
     Byte enabled = Constants.ESTADO_ACTIVO
     Date registrationDate = new Date()
 
     static hasMany = [storehouses: Storehouse]
-
-    static belongsTo = [Storehouse]
+    static belongsTo = Storehouse
 
     static constraints = {
         lotNumber blank: false, nullable: false
@@ -26,7 +24,6 @@ class ProductLot {
         lotDate blank: false, nullable: false
         quantity nullable: false
         product nullable: false
-        storehouse nullable: false
     }
 
     def static fromRestProductLot(ProductLotRequest productLotRequest){
@@ -39,7 +36,7 @@ class ProductLot {
         productLot.productOrigin = productLotRequest.productOrigin
         productLot.quantity = productLotRequest.quantity
         productLot.product = Product.findByIdAndEnabled(productLotRequest.productId, Constants.ESTADO_ACTIVO)
-        productLot.storehouse = Storehouse.findByIdAndEnabled(productLotRequest.storehouseId, Constants.ESTADO_ACTIVO)
+        productLot.addToStorehouses(Storehouse.findByIdAndEnabled(productLotRequest.storehouseId, Constants.ESTADO_ACTIVO))
 
         return productLot
     }

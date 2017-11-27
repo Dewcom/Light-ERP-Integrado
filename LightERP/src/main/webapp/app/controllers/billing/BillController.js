@@ -9,8 +9,7 @@
                                 '$uibModal', 'productTypeService', 'presentationTypeService', '$state', 'toaster', '$timeout', '$filter',
                                 'ngDialog', '$rootScope', '$stateParams', 'APP_CONSTANTS', 'usSpinnerService'];
     function BillController(DTOptionsBuilder, DTColumnDefBuilder, billService, customerService, productService, $scope, $uibModal,
-                            productTypeService, presentationTypeService, $state, toaster, $timeout, $filter, ngDialog, $rootScope, $stateParams,
-                            APP_CONSTANTS, usSpinnerService) {
+                            productTypeService, presentationTypeService, $state, toaster, $timeout, $filter, ngDialog, $rootScope, $stateParams, APP_CONSTANTS, usSpinnerService) {
         var vm = this;
         $scope.globalConstants = APP_CONSTANTS;
         // Se utiliza para tener disponible el tipo de cambio original traido de BD.
