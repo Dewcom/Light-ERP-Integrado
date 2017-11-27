@@ -4193,6 +4193,13 @@
                     'flot-chart', 'flot-chart-plugins','angular-spinner', 'infinite-scroll', 'angularGrid'),
                 params : { tabIndex: 0 }
             })
+            .state('app.billsReports', {
+                url: '/billsReports',
+                title: 'Reportes Facturas',
+                templateUrl: helper.basepath('bills-reports.html'),
+                resolve: helper.resolveFor('ngDialog', 'ui.select',
+                    'flot-chart', 'flot-chart-plugins','angular-spinner', 'infinite-scroll', 'angularGrid')
+            })
             .state('app.billDetail', {
                 url: '/billDetail',
                 title: 'Detalle factura',

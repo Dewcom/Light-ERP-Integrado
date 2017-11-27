@@ -168,8 +168,6 @@ class CustomerReportService {
         try{
              def billsReportResponse = new CustomerReportResp()
             //TODO IF POSSIBLE THIS SHOULD BE REFACTORED BY USING STORED PROCEDURES, LEO
-            String test = "select b.billNumber, sum(payment.amount), count(payment)  from Bill b left  join b.payments as payment";
-
             String selectProjections = "select new map (sum(payment.amount) as paymentsTotalAmount, count(payment) as totalPayments, b.billNumber as billNumber, " +
                     "c.identification as customerId, b.billDate as buyDate, c.name as customerName, " +
                     "c.firstLastName as customerFirstLastName, c.secondLastName as customerSecondLastName, " +
@@ -228,6 +226,7 @@ class CustomerReportService {
 
         if(pReq.startDate != null && !pReq.startDate.trim().isEmpty() && pReq.endDate != null && !pReq.endDate.trim().isEmpty()){
             conditions +=  (whereClauseUsed == true ? " and" : " where") +  " b.billDate between :startDate and :endDate";
+            whereClauseUsed = true;
         }
 
         if(pReq.isPaymentPendingReport){
