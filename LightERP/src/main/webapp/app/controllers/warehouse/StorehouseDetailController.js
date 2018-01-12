@@ -5,8 +5,8 @@
         .module('app.storehouse')
         .controller('StorehouseDetailController', StorehouseDetailController);
 
-    StorehouseDetailController.$inject = ['$uibModal', '$http', '$state', '$stateParams', '$scope', 'storehouseService', 'APP_CONSTANTS', 'usSpinnerService', '$filter', 'productLotService', 'productService', 'toaster', '$timeout'];
-    function StorehouseDetailController($uibModal, $http, $state, $stateParams, $scope, storehouseService, APP_CONSTANTS, usSpinnerService, $filter, productLotService, productService, toaster, $timeout) {
+    StorehouseDetailController.$inject = ['$uibModal', '$http', '$state', '$stateParams', '$scope', 'storehouseService', 'APP_CONSTANTS', 'usSpinnerService', '$filter', 'productLotService', 'productService', 'toaster', '$timeout', 'productTypeService'];
+    function StorehouseDetailController($uibModal, $http, $state, $stateParams, $scope, storehouseService, APP_CONSTANTS, usSpinnerService, $filter, productLotService, productService, toaster, $timeout, productTypeService) {
         var vm = this;
         $scope.globalConstants = APP_CONSTANTS;
         activateProductLotDateCalendar();
@@ -110,6 +110,14 @@
 
             productService.getAll().then(function (response) {
                 vm.productList = $filter('orderBy')(response, 'productCode');
+            });
+
+            /**=========================================================
+             * Tipos de producto
+             =========================================================*/
+
+            productTypeService.getAll().then(function (response) {
+                vm.productTypeList = response;
             });
 
         }

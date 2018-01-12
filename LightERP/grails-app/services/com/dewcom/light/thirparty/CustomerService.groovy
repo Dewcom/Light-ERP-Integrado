@@ -145,6 +145,5 @@ class CustomerService {
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("get.all.addresses.error", null, Locale.default));
         }
-
     }
 }

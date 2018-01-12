@@ -335,7 +335,7 @@ class BillService {
      * envia al backend para almacenar cumpla con ciertos criterios
      * @author Leo Chen
      */
-    def  validateBillNumber(def argBillNumber){
+    def validateBillNumber(def argBillNumber){
         try {
             def lastBillNumber = Bill.createCriteria().get {
                 projections {
@@ -365,7 +365,7 @@ class BillService {
      * detalle factura REST
      * @author Leo Chen
      */
-    def  setBillDetailFromRESTObject(def pBillDetail, def pBillDetailRest){
+    def setBillDetailFromRESTObject(def pBillDetail, def pBillDetailRest){
         try {
             def tmpProduct = Product.findByIdAndEnabled(pBillDetailRest.productId, Constants.ESTADO_ACTIVO)
             //se inicializa el objeto detalleFactura
@@ -392,7 +392,7 @@ class BillService {
      * @param pBillStateCode es el codigo del estado
      * @author Leo Chen
      */
-    def  changeBillState(def pBill, def pBillStateCode){
+    def changeBillState(def pBill, def pBillStateCode){
         try {
             pBill.billState = BillStateType.findByCode(pBillStateCode)
             pBill.save(failOnError: true)

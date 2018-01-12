@@ -44,5 +44,26 @@ angular
             return addProductLotResult;
         };
 
+        productLotService.disableProductLot = function (productLotId) {
+
+            var disableProductLotResult = $http({
+                method: 'DELETE',
+                url: APP_CONSTANTS.appURL + 'productLot/delete',
+                data: {
+                    id: productLotId
+                },
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            }).then(function (response) {
+                return response.data;
+            }, function (error) {
+                console.log(error);
+                return error.status;
+            });
+
+            return disableProductLotResult;
+        };
+
         return productLotService;
     });

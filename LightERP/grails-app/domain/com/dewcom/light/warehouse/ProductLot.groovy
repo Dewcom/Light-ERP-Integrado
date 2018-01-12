@@ -9,7 +9,7 @@ class ProductLot {
     String lotNumber
     Date expirationDate
     Date lotDate
-    String productOrigin
+    ProductType productOrigin
     Double quantity
     Product product
     Byte enabled = Constants.ESTADO_ACTIVO
@@ -33,7 +33,7 @@ class ProductLot {
         productLot.lotNumber = productLotRequest.lotNumber
         productLot.expirationDate = LightUtils.stringToDate(productLotRequest.expirationDate,"dd-MM-yyyy")
         productLot.lotDate = LightUtils.stringToDate(productLotRequest.lotDate,"dd-MM-yyyy")
-        productLot.productOrigin = productLotRequest.productOrigin
+        productLot.productOrigin = ProductType.findByIdAndEnabled(productLotRequest.productOrigin, Constants.ESTADO_ACTIVO)
         productLot.quantity = productLotRequest.quantity
         productLot.product = Product.findByIdAndEnabled(productLotRequest.productId, Constants.ESTADO_ACTIVO)
         productLot.addToStorehouses(Storehouse.findByIdAndEnabled(productLotRequest.storehouseId, Constants.ESTADO_ACTIVO))

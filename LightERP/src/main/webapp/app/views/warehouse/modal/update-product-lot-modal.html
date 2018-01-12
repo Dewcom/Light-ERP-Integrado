@@ -3,7 +3,7 @@
         <div ng-controller="ProductLotController as modalCtrl">
             <div class="modal-header"><button type="button" data-dismiss="modal" aria-hidden="true" class="close"
                                               ng-click="close()">×</button>
-                <h4 id="myModalLabel" class="modal-title">Detalle del producto</h4>
+                <h4 id="myModalLabel" class="modal-title">Detalle de lote de producto</h4>
             </div>
             <form name="modalCtrl.modifyProductLotForm" ng-submit="modalCtrl.submitForm()" novalidate="" class="form-validate">
                 <!-- START panel-->
@@ -40,8 +40,10 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label">Origen del producto</label>
-                            <input tabindex="5" type="text" name="productOrigin" required="" ng-model="currentProductLot.productOrigin" class="form-control" />
-                            <span ng-show="modalCtrl.validateInput('productOrigin', 'required')" class="text-danger">Este campo es requerido</span>
+                            <select tabindex="6" name="productOrigin" ng-model="currentProductLot.productOrigin.id"
+                                    ng-options="item.id as item.name for item in modalCtrl.productTypeList"
+                                    class="form-control" required="">
+                            </select>
                         </div>
                     </div>
                     <div class="panel-body col-lg-4">

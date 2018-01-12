@@ -39,12 +39,30 @@ class ProductLotService {
 
     def createProductLot(ProductLotRequest productLotRequest) {
         try {
-            def productLot = ProductLot.fromRestProductLot(productLotRequest)
 
-            productLot.save(flush: true, failOnError:true)
+            def tmpProductLot = ProductLot.findByLotNumber(productLotRequest.lotNumber);
+
+            if(tmpProductLot == null){
+                def productLot = ProductLot.fromRestProductLot(productLotRequest)
+
+            }else{
+                def tmpStorehouse = Storehouse.findById(productLotRequest.storehouseId);
+
+                if(!tmpProductLot.storehouses.contains(tmpStorehouse)) {
+                    def productLot = ProductLot.fromRestProductLot(productLotRequest)
+                    productLot.save(flush: true, failOnError:true)
+                }else{
+                    throw new LightRuntimeException(messageSource.getMessage("create.productLot.id.nonUnique", null, Locale.default));
+                }
+            }
+
         } catch (Exception e) {
             log.error(e);
-            throw new LightRuntimeException(messageSource.getMessage("create.productLot.error", null, Locale.default));
+            if(e.getClass() == LightRuntimeException.class  ){
+                throw new LightRuntimeException(e.getMessage());
+            }else{
+                throw new LightRuntimeException(messageSource.getMessage("create.productLot.error", null, Locale.default));
+            }
         }
     }
 
@@ -66,7 +84,7 @@ class ProductLotService {
                 tmpProductLotToUpdate.lotNumber = updateProductLotReq.lotNumber
                 tmpProductLotToUpdate.expirationDate = LightUtils.stringToDate(updateProductLotReq.expirationDate,"dd-MM-yyyy")
                 tmpProductLotToUpdate.lotDate = LightUtils.stringToDate(updateProductLotReq.lotDate,"dd-MM-yyyy")
-                tmpProductLotToUpdate.productOrigin = updateProductLotReq.productOrigin
+                tmpProductLotToUpdate.productOrigin = ProductType.findByIdAndEnabled(updateProductLotReq.productOrigin, Constants.ESTADO_ACTIVO)
                 tmpProductLotToUpdate.quantity = updateProductLotReq.quantity
 
                 tmpProductLotToUpdate.save(flush: true, failOnError:true)
