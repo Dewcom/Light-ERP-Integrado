@@ -84,7 +84,6 @@ class ProductLotService {
                 tmpProductLotToUpdate.lotNumber = updateProductLotReq.lotNumber
                 tmpProductLotToUpdate.expirationDate = LightUtils.stringToDate(updateProductLotReq.expirationDate,"dd-MM-yyyy")
                 tmpProductLotToUpdate.lotDate = LightUtils.stringToDate(updateProductLotReq.lotDate,"dd-MM-yyyy")
-                tmpProductLotToUpdate.productOrigin = ProductType.findByIdAndEnabled(updateProductLotReq.productOrigin, Constants.ESTADO_ACTIVO)
                 tmpProductLotToUpdate.quantity = updateProductLotReq.quantity
 
                 tmpProductLotToUpdate.save(flush: true, failOnError:true)

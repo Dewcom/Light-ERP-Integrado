@@ -11,7 +11,6 @@ class ProductLotRequest implements Validateable{
     String lotNumber
     String expirationDate
     String lotDate
-    Integer productOrigin
     Double quantity
     Long productId
     Long storehouseId

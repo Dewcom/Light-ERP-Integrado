@@ -225,7 +225,7 @@
             var modalInstance = $uibModal.open({
                 templateUrl: '/addProductLotModal.html',
                 controller: AddModalInstanceCtrl,
-                size: 'md',
+                size: 'lg',
                 backdrop: 'static', // No cierra clickeando fuera
                 keyboard: false // No cierra con escape
             });
@@ -244,6 +244,11 @@
 
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
+            };
+
+            $scope.chooseProduct = function(product){
+                console.log(product);
+                vm.selectecProduct = product;
             };
         }
 

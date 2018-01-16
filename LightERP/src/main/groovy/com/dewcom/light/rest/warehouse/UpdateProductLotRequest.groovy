@@ -11,7 +11,6 @@ class UpdateProductLotRequest implements Validateable {
     String lotNumber
     String expirationDate
     String lotDate
-    Integer productOrigin
     Double quantity
     Byte enabled = Constants.ESTADO_ACTIVO
     Date registrationDate = new Date()

@@ -240,7 +240,6 @@ class JSONMapper {
         tmpRestObject.lotNumber = productLot.lotNumber
         tmpRestObject.expirationDate = productLot.expirationDate
         tmpRestObject.lotDate = productLot.lotDate
-        tmpRestObject.productOrigin = from(productLot.productOrigin)
         tmpRestObject.quantity = productLot.quantity
         tmpRestObject.product = from(productLot.product)
         tmpRestObject.enabled = productLot.enabled

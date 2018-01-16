@@ -138,7 +138,7 @@ function ProductLotController($scope, $stateParams, APP_CONSTANTS, $state, $uibM
         var modalInstance = $uibModal.open({
             templateUrl: '/updateProductLotModal.html',
             controller: UpdateModalInstanceCtrl,
-            size: 'md',
+            size: 'lg',
             resolve: {
                 productLot: function () {
                     return productLotObj;
@@ -184,12 +184,9 @@ function ProductLotController($scope, $stateParams, APP_CONSTANTS, $state, $uibM
             "lotNumber": $scope.currentProductLot.lotNumber,
             "expirationDate": $filter('date')($scope.currentProductLot.expirationDate, "dd-MM-yyyy"),
             "lotDate": $filter('date')($scope.currentProductLot.lotDate, "dd-MM-yyyy"),
-            "productOrigin": $scope.currentProductLot.productOrigin.id,
             "quantity": parseFloat($scope.currentProductLot.quantity)
         };
-        console.log(updatedProductLot);
         productLotService.updateProductLot(updatedProductLot).then(function (response) {
-            console.log(response);
             var toasterdata;
 
             if (response.code == "0") {
@@ -230,7 +227,6 @@ function ProductLotController($scope, $stateParams, APP_CONSTANTS, $state, $uibM
             closeByEscape: false
         }).then(function (value) {
             productLotService.disableProductLot(productLot.id).then(function (response) {
-                console.log(response);
                 var toasterdata;
 
                 if (response.code == "0") {
@@ -275,7 +271,6 @@ function ProductLotController($scope, $stateParams, APP_CONSTANTS, $state, $uibM
     function updateCurrentProductLotList() {
 
         var currentId = $scope.currentProductLot.id;
-        var tmpProductOrigin = $filter('filter')(vm.productTypeList, {id: $scope.currentProductLot.productOrigin.id });
 
         var fieldData = vm.productLotList,
             i = 0, ii = vm.productLotList.length;
@@ -286,7 +281,6 @@ function ProductLotController($scope, $stateParams, APP_CONSTANTS, $state, $uibM
         vm.productLotList[i].lotNumber = $scope.currentProductLot.lotNumber;
         vm.productLotList[i].expirationDate = $scope.currentProductLot.expirationDate;
         vm.productLotList[i].lotDate = $scope.currentProductLot.lotDate;
-        vm.productLotList[i].productOrigin = tmpProductOrigin[0];
         vm.productLotList[i].quantity = $scope.currentProductLot.quantity;
 
         console.log(vm.productLotList);
