@@ -38,4 +38,19 @@ class ProductLot {
 
         return productLot
     }
+
+    @Override
+    public String toString() {
+        return "ProductLot{" +
+                "id=" + id +
+                ", version=" + version +
+                ", storehouses=" + storehouses +
+                ", lotNumber='" + lotNumber + '\'' +
+                ", expirationDate=" + expirationDate +
+                ", lotDate=" + lotDate +
+                ", quantity=" + quantity +
+                ", product=" + product +
+                ", enabled=" + enabled +
+                ", registrationDate=" + registrationDate
+    }
 }

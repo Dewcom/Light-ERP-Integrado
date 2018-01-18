@@ -1,12 +1,12 @@
 package com.dewcom.light.warehouse
 
+import com.dewcom.light.configuration.ActionBinnacleLog
 import com.dewcom.light.exception.LightRuntimeException
 import com.dewcom.light.rest.warehouse.ProductLotRequest
 import com.dewcom.light.rest.warehouse.UpdateProductLotRequest
 import com.dewcom.light.utils.Constants
 import com.dewcom.light.utils.LightUtils
 import grails.transaction.Transactional
-import org.apache.catalina.Store
 
 @Transactional
 class ProductLotService {
@@ -38,23 +38,32 @@ class ProductLotService {
     }
 
     def createProductLot(ProductLotRequest productLotRequest) {
+        def productLot = new ProductLot()
         try {
-
             def tmpProductLot = ProductLot.findByLotNumber(productLotRequest.lotNumber);
 
             if(tmpProductLot == null){
-                def productLot = ProductLot.fromRestProductLot(productLotRequest)
+                productLot = ProductLot.fromRestProductLot(productLotRequest)
 
             }else{
                 def tmpStorehouse = Storehouse.findById(productLotRequest.storehouseId);
 
                 if(!tmpProductLot.storehouses.contains(tmpStorehouse)) {
-                    def productLot = ProductLot.fromRestProductLot(productLotRequest)
-                    productLot.save(flush: true, failOnError:true)
+                    productLot = ProductLot.fromRestProductLot(productLotRequest)
                 }else{
                     throw new LightRuntimeException(messageSource.getMessage("create.productLot.id.nonUnique", null, Locale.default));
                 }
             }
+
+            def binnacleLog = new ActionBinnacleLog()
+            binnacleLog.action = messageSource.getMessage("binnacle.action.create", null, Locale.default)
+            binnacleLog.domain = productLot.toString()
+            binnacleLog.modificationDate = new Date()
+            binnacleLog.modifiedItem = productLotRequest.lotNumber
+            binnacleLog.username = productLotRequest.username
+
+            binnacleLog.save(flush: true, failOnError:true)
+            productLot.save(flush: true, failOnError:true)
 
         } catch (Exception e) {
             log.error(e);
@@ -66,8 +75,17 @@ class ProductLotService {
         }
     }
 
-    def deleteProductLot(ProductLot productLot) {
+    def deleteProductLot(ProductLot productLot, String username, String deleteReason) {
         try {
+            def binnacleLog = new ActionBinnacleLog()
+            binnacleLog.action = messageSource.getMessage("binnacle.action.delete", null, Locale.default) + ' ' +    deleteReason
+            binnacleLog.domain = productLot.toString()
+            binnacleLog.modificationDate = new Date()
+            binnacleLog.modifiedItem = productLot.lotNumber
+            binnacleLog.username = username
+
+            binnacleLog.save(flush: true, failOnError:true)
+
             productLot.enabled = Constants.ESTADO_INACTIVO
             productLot.save(flush: true, failOnError:true)
         } catch (Exception e) {
@@ -85,6 +103,15 @@ class ProductLotService {
                 tmpProductLotToUpdate.expirationDate = LightUtils.stringToDate(updateProductLotReq.expirationDate,"dd-MM-yyyy")
                 tmpProductLotToUpdate.lotDate = LightUtils.stringToDate(updateProductLotReq.lotDate,"dd-MM-yyyy")
                 tmpProductLotToUpdate.quantity = updateProductLotReq.quantity
+
+                def binnacleLog = new ActionBinnacleLog()
+                binnacleLog.action = messageSource.getMessage("binnacle.action.modify", null, Locale.default) + ' ' + updateProductLotReq.reason
+                binnacleLog.domain = tmpProductLotToUpdate.toString()
+                binnacleLog.modificationDate = new Date()
+                binnacleLog.modifiedItem = updateProductLotReq.lotNumber
+                binnacleLog.username = updateProductLotReq.username
+
+                binnacleLog.save(flush: true, failOnError:true)
 
                 tmpProductLotToUpdate.save(flush: true, failOnError:true)
             } else {

@@ -4,8 +4,8 @@ angular
     .module('app.productLot')
     .controller('ProductLotController', ProductLotController);
 
-ProductLotController.$inject = ['$scope', '$stateParams', 'APP_CONSTANTS', '$state', '$uibModal', 'productLotService', 'toaster', '$timeout', '$filter', 'productTypeService', 'ngDialog'];
-function ProductLotController($scope, $stateParams, APP_CONSTANTS, $state, $uibModal, productLotService, toaster, $timeout, $filter, productTypeService, ngDialog) {
+ProductLotController.$inject = ['$scope', '$stateParams', 'APP_CONSTANTS', '$state', '$uibModal', 'productLotService', 'toaster', '$timeout', '$filter', 'productTypeService', 'ngDialog', '$window'];
+function ProductLotController($scope, $stateParams, APP_CONSTANTS, $state, $uibModal, productLotService, toaster, $timeout, $filter, productTypeService, ngDialog, $window) {
 
     var vm = this;
     $scope.globalConstants = APP_CONSTANTS;
@@ -179,13 +179,20 @@ function ProductLotController($scope, $stateParams, APP_CONSTANTS, $state, $uibM
 
     function updateProductLot() {
 
+        var tmpReason = $scope.currentProductLot.modifyOption;
+        tmpReason += $scope.currentProductLot.otherModifyReason != null ? ' ' + $scope.currentProductLot.otherModifyReason : ''
+
         var updatedProductLot = {
+            "username" : JSON.parse($window.sessionStorage["userInfo"]).userName,
             "id": $scope.currentProductLot.id,
             "lotNumber": $scope.currentProductLot.lotNumber,
             "expirationDate": $filter('date')($scope.currentProductLot.expirationDate, "dd-MM-yyyy"),
             "lotDate": $filter('date')($scope.currentProductLot.lotDate, "dd-MM-yyyy"),
-            "quantity": parseFloat($scope.currentProductLot.quantity)
+            "quantity": parseFloat($scope.currentProductLot.quantity),
+            "reason": tmpReason
         };
+
+        console.log(updatedProductLot);
         productLotService.updateProductLot(updatedProductLot).then(function (response) {
             var toasterdata;
 
@@ -225,8 +232,10 @@ function ProductLotController($scope, $stateParams, APP_CONSTANTS, $state, $uibM
             className: 'ngdialog-theme-default',
             closeByDocument: false,
             closeByEscape: false
-        }).then(function (value) {
-            productLotService.disableProductLot(productLot.id).then(function (response) {
+        }).then(function (reason) {
+            var username = JSON.parse($window.sessionStorage["userInfo"]).userName;
+
+            productLotService.disableProductLot(productLot.id, username, reason).then(function (response) {
                 var toasterdata;
 
                 if (response.code == "0") {

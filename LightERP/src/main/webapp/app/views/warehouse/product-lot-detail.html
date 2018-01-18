@@ -130,14 +130,22 @@
         <div class="ngdialog-message text-center">
             <h3>Eliminar lote de producto</h3>
             <p>Por favor agregar el motivo de la elminación.</p>
-            <div class="mb">
-                <select>
-
-                </select>
-                <input type="text" name="deleteReason" required="" ng-model="deleteReason" class="form-control"/>
+            <div class="form-group mb">
+                <div class="mb">
+                    <select name ="deleteOption" ng-model="deleteOption">
+                        <option value="error en digitacion">Error en digitación</option>
+                        <option value="rechazado">Rechazado</option>
+                        <option value="vencimiento">Vencimiento</option>
+                        <option value="defectuoso">Defectuoso</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+                <div>
+                    <input ng-show="deleteOption == 'otro'" type="text" name="otherDeleteReason" required="" ng-model="otherDeleteReason" class="form-control" placeholder="Descripción"/>
+                </div>
             </div>
-            <div ng-show="deleteReason != null">
-                <button type="button" ng-click="confirm(deleteReason)" class="btn btn-primary mr">Confirmar</button>
+            <div ng-show="deleteOption != null">
+                <button type="button" ng-click="confirm(deleteOption + ' ' + otherDeleteReason)" class="btn btn-primary mr">Confirmar</button>
                 <button type="button" ng-click="closeThisDialog('button')" class="btn btn-default">Cancelar</button>
             </div>
         </div>

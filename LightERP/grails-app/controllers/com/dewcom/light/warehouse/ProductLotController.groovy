@@ -99,7 +99,7 @@ class ProductLotController extends RestController{
                 ProductLot tmpProductLot = productLotService.getproductLot(request.JSON.id)
 
                 if(tmpProductLot) {
-                    productLotService.deleteProductLot(tmpProductLot)
+                    productLotService.deleteProductLot(tmpProductLot, request.JSON.username, request.JSON.deleteReason)
                     tmpResponse.message = messageSource.getMessage("delete.productLot.success", null, Locale.default)
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
                 }else {

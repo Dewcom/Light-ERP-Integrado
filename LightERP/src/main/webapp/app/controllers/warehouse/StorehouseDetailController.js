@@ -5,8 +5,8 @@
         .module('app.storehouse')
         .controller('StorehouseDetailController', StorehouseDetailController);
 
-    StorehouseDetailController.$inject = ['$uibModal', '$http', '$state', '$stateParams', '$scope', 'storehouseService', 'APP_CONSTANTS', 'usSpinnerService', '$filter', 'productLotService', 'productService', 'toaster', '$timeout', 'productTypeService'];
-    function StorehouseDetailController($uibModal, $http, $state, $stateParams, $scope, storehouseService, APP_CONSTANTS, usSpinnerService, $filter, productLotService, productService, toaster, $timeout, productTypeService) {
+    StorehouseDetailController.$inject = ['$uibModal', '$http', '$state', '$stateParams', '$scope', 'storehouseService', 'APP_CONSTANTS', 'usSpinnerService', '$filter', 'productLotService', 'productService', 'toaster', '$timeout', 'productTypeService', '$window'];
+    function StorehouseDetailController($uibModal, $http, $state, $stateParams, $scope, storehouseService, APP_CONSTANTS, usSpinnerService, $filter, productLotService, productService, toaster, $timeout, productTypeService, $window) {
         var vm = this;
         $scope.globalConstants = APP_CONSTANTS;
         activateProductLotDateCalendar();
@@ -247,7 +247,6 @@
             };
 
             $scope.chooseProduct = function(product){
-                console.log(product);
                 vm.selectecProduct = product;
             };
         }
@@ -258,11 +257,19 @@
 
         function addProductLot() {
 
+            /*console.log($window.sessionStorage["userInfo"].userName);
+
+            var userinfo = JSON.parse($window.sessionStorage["userInfo"]);
+
+            console.log(userinfo.userName);
+
+            console.log(userinfo.role);*/
+
             var newProductLot = {
+                "username" : JSON.parse($window.sessionStorage["userInfo"]).userName,
                 "lotNumber": $scope.addProductLotForm.lotNumber,
                 "expirationDate": $filter('date')($scope.addProductLotForm.expirationDate, "dd-MM-yyyy"),
                 "lotDate": $filter('date')($scope.addProductLotForm.lotDate, "dd-MM-yyyy"),
-                "productOrigin": $scope.addProductLotForm.productOrigin,
                 "quantity": parseInt($scope.addProductLotForm.quantity),
                 "productId": vm.selectedProduct.id,
                 "storehouseId":  vm.currentStorehouse.id
