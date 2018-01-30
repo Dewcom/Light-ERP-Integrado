@@ -86,10 +86,24 @@
                 {headerName: 'Estado factura', field: 'billState', minWidth: 140},
                 {headerName: 'Cédula cliente', field: 'customerId', minWidth: 120},
                 {headerName: 'Nombre cliente', field: 'customerFullName', minWidth: 250},
+                {headerName: 'Moneda', field: 'currency', minWidth: 90},
+                {headerName: 'Porcentaje utilidad real', field: 'utilityPercentage', filter: 'number', minWidth: 170,  cellFormatter: percentageFormatter, cellClass: 'number-cell'},
+                {headerName: 'Tipo cambio', field: 'exchange', minWidth: 120, cellFormatter: colonCurrencyFormatter, cellClass: 'number-cell'},
                 {headerName: 'Cantidad', field: 'quantity', filter: 'number', minWidth: 90},
-                {headerName: 'Precio bruto', field: 'buyPrice', filter: 'number', minWidth: 120},
-                {headerName: 'Precio neto', field: 'totalAmount', filter: 'number', minWidth: 120}
+                {headerName: 'Utilidad real', field: 'utilityAmount', filter: 'number', minWidth: 150,  cellFormatter: colonCurrencyFormatter, cellClass: 'number-cell'},
+                {headerName: 'Precio venta', field: 'buyPrice', filter: 'number', minWidth: 150,  cellFormatter: colonCurrencyFormatter, cellClass: 'number-cell'},
+                {headerName: 'Costo total', field: 'cost', filter: 'number', minWidth: 150,  cellFormatter: colonCurrencyFormatter, cellClass: 'number-cell'},
+                {headerName: 'Impuestos de venta', field: 'totalTaxAmount', filter: 'number', minWidth: 150,  cellFormatter: colonCurrencyFormatter, cellClass: 'number-cell'},
             ];
+
+            function colonCurrencyFormatter(params) {
+                return params.value == undefined ? '': $filter('currency')(params.value, '&#8353; ', 2);
+            }
+            function percentageFormatter(params) {
+                return params.value == undefined ? '':  params.value + ' &#37;';
+            }
+
+
 
             vm.gridOptions1 = {
                 columnDefs: columnDefs,
@@ -110,7 +124,7 @@
             },
                 getRowStyle: function(params) {
                     if (params.node.floating) {
-                        return {'font-weight': 'bold', 'background-color': '#EDF1F2','font-size': '20px',
+                        return {'font-weight': 'bold', 'background-color': '#EDF1F2','font-size': '16px',
                                 'border-style': 'solid none none none', 'border-width': '2px', 'text-align': 'center'}
                     }else{
                         return {'text-align': 'center'}
@@ -166,7 +180,7 @@
                     columnSeparator: ','
                 };
 
-                params.customFooter = 'TOTALES:,,,,,,,'+vm.reportSummary.totalQuantity+','+vm.reportSummary.totalGrossPrice+','+vm.reportSummary.totalNetPrice;
+                params.customFooter = 'TOTALES:,,,,,,,,,,'+vm.reportSummary.totalQuantity+','+vm.reportSummary.totalUtilityAmount+','+vm.reportSummary.totalGrossPrice+','+vm.reportSummary.totalCost+','+vm.reportSummary.totalTaxAmount;
 
 
                 vm.gridOptions1.api.exportDataAsCsv(params);
@@ -190,9 +204,14 @@
                     billState: '',
                     customerId: '',
                     customerFullName: '',
+                    currency: '',
+                    utilityPercentage: undefined,
+                    exchange: undefined,
                     quantity: vm.reportSummary.totalQuantity,
+                    utilityAmount: vm.reportSummary.totalUtilityAmount,
                     buyPrice: vm.reportSummary.totalGrossPrice,
-                    totalAmount: vm.reportSummary.totalNetPrice,
+                    cost: vm.reportSummary.totalCost,
+                    totalTaxAmount: vm.reportSummary.totalTaxAmount
                 });
 
             return result;

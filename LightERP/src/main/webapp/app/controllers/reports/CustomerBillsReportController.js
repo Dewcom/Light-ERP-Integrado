@@ -67,20 +67,47 @@
             vm.submitForm = function() {
                 vm.fillTable();
             };
+
+
             // Basic
             var columnDefs = [
                 {headerName: 'N.factura', field: 'billNumber', minWidth: 120},
                 {headerName: 'Estado factura', field: 'billStateDesc', minWidth: 140},
                 {headerName: 'Fecha', field: 'buyDate', minWidth: 110},
-                {headerName: 'Nombre cliente', field: 'customerFullName', minWidth: 250},
+                {headerName: 'Nombre cliente', field: 'customerFullName', minWidth: 255},
                 {headerName: 'Cédula cliente', field: 'customerId', minWidth: 120},
-                {headerName: 'Subtotal', field: 'subTotal', filter: 'number', minWidth: 120},
-                {headerName: 'Descuento', field: 'totalDiscount', filter: 'number', minWidth: 120},
-                {headerName: 'Impuestos', field: 'totalTaxes', filter: 'number', minWidth: 120},
-                {headerName: 'Total', field: 'totalAmount', filter: 'number', minWidth: 120},
+                {headerName: 'Moneda', field: 'currency', minWidth: 90},
+                {headerName: 'Tipo cambio', field: 'exchange', minWidth: 120, cellFormatter: colonCurrencyFormatter, cellClass: 'number-cell'},
+                {headerName: 'Condición crédito', field: 'creditCondition', filter: 'number', minWidth: 150, cellFormatter: creditConditionFormatter, cellClass: 'number-cell'},
+                {headerName: 'Fecha pago', field: 'paymentMaxDate', filter: 'number', minWidth: 120, cellClass: 'number-cell'},
+                {headerName: 'Días de vencida', field: 'expirationDays', filter: 'number', minWidth: 150, cellFormatter: expirationDaysFormatter, cellClass: 'number-cell'},
+                {headerName: 'Subtotal', filter: 'number', field: 'subTotal', cellFormatter: colonCurrencyFormatter, cellClass: 'number-cell', minWidth: 150},
+                {headerName: 'Descuento', field: 'totalDiscount', filter: 'number', minWidth: 120 , cellFormatter: colonCurrencyFormatter, cellClass: 'number-cell'},
+                {headerName: 'Impuestos', field: 'totalTaxes', filter: 'number', minWidth: 120 , cellFormatter: colonCurrencyFormatter, cellClass: 'number-cell'},
+                {headerName: 'Total', field: 'totalAmount', filter: 'number', minWidth: 150, cellFormatter: colonCurrencyFormatter, cellClass: 'number-cell'},
                 {headerName: 'Pagos', field: 'paymentsPerformed', filter: 'number', minWidth: 120},
-                {headerName: 'Saldo', field: 'balance', filter: 'number', minWidth: 120}
+                {headerName: 'Saldo', field: 'balance', filter: 'number', minWidth: 150, cellFormatter: colonCurrencyFormatter, cellClass: 'number-cell'}
             ];
+
+            function colonCurrencyFormatter(params) {
+                return params.value == undefined ? '': $filter('currency')(params.value, '&#8353; ', 2);
+            }
+
+            function expirationDaysFormatter(params) {
+                return params.value == undefined ? '': params.value +' d&iacute;as ';
+            }
+
+            function creditConditionFormatter(params) {
+                var result;
+                if(params.value == 0){
+                    result = '**CONTADO**'
+                }
+                else{
+                    result =  params.value == undefined ? '': params.value +' d&iacute;as '
+                }
+                return result ;
+            }
+
 
             vm.gridOptions = {
                 columnDefs: columnDefs,
@@ -101,7 +128,7 @@
             },
                 getRowStyle: function(params) {
                     if (params.node.floating) {
-                        return {'font-weight': 'bold', 'background-color': '#EDF1F2','font-size': '20px',
+                        return {'font-weight': 'bold', 'background-color': '#EDF1F2','font-size': '16px',
                                 'border-style': 'solid none none none', 'border-width': '2px', 'text-align': 'center'}
                     }else{
                         return {'text-align': 'center'}
@@ -123,9 +150,11 @@
                     vm.reportSummary = response == null ? [] : response.reportData.size == 0 ? [] : response.reportSummary;
                     vm.gridOptions.api.setRowData(vm.reportData);
 
-                    _autoSizeColumns(columnDefs);
+                    _autoSizeColumns(vm.gridOptions.columnDefs);
 
-                    vm.dateRange = vm.startDate == undefined ? "" : $filter('date')(vm.startDate, "dd-MM-yyyy") +'/'+ vm.endDate == undefined ? "" : $filter('date')(vm.endDate, "dd-MM-yyyy");
+                    vm.gridOptions.columnApi.setColumnsVisible(['creditCondition','paymentMaxDate', 'expirationDays'], vm.isPendingPaymentReport);
+
+                    vm.dateRange = vm.startDate == undefined ? "" : $filter('date')(vm.startDate, "dd-MM-yyyy") +'/'+ (vm.endDate == undefined ? "" : $filter('date')(vm.endDate, "dd-MM-yyyy"));
                     vm.gridOptions.api.setFloatingBottomRowData(_createTableFooterData());
                     usSpinnerService.stop('customersSpinner');
                 });
@@ -146,12 +175,15 @@
                     columnSeparator: ','
                 };
 
-                params.customFooter = 'TOTALES:,,,,,'+vm.reportSummary.totalSubtotal+','+vm.reportSummary.totalDiscount+','+vm.reportSummary.totalTaxes + ','+ vm.reportSummary.totalNetAmount+','+vm.reportSummary.totalPayments+','+vm.reportSummary.totalBalance;
-
+                params.customFooter = 'TOTALES:,,,,,,,,,,'+vm.reportSummary.totalSubtotal+','+vm.reportSummary.totalDiscount+','+vm.reportSummary.totalTaxes + ','+ vm.reportSummary.totalNetAmount+','+vm.reportSummary.totalPayments+','+vm.reportSummary.totalBalance;
 
                 vm.gridOptions.api.exportDataAsCsv(params);
             }
         }
+
+
+
+
         function _autoSizeColumns(columnDefs){
             var allColumnIds = [];
             columnDefs.forEach( function(columnDef) {
@@ -168,6 +200,11 @@
                     buyDate: '',
                     customerFullName: '',
                     customerId: '',
+                    currency: '',
+                    exchange: undefined,
+                    creditCondition: undefined,
+                    paymentMaxDate: '',
+                    expirationDays: undefined,
                     subTotal: vm.reportSummary.totalSubtotal,
                     totalDiscount: vm.reportSummary.totalDiscount,
                     totalTaxes: vm.reportSummary.totalTaxes,

@@ -17,4 +17,9 @@ class CustomerBillsReport {
     def billStateDesc
     def paymentsTotalAmount
     def totalPayments
+    def paymentType
+    def conditionDays
+    def stateCode
+    def currency
+    def exchange
 }

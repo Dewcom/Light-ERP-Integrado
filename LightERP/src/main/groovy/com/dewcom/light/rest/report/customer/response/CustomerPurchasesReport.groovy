@@ -11,9 +11,12 @@ class CustomerPurchasesReport {
     def quantity
     def buyDate
     def buyPrice
-    def totalAmount
+    def totalTaxAmount
     def billNumber
     def customerFirstLastName
     def customerSecondLastName
     def billState
+    def currencyCode
+    def exchange
+    def cost
 }

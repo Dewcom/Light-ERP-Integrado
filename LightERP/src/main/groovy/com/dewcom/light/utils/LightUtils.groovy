@@ -7,7 +7,9 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDate
+import java.time.Period
 import java.time.ZoneId
+import java.time.temporal.ChronoUnit
 
 /**
  * Created by chen on 12/02/17.
@@ -40,7 +42,7 @@ class LightUtils {
 
     /**
      * Metodo usado para parsear fecha en string a objeto Date
-     * @return Devuelve el numero aleatorio
+     * @return fecha con dias sumados
      */
     public static Date stringToDate(String argStringDate, String datePattern) {
         SimpleDateFormat formatter = new SimpleDateFormat(datePattern);
@@ -54,6 +56,24 @@ class LightUtils {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Metodo usado para ver diferencias entre fechas
+     * @return Devuelve cantidad de dias
+     */
+    public static Long daysBetweenDates(Date startDate, Date endDate) {
+        ZoneId defaultZoneId = ZoneId.systemDefault();
+        Instant startInstant = startDate.toInstant();
+        Instant endInstant = endDate.toInstant();
+        LocalDate localStartDate = startInstant.atZone(defaultZoneId).toLocalDate();
+        LocalDate localEndDate = endInstant.atZone(defaultZoneId).toLocalDate();
+
+        return ChronoUnit.DAYS.between(localStartDate, localEndDate);
+
+    }
+
+
+
     /**
      * Metodo usado para parsear fecha en date a objeto String
      * @return Devuelve la fecha formateada
@@ -97,7 +117,7 @@ class LightUtils {
         Locale costaRicaLocale = new Locale("es", "CR");
         NumberFormat nf = NumberFormat.getNumberInstance(costaRicaLocale);
         DecimalFormat df = (DecimalFormat)nf;
-        df.setRoundingMode(RoundingMode.DOWN);
+        df.setRoundingMode(RoundingMode.HALF_EVEN);
         df.applyPattern(pattern);
             result = df.format(argDouble)
         }
