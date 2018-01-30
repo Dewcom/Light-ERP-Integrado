@@ -9,17 +9,17 @@
                 <!-- START panel-->
                 <div class="panel panel-default col-lg-12">
                     <div class="panel col-lg-12">
-                        <h4>Buscar productos</h4>
+                        <h4>Buscar producto</h4>
                         <div class="form-group">
-                            <ui-select name="product" ng-model="modalCtrl.selectedProduct" theme="bootstrap">
+                            <ui-select tabindex="1" name="product" ng-model="modalCtrl.selectedProduct" theme="bootstrap">
                                 <ui-select-match placeholder="Buscar por nombre o código...">
                                     {{modalCtrl.selectedProduct.productCode + ' ' + modalCtrl.selectedProduct.name}}
                                 </ui-select-match>
                                 <ui-select-choices
                                         repeat="product in modalCtrl.productList | propsFilter: {name: $select.search, productCode: $select.search} | limitTo: ($select.search.length <= 2) ? 50 : undefined">
-                                    <div ng-click="selectProduct(product)">
+                                    <div ng-click="chooseProduct(product)">
                                         <div ng-bind-html="product.productCode | highlight: $select.search"></div>
-                                        <small>Nombre: {{product.name}} Código:
+                                        <small>Nombre: {{product.measureType.name}} Código:
                                             <span ng-bind-html="''+product.productCode | highlight: $select.search"></span>
                                         </small>
                                     </div>
@@ -28,70 +28,114 @@
                         </div>
                         <span ng-show="modalCtrl.validateInput('product', 'required')" class="text-danger">Este campo es requerido</span>
                     </div>
-                    <div class="panel col-lg-4">
-                        <div class="form-group">
-                            <label class="control-label">Número de lote</label>
-                            <input tabindex="1" type="text" name="lotNumber" required="" ng-model="addProductLotForm.lotNumber" class="form-control"/>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Cantidad</label>
-                            <input tabindex="4" type="text" name="quantity" required="" ng-model="addProductLotForm.quantity" class="form-control" />
-                            <span ng-show="modalCtrl.validateInput('quantity', 'required')" class="text-danger">Este campo es requerido</span>
-                        </div>
-                    </div>
-                    <div class="panel col-lg-4">
-                        <div class="form-group">
-                            <label class="control-label">Fecha de lote</label>
-                            <div class="input-group">
-                                        <span class="input-group-btn">
-                                            <button uib-tooltip-trigger="focus" uib-tooltip-placement="top"
-                                                    type="button" ng-click="modalCtrl.open($event)" class="btn btn-default">
-                                                <em class="fa fa-calendar"></em>
-                                            </button>
-                                        </span>
-                                <input tabindex="2" name="lotDate" type="text" uib-datepicker-popup="{{modalCtrl.format}}"
-                                       ng-model="addProductLotForm.lotDate" is-open="modalCtrl.opened"
-                                       min-date="modalCtrl.minDate" max-date="'2030-12-31'"
-                                       datepicker-options="modalCtrl.dateOptions" popup-placement="top" ng-required="true"
-                                       current-text="Hoy" clear-text="Limpiar" close-text="Salir" class="form-control"
-                                       onkeydown="return false"/>
-                            </div>
-                            <span ng-show="modalCtrl.validateInput('lotDate', 'required')" class="text-danger">Este campo es requerido</span>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Origen del producto</label>
-                            <input tabindex="5" type="text" name="productOrigin" required="" ng-model="addProductLotForm.productOrigin" class="form-control" />
-                            <span ng-show="modalCtrl.validateInput('productOrigin', 'required')" class="text-danger">Este campo es requerido</span>
-                        </div>
-                    </div>
-                    <div class="panel col-lg-4">
+                    <div class="panel panel-default col-lg-12" ng-show="modalCtrl.selectedProduct != null">
+                        <h4>Ficha de producto</h4>
+                        <div class="panel col-lg-3">
                             <div class="form-group">
-                                <label class="control-label">Fecha de expiración</label>
+                                <label class="control-label">Código</label>
+                                <input type="text" name="lotNumber" required="" ng-model="modalCtrl.selectedProduct.productCode" class="form-control" disabled="true"/>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Tipo de producto</label>
+                                <input type="text" name="lotNumber" required="" ng-model="modalCtrl.selectedProduct.productType.name" class="form-control" disabled="true"/>
+                            </div>
+                        </div>
+                        <div class="panel col-lg-3">
+                            <div class="form-group">
+                                <label class="control-label">Nombre</label>
+                                <input type="text" name="lotNumber" required="" ng-model="modalCtrl.selectedProduct.name" class="form-control" disabled="true"/>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Tipo de presentación</label>
+                                <input type="text" name="lotNumber" required="" ng-model="modalCtrl.selectedProduct.presentationType.name" class="form-control" disabled="true"/>
+                            </div>
+                        </div>
+                        <div class="panel col-lg-3">
+                            <div class="form-group">
+                                <label class="control-label">Nombre comercial</label>
+                                <input type="text" name="lotNumber" required="" ng-model="modalCtrl.selectedProduct.commercialName" class="form-control" disabled="true"/>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Cantidad por bulto</label>
+                                <input type="text" name="lotNumber" required="" ng-model="modalCtrl.selectedProduct.bulkQuantity" class="form-control" disabled="true"/>
+                            </div>
+                        </div>
+                        <div class="panel col-lg-3">
+                            <div class="form-group">
+                                <label class="control-label">Unidad de medida</label>
+                                <input type="text" name="lotNumber" required="" ng-model="modalCtrl.selectedProduct.measureUnit.name" class="form-control" disabled="true"/>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Partida arancelaria</label>
+                                <input type="text" name="lotNumber" required="" ng-model="modalCtrl.selectedProduct.tariffHeading" class="form-control" disabled="true"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default col-lg-12" ng-show="modalCtrl.selectedProduct != null">
+                        <h4>Ingresar lote de producto</h4>
+                        <div class="panel col-lg-3">
+                            <div class="form-group">
+                                <label class="control-label">Número de lote</label>
+                                <input tabindex="2" type="text" name="lotNumber" required="" ng-model="addProductLotForm.lotNumber" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="panel col-lg-3">
+                            <div class="form-group">
+                                <label class="control-label">Fecha de lote</label>
                                 <div class="input-group">
                                             <span class="input-group-btn">
                                                 <button uib-tooltip-trigger="focus" uib-tooltip-placement="top"
-                                                        type="button" ng-click="modalCtrl.openExpDate($event)" class="btn btn-default">
+                                                        type="button" ng-click="modalCtrl.open($event)" class="btn btn-default">
                                                     <em class="fa fa-calendar"></em>
                                                 </button>
                                             </span>
-                                    <input tabindex="3" name="expirationDate" type="text" uib-datepicker-popup="{{modalCtrl.formatExpDate}}"
-                                           ng-model="addProductLotForm.expirationDate" is-open="modalCtrl.openedExpDate"
-                                           min-date="modalCtrl.minDateExpDate" max-date="'2030-12-31'"
-                                           datepicker-options="modalCtrl.dateOptionsExpDate" popup-placement="top" ng-required="true"
+                                    <input tabindex="3" name="lotDate" type="text" uib-datepicker-popup="{{modalCtrl.format}}"
+                                           ng-model="addProductLotForm.lotDate" is-open="modalCtrl.opened"
+                                           min-date="modalCtrl.minDate" max-date="'2030-12-31'"
+                                           datepicker-options="modalCtrl.dateOptions" popup-placement="top" ng-required="true"
                                            current-text="Hoy" clear-text="Limpiar" close-text="Salir" class="form-control"
                                            onkeydown="return false"/>
                                 </div>
-
+                                <span ng-show="modalCtrl.validateInput('lotDate', 'required')" class="text-danger">Este campo es requerido</span>
                             </div>
-                        <span ng-show="modalCtrl.validateInput('expirationDate', 'required')" class="text-danger">Este campo es requerido</span>
                         </div>
+                        <div class="panel col-lg-3">
+                                <div class="form-group">
+                                    <label class="control-label">Fecha de expiración</label>
+                                    <div class="input-group">
+                                                <span class="input-group-btn">
+                                                    <button uib-tooltip-trigger="focus" uib-tooltip-placement="top"
+                                                            type="button" ng-click="modalCtrl.openExpDate($event)" class="btn btn-default">
+                                                        <em class="fa fa-calendar"></em>
+                                                    </button>
+                                                </span>
+                                        <input tabindex="4" name="expirationDate" type="text" uib-datepicker-popup="{{modalCtrl.formatExpDate}}"
+                                               ng-model="addProductLotForm.expirationDate" is-open="modalCtrl.openedExpDate"
+                                               min-date="modalCtrl.minDateExpDate" max-date="'2030-12-31'"
+                                               datepicker-options="modalCtrl.dateOptionsExpDate" popup-placement="top" ng-required="true"
+                                               current-text="Hoy" clear-text="Limpiar" close-text="Salir" class="form-control"
+                                               onkeydown="return false"/>
+                                    </div>
+
+                                </div>
+                            <span ng-show="modalCtrl.validateInput('expirationDate', 'required')" class="text-danger">Este campo es requerido</span>
+                        </div>
+                        <div class="panel col-lg-3">
+                            <div class="form-group">
+                                <label class="control-label">Cantidad en: {{modalCtrl.selectedProduct.measureUnit.name}}</label>
+                                <input tabindex="5" type="number" name="quantity" required="" ng-model="addProductLotForm.quantity" class="form-control" min="0"/>
+                                <span ng-show="modalCtrl.validateInput('quantity', 'required')" class="text-danger">Este campo es requerido</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="panel-footer">
                     <div class="clearfix">
                         <div class="pull-right">
-                            <button uib-tooltip="Crear producto" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="submit" class="btn btn-success btn-lg">Agregar</button>
-                            <button uib-tooltip="Cancelar" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="cancel()" class="btn btn-danger btn-lg">Cancelar</button>
+                            <button tabindex="7" uib-tooltip="Crear producto" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="submit" class="btn btn-success btn-lg" ng-show="modalCtrl.selectedProduct != null">Agregar</button>
+                            <button tabindex="8" uib-tooltip="Cancelar" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="cancel()" class="btn btn-danger btn-lg">Cancelar</button>
                         </div>
                     </div>
                 </div>

@@ -3,20 +3,66 @@
         <div ng-controller="ProductLotController as modalCtrl">
             <div class="modal-header"><button type="button" data-dismiss="modal" aria-hidden="true" class="close"
                                               ng-click="close()">×</button>
-                <h4 id="myModalLabel" class="modal-title">Detalle del producto</h4>
+                <h4 id="myModalLabel" class="modal-title">Detalle de lote de producto</h4>
             </div>
             <form name="modalCtrl.modifyProductLotForm" ng-submit="modalCtrl.submitForm()" novalidate="" class="form-validate">
                 <!-- START panel-->
                 <div class="panel panel-default col-lg-12">
-                    <div class="panel-body col-lg-4">
+                    <h4>Ficha de producto</h4>
+                    <div class="panel col-lg-3">
+                        <div class="form-group">
+                            <label class="control-label">Código</label>
+                            <input type="text" name="lotNumber" required="" ng-model="currentProductLot.product.productCode" class="form-control" disabled="true"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Tipo de producto</label>
+                            <input type="text" name="lotNumber" required="" ng-model="currentProductLot.product.productType.name" class="form-control" disabled="true"/>
+                        </div>
+                    </div>
+                    <div class="panel col-lg-3">
+                        <div class="form-group">
+                            <label class="control-label">Nombre</label>
+                            <input type="text" name="lotNumber" required="" ng-model="currentProductLot.product.name" class="form-control" disabled="true"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Tipo de presentación</label>
+                            <input type="text" name="lotNumber" required="" ng-model="currentProductLot.product.presentationType.name" class="form-control" disabled="true"/>
+                        </div>
+                    </div>
+                    <div class="panel col-lg-3">
+                        <div class="form-group">
+                            <label class="control-label">Nombre comercial</label>
+                            <input type="text" name="lotNumber" required="" ng-model="currentProductLot.product.commercialName" class="form-control" disabled="true"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Cantidad por bulto</label>
+                            <input type="text" name="lotNumber" required="" ng-model="currentProductLot.product.bulkQuantity" class="form-control" disabled="true"/>
+                        </div>
+                    </div>
+                    <div class="panel col-lg-3">
+                        <div class="form-group">
+                            <label class="control-label">Unidad de medida</label>
+                            <input type="text" name="lotNumber" required="" ng-model="currentProductLot.product.measureUnit.name" class="form-control" disabled="true"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Partida arancelaria</label>
+                            <input type="text" name="lotNumber" required="" ng-model="currentProductLot.product.tariffHeading" class="form-control" disabled="true"/>
+                        </div>
+                    </div>
+                </div>
+                <!-- END panel-->
+                <!-- START panel-->
+                <div class="panel panel-default col-lg-12">
+                    <h4>Lote de producto</h4>
+                    <div class="panel-body col-lg-3">
                         <div class="form-group">
                             <label class="control-label">Número de lote</label>
                             <input tabindex="1" type="text" name="lotNumber" required="" ng-model="currentProductLot.lotNumber" class="form-control" />
                             <span ng-show="modalCtrl.validateInput('lotNumber', 'required')" class="text-danger">Este campo es requerido</span>
                         </div>
                         <div class="form-group">
-                            <label class="control-label">Cantidad</label>
-                            <input tabindex="4" type="text" name="quantity" required="" ng-model="currentProductLot.quantity" class="form-control" />
+                            <label class="control-label">Cantidad en: {{currentProductLot.product.measureUnit.name}}</label>
+                            <input tabindex="4" type="number" min="0" name="quantity" required="" ng-model="currentProductLot.quantity" class="form-control" />
                             <span ng-show="modalCtrl.validateInput('quantity', 'required')" class="text-danger">Este campo es requerido</span>
                         </div>
                     </div>
@@ -39,9 +85,14 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label">Origen del producto</label>
-                            <input tabindex="5" type="text" name="productOrigin" required="" ng-model="currentProductLot.productOrigin" class="form-control" />
-                            <span ng-show="modalCtrl.validateInput('productOrigin', 'required')" class="text-danger">Este campo es requerido</span>
+                            <label class="control-label">Motivo del cambio</label>
+                            <select tabindex="5" name="modifyOption" ng-model="currentProductLot.modifyOption" class="form-control" required="">
+                                <option value="error en digitacion">Error en digitación</option>
+                                <option value="rechazado">Rechazado</option>
+                                <option value="vencimiento">Vencimiento</option>
+                                <option value="defectuoso">Defectuoso</option>
+                                <option value="otro">Otro</option>
+                            </select>
                         </div>
                     </div>
                     <div class="panel-body col-lg-4">
@@ -61,17 +112,17 @@
                                        current-text="Hoy" clear-text="Limpiar" close-text="Salir" class="form-control"
                                        onkeydown="return false"/>
                             </div>
-
                         </div>
-                        <div class="form-group">
-                            <label class="control-label">Producto</label>
-                            <input tabindex="6" type="text" name="productName" required="" ng-model="currentProductLot.product.name" class="form-control" disabled="true"/>
+                        <div ng-show="currentProductLot.modifyOption == 'otro'" >
+                            <label class="control-label">Descripción</label>
+                            <input tabindex="6" type="text" name="otherModifyReason" ng-model="currentProductLot.otherModifyReason" class="form-control" placeholder="Descripción"/>
                         </div>
                     </div>
                 </div>
+                <!-- END panel-->
                 <div class="panel-footer">
                     <div class="clearfix">
-                        <div class="pull-right">
+                        <div class="pull-right" ng-show="currentProductLot.modifyOption != null">
                             <button uib-tooltip="Crear producto" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="submit" class="btn btn-success btn-lg">Modificar</button>
                             <button uib-tooltip="Cancelar" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="cancel()" class="btn btn-danger btn-lg">Cancelar</button>
                         </div>

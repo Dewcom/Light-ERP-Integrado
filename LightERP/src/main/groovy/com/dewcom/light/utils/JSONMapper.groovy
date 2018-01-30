@@ -236,12 +236,10 @@ class JSONMapper {
 
     def static from(ProductLot productLot){
         def tmpRestObject = new ProductLotRespREST()
-
         tmpRestObject.id = productLot.id
         tmpRestObject.lotNumber = productLot.lotNumber
         tmpRestObject.expirationDate = productLot.expirationDate
         tmpRestObject.lotDate = productLot.lotDate
-        tmpRestObject.productOrigin = productLot.productOrigin
         tmpRestObject.quantity = productLot.quantity
         tmpRestObject.product = from(productLot.product)
         tmpRestObject.enabled = productLot.enabled
@@ -257,7 +255,7 @@ class JSONMapper {
         tmpRestObject.address = storehouse.address
         tmpRestObject.enabled = storehouse.enabled
         tmpRestObject.registrationDate = storehouse.registrationDate
-        tmpRestObject.productLots = listFrom(storehouse.productLots)
+        tmpRestObject.productLots = listFromFilterDisable(storehouse.productLots)
 
         tmpRestObject
     }
@@ -317,6 +315,19 @@ class JSONMapper {
         def tmpList = new ArrayList()
         pListObject.each{ it ->
             tmpList.add(from(it))
+        }
+        tmpList
+    }
+
+    /**
+     * Metodo alternativo para poder filtrar objetos disabled con relacion a un objeto principal
+     */
+    def static listFromFilterDisable(def pListObject){
+        def tmpList = new ArrayList()
+        pListObject.each{ it ->
+            if(it.enabled == Constants.ESTADO_ACTIVO){
+                tmpList.add(from(it))
+            }
         }
         tmpList
     }

@@ -8,10 +8,11 @@ import grails.validation.Validateable
  */
 class UpdateProductLotRequest implements Validateable {
     Integer id
+    String username
     String lotNumber
     String expirationDate
     String lotDate
-    String productOrigin
+    String reason
     Double quantity
     Byte enabled = Constants.ESTADO_ACTIVO
     Date registrationDate = new Date()

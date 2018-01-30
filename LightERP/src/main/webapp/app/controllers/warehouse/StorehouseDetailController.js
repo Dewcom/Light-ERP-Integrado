@@ -5,8 +5,8 @@
         .module('app.storehouse')
         .controller('StorehouseDetailController', StorehouseDetailController);
 
-    StorehouseDetailController.$inject = ['$uibModal', '$http', '$state', '$stateParams', '$scope', 'storehouseService', 'APP_CONSTANTS', 'usSpinnerService', '$filter', 'productLotService', 'productService', 'toaster', '$timeout'];
-    function StorehouseDetailController($uibModal, $http, $state, $stateParams, $scope, storehouseService, APP_CONSTANTS, usSpinnerService, $filter, productLotService, productService, toaster, $timeout) {
+    StorehouseDetailController.$inject = ['$uibModal', '$http', '$state', '$stateParams', '$scope', 'storehouseService', 'APP_CONSTANTS', 'usSpinnerService', '$filter', 'productLotService', 'productService', 'toaster', '$timeout', 'productTypeService', '$window'];
+    function StorehouseDetailController($uibModal, $http, $state, $stateParams, $scope, storehouseService, APP_CONSTANTS, usSpinnerService, $filter, productLotService, productService, toaster, $timeout, productTypeService, $window) {
         var vm = this;
         $scope.globalConstants = APP_CONSTANTS;
         activateProductLotDateCalendar();
@@ -110,6 +110,14 @@
 
             productService.getAll().then(function (response) {
                 vm.productList = $filter('orderBy')(response, 'productCode');
+            });
+
+            /**=========================================================
+             * Tipos de producto
+             =========================================================*/
+
+            productTypeService.getAll().then(function (response) {
+                vm.productTypeList = response;
             });
 
         }
@@ -217,7 +225,7 @@
             var modalInstance = $uibModal.open({
                 templateUrl: '/addProductLotModal.html',
                 controller: AddModalInstanceCtrl,
-                size: 'md',
+                size: 'lg',
                 backdrop: 'static', // No cierra clickeando fuera
                 keyboard: false // No cierra con escape
             });
@@ -237,6 +245,10 @@
             $scope.cancel = function () {
                 $uibModalInstance.dismiss('cancel');
             };
+
+            $scope.chooseProduct = function(product){
+                vm.selectecProduct = product;
+            };
         }
 
         /**=========================================================
@@ -245,11 +257,19 @@
 
         function addProductLot() {
 
+            /*console.log($window.sessionStorage["userInfo"].userName);
+
+            var userinfo = JSON.parse($window.sessionStorage["userInfo"]);
+
+            console.log(userinfo.userName);
+
+            console.log(userinfo.role);*/
+
             var newProductLot = {
+                "username" : JSON.parse($window.sessionStorage["userInfo"]).userName,
                 "lotNumber": $scope.addProductLotForm.lotNumber,
                 "expirationDate": $filter('date')($scope.addProductLotForm.expirationDate, "dd-MM-yyyy"),
                 "lotDate": $filter('date')($scope.addProductLotForm.lotDate, "dd-MM-yyyy"),
-                "productOrigin": $scope.addProductLotForm.productOrigin,
                 "quantity": parseInt($scope.addProductLotForm.quantity),
                 "productId": vm.selectedProduct.id,
                 "storehouseId":  vm.currentStorehouse.id

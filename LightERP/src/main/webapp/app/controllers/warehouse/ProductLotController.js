@@ -4,8 +4,9 @@ angular
     .module('app.productLot')
     .controller('ProductLotController', ProductLotController);
 
-ProductLotController.$inject = ['$scope', '$stateParams', 'APP_CONSTANTS', '$state', '$uibModal', 'productLotService', 'toaster', '$timeout', '$filter'];
-function ProductLotController($scope, $stateParams, APP_CONSTANTS, $state, $uibModal, productLotService, toaster, $timeout, $filter) {
+ProductLotController.$inject = ['$scope', '$stateParams', 'APP_CONSTANTS', '$state', '$uibModal', 'productLotService', 'toaster', '$timeout', '$filter', 'productTypeService', 'ngDialog', '$window'];
+function ProductLotController($scope, $stateParams, APP_CONSTANTS, $state, $uibModal, productLotService, toaster, $timeout, $filter, productTypeService, ngDialog, $window) {
+
     var vm = this;
     $scope.globalConstants = APP_CONSTANTS;
     activateProductLotDateCalendar();
@@ -95,6 +96,14 @@ function ProductLotController($scope, $stateParams, APP_CONSTANTS, $state, $uibM
         vm.storehouseId = $stateParams.storehouseId;
         vm.currentProduct = $stateParams.filteredProductLotList[0].product;
         vm.productLotList = $stateParams.filteredProductLotList;
+
+        /**=========================================================
+         * Tipos de producto
+         =========================================================*/
+
+        productTypeService.getAll().then(function (response) {
+            vm.productTypeList = response;
+        });
     }
 
     //REGRESA AL LISTADO DE PRODUCTOS POR BODEGA
@@ -129,7 +138,7 @@ function ProductLotController($scope, $stateParams, APP_CONSTANTS, $state, $uibM
         var modalInstance = $uibModal.open({
             templateUrl: '/updateProductLotModal.html',
             controller: UpdateModalInstanceCtrl,
-            size: 'md',
+            size: 'lg',
             resolve: {
                 productLot: function () {
                     return productLotObj;
@@ -161,6 +170,7 @@ function ProductLotController($scope, $stateParams, APP_CONSTANTS, $state, $uibM
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
         };
+
     }
 
     /**=========================================================
@@ -169,22 +179,26 @@ function ProductLotController($scope, $stateParams, APP_CONSTANTS, $state, $uibM
 
     function updateProductLot() {
 
+        var tmpReason = $scope.currentProductLot.modifyOption;
+        tmpReason += $scope.currentProductLot.otherModifyReason != null ? ' ' + $scope.currentProductLot.otherModifyReason : ''
+
         var updatedProductLot = {
+            "username" : JSON.parse($window.sessionStorage["userInfo"]).userName,
             "id": $scope.currentProductLot.id,
             "lotNumber": $scope.currentProductLot.lotNumber,
             "expirationDate": $filter('date')($scope.currentProductLot.expirationDate, "dd-MM-yyyy"),
             "lotDate": $filter('date')($scope.currentProductLot.lotDate, "dd-MM-yyyy"),
-            "productOrigin": $scope.currentProductLot.productOrigin,
-            "quantity": parseFloat($scope.currentProductLot.quantity)
+            "quantity": parseFloat($scope.currentProductLot.quantity),
+            "reason": tmpReason
         };
+
         console.log(updatedProductLot);
         productLotService.updateProductLot(updatedProductLot).then(function (response) {
-            console.log(response);
             var toasterdata;
 
             if (response.code == "0") {
-                //Se hace un update manual ya que la lista de lotes que recibe la vista viene filtrada
-                updateCurrentProductLot(updatedProductLot);
+
+                updateCurrentProductLotList();
                 toasterdata = {
                     type: 'success',
                     title: 'Modificar lote',
@@ -209,6 +223,48 @@ function ProductLotController($scope, $stateParams, APP_CONSTANTS, $state, $uibM
         $scope.cancel();
     }
 
+    /**=========================================================
+     * Eliminar lote de productos
+     =========================================================*/
+    vm.disableProductLot = function (productLot) {
+        ngDialog.openConfirm({
+            template: 'disableProductLotModal',
+            className: 'ngdialog-theme-default',
+            closeByDocument: false,
+            closeByEscape: false
+        }).then(function (reason) {
+            var username = JSON.parse($window.sessionStorage["userInfo"]).userName;
+
+            productLotService.disableProductLot(productLot.id, username, reason).then(function (response) {
+                var toasterdata;
+
+                if (response.code == "0") {
+                    toasterdata = {
+                        type: 'success',
+                        title: 'Eliminar lote de producto',
+                        text: response.message
+                    };
+                } else {
+                    toasterdata = {
+                        type: 'warning',
+                        title: 'Lote de producto',
+                        text: response.message
+                    };
+
+                }
+                pop(toasterdata);
+                $timeout(function () {
+                    var params = {storehouseId: vm.storehouseId};
+                    $state.go('app.storehouseDetail', params);
+                }, 3000);
+            }, function (error) {
+                console.log(error);
+            });
+        }, function (reason) {
+            console.log('Modal promise rejected. Reason: ', reason);
+        });
+    };
+
     function pop(toasterdata) {
         toaster.pop({
             type: toasterdata.type,
@@ -217,25 +273,25 @@ function ProductLotController($scope, $stateParams, APP_CONSTANTS, $state, $uibM
         });
     }
 
-    function updateCurrentProductLot() {
-        console.log(vm.productLotList);
+    /**=========================================================
+     * Se encarga de hacer update manual ya que la lista de
+     * lotes que recibe la vista viene filtrada
+     =========================================================*/
+    function updateCurrentProductLotList() {
 
         var currentId = $scope.currentProductLot.id;
 
-
         var fieldData = vm.productLotList,
             i = 0, ii = vm.productLotList.length;
-        for(i; i < ii; i++) if(fieldData[i].Id === $scope.currentProductLot.id) break;
+        for(i; i < ii; i++) if(fieldData[i].id === $scope.currentProductLot.id) break;
 
-        console.log(i-1);
-        vm.productLotList[i-1].lotNumber = $scope.currentProductLot.lotNumber;
-        vm.productLotList[i-1].expirationDate = $scope.currentProductLot.expirationDate;
-        vm.productLotList[i-1].lotDate = $scope.currentProductLot.lotDate;
-        vm.productLotList[i-1].productOrigin = $scope.currentProductLot.productOrigin;
-        vm.productLotList[i-1].quantity = $scope.currentProductLot.quantity;
+        console.log(i);
+
+        vm.productLotList[i].lotNumber = $scope.currentProductLot.lotNumber;
+        vm.productLotList[i].expirationDate = $scope.currentProductLot.expirationDate;
+        vm.productLotList[i].lotDate = $scope.currentProductLot.lotDate;
+        vm.productLotList[i].quantity = $scope.currentProductLot.quantity;
+
         console.log(vm.productLotList);
-
     }
-
-
 }

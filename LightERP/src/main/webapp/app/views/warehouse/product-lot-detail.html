@@ -95,7 +95,7 @@
                                     <th>Cantidad</th>
                                     <th>Fecha de expiración</th>
                                     <th>Origen de ingreso</th>
-                                    <th>Detalle</th>
+                                    <th>Opciones</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -104,10 +104,14 @@
                                     <td>{{ productLotObj.lotDate | date:'MM/dd/yyyy'}}</td>
                                     <td>{{ productLotObj.quantity }}</td>
                                     <td>{{ productLotObj.expirationDate | date:'MM/dd/yyyy'}}</td>
-                                    <td>{{ productLotObj.productOrigin }}</td>
+                                    <td>{{ productLotObj.product.productType.name }}</td>
                                     <td>
                                         <button uib-tooltip="Ver producto" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="controller.openUpdateProductLotModal(productLotObj)" class="btn btn-sm btn-toolbar">
                                             <em class="fa fa-search"></em>
+                                        </button>
+                                        <button uib-tooltip="Eliminar" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="controller.disableProductLot(productLotObj)"
+                                                class="btn btn-sm btn-danger">
+                                            <em class="fa fa-trash-o"></em>
                                         </button>
                                     </td>
                                 </tr>
@@ -122,4 +126,28 @@
     </div>
     <toaster-container toaster-options="{'position-class': 'toast-bottom-right', 'close-button':true}"></toaster-container>
     <div ng-include="'app/views/warehouse/modal/update-product-lot-modal.html'"></div>
+    <script type="text/ng-template" id="disableProductLotModal">
+        <div class="ngdialog-message text-center">
+            <h3>Eliminar lote de producto</h3>
+            <p>Por favor agregar el motivo de la elminación.</p>
+            <div class="form-group mb">
+                <div class="mb">
+                    <select name ="deleteOption" ng-model="deleteOption">
+                        <option value="error en digitacion">Error en digitación</option>
+                        <option value="rechazado">Rechazado</option>
+                        <option value="vencimiento">Vencimiento</option>
+                        <option value="defectuoso">Defectuoso</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+                <div>
+                    <input ng-show="deleteOption == 'otro'" type="text" name="otherDeleteReason" required="" ng-model="otherDeleteReason" class="form-control" placeholder="Descripción"/>
+                </div>
+            </div>
+            <div ng-show="deleteOption != null">
+                <button type="button" ng-click="confirm(deleteOption + ' ' + otherDeleteReason)" class="btn btn-primary mr">Confirmar</button>
+                <button type="button" ng-click="closeThisDialog('button')" class="btn btn-default">Cancelar</button>
+            </div>
+        </div>
+    </script>
 </div>
