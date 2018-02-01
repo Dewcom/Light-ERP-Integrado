@@ -4198,7 +4198,7 @@
             .state('app.customerReports', {
                 url: '/customerReports',
                 title: 'Reportes Cliente',
-                templateUrl: helper.basepath('customer-reports.html'),
+                templateUrl: helper.basepath('reports/customer-reports.html'),
                 resolve: helper.resolveFor('ui.select',
                     'angular-spinner', 'angularGrid'),
                 params : { tabIndex: 0 }
@@ -4206,7 +4206,7 @@
             .state('app.billsReports', {
                 url: '/billsReports',
                 title: 'Reportes Facturas',
-                templateUrl: helper.basepath('bills-reports.html'),
+                templateUrl: helper.basepath('reports/bills-reports.html'),
                 resolve: helper.resolveFor('ui.select',
                    'angular-spinner','angularGrid')
             })
@@ -4280,7 +4280,7 @@
             .state('app.reports', {
                 url: '/reports',
                 title: 'Reportes',
-                templateUrl: helper.basepath('reports-dashboard.html')
+                templateUrl: helper.basepath('reports/reports-dashboard.html')
             })
             //
             // Single Page Routes
