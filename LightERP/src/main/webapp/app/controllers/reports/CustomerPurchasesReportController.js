@@ -6,10 +6,10 @@
         .controller('CustomerPurchasesReportController', CustomerPurchasesReportController);
 
 
-    CustomerPurchasesReportController.$inject = ['usSpinnerService','$http','$uibModal', '$resource', 'customerReportService', 'toaster', '$state', '$filter',
-        '$timeout', 'ngDialog', '$scope', 'userService', 'LOCATION', 'APP_CONSTANTS'];
-    function CustomerPurchasesReportController(usSpinnerService, $http, $uibModal, $resource, customerReportService,
-                                toaster, $state, $filter, $timeout, ngDialog, $scope, userService, LOCATION, APP_CONSTANTS) {
+    CustomerPurchasesReportController.$inject = ['usSpinnerService','customerService', 'productService','customerReportService','$filter',
+          '$scope'];
+    function CustomerPurchasesReportController(usSpinnerService, customerService, productService,customerReportService,
+                                  $filter, $scope) {
 
         var vm = this;
         vm.reportData = [];
@@ -60,6 +60,31 @@
 
 
         function activate() {
+
+            /**=========================================================
+             * Clientes
+             =========================================================*/
+
+            customerService.getAll().then(function (response) {
+                vm.customerList = response;
+            });
+
+            /**=========================================================
+             * Productos
+             =========================================================*/
+
+            productService.getAll().then(function (response) {
+                vm.productList = $filter('orderBy')(response, 'productCode');
+            });
+
+            vm.clearSelected = function() {
+                vm.chosenCustomer = undefined;
+            };
+            vm.clearSelectedProduct = function() {
+                vm.selectedProduct = undefined;
+            };
+
+
             vm.showTable = false;
             vm.showBillCustomerInfo = true;
             vm.submitted = false;
@@ -105,7 +130,7 @@
 
 
 
-            vm.gridOptions1 = {
+            vm.gridOptions = {
                 columnDefs: columnDefs,
                 rowData: [],
                 enableFilter: false,
@@ -137,30 +162,30 @@
             vm.fillTable = function () {
                 vm.showTable = true;
                 usSpinnerService.spin('customersSpinner');
-                customerReportService.getPurchasesReport(vm.customerIdentification == undefined ? "" : vm.customerIdentification,
-                    vm.productCode == undefined ? "" : vm.productCode ,
+                customerReportService.getPurchasesReport(vm.chosenCustomer == undefined ? "" : vm.chosenCustomer.identification,
+                    vm.selectedProduct == undefined ? "" : vm.selectedProduct.productCode ,
                     $filter('date')(vm.startDate, "dd-MM-yyyy"), $filter('date')(vm.endDate, "dd-MM-yyyy"))
                 .then(function(response) {
                     vm.reportData =  response == null ? [] : response.reportData.size == 0 ? [] : response.reportData;
                     vm.reportSummary = response == null ? [] : response.reportData.size == 0 ? [] : response.reportSummary;
-                    vm.gridOptions1.api.setRowData(vm.reportData);
+                    vm.gridOptions.api.setRowData(vm.reportData);
                     if(vm.showBillCustomerInfo){
-                        vm.gridOptions1.api.sizeColumnsToFit();
+                        vm.gridOptions.api.sizeColumnsToFit();
                         _autoSizeColumns(columnDefs);
                     }
                     else{
-                        vm.gridOptions1.api.sizeColumnsToFit();
+                        vm.gridOptions.api.sizeColumnsToFit();
                     }
                     vm.dateRange = $filter('date')(vm.startDate, "dd-MM-yyyy") +'/'+$filter('date')(vm.endDate, "dd-MM-yyyy");
-                    vm.gridOptions1.api.setFloatingBottomRowData(_createTableFooterData());
+                    vm.gridOptions.api.setFloatingBottomRowData(_createTableFooterData());
                     usSpinnerService.stop('customersSpinner');
                 });
             };
 
           vm.showBillCustomerColumns = function () {
-                vm.gridOptions1.columnApi.setColumnsVisible(['billNumber','billState', 'customerFullName', 'customerId'], vm.showBillCustomerInfo);
+                vm.gridOptions.columnApi.setColumnsVisible(['billNumber','billState', 'customerFullName', 'customerId'], vm.showBillCustomerInfo);
                 if(vm.showBillCustomerInfo == false) {
-                    vm.gridOptions1.api.sizeColumnsToFit();
+                    vm.gridOptions.api.sizeColumnsToFit();
                 }
             };
 
@@ -183,7 +208,7 @@
                 params.customFooter = 'TOTALES:,,,,,,,,,,'+vm.reportSummary.totalQuantity+','+vm.reportSummary.totalUtilityAmount+','+vm.reportSummary.totalGrossPrice+','+vm.reportSummary.totalCost+','+vm.reportSummary.totalTaxAmount;
 
 
-                vm.gridOptions1.api.exportDataAsCsv(params);
+                vm.gridOptions.api.exportDataAsCsv(params);
             }
         }
         function _autoSizeColumns(columnDefs){
@@ -191,7 +216,7 @@
             columnDefs.forEach( function(columnDef) {
                 allColumnIds.push(columnDef.field);
             });
-            vm.gridOptions1.columnApi.autoSizeColumns(allColumnIds);
+            vm.gridOptions.columnApi.autoSizeColumns(allColumnIds);
         }
 
         function _createTableFooterData() {

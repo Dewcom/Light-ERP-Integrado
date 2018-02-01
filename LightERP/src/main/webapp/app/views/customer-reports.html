@@ -26,16 +26,48 @@
                                         <div class="col-lg-3">
                                             <div class="form-group">
                                                 <label>Código producto</label>
-                                                <input type="text" name="purchasesCtrl.productCode"
-                                                ng-model="purchasesCtrl.productCode"  class="form-control" />
+
+                                                <ui-select ng-model="purchasesCtrl.selectedProduct" theme="bootstrap">
+                                                    <ui-select-match placeholder="Buscar por nombre o código...">
+                                                        {{purchasesCtrl.selectedProduct.productCode + ' ' + purchasesCtrl.selectedProduct.name}}
+                                                        <button type="button" class=" clear fa fa-trash" ng-click="purchasesCtrl.clearSelectedProduct()"></button>
+                                                    </ui-select-match>
+                                                    <ui-select-choices
+                                                            repeat="product in purchasesCtrl.productList | propsFilter: {name: $select.search, productCode: $select.search} | limitTo: ($select.search.length <= 2) ? 50 : undefined">
+                                                        <div ng-click="">
+                                                            <div ng-bind-html="product.productCode | highlight: $select.search"></div>
+                                                            <small>Nombre: {{product.name}} Código:
+                                                                <span ng-bind-html="''+product.productCode | highlight: $select.search"></span>
+                                                            </small>
+                                                        </div>
+                                                    </ui-select-choices>
+                                                </ui-select>
 
                                             </div>
                                         </div>
                                         <div class="col-lg-3">
                                             <div class="form-group">
                                                 <label>Cédula cliente</label>
-                                                <input type="text" name="customerIdentification"
-                                                       ng-model="purchasesCtrl.customerIdentification"  class="form-control"  />
+
+                                                <ui-select ng-model="purchasesCtrl.chosenCustomer" theme="bootstrap">
+                                                    <ui-select-match
+                                                            placeholder="Buscar por nombre o identificación...">
+                                                        <span>{{$select.selected.identification}}</span>
+                                                        <button type="button" class=" clear fa fa-trash" ng-click="purchasesCtrl.clearSelected()"></button>
+
+                                                    </ui-select-match>
+
+                                                    <ui-select-choices
+                                                            repeat="customer in purchasesCtrl.customerList | propsFilter: {name: $select.search,
+                                                        identification: $select.search} | limitTo: ($select.search.length <= 2) ? 50 : undefined">
+                                                        <div ng-click="">
+                                                            <div ng-bind-html="customer.name | highlight: $select.search">+ {{' ' + customer.firstLastName == null ? '' : customer.firstLastName  + ' ' + customer.secondLastName == null ? '' : customer.secondLastName}}  </div>
+                                                            <small>identificación:
+                                                                <span ng-bind-html="''+ customer.identification | highlight: $select.search"></span>
+                                                            </small>
+                                                        </div>
+                                                    </ui-select-choices>
+                                                </ui-select>
                                             </div>
                                         </div>
                                         <div class="col-lg-3">
@@ -93,7 +125,7 @@
                                         <h4 class="page-header">Resultados</h4>
                                         <div class="row">
                                             <div class="col-lg-4 col-md-6">
-                                                <input placeholder="Filtrar..." type="text" ng-model="purchasesCtrl.gridOptions1.quickFilterText" class="mb form-control" />
+                                                <input placeholder="Filtrar..." type="text" ng-model="purchasesCtrl.gridOptions.quickFilterText" class="mb form-control" />
 
                                             </div>
                                             <div class="col-lg-4 col-md-6">
@@ -104,7 +136,7 @@
                                             </button>
                                             </div>
                                         </div>
-                                        <div ag-grid="purchasesCtrl.gridOptions1" style="width: 100%; height: 400px;" class="ag-angle"></div>
+                                        <div ag-grid="purchasesCtrl.gridOptions" style="width: 100%; height: 400px;" class="ag-angle"></div>
                                     </div>
                                 </div>
                                 <span us-spinner="{radius:20, width:8, length: 16, color: '#3A3F51'}" spinner-key="customersSpinner" spinner-start-active="false"></span>

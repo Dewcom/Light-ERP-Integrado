@@ -6,10 +6,10 @@
         .controller('CustomerBillsReportController', CustomerBillsReportController);
 
 
-    CustomerBillsReportController.$inject = ['usSpinnerService','$http','$uibModal', '$resource', 'customerReportService', 'toaster', '$state', '$filter',
-        '$timeout', 'ngDialog', '$scope', 'userService', 'LOCATION', 'APP_CONSTANTS'];
-    function CustomerBillsReportController(usSpinnerService, $http, $uibModal, $resource, customerReportService,
-                                toaster, $state, $filter, $timeout, ngDialog, $scope, userService, LOCATION, APP_CONSTANTS) {
+    CustomerBillsReportController.$inject = ['usSpinnerService', 'customerService', 'customerReportService', '$filter',
+        '$scope'];
+    function CustomerBillsReportController(usSpinnerService, customerService, customerReportService,
+                                $filter, $scope) {
 
         var vm = this;
         vm.reportData = [];
@@ -60,12 +60,26 @@
 
 
         function activate() {
+
+            /**=========================================================
+             * Clientes
+             =========================================================*/
+
+            customerService.getAll().then(function (response) {
+                vm.customerList = response;
+            });
+
             vm.resultsLabel= "";
             vm.showTable = false;
             vm.dateRange = "";
             // Submit form
             vm.submitForm = function() {
                 vm.fillTable();
+            };
+
+
+            vm.clearSelected = function() {
+                vm.chosenCustomer = undefined;
             };
 
 
@@ -141,7 +155,7 @@
             vm.fillTable = function () {
                 vm.showTable = true;
                 usSpinnerService.spin('customersSpinner');
-                customerReportService.getBillsReport(vm.customerIdentification == undefined ? "" : vm.customerIdentification,
+                customerReportService.getBillsReport(vm.chosenCustomer == undefined ? "" : vm.chosenCustomer.identification,
                     vm.isPendingPaymentReport == undefined ? false : vm.isPendingPaymentReport ,
                     vm.startDate == undefined ? "" : $filter('date')(vm.startDate, "dd-MM-yyyy"), vm.endDate == undefined ? "" : $filter('date')(vm.endDate, "dd-MM-yyyy"))
                 .then(function(response) {

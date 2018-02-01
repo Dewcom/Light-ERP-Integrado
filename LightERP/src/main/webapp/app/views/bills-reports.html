@@ -26,8 +26,25 @@
                                         <div class="col-lg-3">
                                             <div class="form-group">
                                                 <label>Cédula cliente</label>
-                                                <input type="text" name="customerIdentification"
-                                                       ng-model="billsReportController.customerIdentification"  class="form-control"  />
+
+                                                <ui-select ng-model="billsReportController.chosenCustomer" theme="bootstrap">
+                                                    <ui-select-match
+                                                            placeholder="Buscar por nombre o identificación...">
+                                                        <span>{{$select.selected.identification}}</span>
+                                                        <i class=" clear fa fa-trash" ng-click="billsReportController.clearSelected()"></i>
+
+                                                    </ui-select-match>
+                                                    <ui-select-choices
+                                                            repeat="customer in billsReportController.customerList | propsFilter: {name: $select.search,
+                                                        identification: $select.search} | limitTo: ($select.search.length <= 2) ? 50 : undefined">
+                                                        <div ng-click="">
+                                                            <div ng-bind-html="customer.name | highlight: $select.search">+ {{' ' + customer.firstLastName == null ? '' : customer.firstLastName  + ' ' + customer.secondLastName == null ? '' : customer.secondLastName}}  </div>
+                                                            <small>identificación:
+                                                                <span ng-bind-html="''+ customer.identification | highlight: $select.search"></span>
+                                                            </small>
+                                                        </div>
+                                                    </ui-select-choices>
+                                                </ui-select>
                                             </div>
                                         </div>
                                         <div class="col-lg-3">

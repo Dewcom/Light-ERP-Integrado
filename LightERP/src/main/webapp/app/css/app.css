@@ -7026,3 +7026,13 @@ label + .form-control + .parsley-errors-list + .form-control-feedback {
   */
 
 }
+
+.clear {
+  background:none;
+  border:none;
+  cursor:pointer;
+  padding:5px 10px;
+  position:absolute;
+  right:30px;
+  top:4px;
+}
