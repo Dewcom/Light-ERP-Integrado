@@ -180,7 +180,7 @@ function ProductLotController($scope, $stateParams, APP_CONSTANTS, $state, $uibM
     function updateProductLot() {
 
         var tmpReason = $scope.currentProductLot.modifyOption;
-        tmpReason += $scope.currentProductLot.otherModifyReason != null ? ' ' + $scope.currentProductLot.otherModifyReason : ''
+        tmpReason += $scope.currentProductLot.otherModifyReason != null ? ' ' + $scope.currentProductLot.otherModifyReason : '';
 
         var updatedProductLot = {
             "username" : JSON.parse($window.sessionStorage["userInfo"]).userName,

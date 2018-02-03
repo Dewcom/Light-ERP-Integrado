@@ -21,7 +21,6 @@ class CustomerReportService {
     def messageSource
     def sessionFactory
 
-
     def getCustomerProductPurchases(CustomerPurchasesReportReq pReq){
 
         try{

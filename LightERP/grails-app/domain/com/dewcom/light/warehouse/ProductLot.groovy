@@ -19,7 +19,6 @@ class ProductLot {
 
     static constraints = {
         lotNumber blank: false, nullable: false
-        expirationDate blank: false, nullable: false
         lotDate blank: false, nullable: false
         quantity nullable: false
         product nullable: false
@@ -37,20 +36,5 @@ class ProductLot {
         productLot.addToStorehouses(Storehouse.findByIdAndEnabled(productLotRequest.storehouseId, Constants.ESTADO_ACTIVO))
 
         return productLot
-    }
-
-    @Override
-    public String toString() {
-        return "ProductLot{" +
-                "id=" + id +
-                ", version=" + version +
-                ", storehouses=" + storehouses +
-                ", lotNumber='" + lotNumber + '\'' +
-                ", expirationDate=" + expirationDate +
-                ", lotDate=" + lotDate +
-                ", quantity=" + quantity +
-                ", product=" + product +
-                ", enabled=" + enabled +
-                ", registrationDate=" + registrationDate
     }
 }

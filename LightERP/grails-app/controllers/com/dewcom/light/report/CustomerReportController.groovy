@@ -29,7 +29,7 @@ class CustomerReportController extends RestController {
         log.info "========== Get customer product purchases  =========="
         try{
             ResponseREST tmpResponse = new ResponseREST()
-            CustomerPurchasesReportReq tmpReportReq =  ParamsMapperUtil.buildReportDtoFromParams(new CustomerPurchasesReportReq(), params)
+            CustomerPurchasesReportReq tmpReportReq = ParamsMapperUtil.buildReportDtoFromParams(new CustomerPurchasesReportReq(), params)
             tmpReportReq.validate();
             if (tmpReportReq.hasErrors()) {
                 this.handleDataErrorsREST(messageSource, tmpReportReq.errors);

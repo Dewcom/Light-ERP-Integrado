@@ -1,16 +1,19 @@
 package com.dewcom.light.configuration
 
 class ActionBinnacleLog {
+    Integer itemId
     String username
     String action
-    String modifiedItem
+    String modifiedItemCode
     String domain
-    Date modificationDate
+    String details
+    Date actionDate
 
     static mapping = {
-        domain sqlType: 'text'
+        details sqlType: 'text'
     }
 
     static constraints = {
+        itemId  nullable: true
     }
 }

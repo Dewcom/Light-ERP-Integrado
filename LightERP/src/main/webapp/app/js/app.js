@@ -4210,6 +4210,15 @@
                 resolve: helper.resolveFor('ngDialog', 'ui.select',
                     'flot-chart', 'flot-chart-plugins','angular-spinner', 'infinite-scroll', 'angularGrid')
             })
+            .state('app.warehouseReports', {
+                url: '/warehouseReports',
+                title: 'Reportes de almacén',
+                templateUrl: helper.basepath('reports/warehouse-reports.html'),
+                controller: 'WarehouseReportsController',
+                controllerAs: 'controller',
+                resolve: helper.resolveFor('ngDialog', 'ui.select',
+                    'flot-chart', 'flot-chart-plugins','angular-spinner', 'infinite-scroll', 'angularGrid')
+            })
             .state('app.billDetail', {
                 url: '/billDetail',
                 title: 'Detalle factura',
