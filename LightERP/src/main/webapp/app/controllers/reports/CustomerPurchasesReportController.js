@@ -6,10 +6,10 @@
         .controller('CustomerPurchasesReportController', CustomerPurchasesReportController);
 
 
-    CustomerPurchasesReportController.$inject = ['usSpinnerService','$http','$uibModal', '$resource', 'customerReportService', 'toaster', '$state', '$filter',
-        '$timeout', 'ngDialog', '$scope', 'userService', 'LOCATION', 'APP_CONSTANTS'];
-    function CustomerPurchasesReportController(usSpinnerService, $http, $uibModal, $resource, customerReportService,
-                                toaster, $state, $filter, $timeout, ngDialog, $scope, userService, LOCATION, APP_CONSTANTS) {
+    CustomerPurchasesReportController.$inject = ['usSpinnerService','customerService', 'productService','customerReportService','$filter',
+          '$scope'];
+    function CustomerPurchasesReportController(usSpinnerService, customerService, productService,customerReportService,
+                                  $filter, $scope) {
 
         var vm = this;
         vm.reportData = [];
@@ -60,6 +60,31 @@
 
 
         function activate() {
+
+            /**=========================================================
+             * Clientes
+             =========================================================*/
+
+            customerService.getAll().then(function (response) {
+                vm.customerList = response;
+            });
+
+            /**=========================================================
+             * Productos
+             =========================================================*/
+
+            productService.getAll().then(function (response) {
+                vm.productList = $filter('orderBy')(response, 'productCode');
+            });
+
+            vm.clearSelected = function() {
+                vm.chosenCustomer = undefined;
+            };
+            vm.clearSelectedProduct = function() {
+                vm.selectedProduct = undefined;
+            };
+
+
             vm.showTable = false;
             vm.showBillCustomerInfo = true;
             vm.submitted = false;
@@ -86,12 +111,26 @@
                 {headerName: 'Estado factura', field: 'billState', minWidth: 140},
                 {headerName: 'Cédula cliente', field: 'customerId', minWidth: 120},
                 {headerName: 'Nombre cliente', field: 'customerFullName', minWidth: 250},
+                {headerName: 'Moneda', field: 'currency', minWidth: 90},
+                {headerName: 'Porcentaje utilidad real', field: 'utilityPercentage', filter: 'number', minWidth: 170,  cellFormatter: percentageFormatter, cellClass: 'number-cell'},
+                {headerName: 'Tipo cambio', field: 'exchange', minWidth: 120, cellFormatter: colonCurrencyFormatter, cellClass: 'number-cell'},
                 {headerName: 'Cantidad', field: 'quantity', filter: 'number', minWidth: 90},
-                {headerName: 'Precio bruto', field: 'buyPrice', filter: 'number', minWidth: 120},
-                {headerName: 'Precio neto', field: 'totalAmount', filter: 'number', minWidth: 120}
+                {headerName: 'Utilidad real', field: 'utilityAmount', filter: 'number', minWidth: 150,  cellFormatter: colonCurrencyFormatter, cellClass: 'number-cell'},
+                {headerName: 'Precio venta', field: 'buyPrice', filter: 'number', minWidth: 150,  cellFormatter: colonCurrencyFormatter, cellClass: 'number-cell'},
+                {headerName: 'Costo total', field: 'cost', filter: 'number', minWidth: 150,  cellFormatter: colonCurrencyFormatter, cellClass: 'number-cell'},
+                {headerName: 'Impuestos de venta', field: 'totalTaxAmount', filter: 'number', minWidth: 150,  cellFormatter: colonCurrencyFormatter, cellClass: 'number-cell'},
             ];
 
-            vm.gridOptions1 = {
+            function colonCurrencyFormatter(params) {
+                return params.value == undefined ? '': $filter('currency')(params.value, '&#8353; ', 2);
+            }
+            function percentageFormatter(params) {
+                return params.value == undefined ? '':  params.value + ' &#37;';
+            }
+
+
+
+            vm.gridOptions = {
                 columnDefs: columnDefs,
                 rowData: [],
                 enableFilter: false,
@@ -110,7 +149,7 @@
             },
                 getRowStyle: function(params) {
                     if (params.node.floating) {
-                        return {'font-weight': 'bold', 'background-color': '#EDF1F2','font-size': '20px',
+                        return {'font-weight': 'bold', 'background-color': '#EDF1F2','font-size': '16px',
                                 'border-style': 'solid none none none', 'border-width': '2px', 'text-align': 'center'}
                     }else{
                         return {'text-align': 'center'}
@@ -123,30 +162,30 @@
             vm.fillTable = function () {
                 vm.showTable = true;
                 usSpinnerService.spin('customersSpinner');
-                customerReportService.getPurchasesReport(vm.customerIdentification == undefined ? "" : vm.customerIdentification,
-                    vm.productCode == undefined ? "" : vm.productCode ,
+                customerReportService.getPurchasesReport(vm.chosenCustomer == undefined ? "" : vm.chosenCustomer.identification,
+                    vm.selectedProduct == undefined ? "" : vm.selectedProduct.productCode ,
                     $filter('date')(vm.startDate, "dd-MM-yyyy"), $filter('date')(vm.endDate, "dd-MM-yyyy"))
                 .then(function(response) {
                     vm.reportData =  response == null ? [] : response.reportData.size == 0 ? [] : response.reportData;
                     vm.reportSummary = response == null ? [] : response.reportData.size == 0 ? [] : response.reportSummary;
-                    vm.gridOptions1.api.setRowData(vm.reportData);
+                    vm.gridOptions.api.setRowData(vm.reportData);
                     if(vm.showBillCustomerInfo){
-                        vm.gridOptions1.api.sizeColumnsToFit();
+                        vm.gridOptions.api.sizeColumnsToFit();
                         _autoSizeColumns(columnDefs);
                     }
                     else{
-                        vm.gridOptions1.api.sizeColumnsToFit();
+                        vm.gridOptions.api.sizeColumnsToFit();
                     }
                     vm.dateRange = $filter('date')(vm.startDate, "dd-MM-yyyy") +'/'+$filter('date')(vm.endDate, "dd-MM-yyyy");
-                    vm.gridOptions1.api.setFloatingBottomRowData(_createTableFooterData());
+                    vm.gridOptions.api.setFloatingBottomRowData(_createTableFooterData());
                     usSpinnerService.stop('customersSpinner');
                 });
             };
 
           vm.showBillCustomerColumns = function () {
-                vm.gridOptions1.columnApi.setColumnsVisible(['billNumber','billState', 'customerFullName', 'customerId'], vm.showBillCustomerInfo);
+                vm.gridOptions.columnApi.setColumnsVisible(['billNumber','billState', 'customerFullName', 'customerId'], vm.showBillCustomerInfo);
                 if(vm.showBillCustomerInfo == false) {
-                    vm.gridOptions1.api.sizeColumnsToFit();
+                    vm.gridOptions.api.sizeColumnsToFit();
                 }
             };
 
@@ -166,10 +205,10 @@
                     columnSeparator: ','
                 };
 
-                params.customFooter = 'TOTALES:,,,,,,,'+vm.reportSummary.totalQuantity+','+vm.reportSummary.totalGrossPrice+','+vm.reportSummary.totalNetPrice;
+                params.customFooter = 'TOTALES:,,,,,,,,,,'+vm.reportSummary.totalQuantity+','+vm.reportSummary.totalUtilityAmount+','+vm.reportSummary.totalGrossPrice+','+vm.reportSummary.totalCost+','+vm.reportSummary.totalTaxAmount;
 
 
-                vm.gridOptions1.api.exportDataAsCsv(params);
+                vm.gridOptions.api.exportDataAsCsv(params);
             }
         }
         function _autoSizeColumns(columnDefs){
@@ -177,7 +216,7 @@
             columnDefs.forEach( function(columnDef) {
                 allColumnIds.push(columnDef.field);
             });
-            vm.gridOptions1.columnApi.autoSizeColumns(allColumnIds);
+            vm.gridOptions.columnApi.autoSizeColumns(allColumnIds);
         }
 
         function _createTableFooterData() {
@@ -190,9 +229,14 @@
                     billState: '',
                     customerId: '',
                     customerFullName: '',
+                    currency: '',
+                    utilityPercentage: undefined,
+                    exchange: undefined,
                     quantity: vm.reportSummary.totalQuantity,
+                    utilityAmount: vm.reportSummary.totalUtilityAmount,
                     buyPrice: vm.reportSummary.totalGrossPrice,
-                    totalAmount: vm.reportSummary.totalNetPrice,
+                    cost: vm.reportSummary.totalCost,
+                    totalTaxAmount: vm.reportSummary.totalTaxAmount
                 });
 
             return result;

@@ -5,6 +5,8 @@ package com.dewcom.light.rest.report.customer.response
  */
 class PurchasesReportSummary {
     Integer totalQuantity
-    String totalNetPrice
+    String totalTaxAmount
     String totalGrossPrice
+    def totalCost
+    def totalUtilityAmount
 }

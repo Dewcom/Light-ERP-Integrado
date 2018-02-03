@@ -1,0 +1,149 @@
+<div>
+    <div class="row">
+        <div class="col-md-7">
+            <h3>Reportes de clientes</h3>
+        </div>
+    </div>
+    <div class="mb">
+        <hr class="hidden-print"/>
+        <div class="clearfix">
+            <button ui-sref="app.reports"  uib-tooltip="Regresar a la lista" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button"  class="btn btn-labeled btn-info pull-right">
+                <span class="btn-label"> <em class="fa fa-mail-reply"></em></span>Regresar
+            </button>
+        </div>
+    </div>
+                <!-- START panel-->
+                <div id="panelDemo13" class="panel panel-default">
+                    <div class="panel-heading">Lista de reportes</div>
+                    <div class="panel-body">
+                        <div ng-controller="CustomerPurchasesReportController as purchasesCtrl">
+                        <uib-accordion close-others="false">
+                            <uib-accordion-group is-open="status.isFirstOpen" is-disabled="status.isFirstDisabled">
+                                <uib-accordion-heading>Reporte de ventas</uib-accordion-heading>
+                                <div id="collapse02">
+                                    <form name="purchasesCtrl.purchasesSearchForm" ng-submit="purchasesCtrl.submitForm()" novalidate=""
+                                         class="form-validate">
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Código producto</label>
+
+                                                <ui-select ng-model="purchasesCtrl.selectedProduct" theme="bootstrap">
+                                                    <ui-select-match placeholder="Buscar por nombre o código...">
+                                                        {{purchasesCtrl.selectedProduct.productCode + ' ' + purchasesCtrl.selectedProduct.name}}
+                                                        <button type="button" class=" clear fa fa-trash" ng-click="purchasesCtrl.clearSelectedProduct()"></button>
+                                                    </ui-select-match>
+                                                    <ui-select-choices
+                                                            repeat="product in purchasesCtrl.productList | propsFilter: {name: $select.search, productCode: $select.search} | limitTo: ($select.search.length <= 2) ? 50 : undefined">
+                                                        <div ng-click="">
+                                                            <div ng-bind-html="product.productCode | highlight: $select.search"></div>
+                                                            <small>Nombre: {{product.name}} Código:
+                                                                <span ng-bind-html="''+product.productCode | highlight: $select.search"></span>
+                                                            </small>
+                                                        </div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Cédula cliente</label>
+
+                                                <ui-select ng-model="purchasesCtrl.chosenCustomer" theme="bootstrap">
+                                                    <ui-select-match
+                                                            placeholder="Buscar por nombre o identificación...">
+                                                        <span>{{$select.selected.identification}}</span>
+                                                        <button type="button" class=" clear fa fa-trash" ng-click="purchasesCtrl.clearSelected()"></button>
+
+                                                    </ui-select-match>
+
+                                                    <ui-select-choices
+                                                            repeat="customer in purchasesCtrl.customerList | propsFilter: {name: $select.search,
+                                                        identification: $select.search} | limitTo: ($select.search.length <= 2) ? 50 : undefined">
+                                                        <div ng-click="">
+                                                            <div ng-bind-html="customer.name | highlight: $select.search">+ {{' ' + customer.firstLastName == null ? '' : customer.firstLastName  + ' ' + customer.secondLastName == null ? '' : customer.secondLastName}}  </div>
+                                                            <small>identificación:
+                                                                <span ng-bind-html="''+ customer.identification | highlight: $select.search"></span>
+                                                            </small>
+                                                        </div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Desde</label>
+                                                <p class="input-group">
+                                                    <input  required="" name="startDate" type="text" uib-datepicker-popup="{{purchasesCtrl.format}}" ng-model="purchasesCtrl.startDate" is-open="purchasesCtrl.isStartDateOpened"  max-date="'2020-12-30'" datepicker-options="purchasesCtrl.dateOptions"
+                                                           current-text="Hoy" close-text="Salir" clear-text="Limpiar" class="form-control" onkeydown="return false" />
+                                                    <span class="input-group-btn">
+                                                       <button type="button" ng-click="purchasesCtrl.openStartDate($event)" class="btn btn-default">
+                                                          <em class="fa fa-calendar"></em>
+                                                       </button>
+                                                    </span>
+                                                </p>
+                                                <span ng-show="purchasesCtrl.validateInput('startDate', 'required')" class="text-danger">Este campo es requerido</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>Hasta</label>
+                                                <p class="input-group">
+                                                    <input  required="" name="endDate" type="text" uib-datepicker-popup="{{purchasesCtrl.format}}" ng-model="purchasesCtrl.endDate" is-open="purchasesCtrl.isEndDateOpened"  max-date="'2020-12-30'" datepicker-options="purchasesCtrl.dateOptions"
+                                                           current-text="Hoy" close-text="Salir" clear-text="Limpiar" class="form-control" onkeydown="return false" />
+                                                    <span class="input-group-btn">
+                                                       <button type="button" ng-click="purchasesCtrl.openEndDate($event)" class="btn btn-default">
+                                                          <em class="fa fa-calendar"></em>
+                                                       </button>
+                                                    </span>
+                                                </p>
+                                                <span ng-show="purchasesCtrl.validateInput('endDate', 'required')" class="text-danger">Este campo es requerido</span>
+                                            </div>
+                                        </div>
+                                    <div class="panel-footer">
+                                        <div class="clearfix">
+                                            <div class="pull-right">
+                                                <button uib-tooltip="Buscar" uib-tooltip-trigger="focus"
+                                                        uib-tooltip-placement="top" type="submit" class="btn btn-primary pull-right ml">
+                                                    Buscar
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <label class="col-sm-3 control-label">Mostrar información factura y cliente</label>
+                                            <div class="col-sm-9">
+                                                <label class="switch switch-md">
+                                                    <input type="checkbox" ng-change="purchasesCtrl.showBillCustomerColumns()" checked="checked" ng-model="purchasesCtrl.showBillCustomerInfo" />
+                                                    <span></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </form>
+                                    <div ng-show="purchasesCtrl.showTable" class="container-fluid">
+                                        <!-- Filter Example-->
+                                        <h4 class="page-header">Resultados</h4>
+                                        <div class="row">
+                                            <div class="col-lg-4 col-md-6">
+                                                <input placeholder="Filtrar..." type="text" ng-model="purchasesCtrl.gridOptions.quickFilterText" class="mb form-control" />
+
+                                            </div>
+                                            <div class="col-lg-4 col-md-6">
+
+                                            <button ng-disabled="purchasesCtrl.reportData.length <= 0" uib-tooltip="Exportar" uib-tooltip-trigger="focus"
+                                                    uib-tooltip-placement="top" ng-click="purchasesCtrl.exportToCsv()" class="btn btn-primary">
+                                                Exportar a CSV
+                                            </button>
+                                            </div>
+                                        </div>
+                                        <div ag-grid="purchasesCtrl.gridOptions" style="width: 100%; height: 400px;" class="ag-angle"></div>
+                                    </div>
+                                </div>
+                                <span us-spinner="{radius:20, width:8, length: 16, color: '#3A3F51'}" spinner-key="customersSpinner" spinner-start-active="false"></span>
+                            </uib-accordion-group>
+                        </uib-accordion>
+                        </div>
+                    </div>
+                </div>
+                <!-- END panel-->
+</div>

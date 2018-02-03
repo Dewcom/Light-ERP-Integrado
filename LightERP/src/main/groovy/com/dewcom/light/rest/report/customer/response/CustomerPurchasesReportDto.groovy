@@ -10,10 +10,15 @@ class CustomerPurchasesReportDto {
     def quantity
     String buyDate
     def buyPrice
-    def totalAmount
+    def totalTaxAmount
     def billNumber
     def customerFullName
     def billState
+    def exchange
+    def currency
+    def cost
+    def utilityAmount
+    def utilityPercentage
 
 
     def nullSafeSetCustomerFullName(CustomerPurchasesReport pDomain){

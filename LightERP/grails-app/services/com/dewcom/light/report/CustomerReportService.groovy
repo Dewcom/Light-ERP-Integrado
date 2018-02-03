@@ -1,6 +1,8 @@
 package com.dewcom.light.report
 
+import com.dewcom.light.billing.BillPaymentType
 import com.dewcom.light.billing.BillStateType
+import com.dewcom.light.billing.Currency
 import com.dewcom.light.rest.report.customer.request.CustomerBillsReportReq
 import com.dewcom.light.rest.report.customer.request.CustomerPurchasesReportReq
 import com.dewcom.light.rest.report.customer.response.BillsReportSummary
@@ -27,12 +29,12 @@ class CustomerReportService {
             CustomerReportResp purchasesReportResponse = new CustomerReportResp()
             //TODO THIS SHOULD BE REFACTORED BY USING STORED PROCEDURES, LEO
             String hqlQuery = "select new map (b.billNumber as billNumber, c.identification as customerId, b.billDate as buyDate," +
-                    " p.productCode as productCode, p.name as productName, d.subTotal as buyPrice, " +
-                    "d.total as totalAmount, c.name as customerName, " +
+                    " p.productCode as productCode, p.name as productName, cur.currencyCode as currencyCode, b.exchangeRate as exchange, d.subTotal as buyPrice, " +
+                    "d.totalTaxAmount as totalTaxAmount, c.name as customerName, " +
                     "c.firstLastName as customerFirstLastName, c.secondLastName as customerSecondLastName , " +
-                    "d.quantity as quantity, bs.description as billState)" +
+                    "d.quantity as quantity, bs.description as billState, p.cost as cost)" +
                     " from BillDetail d join  d.bill b  " +
-                    "join b.customer c  " +
+                    "join b.customer c join b.currency cur " +
                     "join d.product p " +
                     "join b.billState bs  " +
                     "where bs.code != 5 and bs.code != 1 and b.billDate between :startDate and :endDate "
@@ -56,6 +58,7 @@ class CustomerReportService {
 
             Date tmpStartDate = LightUtils.stringToDate(pReq.startDate, "dd-MM-yyyy")
             Date tmpEndDate = LightUtils.stringToDate(pReq.endDate, "dd-MM-yyyy")
+            hqlQuery += " order by b.billDate DESC"
 
             def session = sessionFactory.currentSession
             def query = session.createQuery(hqlQuery)
@@ -68,10 +71,13 @@ class CustomerReportService {
             purchasesReportResponse.reportHeader = reportHeader
             def purchasesReportSummary = new PurchasesReportSummary()
             purchasesReportResponse.reportData = buildPurchasesReportDtoObjects(buildReportDomainObjects(results, CustomerPurchasesReport.getName()))
-            purchasesReportSummary.totalGrossPrice = LightUtils.formatDouble(purchasesReportResponse.reportData.buyPrice.sum(),1)
+            purchasesReportSummary.totalGrossPrice = LightUtils.formatDouble(purchasesReportResponse.reportData.buyPrice.sum(),2)
             purchasesReportSummary.totalQuantity = purchasesReportResponse.reportData.quantity.sum()
-            purchasesReportSummary.totalNetPrice = LightUtils.formatDouble(purchasesReportResponse.reportData.totalAmount.sum(),1)
+            purchasesReportSummary.totalTaxAmount = LightUtils.formatDouble(purchasesReportResponse.reportData.totalTaxAmount.sum(),2)
+            purchasesReportSummary.totalCost = LightUtils.formatDouble(purchasesReportResponse.reportData.cost.sum(),2)
+            purchasesReportSummary.totalUtilityAmount = LightUtils.formatDouble(purchasesReportResponse.reportData.utilityAmount.sum(),2)
             purchasesReportResponse.reportSummary = purchasesReportSummary
+            formatPurchasesReportAmounts(purchasesReportResponse.reportData)
 
             CustomerBillsReport
 
@@ -104,14 +110,19 @@ class CustomerReportService {
                 def tmpReportObj = new CustomerPurchasesReportDto()
                 tmpReportObj.customerFullName = tmpReportObj.nullSafeSetCustomerFullName(it)
                 tmpReportObj.buyDate = LightUtils.dateToString(it.buyDate, "dd-MM-yyyy")
-                tmpReportObj.buyPrice = it.buyPrice
+                tmpReportObj.buyPrice = it.buyPrice * it.exchange
                 tmpReportObj.customerId = it.customerId
-                tmpReportObj.totalAmount = it.totalAmount
+                tmpReportObj.totalTaxAmount = it.totalTaxAmount * it.exchange
                 tmpReportObj.productCode = it.productCode
                 tmpReportObj.productName = it.productName
                 tmpReportObj.billState = it.billState
                 tmpReportObj.billNumber = formatBillNumber(6, it.billNumber)
                 tmpReportObj.quantity = it.quantity
+                tmpReportObj.currency = it.currencyCode == Currency.MONEDA_DOLARES ? 'Dólar' : 'Colón'
+                tmpReportObj.exchange = it.exchange
+                tmpReportObj.cost = it.cost * it.quantity
+                tmpReportObj.utilityAmount = tmpReportObj.buyPrice - tmpReportObj.cost
+                tmpReportObj.utilityPercentage = (tmpReportObj.utilityAmount / tmpReportObj.buyPrice) * 100
                 results.add(tmpReportObj)
             }
         }
@@ -128,15 +139,29 @@ class CustomerReportService {
                 tmpReportObj.customerFullName = tmpReportObj.nullSafeSetCustomerFullName(it)
                 tmpReportObj.buyDate = LightUtils.dateToString(it.buyDate, "dd-MM-yyyy")
                 tmpReportObj.customerId = it.customerId
-                tmpReportObj.totalAmount = it.totalAmount
-                tmpReportObj.totalDiscount = it.totalDiscount
-                tmpReportObj.subTotal = it.subTotal
+                tmpReportObj.totalAmount = it.totalAmount * it.exchange
+                tmpReportObj.totalDiscount = it.totalDiscount * it.exchange
+                tmpReportObj.subTotal = it.subTotal * it.exchange
                 tmpReportObj.billStateDesc = it.billStateDesc
                 tmpReportObj.billNumber = formatBillNumber(6, it.billNumber)
-                tmpReportObj.totalTaxes = it.totalTaxes
+                tmpReportObj.totalTaxes = it.totalTaxes * it.exchange
                 tmpReportObj.paymentsPerformed = it.totalPayments == null ? 0 : it.totalPayments
-                tmpReportObj.balance = it.paymentsTotalAmount == null ? tmpReportObj.totalAmount : (tmpReportObj.totalAmount - it.paymentsTotalAmount)
+                tmpReportObj.balance = it.paymentsTotalAmount == null ? it.totalAmount * it.exchange : (it.totalAmount - it.paymentsTotalAmount) * it.exchange
+                def maxPaymentDate = it.buyDate
+                if(it.paymentType == BillPaymentType.PAGO_CREDITO){
+                    maxPaymentDate = LightUtils.plusDaysToDate(it.buyDate, it.conditionDays)
+                }
 
+                def expirationDays = 0;
+                if( it.stateCode == BillStateType.FACTURA_VALIDADA ||  it.stateCode == BillStateType.FACTURA_PAGADA_PARCIAL ){
+                    expirationDays = LightUtils.daysBetweenDates(maxPaymentDate, new Date())
+                }
+
+                tmpReportObj.expirationDays = expirationDays < 0 ? 0 : expirationDays
+                tmpReportObj.paymentMaxDate = LightUtils.dateToString(maxPaymentDate , "dd-MM-yyyy")
+                tmpReportObj.creditCondition = it.conditionDays == null ? 0 : it.conditionDays
+                tmpReportObj.currency = it.currency == Currency.MONEDA_DOLARES ? 'Dólar' : 'Colón'
+                tmpReportObj.exchange = it.exchange
                 results.add(tmpReportObj)
             }
         }
@@ -163,6 +188,28 @@ class CustomerReportService {
     }
 
 
+    def formatBillReportAmounts(def billReportData){
+        billReportData.each { it ->
+            it.totalAmount = LightUtils.formatDouble(it.totalAmount, 2)
+            it.totalDiscount = LightUtils.formatDouble(it.totalDiscount, 2)
+            it.subTotal = LightUtils.formatDouble(it.subTotal, 2)
+            it.totalTaxes = LightUtils.formatDouble(it.totalTaxes, 2)
+            it.balance = LightUtils.formatDouble(it.balance, 2)
+        }
+    }
+
+    def formatPurchasesReportAmounts(def purchasesReportData){
+        purchasesReportData.each { it ->
+            it.totalTaxAmount = LightUtils.formatDouble(it.totalTaxAmount, 2)
+            it.buyPrice = LightUtils.formatDouble(it.buyPrice, 2)
+            it.cost = LightUtils.formatDouble(it.cost, 2)
+            it.utilityAmount = LightUtils.formatDouble(it.utilityAmount, 2)
+            it.utilityPercentage = LightUtils.formatDouble(it.utilityPercentage, 2)
+
+        }
+    }
+
+
     def getCustomerBills(CustomerBillsReportReq pReq){
         try{
              def billsReportResponse = new CustomerReportResp()
@@ -171,11 +218,11 @@ class CustomerReportService {
                     "c.identification as customerId, b.billDate as buyDate, c.name as customerName, " +
                     "c.firstLastName as customerFirstLastName, c.secondLastName as customerSecondLastName, " +
                     "b.subTotalAmount as subTotal, b.totalTaxAmount as totalTaxes, b.totalAmount as totalAmount, " +
-                    "b.totalDiscount as totalDiscount, bs.description as billStateDesc) from Bill b ";
+                    "b.totalDiscount as totalDiscount, bs.description as billStateDesc, bs.code as stateCode,  pt.code as paymentType, cc.days as conditionDays, cur.currencyCode as currency, b.exchangeRate as exchange) from Bill b ";
 
-            String joins = " join b.customer c join b.billState bs left  join b.payments as payment ";
+            String joins = " join b.currency cur join b.billPaymentType pt join b.customer c join b.billState bs left join b.creditCondition cc left  join b.payments as payment ";
 
-            String hqlQuery = selectProjections + joins + buildWhereClauseConditions(pReq) + " group by b";
+            String hqlQuery = selectProjections + joins + buildWhereClauseConditions(pReq) + " group by b order by b.billDate DESC";
             def session = sessionFactory.currentSession
             def query = session.createQuery(hqlQuery)
 
@@ -195,13 +242,15 @@ class CustomerReportService {
             billsReportResponse.reportHeader = new PurchasesReportHeader()
             def billsReportSummary = new BillsReportSummary()
             billsReportResponse.reportData = buildBillsReportDtoObjects(buildReportDomainObjects(results, CustomerBillsReport.getName()))
-            billsReportSummary.totalDiscount = LightUtils.formatDouble(billsReportResponse.reportData.totalDiscount.sum(),1)
-            billsReportSummary.totalSubtotal =  LightUtils.formatDouble(billsReportResponse.reportData.subTotal.sum(), 1)
-            billsReportSummary.totalNetAmount = LightUtils.formatDouble(billsReportResponse.reportData.totalAmount.sum(), 1)
-            billsReportSummary.totalBalance = LightUtils.formatDouble(billsReportResponse.reportData.balance.sum(), 1)
-            billsReportSummary.totalTaxes = LightUtils.formatDouble(billsReportResponse.reportData.totalTaxes.sum(), 1)
+            billsReportSummary.totalDiscount = LightUtils.formatDouble(billsReportResponse.reportData.totalDiscount.sum(),2)
+            billsReportSummary.totalSubtotal =  LightUtils.formatDouble(billsReportResponse.reportData.subTotal.sum(), 2)
+            billsReportSummary.totalNetAmount = LightUtils.formatDouble(billsReportResponse.reportData.totalAmount.sum(), 2)
+            billsReportSummary.totalBalance = LightUtils.formatDouble(billsReportResponse.reportData.balance.sum(), 2)
+            billsReportSummary.totalTaxes = LightUtils.formatDouble(billsReportResponse.reportData.totalTaxes.sum(), 2)
             billsReportSummary.totalPayments = billsReportResponse.reportData.paymentsPerformed.sum()
             billsReportResponse.reportSummary = billsReportSummary
+
+            formatBillReportAmounts(billsReportResponse.reportData)
 
             billsReportResponse
 

@@ -4198,17 +4198,17 @@
             .state('app.customerReports', {
                 url: '/customerReports',
                 title: 'Reportes Cliente',
-                templateUrl: helper.basepath('customer-reports.html'),
-                resolve: helper.resolveFor('ngDialog', 'ui.select',
-                    'flot-chart', 'flot-chart-plugins','angular-spinner', 'infinite-scroll', 'angularGrid'),
+                templateUrl: helper.basepath('reports/customer-reports.html'),
+                resolve: helper.resolveFor('ui.select',
+                    'angular-spinner', 'angularGrid'),
                 params : { tabIndex: 0 }
             })
             .state('app.billsReports', {
                 url: '/billsReports',
                 title: 'Reportes Facturas',
-                templateUrl: helper.basepath('bills-reports.html'),
-                resolve: helper.resolveFor('ngDialog', 'ui.select',
-                    'flot-chart', 'flot-chart-plugins','angular-spinner', 'infinite-scroll', 'angularGrid')
+                templateUrl: helper.basepath('reports/bills-reports.html'),
+                resolve: helper.resolveFor('ui.select',
+                   'angular-spinner','angularGrid')
             })
             .state('app.warehouseReports', {
                 url: '/warehouseReports',
@@ -4289,7 +4289,7 @@
             .state('app.reports', {
                 url: '/reports',
                 title: 'Reportes',
-                templateUrl: helper.basepath('reports-dashboard.html')
+                templateUrl: helper.basepath('reports/reports-dashboard.html')
             })
             //
             // Single Page Routes
