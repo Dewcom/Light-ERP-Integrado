@@ -177,47 +177,45 @@ class BillService {
                 if(argUpdateBillRequest.billDetails != null) {
                     //Se desactivan las detalles de factura que fueron eliminadas en el FE
 
-
                     if (argUpdateBillRequest.billDetails.size() == 0) {
                         //si la lista viene vacia, se eliminan todas los detalles factura
                         tmpBillToUpdate.billDetails.each{
                             it.enabled = Constants.ESTADO_INACTIVO;
                         }
-                    }
-                    else{
+                    }else{
 
-                    tmpBillToUpdate.billDetails.each { tmpPersistedBillDetail ->
+                        tmpBillToUpdate.billDetails.each { tmpPersistedBillDetail ->
 
-                        tmpPersistedBillDetail.enabled = Constants.ESTADO_INACTIVO;
-                        argUpdateBillRequest.billDetails.each { restBilLDetail ->
-                            if (tmpPersistedBillDetail.id == restBilLDetail.id) {
-                                tmpPersistedBillDetail.enabled = Constants.ESTADO_ACTIVO;
-                                /*
-                                si viene un detalle factura que ya existe, se pone activo
-                                para quitarlo de los candidatos a eliminar y a la misma vez se
-                                edita indempotentemente
-                                 */
-                                setBillDetailFromRESTObject(tmpPersistedBillDetail, restBilLDetail)
+                            tmpPersistedBillDetail.enabled = Constants.ESTADO_INACTIVO;
+                            argUpdateBillRequest.billDetails.each { restBilLDetail ->
+                                if (tmpPersistedBillDetail.id == restBilLDetail.id) {
+                                    tmpPersistedBillDetail.enabled = Constants.ESTADO_ACTIVO;
+                                    /*
+                                    si viene un detalle factura que ya existe, se pone activo
+                                    para quitarlo de los candidatos a eliminar y a la misma vez se
+                                    edita indempotentemente
+                                     */
+                                    setBillDetailFromRESTObject(tmpPersistedBillDetail, restBilLDetail)
+                                }
                             }
                         }
-                    }
-                    //Se agregan los detalles factura nuevos
-                    def tmpNewBillDetailsToAdd = new ArrayList<BillDetailRequest>()
-                    argUpdateBillRequest.billDetails.each {
-                        if (it.id == null) {
-                            tmpNewBillDetailsToAdd.add(it)
+                        //Se agregan los detalles factura nuevos
+                        def tmpNewBillDetailsToAdd = new ArrayList<BillDetailRequest>()
+                        argUpdateBillRequest.billDetails.each {
+                            if (it.id == null) {
+                                tmpNewBillDetailsToAdd.add(it)
+                            }
                         }
+                        processRestBillDetails(tmpNewBillDetailsToAdd, tmpBillToUpdate)
                     }
-                    processRestBillDetails(tmpNewBillDetailsToAdd, tmpBillToUpdate)
-                }
-                    //luego de taggear los detalles de factura existentes a eliminar, se eliminan de la lista para reflejar dicha
-                    //eliminacion en BD
-                    tmpBillToUpdate.billDetails.removeAll { it.enabled == Constants.ESTADO_INACTIVO}
-                    //se recalculan los montos luego de la edicion de detalles de factura
-                    tmpBillToUpdate.totalAmount = calculateBillAmount(tmpBillToUpdate, Constants.FACTURA_TOTAL)
-                    tmpBillToUpdate.subTotalAmount = calculateBillAmount(tmpBillToUpdate, Constants.FACTURA_SUBTOTAL)
-                    tmpBillToUpdate.totalTaxAmount = calculateBillAmount(tmpBillToUpdate, Constants.FACTURA_TOTAL_IMPUESTOS)
-                    tmpBillToUpdate.totalDiscount = calculateBillAmount(tmpBillToUpdate, Constants.FACTURA_TOTAL_DESCUENTOS)
+                //luego de taggear los detalles de factura existentes a eliminar, se eliminan de la lista para reflejar dicha
+                //eliminacion en BD
+                tmpBillToUpdate.billDetails.removeAll { it.enabled == Constants.ESTADO_INACTIVO}
+                //se recalculan los montos luego de la edicion de detalles de factura
+                tmpBillToUpdate.totalAmount = calculateBillAmount(tmpBillToUpdate, Constants.FACTURA_TOTAL)
+                tmpBillToUpdate.subTotalAmount = calculateBillAmount(tmpBillToUpdate, Constants.FACTURA_SUBTOTAL)
+                tmpBillToUpdate.totalTaxAmount = calculateBillAmount(tmpBillToUpdate, Constants.FACTURA_TOTAL_IMPUESTOS)
+                tmpBillToUpdate.totalDiscount = calculateBillAmount(tmpBillToUpdate, Constants.FACTURA_TOTAL_DESCUENTOS)
                 }
                 tmpBillToUpdate.save(flush: true, failOnError: true);
             } else {
@@ -361,7 +359,7 @@ class BillService {
 
     /**
      * Este método se encarga de setear un objeto detalle factura a partir de un objeto
-     * sirve para procesar detalles de fatura en una creacion de factura o edicion
+     * sirve para procesar detalles de factura en una creacion de factura o edicion
      * detalle factura REST
      * @author Leo Chen
      */

@@ -13,6 +13,7 @@ import com.dewcom.light.warehouse.ProductType
 import com.dewcom.light.user.Role
 import com.dewcom.light.user.User
 import com.dewcom.light.user.UserRole
+import com.dewcom.light.warehouse.WarehouseOrderStateType
 import grails.converters.JSON
 
 class BootStrap {
@@ -84,6 +85,54 @@ class BootStrap {
             tmpBillStateType.description = "Factura anulada"
             tmpBillStateType.code = BillStateType.FACTURA_ANULADA;
             tmpBillStateType.save()
+        }
+
+        //estados de factura
+        if(!BillStateType.findByCode(BillStateType.FACTURA_CREADA)){
+            def tmpBillStateType = new BillStateType()
+            tmpBillStateType.description = "Factura borrador"
+            tmpBillStateType.code = BillStateType.FACTURA_CREADA
+            tmpBillStateType.save()
+        }
+        if(!BillStateType.findByCode(BillStateType.FACTURA_PAGADA_PARCIAL)){
+            def tmpBillStateType = new BillStateType()
+            tmpBillStateType.description = "Factura pagada parcial"
+            tmpBillStateType.code = BillStateType.FACTURA_PAGADA_PARCIAL
+            tmpBillStateType.save()
+        }
+        if(!BillStateType.findByCode(BillStateType.FACTURA_PAGADA)){
+            def tmpBillStateType = new BillStateType()
+            tmpBillStateType.description = "Factura pagada"
+            tmpBillStateType.code = BillStateType.FACTURA_PAGADA
+            tmpBillStateType.save()
+        }
+
+        if(!BillStateType.findByCode(BillStateType.FACTURA_VALIDADA)){
+            def tmpBillStateType = new BillStateType()
+            tmpBillStateType.description = "Factura validada"
+            tmpBillStateType.code = BillStateType.FACTURA_VALIDADA
+            tmpBillStateType.save()
+        }
+
+        if(!BillStateType.findByCode(BillStateType.FACTURA_ANULADA)){
+            def tmpBillStateType = new BillStateType()
+            tmpBillStateType.description = "Factura anulada"
+            tmpBillStateType.code = BillStateType.FACTURA_ANULADA;
+            tmpBillStateType.save()
+        }
+
+        //estados de ordenes de bodega
+        if(!WarehouseOrderStateType.findByCode(WarehouseOrderStateType.WAREHOUSE_ORDER_CREATED)){
+            def tmpWarehouseOrderStateType = new WarehouseOrderStateType()
+            tmpWarehouseOrderStateType.description = "Orden de bodega borrador"
+            tmpWarehouseOrderStateType.code = WarehouseOrderStateType.WAREHOUSE_ORDER_CREATED
+            tmpWarehouseOrderStateType.save()
+        }
+        if(!WarehouseOrderStateType.findByCode(WarehouseOrderStateType.WAREHOUSE_ORDER_VALIDATED)){
+            def tmpWarehouseOrderStateType = new WarehouseOrderStateType()
+            tmpWarehouseOrderStateType.description = "Orden de bodega validada"
+            tmpWarehouseOrderStateType.code = WarehouseOrderStateType.WAREHOUSE_ORDER_VALIDATED
+            tmpWarehouseOrderStateType.save()
         }
 
         //monedas
