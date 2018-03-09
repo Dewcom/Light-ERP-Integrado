@@ -27,26 +27,26 @@
                              <em class="fa fa-mail-reply"></em>
                           </span>Regresar
                         </button>
-                        <button uib-tooltip="Eliminar factura" uib-tooltip-trigger="focus" uib-tooltip-placement="top" ng-show="currentBill.billNumber == null" type="button"
+                        <button uib-tooltip="Eliminar factura" uib-tooltip-trigger="focus" uib-tooltip-placement="top" ng-show="currentBill.billState.code == globalConstants.BILL_DRAFT_STATE_CODE" type="button"
                                 ng-click="controller.disableBill(currentBill.id)"
                                 class="btn btn-labeled btn-danger pull-right">
                           <span class="btn-label">
                              <em class="fa fa-times"></em>
                           </span>Eliminar
                         </button>
-                        <button uib-tooltip="Modificar factura" uib-tooltip-trigger="focus" uib-tooltip-placement="top" ng-show="currentBill.billNumber == null" type="button"
+                        <button uib-tooltip="Modificar factura" uib-tooltip-trigger="focus" uib-tooltip-placement="top" ng-show="currentBill.billState.code == globalConstants.BILL_DRAFT_STATE_CODE" type="button"
                                 ui-sref="app.updateBill({billId: currentBill.id})"
                                 class="btn btn-labeled btn-warning pull-right mr">
-                          <span  class="btn-label">
+                          <span class="btn-label">
                              <em class="fa fa-pencil"></em>
                           </span>Modificar
                         </button>
-                        <button uib-tooltip="Validar factura" uib-tooltip-trigger="focus" uib-tooltip-placement="top" ng-show="currentBill.billNumber == null" type="button"
+                        <button uib-tooltip="Validar factura" uib-tooltip-trigger="focus" uib-tooltip-placement="top" ng-show="currentBill.billState.code == globalConstants.BILL_DRAFT_STATE_CODE" type="button"
                                 class="btn btn-labeled btn-success pull-right mr"
-                                ng-click="controller.validateBill(currentBill)">
+                                ng-click="controller.createPreBill(currentBill)">
                           <span class="btn-label">
                              <em class="fa fa-check-circle"></em>
-                          </span>Validar
+                          </span>Crear pre-factura
                         </button>
                         <button uib-tooltip="Anular factura" uib-tooltip-trigger="focus" uib-tooltip-placement="top" ng-show="currentBill.billState.code == globalConstants.BILL_VALIDATED_STATE_CODE" type="button"
                                 ng-click="controller.voidBill(currentBill)"
@@ -186,8 +186,8 @@
                     </div>
                 </div>
             </uib-tab>
-            <uib-tab heading="PAGOS" active="tab2" ng-hide="currentBill.billState.code == globalConstants.BILL_SAVED_STATE_CODE">
-                <div class="panel panel-default" ng-show="currentBill.billState.code != globalConstants.BILL_SAVED_STATE_CODE">
+            <uib-tab heading="PAGOS" active="tab2" ng-hide="currentBill.billState.code == globalConstants.BILL_DRAFT_STATE_CODE">
+                <div class="panel panel-default" ng-show="currentBill.billState.code != globalConstants.BILL_DRAFT_STATE_CODE">
                     <div class="panel-body">
                         <div class="table-responsive mb-lg mr ml mb">
                             <div class="col-md-12 dataTableTop">
@@ -297,10 +297,11 @@
         </div>
     </div>
     </script>
-    <script type="text/ng-template" id="validateBillModal">
+    <script type="text/ng-template" id="createPreBillModal">
         <div class="ngdialog-message text-center">
-            <h3>Validar factura</h3>
-            <p>¿Está seguro que desea validar la factura?</p>
+            <h3>Crear pre-factura</h3>
+            <p>¿Está seguro que desea crear pre-factura?</p>
+            <p>La misma será enviada a bodega para su aprobación</p>
             <div>
                 <button type="button" ng-click="confirm(confirmValue)" class="btn btn-primary mr">Confirmar</button>
                 <button type="button" ng-click="closeThisDialog('button')" class="btn btn-default">Cancelar</button>

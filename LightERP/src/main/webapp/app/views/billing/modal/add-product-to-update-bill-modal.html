@@ -9,9 +9,9 @@
                 <!-- START panel-->
                 <div class="panel panel-default col-lg-12">
                     <div class="panel-body col-lg-12">
-                        <h4>Buscar productos</h4>
-                        <div class="form-group">
-                            <div class="col-lg-6">
+                        <div class="col-lg-6">
+                            <h4>Buscar productos</h4>
+                            <div class="form-group">
                                 <ui-select ng-model="modalCtrl.selectedProduct" theme="bootstrap">
                                     <ui-select-match placeholder="Buscar por nombre o código...">{{modalCtrl.selectedProduct.productCode + ' ' + modalCtrl.selectedProduct.name}}</ui-select-match>
                                     <ui-select-choices repeat="product in modalCtrl.productList | propsFilter: {name: $select.search, productCode: $select.search} | limitTo: ($select.search.length <= 2) ? 50 : undefined">
@@ -23,6 +23,23 @@
                                         </div>
                                     </ui-select-choices>
                                 </ui-select>
+                            </div>
+                        </div>
+                        <h4>Cantidad total de producto</h4>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label class="control-label">Cantidad de producto</label>
+                                <input type="text" name="totalProduct"
+                                       ng-model="modalCtrl.selectedProduct.totalProductText"
+                                       class="form-control" disabled="true"/>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label class="control-label">Cantidad de lotes</label>
+                                <input type="text" name="totalLots"
+                                       ng-model="modalCtrl.selectedProduct.totalLots"
+                                       class="form-control" disabled="true"/>
                             </div>
                         </div>
                     </div>
@@ -62,6 +79,7 @@
                             <input tabindex="9" type="number" name="quantity" required="" ng-model="modalCtrl.selectedProduct.quantity"
                                    class="form-control" min="1"/>
                             <span ng-show="modalCtrl.validateInput('add', 'quantity', 'required')" class="text-danger">Este campo es requerido</span>
+                            <span ng-if="modalCtrl.selectedProduct.quantity > modalCtrl.selectedProduct.totalProduct" class="text-danger">Cantidad supera la disponible</span>
                         </div>
                     </div>
                     <div class="panel-body col-lg-3">

@@ -231,6 +231,7 @@ class JSONMapper {
             tmpRestObject.utilityPercentage = pProduct.utilityPercentage
             tmpRestObject.productTax = pProduct.productTax
             tmpRestObject.measureUnit = from(pProduct.measureUnit)
+            tmpRestObject.productLots = listFromProductLotForProduct(pProduct.productLot)
         tmpRestObject
     }
 
@@ -331,6 +332,30 @@ class JSONMapper {
         }
         tmpList
     }
+
+    /**
+     * Metodo alternativo para asociar lotes de producto al producto sin que el lote a su vez traiga de nuevo el producto asociado
+     */
+    def static listFromProductLotForProduct(def pListObject){
+        def tmpList = new ArrayList()
+        pListObject.each{ it ->
+            if(it.enabled == Constants.ESTADO_ACTIVO){
+
+                def tmpRestObject = new ProductLotRespREST()
+                tmpRestObject.id = it.id
+                tmpRestObject.lotNumber = it.lotNumber
+                tmpRestObject.expirationDate = it.expirationDate
+                tmpRestObject.lotDate = it.lotDate
+                tmpRestObject.quantity = it.quantity
+                tmpRestObject.enabled = it.enabled
+                tmpRestObject.registrationDate = it.registrationDate
+                tmpList.add(tmpRestObject)
+            }
+        }
+        tmpList
+    }
+
+
 
     //used for null params
     def static from(def pNull1){

@@ -11,7 +11,6 @@ class ProductLotRespREST {
     String lotNumber
     Date expirationDate
     Date lotDate
-    ProductTypeRespREST productOrigin
     Double quantity
     ProductRespREST product
     Byte enabled = Constants.ESTADO_ACTIVO

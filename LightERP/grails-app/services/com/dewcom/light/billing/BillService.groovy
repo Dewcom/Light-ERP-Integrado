@@ -81,13 +81,14 @@ class BillService {
             def currency = Currency.findById(argRestBill.currencyId)
 
             def billStateType = BillStateType.findByCode(argRestBill.billState)
-            if(billStateType.code != Constants.BILL_SAVED_STATE_CODE){
+
+            /*if(billStateType.code != Constants.BILL_DRAFT_STATE_CODE){
                 configConsecFactura = Configuration.findByCode(Configuration.CONFIG_CONSECUTIVO_FACTURA)
                 def billNumber = configConsecFactura.value as Long
                 tmpBill.billNumber = billNumber
                 configConsecFactura.value = billNumber+1
                 adminService.updateConfiguration(configConsecFactura)
-            }
+            }*/
 
             tmpBill.user = billUser
             tmpBill.customer = customer
@@ -105,6 +106,10 @@ class BillService {
                 tmpBill.subTotalAmount = calculateBillAmount(tmpBill, Constants.FACTURA_SUBTOTAL)
                 tmpBill.totalTaxAmount = calculateBillAmount(tmpBill, Constants.FACTURA_TOTAL_IMPUESTOS)
                 tmpBill.totalDiscount = calculateBillAmount(tmpBill, Constants.FACTURA_TOTAL_DESCUENTOS)
+
+                if(billStateType.code != Constants.BILL_DRAFT_STATE_CODE){
+                    checkProducLotQuantities(argRestBill.billDetails);
+                }
             }
 
             savedBill = tmpBill.save(flush: true, failOnError:true)
@@ -206,16 +211,17 @@ class BillService {
                                 tmpNewBillDetailsToAdd.add(it)
                             }
                         }
+
                         processRestBillDetails(tmpNewBillDetailsToAdd, tmpBillToUpdate)
                     }
-                //luego de taggear los detalles de factura existentes a eliminar, se eliminan de la lista para reflejar dicha
-                //eliminacion en BD
-                tmpBillToUpdate.billDetails.removeAll { it.enabled == Constants.ESTADO_INACTIVO}
-                //se recalculan los montos luego de la edicion de detalles de factura
-                tmpBillToUpdate.totalAmount = calculateBillAmount(tmpBillToUpdate, Constants.FACTURA_TOTAL)
-                tmpBillToUpdate.subTotalAmount = calculateBillAmount(tmpBillToUpdate, Constants.FACTURA_SUBTOTAL)
-                tmpBillToUpdate.totalTaxAmount = calculateBillAmount(tmpBillToUpdate, Constants.FACTURA_TOTAL_IMPUESTOS)
-                tmpBillToUpdate.totalDiscount = calculateBillAmount(tmpBillToUpdate, Constants.FACTURA_TOTAL_DESCUENTOS)
+                    //luego de taggear los detalles de factura existentes a eliminar, se eliminan de la lista para reflejar dicha
+                    //eliminacion en BD
+                    tmpBillToUpdate.billDetails.removeAll { it.enabled == Constants.ESTADO_INACTIVO}
+                    //se recalculan los montos luego de la edicion de detalles de factura
+                    tmpBillToUpdate.totalAmount = calculateBillAmount(tmpBillToUpdate, Constants.FACTURA_TOTAL)
+                    tmpBillToUpdate.subTotalAmount = calculateBillAmount(tmpBillToUpdate, Constants.FACTURA_SUBTOTAL)
+                    tmpBillToUpdate.totalTaxAmount = calculateBillAmount(tmpBillToUpdate, Constants.FACTURA_TOTAL_IMPUESTOS)
+                    tmpBillToUpdate.totalDiscount = calculateBillAmount(tmpBillToUpdate, Constants.FACTURA_TOTAL_DESCUENTOS)
                 }
                 tmpBillToUpdate.save(flush: true, failOnError: true);
             } else {
@@ -397,6 +403,30 @@ class BillService {
         } catch (Exception e) {
             log.error "Ha ocurrido un error actualizando el estado de la factura" + e.message
             throw e
+        }
+    }
+
+    /**
+     * Este metodo se encarga de determinar si las cantidades de cada una de los detalles de la factura estan disponibles
+     * @param pbill es la factura a crear
+     * @author Mauricio Fernandez
+     * @return boolean areQuantitiesAvailable}
+     */
+    def checkProducLotQuantities(def detailsList){
+
+        detailsList.each { billDetailReq ->
+            def tmpquantity = 0;
+            def tmpProduct = Product.findByIdAndEnabled(billDetailReq.productId, Constants.ESTADO_ACTIVO);
+
+            tmpProduct.productLot.each{ productLot ->
+                if(productLot.enabled == Constants.ESTADO_ACTIVO){
+                    tmpquantity += productLot.quantity;
+                }
+            }
+
+            if(tmpquantity < billDetailReq.quantity){
+                throw new LightRuntimeException(messageSource.getMessage("bill.detail.quantity.exceeded.error", null, Locale.default));
+            }
         }
     }
 }

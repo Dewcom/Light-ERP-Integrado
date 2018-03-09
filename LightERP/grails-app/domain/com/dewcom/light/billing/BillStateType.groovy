@@ -12,6 +12,7 @@ class BillStateType {
     public static final Integer FACTURA_PAGADA_PARCIAL =3;
     public static final Integer FACTURA_PAGADA =4 ;
     public static final Integer FACTURA_ANULADA =5;
+    public static final Integer BILL_PRE_BILL_STATE_CODE = 6;
 
     Integer code
     String description

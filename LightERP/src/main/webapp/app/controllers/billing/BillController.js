@@ -154,7 +154,11 @@
 
             billService.getAll().then(function (response) {
                 vm.billList = response;
-                vm.billListInf = response.slice(0,10);
+                if(response.size > 10){
+                    vm.billListInf = response.slice(0,10);
+                }else{
+                    vm.billListInf = response;
+                }
                 usSpinnerService.stop('billsSpinner');
             });
 
@@ -171,6 +175,7 @@
              =========================================================*/
 
             productService.getAll().then(function (response) {
+                console.log(response)
                 vm.productList = $filter('orderBy')(response, 'productCode');
             });
 
@@ -468,19 +473,19 @@
             var vm = this;
             vm.submitted = true;
 
-            if(registrationType == APP_CONSTANTS.BILL_SAVED_STATE_CODE){
-                vm.addBill(APP_CONSTANTS.BILL_SAVED_STATE_CODE);
-            }else if(registrationType == APP_CONSTANTS.BILL_VALIDATED_STATE_CODE){
+            if(registrationType == APP_CONSTANTS.BILL_DRAFT_STATE_CODE){
+                vm.addBill(APP_CONSTANTS.BILL_DRAFT_STATE_CODE);
+            }else if(registrationType == APP_CONSTANTS.BILL_PRE_BILL_STATE_CODE){
 
                 if (vm.newBillForm.$valid && billService.getAddedProductList().length > 0){
 
                     ngDialog.openConfirm({
-                        template: 'validateBillModal',
+                        template: 'createPreBillModal',
                         className: 'ngdialog-theme-default',
                         closeByDocument: false,
                         closeByEscape: false
                     }).then(function (value) {
-                        vm.addBill(APP_CONSTANTS.BILL_VALIDATED_STATE_CODE);
+                        vm.addBill(APP_CONSTANTS.BILL_PRE_BILL_STATE_CODE);
                     }, function (reason) {
                         console.log('Modal promise rejected. Reason: ', reason);
                     });
@@ -631,11 +636,20 @@
             }
 
             $scope.selectProduct = function (product) {
+                var sum = 0;
                 vm.selectedProduct = product;
                 vm.selectedProduct.quantity = 1;
                 vm.selectedProduct.discount = 0;
                 vm.selectedProduct.calcDollarPrice = product.price / rate;
                 vm.currency = currency;
+
+                vm.selectedProduct.totalLots = product.productLots.length;
+                angular.forEach(product.productLots, function(v) {
+                    sum += parseInt(v.quantity);
+                });
+
+                vm.selectedProduct.totalProductText = sum + ' ' + product.measureUnit.name;
+                vm.selectedProduct.totalProduct = sum;
             };
 
             $scope.ok = function () {

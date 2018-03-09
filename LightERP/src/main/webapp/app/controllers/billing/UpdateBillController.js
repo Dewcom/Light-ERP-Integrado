@@ -272,10 +272,10 @@ function UpdateBillController(DTOptionsBuilder, DTColumnDefBuilder, $http, $stat
 
         if (action == 'add') {
             if (vm.updateBillForm.$valid) {
-                if (registrationType == 'validated') {
+                if (registrationType == 'pre-bill') {
 
                     ngDialog.openConfirm({
-                        template: 'validateBillModal',
+                        template: 'preBillModal',
                         className: 'ngdialog-theme-default',
                         closeByDocument: false,
                         closeByEscape: false
@@ -319,8 +319,8 @@ function UpdateBillController(DTOptionsBuilder, DTColumnDefBuilder, $http, $stat
         var billStateId;
         if (regType == 'saved') {
             billStateId = APP_CONSTANTS.BILL_SAVED_STATE_CODE;
-        } else if (billStateId = 'validated') {
-            billStateId = APP_CONSTANTS.BILL_VALIDATED_STATE_CODE;
+        } else if (billStateId = 'pre-bill') {
+            billStateId = APP_CONSTANTS.BILL_PRE_BILL_STATE_CODE;
         }
 
 
@@ -556,12 +556,22 @@ function UpdateBillController(DTOptionsBuilder, DTColumnDefBuilder, $http, $stat
         }
 
         $scope.selectProduct = function (product) {
+            var sum = 0;
+            console.log(product);
             currentProduct = product;
             vm.selectedProduct = product;
             vm.selectedProduct.quantity = 1;
             vm.selectedProduct.discount = 0;
             vm.selectedProduct.tax = 0;
             vm.selectedProduct.calcDollarPrice = product.price / rate;
+
+            vm.selectedProduct.totalLots = product.productLots.length;
+            angular.forEach(product.productLots, function(v) {
+                sum += parseInt(v.quantity);
+            });
+
+            vm.selectedProduct.totalProductText = sum + ' ' + product.measureUnit.name;
+            vm.selectedProduct.totalProduct = sum;
         };
 
         $scope.ok = function () {
@@ -687,7 +697,9 @@ function UpdateBillController(DTOptionsBuilder, DTColumnDefBuilder, $http, $stat
 
     vm.resetCreditCondition = function () {
         if(vm.currentBill.billPaymentType.code == APP_CONSTANTS.PAYMENT_TYPE_CASH_CODE){
-            vm.currentBill.creditCondition.id = null;
+            if(vm.currentBill.creditCondition){
+                vm.currentBill.creditCondition.id = null;
+            }
         }
     };
 

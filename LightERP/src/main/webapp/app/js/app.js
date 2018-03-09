@@ -3612,11 +3612,12 @@
         })
         .constant('APP_CONSTANTS', {
             'appURL':             'http://localhost:8080/api/',
-            'BILL_SAVED_STATE_CODE' : 1,
+            'BILL_DRAFT_STATE_CODE' : 1,
             'BILL_VALIDATED_STATE_CODE':2,
             'BILL_PARTIALLY_PAID_STATE_CODE':3,
             'BILL_PAID_STATE_CODE':4,
             'BILL_VOID_STATE_CODE':5,
+            'BILL_PRE_BILL_STATE_CODE':6,
             'CURRENCY_COLONES_CODE':1,
             'CURRENCY_DOLLARS_CODE':2,
             'EXCHANGE_RATE_DOLLARS_CODE':1,

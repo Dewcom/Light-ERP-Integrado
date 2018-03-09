@@ -305,7 +305,7 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
      * Validar facturas
      =========================================================*/
 
-    vm.validateBill = function (currentBill) {
+    vm.createPreBill = function (currentBill) {
         console.log(currentBill);
 
         var result = billService.billCustomValidator(currentBill);
@@ -313,7 +313,7 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
         if (result.valid){
 
             ngDialog.openConfirm({
-                template: 'validateBillModal',
+                template: 'createPreBillModal',
                 className: 'ngdialog-theme-default',
                 closeByDocument: false,
                 closeByEscape: false
@@ -349,7 +349,7 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
             "billPaymentTypeId": currentBill.billPaymentType.code,
             "creditConditionId": vm.creditCondition != null ? vm.creditCondition.id : null,
             "currencyId": currentBill.currency.id,
-            "billStateId": APP_CONSTANTS.BILL_VALIDATED_STATE_CODE,
+            "billStateId": APP_CONSTANTS.BILL_PRE_BILL_STATE_CODE,
             "billDate": $filter('date')(currentBill.billDate, "dd-MM-yyyy"),
             "billDetails": formatBillDetails(currentBill.billDetails),
             "addressId" : currentBill.address.id

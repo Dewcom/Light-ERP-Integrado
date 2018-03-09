@@ -60,12 +60,14 @@ class BootStrap {
             tmpBillStateType.code = BillStateType.FACTURA_CREADA
             tmpBillStateType.save()
         }
+
         if(!BillStateType.findByCode(BillStateType.FACTURA_PAGADA_PARCIAL)){
             def tmpBillStateType = new BillStateType()
             tmpBillStateType.description = "Factura pagada parcial"
             tmpBillStateType.code = BillStateType.FACTURA_PAGADA_PARCIAL
             tmpBillStateType.save()
         }
+
         if(!BillStateType.findByCode(BillStateType.FACTURA_PAGADA)){
             def tmpBillStateType = new BillStateType()
             tmpBillStateType.description = "Factura pagada"
@@ -87,37 +89,10 @@ class BootStrap {
             tmpBillStateType.save()
         }
 
-        //estados de factura
-        if(!BillStateType.findByCode(BillStateType.FACTURA_CREADA)){
+        if(!BillStateType.findByCode(BillStateType.BILL_PRE_BILL_STATE_CODE)){
             def tmpBillStateType = new BillStateType()
-            tmpBillStateType.description = "Factura borrador"
-            tmpBillStateType.code = BillStateType.FACTURA_CREADA
-            tmpBillStateType.save()
-        }
-        if(!BillStateType.findByCode(BillStateType.FACTURA_PAGADA_PARCIAL)){
-            def tmpBillStateType = new BillStateType()
-            tmpBillStateType.description = "Factura pagada parcial"
-            tmpBillStateType.code = BillStateType.FACTURA_PAGADA_PARCIAL
-            tmpBillStateType.save()
-        }
-        if(!BillStateType.findByCode(BillStateType.FACTURA_PAGADA)){
-            def tmpBillStateType = new BillStateType()
-            tmpBillStateType.description = "Factura pagada"
-            tmpBillStateType.code = BillStateType.FACTURA_PAGADA
-            tmpBillStateType.save()
-        }
-
-        if(!BillStateType.findByCode(BillStateType.FACTURA_VALIDADA)){
-            def tmpBillStateType = new BillStateType()
-            tmpBillStateType.description = "Factura validada"
-            tmpBillStateType.code = BillStateType.FACTURA_VALIDADA
-            tmpBillStateType.save()
-        }
-
-        if(!BillStateType.findByCode(BillStateType.FACTURA_ANULADA)){
-            def tmpBillStateType = new BillStateType()
-            tmpBillStateType.description = "Factura anulada"
-            tmpBillStateType.code = BillStateType.FACTURA_ANULADA;
+            tmpBillStateType.description = "Pre-factura"
+            tmpBillStateType.code = BillStateType.BILL_PRE_BILL_STATE_CODE;
             tmpBillStateType.save()
         }
 

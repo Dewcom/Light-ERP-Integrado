@@ -20,4 +20,5 @@ class ProductRespREST {
     Byte enabled
     Date registrationDate
     MeasureUnitRespREST measureUnit
+    List<ProductLotRespREST> productLots
 }
