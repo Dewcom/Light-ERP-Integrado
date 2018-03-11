@@ -9,7 +9,6 @@ import grails.converters.*
 class WarehouseOrderController extends RestController {
 
     def messageSource
-    def billService
 
     /**
      * Este método se encarga de obtener una lista de ordenes de salida de bodega por medio de un id
