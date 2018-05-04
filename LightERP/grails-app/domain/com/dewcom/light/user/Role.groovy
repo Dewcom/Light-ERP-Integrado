@@ -8,6 +8,8 @@ import groovy.transform.ToString
 class Role implements Serializable {
 
 	private static final long serialVersionUID = 1
+	public static final ADMIN_ROLE = "ROLE_ADMIN"
+	public static final ROLE_USER = "ROLE_USER"
 
 	String authority
 

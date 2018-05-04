@@ -5,9 +5,9 @@ import com.dewcom.light.billing.BillDetail
 import com.dewcom.light.billing.BillPaymentType
 import com.dewcom.light.billing.BillStateType
 import com.dewcom.light.billing.CreditCondition
-import com.dewcom.light.billing.Currency
 import com.dewcom.light.billing.ExchangeRate
 import com.dewcom.light.billing.Payment
+import com.dewcom.light.user.User
 import com.dewcom.light.rest.response.AddressRespREST
 import com.dewcom.light.rest.billing.BillDetailProductResponse
 import com.dewcom.light.rest.response.BillDetailRespREST
@@ -28,6 +28,7 @@ import com.dewcom.light.rest.response.ProductLotRespREST
 import com.dewcom.light.rest.response.ProductRespREST
 import com.dewcom.light.rest.response.ProductTypeRespREST
 import com.dewcom.light.rest.response.StorehouseRespREST
+import com.dewcom.light.rest.response.UserRespREST
 import com.dewcom.light.thirdparty.Address
 import com.dewcom.light.thirdparty.Contact
 import com.dewcom.light.thirdparty.Customer
@@ -125,7 +126,7 @@ class JSONMapper {
         tmpRestObject
     }
 
-    def static from(Currency pCurrency){
+    def static from(com.dewcom.light.billing.Currency pCurrency){
         def tmpRestObject = new CurrencyRespREST()
         tmpRestObject.id = pCurrency.id
         tmpRestObject.currencyCode = pCurrency.currencyCode
@@ -310,6 +311,23 @@ class JSONMapper {
         tmpMeasureTypeObj.code = pMeasureType.code
         tmpMeasureTypeObj.id = pMeasureType.id
         tmpMeasureTypeObj
+    }
+
+    def static from(User pUser){
+        def tmpRestObject = new UserRespREST()
+        tmpRestObject.id = pUser.id
+        tmpRestObject.name = pUser.name
+        tmpRestObject.firstLastName = pUser.firstLastName
+        tmpRestObject.secondLastName = pUser.secondLastName
+        tmpRestObject.enabled = pUser.enabled
+        tmpRestObject.username = pUser.username
+        tmpRestObject.userCode = pUser.userCode
+        tmpRestObject.email = pUser.email
+        tmpRestObject.mobile = pUser.mobile
+        tmpRestObject.phoneNumber = pUser.phoneNumber
+        tmpRestObject.commissionPercentage = pUser.commissionPercentage
+        tmpRestObject.extension = pUser.extension
+        tmpRestObject
     }
 
     def static listFrom(def pListObject){

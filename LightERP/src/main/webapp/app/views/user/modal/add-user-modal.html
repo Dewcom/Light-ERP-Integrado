@@ -36,7 +36,7 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label">Contraseña</label>
-                            <input tabindex="5" type="password" name="password" required="" ng-model="addUserForm.password" class="form-control" />
+                            <input tabindex="5" type="password" name="password" required="" ng-model="addUserForm.password"  class="form-control"  />
                             <span ng-show="modalCtrl.validateInput('add', 'password', 'required')" class="text-danger">Este campo es requerido</span>
                         </div>
                         <div class="form-group">
@@ -57,8 +57,8 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label">Repetir contraseña</label>
-                            <input tabindex="6" type="password" name="passwordConfirm" required="" ng-model="addUserForm.passwordConfirm" class="form-control" />
-                            <span ng-show="modalCtrl.validateInput('add', 'passwordConfirm', 'required')" class="text-danger">Este campo es requerido</span>
+                            <input tabindex="6" type="password" name="confirm_match" ng-model="addUserForm.passwordConfirm" class="form-control"  ui-validate="'$value==addUserForm.password'" ui-validate-watch="'addUserForm.password'"  />
+                            <span ng-show="modalCtrl.userForm.confirm_match.$dirty &amp;&amp; modalCtrl.userForm.confirm_match.$error.validator" class="text-danger">Las contraseñas no coinciden</span>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Teléfono</label>

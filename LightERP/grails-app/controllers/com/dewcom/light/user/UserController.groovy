@@ -5,6 +5,7 @@ import com.dewcom.light.rest.RestController
 import com.dewcom.light.rest.user.UserRequest
 import com.dewcom.light.rest.ResponseREST
 import com.dewcom.light.rest.user.UpdateUserRequest
+import com.dewcom.light.utils.JSONMapper
 import grails.plugin.springsecurity.annotation.Secured
 import grails.converters.*
 
@@ -25,6 +26,7 @@ class UserController extends RestController{
 
         try {
             def tmpId = params.id
+            def username = params.username
 
             if(tmpId){
                 User userFromDB = userService.getUser(tmpId);
@@ -32,13 +34,24 @@ class UserController extends RestController{
                 if(userFromDB){
                     tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
-                    tmpResponse.data = userFromDB
+                    tmpResponse.data = JSONMapper.from(userFromDB)
                 }else{
                     tmpResponse.message = messageSource.getMessage("user.not.found", null, Locale.default);
                     tmpResponse.code = Constants.REGISTER_NOT_FOUND
                 }
             }else{
-                def usersFromDB = userService.getAllUsers();
+                def requesterUser = userService.getByUsername(username)
+                def usersFromDB
+               if(requesterUser != null){
+                   if(requesterUser.getAuthorities().first().authority.equals(Role.ADMIN_ROLE)){
+                       //only admin user can see all the users.
+                       usersFromDB = JSONMapper.listFrom(userService.getAllUsers());
+                   }
+                   else{
+                       usersFromDB = JSONMapper.listFrom([requesterUser])
+                   }
+               }
+
                 tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
                 tmpResponse.data = usersFromDB

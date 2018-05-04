@@ -16,7 +16,7 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label">Nombre de usuario</label>
-                            <input tabindex="4" type="text" name="username" required="" ng-model="currentUser.username" class="form-control" />
+                            <input disabled tabindex="4" type="text" name="username" required="" ng-model="currentUser.username" class="form-control" />
                             <span ng-show="modalCtrl.validateInput('modify', 'username', 'required')" class="text-danger">Este campo es requerido</span>
                         </div>
                         <div class="form-group">
@@ -36,8 +36,7 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label">Contraseña</label>
-                            <input tabindex="5" type="password" name="password" required="" ng-model="currentUser.password" class="form-control" />
-                            <span ng-show="modalCtrl.validateInput('modify', 'password', 'required')" class="text-danger">Este campo es requerido</span>
+                            <input tabindex="5" placeholder="Nueva contraseña" type="password" name="password"  ng-model="currentUser.password" class="form-control" />
                         </div>
                         <div class="form-group">
                             <label class="control-label">Correo electrónico</label>
@@ -57,8 +56,8 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label">Repetir contraseña</label>
-                            <input tabindex="6" type="password" name="passwordConfirm" required="" ng-model="currentUser.passwordConfirm" class="form-control" />
-                            <span ng-show="modalCtrl.validateInput('modify', 'passwordConfirm', 'required')" class="text-danger">Este campo es requerido</span>
+                            <input tabindex="6"  placeholder="Confirmar contraseña"type="password" name="confirm_match"  ng-model="currentUser.passwordConfirm" class="form-control"  ui-validate="'$value==currentUser.password'" ui-validate-watch="'currentUser.password'"  />
+                            <span ng-show="modalCtrl.modifyUserForm.confirm_match.$dirty &amp;&amp; modalCtrl.modifyUserForm.confirm_match.$error.validator" class="text-danger">Las contraseñas no coinciden</span>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Teléfono</label>

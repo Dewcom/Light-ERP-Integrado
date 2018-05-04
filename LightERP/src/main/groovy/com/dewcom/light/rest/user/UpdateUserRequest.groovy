@@ -24,7 +24,7 @@ class UpdateUserRequest implements Validateable {
     Date registrationDate = new Date()
 
     static constraints = {
-        password blank: false, password: true
+        password blank: true, password: true, nullable: true
         username blank: false, unique: true
         userCode blank: false, nullable: false, maxSize: 5
         name blank: false
@@ -34,5 +34,6 @@ class UpdateUserRequest implements Validateable {
         extension blank: true, nullable: true
         mobile nullable: true, blank: true
         email nullable: true, blank: true
+        commissionPercentage nullable: true, blank: true
     }
 }

@@ -82,4 +82,10 @@ class RestController {
 
         return errorCode
     }
+
+    def returnBadRequestResponse(def message){
+        response.status = response.SC_BAD_REQUEST
+        render([message: message] as JSON)
+        return
+    }
 }

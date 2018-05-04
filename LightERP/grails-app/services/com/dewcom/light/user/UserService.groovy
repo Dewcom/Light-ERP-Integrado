@@ -22,6 +22,18 @@ class UserService {
         }
     }
 
+    def getByUsername(def username) {
+        log.info "====== Getting user from DB  by username======"
+        log.info username
+        try {
+            User userFromDB = User.findByUsernameAndEnabled(username, Constants.ESTADO_ACTIVO);
+            return userFromDB
+        } catch (Exception e) {
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("get.user.error", null, Locale.default));
+        }
+    }
+
 
     def getAllUsers() {
         log.info "====== Getting all users from DB ======"
@@ -38,7 +50,10 @@ class UserService {
         log.info "====== Creating user ======"
         log.info puser
         try {
+
             puser.save(flush: true, failOnError: true)
+            def roleUser = Role.findByAuthority(Role.ROLE_USER)
+            UserRole.create(puser, roleUser)
         } catch (Exception e) {
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("create.user.error", null, Locale.default));
@@ -61,17 +76,17 @@ class UserService {
             User tmpUserToUpdate = User.findByIdAndEnabled(prestUser.id, Constants.ESTADO_ACTIVO)
             if (tmpUserToUpdate) {
 
-                tmpUserToUpdate.username = prestUser.username;
-                tmpUserToUpdate.password = prestUser.password;
-                tmpUserToUpdate.userCode = prestUser.userCode;
-                tmpUserToUpdate.name = prestUser.name;
-                tmpUserToUpdate.firstLastName = prestUser.firstLastName;
-                tmpUserToUpdate.secondLastName = prestUser.secondLastName;
-                tmpUserToUpdate.phoneNumber = prestUser.phoneNumber;
-                tmpUserToUpdate.extension = prestUser.extension;
-                tmpUserToUpdate.mobile = prestUser.mobile;
-                tmpUserToUpdate.email = prestUser.email;
-                tmpUserToUpdate.commissionPercentage = prestUser.commissionPercentage;
+                tmpUserToUpdate.username = prestUser.username == null ? tmpUserToUpdate.username : prestUser.username;
+                tmpUserToUpdate.password = prestUser.password == null ? tmpUserToUpdate.password : prestUser.password;
+                tmpUserToUpdate.userCode = prestUser.userCode == null ? tmpUserToUpdate.userCode : prestUser.userCode;
+                tmpUserToUpdate.name = prestUser.name == null ? tmpUserToUpdate.name : prestUser.name;
+                tmpUserToUpdate.firstLastName = prestUser.firstLastName == null ? tmpUserToUpdate.firstLastName : prestUser.firstLastName;
+                tmpUserToUpdate.secondLastName = prestUser.secondLastName == null ? tmpUserToUpdate.secondLastName : prestUser.secondLastName;
+                tmpUserToUpdate.phoneNumber = prestUser.phoneNumber == null ? tmpUserToUpdate.phoneNumber : prestUser.phoneNumber;
+                tmpUserToUpdate.extension = prestUser.extension == null ? tmpUserToUpdate.extension : prestUser.extension;
+                tmpUserToUpdate.mobile = prestUser.mobile == null ? tmpUserToUpdate.mobile : prestUser.mobile;
+                tmpUserToUpdate.email = prestUser.email == null ? tmpUserToUpdate.email : prestUser.email;
+                tmpUserToUpdate.commissionPercentage = prestUser.commissionPercentage == null ? tmpUserToUpdate.commissionPercentage : prestUser.commissionPercentage;
 
                 tmpUserToUpdate.save(flush: true);
             } else {

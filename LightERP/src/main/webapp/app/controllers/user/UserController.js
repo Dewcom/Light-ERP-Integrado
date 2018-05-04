@@ -136,7 +136,6 @@
                     size: 'md',
                     resolve: {
                         user: function () {
-                            userObj.passwordConfirm = userObj.password
                             return userObj;
                         }
                     },

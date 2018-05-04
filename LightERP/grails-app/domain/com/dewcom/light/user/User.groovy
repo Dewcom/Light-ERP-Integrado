@@ -54,6 +54,7 @@ class User implements Serializable {
 		password = springSecurityService?.passwordEncoder ? springSecurityService.encodePassword(password) : password
 	}
 
+
 	static transients = ['springSecurityService']
 
 	static constraints = {

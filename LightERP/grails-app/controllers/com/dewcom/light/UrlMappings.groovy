@@ -31,6 +31,8 @@ class UrlMappings {
         get "/api/creditCondition"(controller: 'creditCondition', action: 'getAll')
         get "/api/currency"(controller: 'currency', action: 'getAll')
         get "/api/exchangeRate"(controller: 'exchangeRate', action: 'get')
+        put "/api/exchangeRate/$code"(controller: 'exchangeRate', action: 'updateExchangeRate')
+        get  "/api/exchangeRate/$code"(controller: 'exchangeRate', action: 'getExchangeRateByCode')
 
         post "/api/billPaymentType"(controller: 'billPaymentType', action: 'create')
         post "/api/billStateType"(controller: 'billStateType', action: 'create')
@@ -43,5 +45,9 @@ class UrlMappings {
         //reports
         get "/api/customer/purchaseReport"(controller: 'customerReport', action: 'getCustomerProductPurchases')
         get "/api/customer/billingReport"(controller: 'customerReport', action: 'getCustomerBills')
+
+        //users
+        get "/api/user"(controller: 'user', action: 'get')
+
     }
 }

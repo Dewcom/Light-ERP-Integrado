@@ -109,19 +109,35 @@ class LightUtils {
     public static String formatDouble(Double argDouble, int zeros) {
         def result= "0"
         if(argDouble != null){
-        String pattern = "0.";
-        for(int i = 0; i< zeros; i++ ){
-            pattern += "0";
-        }
+            String pattern = "0.";
+            for(int i = 0; i< zeros; i++ ){
+                pattern += "0";
+            }
 
-        Locale costaRicaLocale = new Locale("es", "CR");
-        NumberFormat nf = NumberFormat.getNumberInstance(costaRicaLocale);
-        DecimalFormat df = (DecimalFormat)nf;
-        df.setRoundingMode(RoundingMode.HALF_EVEN);
-        df.applyPattern(pattern);
+            Locale costaRicaLocale = new Locale("es", "CR");
+            NumberFormat nf = NumberFormat.getNumberInstance(costaRicaLocale);
+            DecimalFormat df = (DecimalFormat)nf;
+            df.setRoundingMode(RoundingMode.HALF_EVEN);
+            df.applyPattern(pattern);
             result = df.format(argDouble)
         }
 
         return  result
+    }
+
+
+    static double unMarshallDoubleSafe(def valueToCheck) {
+        try{
+            if(valueToCheck in String){
+                if(valueToCheck.contains(',')){
+                    valueToCheck = valueToCheck.replace(',', '.')
+                }
+            }
+            def tmpDouble = Double.valueOf(valueToCheck)
+            return tmpDouble
+        }
+        catch(NumberFormatException ex){
+            throw ex
+        }
     }
 }

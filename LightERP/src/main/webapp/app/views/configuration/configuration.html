@@ -5,10 +5,11 @@
                 <div class="panel-heading bg-gray-lighter text-bold">Configuración general</div>
                 <div ng-init="settingActive = 1" class="list-group">
                     <a href="" ng-click="settingActive=1" ng-class="{'active': (settingActive == 1)}" class="list-group-item">Tipos de cliente</a>
-                    <a href="" ng-click="settingActive=2" ng-class="{'active': (settingActive == 2)}" class="list-group-item">Account</a>
-                    <a href="" ng-click="settingActive=3" ng-class="{'active': (settingActive == 3)}" class="list-group-item">Emails</a>
-                    <a href="" ng-click="settingActive=4" ng-class="{'active': (settingActive == 4)}" class="list-group-item">Notifications</a>
-                    <a href="" ng-click="settingActive=5" ng-class="{'active': (settingActive == 5)}" class="list-group-item">Applications</a>
+                    <a href="" ng-click="settingActive=2" ng-class="{'active': (settingActive == 2)}" class="list-group-item">Tipo de cambio</a>
+                    <a href="" ng-click="settingActive=3" ng-class="{'active': (settingActive == 3)}" class="list-group-item">Account</a>
+                    <a href="" ng-click="settingActive=4" ng-class="{'active': (settingActive == 4)}" class="list-group-item">Emails</a>
+                    <a href="" ng-click="settingActive=5" ng-class="{'active': (settingActive == 5)}" class="list-group-item">Notifications</a>
+                    <a href="" ng-click="settingActive=6" ng-class="{'active': (settingActive == 6)}" class="list-group-item">Applications</a>
                 </div>
             </div>
         </div>
@@ -22,6 +23,14 @@
                 </div>
             </div>
             <div ng-show="settingActive == 2">
+                <div class="panel b">
+                    <div class="panel-heading bg-gray-lighter text-bold">Tipo de cambio</div>
+                    <div class="panel-body">
+                        <div ng-include="'app/views/configuration/exchange-rate-partial.html'"></div>
+                    </div>
+                </div>
+            </div>
+            <div ng-show="settingActive == 3">
                 <div class="panel b">
                     <div class="panel-heading bg-gray-lighter text-bold">Account</div>
                     <div class="panel-body">
@@ -55,7 +64,7 @@
                     </div>
                 </div>
             </div>
-            <div ng-show="settingActive == 3">
+            <div ng-show="settingActive == 4">
                 <div class="panel b">
                     <div class="panel-heading bg-gray-lighter text-bold">Emails</div>
                     <div class="panel-body">
@@ -104,7 +113,7 @@
                     </div>
                 </div>
             </div>
-            <div ng-show="settingActive == 4">
+            <div ng-show="settingActive == 5">
                 <form action="">
                     <div class="panel b">
                         <div class="panel-heading bg-gray-lighter text-bold">Notifications</div>
@@ -157,7 +166,7 @@
                     </div>
                 </form>
             </div>
-            <div ng-show="settingActive == 5">
+            <div ng-show="settingActive == 6">
                 <div class="panel b">
                     <div class="panel-heading bg-gray-lighter text-bold">Applications</div>
                     <div class="panel-body">
@@ -209,4 +218,5 @@
             </div>
         </div>
     </div>
+    <toaster-container toaster-options="{'position-class': 'toast-bottom-right', 'close-button':true}"></toaster-container>
 </div>

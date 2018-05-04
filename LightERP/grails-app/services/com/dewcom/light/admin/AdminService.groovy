@@ -408,12 +408,34 @@ class AdminService {
         }
     }
 
-    ExchangeRate getExchangeRate(def pid) {
+    ExchangeRate getExchangeRateById(def pid) {
         log.info "====== Getting exchange rate from DB ======"
         log.info pid
         try{
             ExchangeRate exchangeRateFromDB = ExchangeRate.findByIdAndEnabled(pid, Constants.ESTADO_ACTIVO);
             return exchangeRateFromDB
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("get.exchange.rate.error", null, Locale.default));
+        }
+    }
+
+    def getExchangeRateByCode(def pcode) {
+        log.info "====== Getting exchange rate from DB ======"
+        try{
+            ExchangeRate exchangeRateFromDB = ExchangeRate.findByCode(pcode);
+            return exchangeRateFromDB
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("get.exchange.rate.error", null, Locale.default));
+        }
+    }
+
+    def updateExchangeRate(def pExchangeRate) {
+        log.info "====== updating exchange rate from DB ======"
+        log.info pExchangeRate.id
+        try{
+            pExchangeRate.save();
         }catch(Exception e){
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("get.exchange.rate.error", null, Locale.default));

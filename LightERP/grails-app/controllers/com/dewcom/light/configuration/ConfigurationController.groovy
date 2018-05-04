@@ -131,7 +131,7 @@ class ConfigurationController extends RestController {
             if (tmpConfigurationRest.hasErrors()) {
                 this.handleDataErrorsREST(messageSource, tmpConfigurationRest.errors);
             } else {
-                Configuration tmpConfiguration = adminService.getCustomerType(tmpConfigurationRest.id);
+                Configuration tmpConfiguration = adminService.getConfiguration(tmpConfigurationRest.id);
                 if(tmpConfiguration.code == Configuration.CONFIG_CONSECUTIVO_FACTURA) {
                     billService.validateBillNumber(tmpConfiguration.value as Long)
                 }

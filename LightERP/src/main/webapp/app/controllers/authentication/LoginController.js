@@ -8,8 +8,8 @@ angular
     .module('app.pages')
     .controller('LoginController', LoginController);
 
-LoginController.$inject = ['$http', '$state', 'authenticationService'];
-function LoginController($http, $state, authenticationService) {
+LoginController.$inject = ['$http', '$state', 'authenticationService', '$window'];
+function LoginController($http, $state, authenticationService,$window) {
     var vm = this;
 
     activate();
@@ -51,6 +51,7 @@ function LoginController($http, $state, authenticationService) {
                 vm.loginForm.account_password.$dirty = true;
             }
         };
+        vm.currentUserName = $window.sessionStorage.getItem("userInfo") == null ? "" :  JSON.parse($window.sessionStorage.getItem("userInfo")).userName;
 
         vm.logout = function () {
             authenticationService.logout();

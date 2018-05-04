@@ -2,15 +2,15 @@
 
 angular
     .module('app.services')
-    .factory("userService", function ($http, $state, APP_CONSTANTS) {
+    .factory("userService", function ($http, $state, APP_CONSTANTS,$window) {
 
         var userService = {};
 
         userService.getAll = function () {
-
+            var currentUserUsername = JSON.parse($window.sessionStorage.getItem("userInfo")).userName;
             var userList = $http({
                 method: 'GET',
-                url: APP_CONSTANTS.appURL + 'user/get',
+                url: APP_CONSTANTS.appURL + 'user?username='+currentUserUsername,
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }
