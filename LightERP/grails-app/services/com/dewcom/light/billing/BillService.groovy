@@ -173,7 +173,7 @@ class BillService {
                     def tmpState = BillStateType.findByCode(argUpdateBillRequest.billStateId)
                     if(tmpState.code == BillStateType.FACTURA_VALIDADA){
                         if(tmpBillToUpdate.billState.code == BillStateType.FACTURA_CREADA){
-                           def  configConsecFactura = Configuration.findByCode(Configuration.CONFIG_CONSECUTIVO_FACTURA)
+                            def configConsecFactura = Configuration.findByCode(Configuration.CONFIG_CONSECUTIVO_FACTURA)
                             def billNumber = configConsecFactura.value as Long
                             tmpBillToUpdate.billNumber = billNumber
                             //se actualiza el consecutivo al existir para generar un nuevo candidato a utilizar
@@ -415,6 +415,30 @@ class BillService {
     }
 
     /**
+     * Este servicio se encarga de actualizar el estado de una factura y asignar consecutivo de factura cuando la orden de salida de
+     * bodega asociada es aprobada
+     * @param pBill es la factura a actualizar
+     * @param pBillStateCode es el codigo del estado
+     * @author Leo Chen
+     */
+    def changeBillStateFromAppovedWarehouseOrder(def pBill){
+        try {
+            pBill.billState = BillStateType.findByCode(BillStateType.FACTURA_VALIDADA)
+            def configConsecFactura = Configuration.findByCode(Configuration.CONFIG_CONSECUTIVO_FACTURA)
+            def billNumber = configConsecFactura.value as Long
+            pBill.billNumber = billNumber
+            //se actualiza el consecutivo al existir para generar un nuevo candidato a utilizar
+            configConsecFactura.value = billNumber+1
+            adminService.updateConfiguration(configConsecFactura)
+
+            pBill.save(failOnError: true)
+        } catch (Exception e) {
+            log.error "Ha ocurrido un error actualizando el estado de la factura" + e.message
+            throw e
+        }
+    }
+
+    /**
      * Este metodo se encarga de determinar si las cantidades de cada una de los detalles de la factura estan disponibles
      * @param pbill es la factura a crear
      * @author Mauricio Fernandez
@@ -422,13 +446,15 @@ class BillService {
      */
     def checkProducLotQuantities(def detailsList){
 
+        // Metodo no se usa mas, eventualmente se puede eliminar
+
         detailsList.each { billDetailReq ->
             def tmpquantity = 0;
             def tmpProduct = Product.findByIdAndEnabled(billDetailReq.productId, Constants.ESTADO_ACTIVO);
 
             tmpProduct.productLot.each{ productLot ->
                 if(productLot.enabled == Constants.ESTADO_ACTIVO){
-                    tmpquantity += productLot.quantity;
+                    tmpquantity += productLot.quantity
                 }
             }
 

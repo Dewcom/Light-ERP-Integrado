@@ -445,8 +445,6 @@ class JSONMapper {
         tmpList
     }
 
-
-
     //used for null params
     def static from(def pNull1){
         pNull1

@@ -1,7 +1,9 @@
 package com.dewcom.light.warehouse
 
 import com.dewcom.light.billing.Bill
+import com.dewcom.light.billing.BillStateType
 import com.dewcom.light.exception.LightRuntimeException
+import com.dewcom.light.rest.billing.UpdateBillRequest
 import com.dewcom.light.rest.warehouse.ProductLotRequest
 import com.dewcom.light.rest.warehouse.RejectWarehouseOrderRequest
 import com.dewcom.light.rest.warehouse.UpdateProductLotRequest
@@ -97,12 +99,20 @@ class WarehouseOrderService {
     }
 
     def approveWarehouseOrder(WarehouseOrder warehouseOrder) {
+
+        def approvedWarehouseOrder
         try {
 
             WarehouseOrderStateType warehouseOrderStateType = WarehouseOrderStateType.findByCode(Constants.WAREHOUSE_ORDER_VALIDATED)
             warehouseOrder.warehouseOrderStateType = warehouseOrderStateType
 
-            warehouseOrder.save(flush: true, failOnError:true)
+            approvedWarehouseOrder = warehouseOrder.save(flush: true, failOnError:true)
+
+            if(approvedWarehouseOrder){
+
+                Bill tmpBill = Bill.findByIdAndEnabled(approvedWarehouseOrder.bill.id, Constants.ESTADO_ACTIVO)
+                billService.changeBillStateFromAppovedWarehouseOrder(tmpBill)
+            }
 
         }catch (Exception e) {
             log.error(e)
