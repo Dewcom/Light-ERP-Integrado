@@ -120,6 +120,7 @@ class ProductLotService {
                 tmpProductLotToUpdate.expirationDate = LightUtils.stringToDate(updateProductLotReq.expirationDate, 'dd-MM-yyyy')
                 tmpProductLotToUpdate.expirationDate = LightUtils.stringToDate(updateProductLotReq.lotDate, 'dd-MM-yyyy')
                 tmpProductLotToUpdate.quantity = updateProductLotReq.quantity
+                tmpProductLotToUpdate.enabled = Constants.ESTADO_ACTIVO
 
                 tmpProductLotToUpdate.save(flush: true, failOnError:true)
 
