@@ -499,6 +499,8 @@
                                 console.log('Modal promise rejected. Reason: ', reason);
                             });
 
+                        }else{
+                            vm.addBill(APP_CONSTANTS.BILL_PRE_BILL_STATE_CODE);
                         }
                     }, function (reason) {
                         console.log('Modal promise rejected. Reason: ', reason);
