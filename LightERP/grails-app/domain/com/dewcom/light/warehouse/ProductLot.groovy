@@ -22,6 +22,7 @@ class ProductLot {
         lotDate blank: false, nullable: false
         quantity nullable: false
         product nullable: false
+        expirationDate nullable: true
     }
 
     def static fromRestProductLot(ProductLotRequest productLotRequest){

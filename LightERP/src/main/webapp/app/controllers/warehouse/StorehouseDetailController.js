@@ -93,6 +93,13 @@
         init();
 
         function init() {
+            console.log($stateParams);
+
+            if($stateParams.tabIndex == 0){
+                $scope.tab1 = true;
+            }else{
+                $scope.tab2 = true;
+            }
 
             var storehouse;
             storehouseService.get($stateParams.storehouseId).then(function (response) {
@@ -100,8 +107,8 @@
                 if (response.code == '0') {
                     vm.currentStorehouse = response.data;
                     formatStorehouseProductList(response.data.productLots);
-                    usSpinnerService.stop('productsSpinner');
                 }
+                usSpinnerService.stop('productLotsSpinner');
             });
 
             /**=========================================================

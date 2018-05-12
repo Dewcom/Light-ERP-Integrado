@@ -18,10 +18,6 @@ class ProductLotRequest implements Validateable{
     Byte enabled = Constants.ESTADO_ACTIVO
     Date registrationDate = new Date()
 
-    static hasMany = [storehouses: Storehouse]
-
-    static belongsTo = [Storehouse]
-
     static constraints = {
         username blank: false, nullable: false
         lotNumber blank: false, nullable: false

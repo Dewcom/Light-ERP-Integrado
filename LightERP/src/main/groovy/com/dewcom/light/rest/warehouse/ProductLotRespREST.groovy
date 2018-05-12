@@ -1,7 +1,6 @@
-package com.dewcom.light.rest.response
+package com.dewcom.light.rest.warehouse
 
 import com.dewcom.light.utils.Constants
-import com.dewcom.light.warehouse.ProductType
 
 /**
  * Created by Mauricio Fernández Mora on 04/11/17.

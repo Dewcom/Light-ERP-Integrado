@@ -5,6 +5,6 @@ package com.dewcom.light.exception
  */
 class LightRuntimeException extends RuntimeException {
     public LightRuntimeException(String message) {
-        super(message);
+        super(message)
     }
 }
