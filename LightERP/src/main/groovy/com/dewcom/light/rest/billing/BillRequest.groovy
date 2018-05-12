@@ -14,8 +14,8 @@ class BillRequest implements Validateable {
     Long creditConditionId
     Long currencyId
     String billDate
-    List<BillDetailRequest> billDetails;
-    Integer billState;
+    List<BillDetailRequest> billDetails
+    Integer billState
 
     static constraints = {
         userName blank:true, nullable: true

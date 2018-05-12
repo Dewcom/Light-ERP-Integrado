@@ -12,7 +12,6 @@ function ProductLotController($scope, $stateParams, APP_CONSTANTS, $state, $uibM
     activateProductLotDateCalendar();
     activateExpirationDateCalendar();
 
-    var storehouseProdList;
 
     /**=========================================================
      * Inicializa el calendarios
@@ -158,7 +157,6 @@ function ProductLotController($scope, $stateParams, APP_CONSTANTS, $state, $uibM
 
     UpdateModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', 'productLot'];
     function UpdateModalInstanceCtrl($scope, $uibModalInstance, productLot) {
-        var vm = this;
         $scope.currentProductLot = JSON.parse(JSON.stringify(productLot));
         $scope.currentProductLot.lotDate = new Date($scope.currentProductLot.lotDate);
         $scope.currentProductLot.expirationDate = new Date($scope.currentProductLot.expirationDate);
@@ -196,7 +194,7 @@ function ProductLotController($scope, $stateParams, APP_CONSTANTS, $state, $uibM
         productLotService.updateProductLot(updatedProductLot).then(function (response) {
             var toasterdata;
 
-            if (response.code == "0") {
+            if (response.code === "0") {
 
                 updateCurrentProductLotList();
                 toasterdata = {
@@ -238,7 +236,7 @@ function ProductLotController($scope, $stateParams, APP_CONSTANTS, $state, $uibM
             productLotService.disableProductLot(productLot.id, username, reason).then(function (response) {
                 var toasterdata;
 
-                if (response.code == "0") {
+                if (response.code === "0") {
                     toasterdata = {
                         type: 'success',
                         title: 'Eliminar lote de producto',
@@ -278,8 +276,6 @@ function ProductLotController($scope, $stateParams, APP_CONSTANTS, $state, $uibM
      * lotes que recibe la vista viene filtrada
      =========================================================*/
     function updateCurrentProductLotList() {
-
-        var currentId = $scope.currentProductLot.id;
 
         var fieldData = vm.productLotList,
             i = 0, ii = vm.productLotList.length;

@@ -5,9 +5,9 @@ import com.dewcom.light.billing.BillDetail
 import com.dewcom.light.billing.BillPaymentType
 import com.dewcom.light.billing.BillStateType
 import com.dewcom.light.billing.CreditCondition
+import com.dewcom.light.billing.Currency
 import com.dewcom.light.billing.ExchangeRate
 import com.dewcom.light.billing.Payment
-import com.dewcom.light.user.User
 import com.dewcom.light.rest.response.AddressRespREST
 import com.dewcom.light.rest.billing.BillDetailProductResponse
 import com.dewcom.light.rest.response.BillDetailRespREST
@@ -21,14 +21,15 @@ import com.dewcom.light.rest.response.CustomerRespREST
 import com.dewcom.light.rest.response.CustomerTypeRespREST
 import com.dewcom.light.rest.response.ExchangeRateRespREST
 import com.dewcom.light.rest.response.IdentificationTypeRespREST
-import com.dewcom.light.rest.response.MeasureUnitRespREST
+import com.dewcom.light.rest.warehouse.MeasureUnitRespREST
 import com.dewcom.light.rest.response.PaymentRespREST
-import com.dewcom.light.rest.response.PresentationTypeRespREST
-import com.dewcom.light.rest.response.ProductLotRespREST
-import com.dewcom.light.rest.response.ProductRespREST
-import com.dewcom.light.rest.response.ProductTypeRespREST
-import com.dewcom.light.rest.response.StorehouseRespREST
-import com.dewcom.light.rest.response.UserRespREST
+import com.dewcom.light.rest.warehouse.PresentationTypeRespREST
+import com.dewcom.light.rest.warehouse.ProductLotRespREST
+import com.dewcom.light.rest.warehouse.ProductRespREST
+import com.dewcom.light.rest.warehouse.ProductTypeRespREST
+import com.dewcom.light.rest.warehouse.StorehouseRespREST
+import com.dewcom.light.rest.warehouse.WarehouseOrderDetailResp
+import com.dewcom.light.rest.warehouse.WarehouseOrderResp
 import com.dewcom.light.thirdparty.Address
 import com.dewcom.light.thirdparty.Contact
 import com.dewcom.light.thirdparty.Customer
@@ -40,6 +41,9 @@ import com.dewcom.light.warehouse.Product
 import com.dewcom.light.warehouse.ProductLot
 import com.dewcom.light.warehouse.ProductType
 import com.dewcom.light.warehouse.Storehouse
+import com.dewcom.light.warehouse.WarehouseOrder
+import com.dewcom.light.warehouse.WarehouseOrderMovementType
+import com.dewcom.light.warehouse.WarehouseOrderStateType
 
 /**
  * Created by lchen on 5/20/17.
@@ -126,7 +130,7 @@ class JSONMapper {
         tmpRestObject
     }
 
-    def static from(com.dewcom.light.billing.Currency pCurrency){
+    def static from(Currency pCurrency){
         def tmpRestObject = new CurrencyRespREST()
         tmpRestObject.id = pCurrency.id
         tmpRestObject.currencyCode = pCurrency.currencyCode
@@ -216,23 +220,63 @@ class JSONMapper {
     def static from(Product pProduct){
         def tmpRestObject = new ProductRespREST()
 
-            tmpRestObject.name = pProduct.name
-            tmpRestObject.enabled = pProduct.enabled
-            tmpRestObject.registrationDate = pProduct.registrationDate
-            tmpRestObject.id = pProduct.id
-            tmpRestObject.productCode = pProduct.productCode
-            tmpRestObject.presentationType = from(pProduct.presentationType)
-            tmpRestObject.bulkQuantity = pProduct.bulkQuantity
-            tmpRestObject.productType = from(pProduct.productType)
-            tmpRestObject.cost = pProduct.cost
-            tmpRestObject.price = pProduct.price
-            tmpRestObject.suggestedCost = pProduct.suggestedCost
-            tmpRestObject.tariffHeading = pProduct.tariffHeading
-            tmpRestObject.commercialName = pProduct.commercialName
-            tmpRestObject.utilityPercentage = pProduct.utilityPercentage
-            tmpRestObject.productTax = pProduct.productTax
-            tmpRestObject.measureUnit = from(pProduct.measureUnit)
-            tmpRestObject.productLots = listFromProductLotForProduct(pProduct.productLot)
+        tmpRestObject.name = pProduct.name
+        tmpRestObject.enabled = pProduct.enabled
+        tmpRestObject.registrationDate = pProduct.registrationDate
+        tmpRestObject.id = pProduct.id
+        tmpRestObject.productCode = pProduct.productCode
+        tmpRestObject.presentationType = from(pProduct.presentationType)
+        tmpRestObject.bulkQuantity = pProduct.bulkQuantity
+        tmpRestObject.productType = from(pProduct.productType)
+        tmpRestObject.cost = pProduct.cost
+        tmpRestObject.price = pProduct.price
+        tmpRestObject.suggestedCost = pProduct.suggestedCost
+        tmpRestObject.tariffHeading = pProduct.tariffHeading
+        tmpRestObject.commercialName = pProduct.commercialName
+        tmpRestObject.utilityPercentage = pProduct.utilityPercentage
+        tmpRestObject.productTax = pProduct.productTax
+        tmpRestObject.measureUnit = from(pProduct.measureUnit)
+        tmpRestObject.productLots = listFromProductLotForProduct(pProduct.productLot)
+        tmpRestObject
+    }
+
+    def static fromWarehouseDetailToProduct(Product pProduct){
+        def tmpRestObject = new ProductRespREST()
+
+        tmpRestObject.name = pProduct.name
+        tmpRestObject.enabled = pProduct.enabled
+        tmpRestObject.registrationDate = pProduct.registrationDate
+        tmpRestObject.id = pProduct.id
+        tmpRestObject.productCode = pProduct.productCode
+        tmpRestObject.presentationType = from(pProduct.presentationType)
+        tmpRestObject.bulkQuantity = pProduct.bulkQuantity
+        tmpRestObject.productType = from(pProduct.productType)
+        tmpRestObject.cost = pProduct.cost
+        tmpRestObject.price = pProduct.price
+        tmpRestObject.suggestedCost = pProduct.suggestedCost
+        tmpRestObject.tariffHeading = pProduct.tariffHeading
+        tmpRestObject.commercialName = pProduct.commercialName
+        tmpRestObject.utilityPercentage = pProduct.utilityPercentage
+        tmpRestObject.productTax = pProduct.productTax
+        tmpRestObject.measureUnit = from(pProduct.measureUnit)
+        tmpRestObject
+    }
+
+    /**
+     * Metodo alternativo para crear los productos asociados a los lotes de producto de un detalle de orden de salida de bodega,
+     * de lo contrario el lote perteneciente al lote de producto traerá cada lote de producto asociado a producto
+     */
+    def static fromWarehouseDetailToProductLot(ProductLot productLot){
+        def tmpRestObject = new ProductLotRespREST()
+        tmpRestObject.id = productLot.id
+        tmpRestObject.lotNumber = productLot.lotNumber
+        tmpRestObject.expirationDate = productLot.expirationDate
+        tmpRestObject.lotDate = productLot.lotDate
+        tmpRestObject.quantity = productLot.quantity
+        tmpRestObject.product = fromWarehouseDetailToProduct(productLot.product)
+        tmpRestObject.enabled = productLot.enabled
+        tmpRestObject.registrationDate = productLot.registrationDate
+
         tmpRestObject
     }
 
@@ -246,6 +290,19 @@ class JSONMapper {
         tmpRestObject.product = from(productLot.product)
         tmpRestObject.enabled = productLot.enabled
         tmpRestObject.registrationDate = productLot.registrationDate
+
+        tmpRestObject
+    }
+
+    def static from(WarehouseOrder warehouseOrder){
+        def tmpRestObject = new WarehouseOrderResp()
+        tmpRestObject.id = warehouseOrder.id
+        tmpRestObject.enabled = warehouseOrder.enabled
+        tmpRestObject.warehouseOrderDate = warehouseOrder.warehouseOrderDate
+        tmpRestObject.warehouseOrderStateType = from(warehouseOrder.warehouseOrderStateType)
+        tmpRestObject.warehouseOrderMovementType = from(warehouseOrder.warehouseOrderMovementType)
+        tmpRestObject.bill = from(warehouseOrder.bill)
+        tmpRestObject.warehouseOrderDetails = listFromWarehouseOrderDetailForWarehouseOrder(warehouseOrder.warehouseOrderDetails)
 
         tmpRestObject
     }
@@ -313,21 +370,18 @@ class JSONMapper {
         tmpMeasureTypeObj
     }
 
-    def static from(User pUser){
-        def tmpRestObject = new UserRespREST()
-        tmpRestObject.id = pUser.id
-        tmpRestObject.name = pUser.name
-        tmpRestObject.firstLastName = pUser.firstLastName
-        tmpRestObject.secondLastName = pUser.secondLastName
-        tmpRestObject.enabled = pUser.enabled
-        tmpRestObject.username = pUser.username
-        tmpRestObject.userCode = pUser.userCode
-        tmpRestObject.email = pUser.email
-        tmpRestObject.mobile = pUser.mobile
-        tmpRestObject.phoneNumber = pUser.phoneNumber
-        tmpRestObject.commissionPercentage = pUser.commissionPercentage
-        tmpRestObject.extension = pUser.extension
-        tmpRestObject
+    def static from(WarehouseOrderStateType pWarehouseOrderStateType){
+        def tmpWarehouseOrderStateTypeObj = new WarehouseOrderStateType()
+        tmpWarehouseOrderStateTypeObj.code = pWarehouseOrderStateType.code
+        tmpWarehouseOrderStateTypeObj.description = pWarehouseOrderStateType.description
+        tmpWarehouseOrderStateTypeObj
+    }
+
+    def static from(WarehouseOrderMovementType pWarehouseOrderMovementType){
+        def tmpWarehouseOrderMovementTypeObj = new WarehouseOrderMovementType()
+        tmpWarehouseOrderMovementTypeObj.code = pWarehouseOrderMovementType.code
+        tmpWarehouseOrderMovementTypeObj.description = pWarehouseOrderMovementType.description
+        tmpWarehouseOrderMovementTypeObj
     }
 
     def static listFrom(def pListObject){
@@ -367,6 +421,24 @@ class JSONMapper {
                 tmpRestObject.quantity = it.quantity
                 tmpRestObject.enabled = it.enabled
                 tmpRestObject.registrationDate = it.registrationDate
+                tmpList.add(tmpRestObject)
+            }
+        }
+        tmpList
+    }
+
+    /**
+     * Metodo alternativo para asociar los detalles de orden de bodega a una orden de bodega
+     */
+    def static listFromWarehouseOrderDetailForWarehouseOrder(def pListObject){
+        def tmpList = new ArrayList()
+        pListObject.each{ it ->
+            if(it.enabled == Constants.ESTADO_ACTIVO){
+
+                def tmpRestObject = new WarehouseOrderDetailResp()
+                tmpRestObject.productLot = fromWarehouseDetailToProductLot(it.productLot)
+                tmpRestObject.quantity = it.quantity
+                tmpRestObject.enabled = it.enabled
                 tmpList.add(tmpRestObject)
             }
         }

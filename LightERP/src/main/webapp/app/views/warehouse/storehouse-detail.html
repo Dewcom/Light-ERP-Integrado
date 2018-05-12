@@ -1,83 +1,10 @@
-<div class="panel panel-default">
-    <div class="panel-body">
-        <div>
-            <div class="col-md-12 dataTableTop">
-                <div class="col-md-9">
-                    <h3>Lista de lotes de producto</h3>
-                </div>
-                <div class="col-md-12">
-                        <button uib-tooltip="Regresar" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="controller.goBack()"
-                                class="btn btn-labeled btn-info pull-left">
-                          <span class="btn-label">
-                             <em class="fa fa-mail-reply"></em>
-                          </span>Regresar
-                        </button>
-                        <button uib-tooltip="Agregar lote" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="submit" class="btn btn-labeled btn-success pull-right ml" ng-click="controller.openAddProductLotModal()">
-                                <span class="btn-label">
-                                    <em class="fa fa-plus"></em>
-                                </span>Agregar
-                        </button>
-                    </form>
-                </div>
-                <div class="col-md-12">
-                    <form ng-submit="controller.filterProducts()">
-                        <button uib-tooltip="Buscar productos" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="submit"
-                                class="btn btn-labeled btn-primary pull-left mb" ng-click="controller.filterProducts()">
-                              <span class="btn-label">
-                                 <em class="fa fa-search"></em>
-                              </span>Buscar
-                        </button>
-                        <div>
-                            <div>
-                                <input type="text" name="search" ng-model="controller.search"
-                                       class="form-control"/>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <span us-spinner="{radius:20, width:8, length: 16, color: '#3A3F51'}" spinner-key="productsSpinner" spinner-start-active="true"></span>
-
-            <div infinite-scroll="controller.loadMoreProducts()" infinite-scroll-distance="0" infinite-scroll-immediate-check="false"
-                 infinite-scroll-disabled = "controller.disableInfScroll" class="row">
-                <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>Código</th>
-                                        <th>Producto</th>
-                                        <th>Tipo de producto</th>
-                                        <th>Total de lotes</th>
-                                        <th>Total de producto </th>
-                                        <th>Detalle</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr ng-repeat="productObj in controller.storehouseProdListInf">
-                                        <td>{{ productObj.productCode }}</td>
-                                        <td>{{ productObj.name }}</td>
-                                        <td>{{ productObj.productType }}</td>
-                                        <td>{{ productObj.lotTotal }}</td>
-                                        <td>{{ productObj.productTotal + ' ' + productObj.measureUnit }}</td>
-                                        <td>
-                                            <button uib-tooltip="Ver lote" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="controller.goToProductLotDetail(productObj.productObj)" class="btn btn-sm btn-toolbar">
-                                                <em class="fa fa-search"></em>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <toaster-container toaster-options="{'position-class': 'toast-bottom-right', 'close-button':true}"></toaster-container>
-    <div ng-include="'app/views/warehouse/modal/add-product-lot-modal.html'"></div>
-</div>
+<h2>Detalles de Almacén</h2>
+<br>
+<uib-tabset justified="true">
+    <uib-tab heading="LOTES DE PRODUCTO" active="tab1">
+        <div ng-include="'app/views/warehouse/product-lot-partial.html'"></div>
+    </uib-tab>
+    <uib-tab heading="ORDENES DE SALIDA" active="tab2">
+        <div ng-include="'app/views/warehouse/warehouse-order-partial.html'"></div>
+    </uib-tab>
+</uib-tabset>

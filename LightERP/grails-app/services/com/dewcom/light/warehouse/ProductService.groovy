@@ -76,9 +76,8 @@ class ProductService {
             } else {
                 throw new LightRuntimeException(messageSource.getMessage("update.product.notFound.error", null, Locale.default))
             }
-        }
 
-        catch (Exception e) {
+        }catch (Exception e) {
             log.error(e)
             if (e instanceof LightRuntimeException) {
                 throw e
