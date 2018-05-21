@@ -1,4 +1,4 @@
-package com.dewcom.light.rest.response
+package com.dewcom.light.rest.warehouse
 
 /**
  * Created by Mauricio Fernández Mora on 25/10/17.

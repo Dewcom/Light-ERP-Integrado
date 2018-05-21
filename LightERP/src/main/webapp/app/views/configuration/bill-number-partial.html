@@ -1,0 +1,22 @@
+<div>
+        <div  ng-con class="panel-body">
+            <form  novalidate="" ng-submit="configCtrl.updateBillNumber()" name="configCtrl.billNumberConfigForm">
+            <fieldset>
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">Consecutivo:</label>
+                    <div class="col-sm-4">
+                        <input type="number" name="billNumber" required="" ng-model="configCtrl.billNumberValue" class="form-control" />
+                        <span ng-show="configCtrl.validateInputBillNumberForm('billNumber', 'required')" class="text-danger">Este campo es requerido</span>
+                        <span ng-show="configCtrl.billNumberConfigForm.$submitted &amp;&amp; configCtrl.billNumberConfigForm.billNumber.$error.number"
+                              class="text-danger">No se admiten letras</span>
+                    </div>
+                    <div class="col-sm-4">
+                            <div>
+                                <button uib-tooltip="Guardar cambios" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="submit" class="btn btn-success btn-lg">Modificar</button>
+                            </div>
+                    </div>
+                </div>
+            </fieldset>
+            </form>
+        </div>
+</div>

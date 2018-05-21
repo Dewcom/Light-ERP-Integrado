@@ -29,10 +29,37 @@ class UrlMappings {
         get "/api/billPaymentType"(controller: 'billPaymentType', action: 'getAll')
         get "/api/billStateType"(controller: 'billStateType', action: 'getAll')
         get "/api/creditCondition"(controller: 'creditCondition', action: 'getAll')
+        put "/api/creditCondition/$id"(controller: 'creditCondition', action: 'update')
+        delete "/api/creditCondition/$id"(controller: 'creditCondition', action: 'delete')
         get "/api/currency"(controller: 'currency', action: 'getAll')
         get "/api/exchangeRate"(controller: 'exchangeRate', action: 'get')
         put "/api/exchangeRate/$code"(controller: 'exchangeRate', action: 'updateExchangeRate')
         get  "/api/exchangeRate/$code"(controller: 'exchangeRate', action: 'getExchangeRateByCode')
+        get  "/api/tax"(controller: 'tax', action: 'get')
+        post  "/api/tax"(controller: 'tax', action: 'create')
+        put  "/api/tax/$id"(controller: 'tax', action: 'update')
+        delete  "/api/tax/$id"(controller: 'tax', action: 'delete')
+
+        get  "/api/presentationType"(controller: 'presentationType', action: 'get')
+        post  "/api/presentationType"(controller: 'presentationType', action: 'create')
+        put  "/api/presentationType/$id"(controller: 'presentationType', action: 'update')
+        delete  "/api/presentationType/$id"(controller: 'presentationType', action: 'delete')
+
+        get  "/api/customerType"(controller: 'customerType', action: 'get')
+        post  "/api/customerType"(controller: 'customerType', action: 'create')
+        put  "/api/customerType/$id"(controller: 'customerType', action: 'update')
+        delete  "/api/customerType/$id"(controller: 'customerType', action: 'delete')
+
+        get  "/api/productType"(controller: 'productType', action: 'get')
+        post  "/api/productType"(controller: 'productType', action: 'create')
+        put  "/api/productType/$id"(controller: 'productType', action: 'update')
+        delete  "/api/productType/$id"(controller: 'productType', action: 'delete')
+
+        //measureUnit
+        get "/api/measureUnit"(controller: 'measureUnit', action: 'getAll')
+        put "/api/measureUnit/$id"(controller: 'measureUnit', action: 'update')
+        delete "/api/measureUnit/$id"(controller: 'measureUnit', action: 'delete')
+        post "/api/measureUnit"(controller: 'measureUnit', action: 'create')
 
         post "/api/billPaymentType"(controller: 'billPaymentType', action: 'create')
         post "/api/billStateType"(controller: 'billStateType', action: 'create')
@@ -48,6 +75,10 @@ class UrlMappings {
 
         //users
         get "/api/user"(controller: 'user', action: 'get')
+
+        //config
+        put "/api/configuration/$code"(controller: 'configuration', action: 'update')
+        get "/api/configuration/$code"(controller: 'configuration', action: 'get')
 
     }
 }

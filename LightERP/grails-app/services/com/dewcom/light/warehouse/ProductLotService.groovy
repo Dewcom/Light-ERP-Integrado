@@ -38,6 +38,7 @@ class ProductLotService {
     }
 
     def createProductLot(ProductLotRequest productLotRequest) {
+        def savedProductLot
         def productLot = new ProductLot()
         try {
             def tmpProductLot = ProductLot.findByLotNumber(productLotRequest.lotNumber);
@@ -46,7 +47,7 @@ class ProductLotService {
                 productLot = ProductLot.fromRestProductLot(productLotRequest)
 
             }else{
-                def tmpStorehouse = Storehouse.findById(productLotRequest.storehouseId);
+                def tmpStorehouse = Storehouse.findById(productLotRequest.storehouseId)
 
                 if(!tmpProductLot.storehouses.contains(tmpStorehouse)) {
                     productLot = ProductLot.fromRestProductLot(productLotRequest)
@@ -54,7 +55,7 @@ class ProductLotService {
                     throw new LightRuntimeException(messageSource.getMessage("create.productLot.id.nonUnique", null, Locale.default));
                 }
             }
-            def savedProductLot = productLot.save(flush: true, failOnError:true)
+            savedProductLot = productLot.save(flush: true, failOnError:true)
 
             def binnacleLog = new ActionBinnacleLog()
             binnacleLog.itemId = savedProductLot.id
@@ -68,13 +69,15 @@ class ProductLotService {
             binnacleLog.save(flush: true, failOnError:true)
 
         } catch (Exception e) {
-            log.error(e);
+            log.error(e)
             if(e.getClass() == LightRuntimeException.class  ){
-                throw new LightRuntimeException(e.getMessage());
+                throw new LightRuntimeException(e.getMessage())
             }else{
                 throw new LightRuntimeException(messageSource.getMessage("create.productLot.error", null, Locale.default));
             }
         }
+
+        return savedProductLot
     }
 
     def deleteProductLot(ProductLot productLot, String username, String deleteReason) {
@@ -103,46 +106,47 @@ class ProductLotService {
 
             def filtered = ['storehouses', 'product', 'constraintsMap', 'class', 'constraints', 'errors', 'reason', 'productId', 'id', 'username', 'registrationDate']
 
-            ProductLot tmpProductLotToUpdate = ProductLot.findByIdAndEnabled(updateProductLotReq.id, Constants.ESTADO_ACTIVO)
-
-            def filtererOriginalProductLot = tmpProductLotToUpdate.properties
-                    .sort{it.key}
-                    .collect{it}
-                    .findAll{!filtered.contains(it.key)}
-                    .join(' - ')
+            ProductLot tmpProductLotToUpdate = ProductLot.findById(updateProductLotReq.id)
 
             if (tmpProductLotToUpdate) {
+
+                def filtererOriginalProductLot = tmpProductLotToUpdate.properties
+                        .sort{it.key}
+                        .collect{it}
+                        .findAll{!filtered.contains(it.key)}
+                        .join(' - ')
 
                 tmpProductLotToUpdate.lotNumber = updateProductLotReq.lotNumber
                 tmpProductLotToUpdate.expirationDate = LightUtils.stringToDate(updateProductLotReq.expirationDate, 'dd-MM-yyyy')
                 tmpProductLotToUpdate.expirationDate = LightUtils.stringToDate(updateProductLotReq.lotDate, 'dd-MM-yyyy')
                 tmpProductLotToUpdate.quantity = updateProductLotReq.quantity
+                tmpProductLotToUpdate.enabled = Constants.ESTADO_ACTIVO
 
                 tmpProductLotToUpdate.save(flush: true, failOnError:true)
+
+                updateProductLotReq.lotDate = LightUtils.stringToDate(updateProductLotReq.lotDate, 'dd-MM-yyyy')
+                updateProductLotReq.expirationDate = LightUtils.stringToDate(updateProductLotReq.expirationDate, 'dd-MM-yyyy')
+
+                def filtererUpdateRequest =  updateProductLotReq.properties
+                        .sort{it.key}
+                        .collect{it}
+                        .findAll{!filtered.contains(it.key)}
+                        .join(' - ')
+
+                def binnacleLog = new ActionBinnacleLog()
+                binnacleLog.itemId = tmpProductLotToUpdate.id
+                binnacleLog.action = messageSource.getMessage("binnacle.action.modify", null, Locale.default)
+                binnacleLog.details = 'RAZON: ' + updateProductLotReq.reason + ', ORIGINAL: ' + filtererOriginalProductLot + ', MODIFICADO: ' + filtererUpdateRequest
+                binnacleLog.domain = tmpProductLotToUpdate.getClass().getSimpleName() as String
+                binnacleLog.actionDate = new Date()
+                binnacleLog.modifiedItemCode = updateProductLotReq.lotNumber
+                binnacleLog.username = updateProductLotReq.username
+
+                binnacleLog.save(flush: true, failOnError:true)
 
             } else {
                 throw new LightRuntimeException(messageSource.getMessage("update.productLot.notFound.error", null, Locale.default))
             }
-
-            updateProductLotReq.lotDate = LightUtils.stringToDate(updateProductLotReq.lotDate, 'dd-MM-yyyy')
-            updateProductLotReq.expirationDate = LightUtils.stringToDate(updateProductLotReq.expirationDate, 'dd-MM-yyyy')
-
-            def filtererUpdateRequest =  updateProductLotReq.properties
-                    .sort{it.key}
-                    .collect{it}
-                    .findAll{!filtered.contains(it.key)}
-                    .join(' - ')
-
-            def binnacleLog = new ActionBinnacleLog()
-            binnacleLog.itemId = tmpProductLotToUpdate.id
-            binnacleLog.action = messageSource.getMessage("binnacle.action.modify", null, Locale.default)
-            binnacleLog.details = 'RAZON: ' + updateProductLotReq.reason + ', ORIGINAL: ' + filtererOriginalProductLot + ', MODIFICADO: ' + filtererUpdateRequest
-            binnacleLog.domain = tmpProductLotToUpdate.getClass().getSimpleName() as String
-            binnacleLog.actionDate = new Date()
-            binnacleLog.modifiedItemCode = updateProductLotReq.lotNumber
-            binnacleLog.username = updateProductLotReq.username
-
-            binnacleLog.save(flush: true, failOnError:true)
         }
 
         catch (Exception e) {
@@ -152,6 +156,26 @@ class ProductLotService {
             } else {
                 throw new LightRuntimeException(messageSource.getMessage("update.productLot.error", null, Locale.default))
             }
+        }
+    }
+
+
+
+    def updateProductLotQuantity(ProductLot productLot, Double quantity) {
+        try {
+
+            ProductLot tmpProductLotToUpdate = ProductLot.findByIdAndEnabled(productLot.id, Constants.ESTADO_ACTIVO)
+            tmpProductLotToUpdate.quantity = productLot.quantity - quantity
+
+            if(tmpProductLotToUpdate.quantity == 0){
+                tmpProductLotToUpdate.enabled = Constants.ESTADO_INACTIVO
+            }
+
+            tmpProductLotToUpdate.save(flush: true, failOnError:true)
+
+        } catch (Exception e) {
+            log.error(e)
+            throw new LightRuntimeException(messageSource.getMessage("update.productLot.error", null, Locale.default))
         }
     }
 }

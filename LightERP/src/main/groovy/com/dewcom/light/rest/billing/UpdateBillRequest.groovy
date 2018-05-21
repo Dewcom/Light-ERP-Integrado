@@ -4,6 +4,7 @@ package com.dewcom.light.rest.billing
  * Created by chen on 04/04/17.
  */
 class UpdateBillRequest {
+    String userName
     Long billId
     String billDate
     Long customerId

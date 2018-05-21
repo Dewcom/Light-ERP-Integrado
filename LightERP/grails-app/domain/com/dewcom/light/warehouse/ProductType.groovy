@@ -13,5 +13,6 @@ class ProductType {
 
     static constraints = {
         name blank: false
+        code nullable:  true
     }
 }

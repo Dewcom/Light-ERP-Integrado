@@ -1,5 +1,7 @@
 package com.dewcom.light.billing
 
+import com.dewcom.light.utils.Constants
+
 /**
  * Created by chen on 15/01/17.
  */
@@ -14,6 +16,7 @@ class CreditCondition {
     String description
     Integer days
     Integer code
+    Byte enabled = Constants.ESTADO_ACTIVO
 
     static constraints = {
     }

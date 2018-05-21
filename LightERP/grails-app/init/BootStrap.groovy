@@ -12,6 +12,7 @@ import com.dewcom.light.warehouse.ProductType
 import com.dewcom.light.user.Role
 import com.dewcom.light.user.User
 import com.dewcom.light.user.UserRole
+import com.dewcom.light.warehouse.WarehouseOrderMovementType
 import com.dewcom.light.warehouse.WarehouseOrderStateType
 
 class BootStrap {
@@ -83,29 +84,55 @@ class BootStrap {
         if(!BillStateType.findByCode(BillStateType.FACTURA_ANULADA)){
             def tmpBillStateType = new BillStateType()
             tmpBillStateType.description = "Factura anulada"
-            tmpBillStateType.code = BillStateType.FACTURA_ANULADA;
+            tmpBillStateType.code = BillStateType.FACTURA_ANULADA
             tmpBillStateType.save()
         }
 
         if(!BillStateType.findByCode(BillStateType.BILL_PRE_BILL_STATE_CODE)){
             def tmpBillStateType = new BillStateType()
             tmpBillStateType.description = "Pre-factura"
-            tmpBillStateType.code = BillStateType.BILL_PRE_BILL_STATE_CODE;
+            tmpBillStateType.code = BillStateType.BILL_PRE_BILL_STATE_CODE
             tmpBillStateType.save()
         }
 
         //estados de ordenes de bodega
         if(!WarehouseOrderStateType.findByCode(WarehouseOrderStateType.WAREHOUSE_ORDER_CREATED)){
             def tmpWarehouseOrderStateType = new WarehouseOrderStateType()
-            tmpWarehouseOrderStateType.description = "Orden de bodega borrador"
+            tmpWarehouseOrderStateType.description = "Borrador"
             tmpWarehouseOrderStateType.code = WarehouseOrderStateType.WAREHOUSE_ORDER_CREATED
             tmpWarehouseOrderStateType.save()
         }
         if(!WarehouseOrderStateType.findByCode(WarehouseOrderStateType.WAREHOUSE_ORDER_VALIDATED)){
             def tmpWarehouseOrderStateType = new WarehouseOrderStateType()
-            tmpWarehouseOrderStateType.description = "Orden de bodega validada"
+            tmpWarehouseOrderStateType.description = "Validada"
             tmpWarehouseOrderStateType.code = WarehouseOrderStateType.WAREHOUSE_ORDER_VALIDATED
             tmpWarehouseOrderStateType.save()
+        }
+        if(!WarehouseOrderStateType.findByCode(WarehouseOrderStateType.WAREHOUSE_ORDER_DECLINED)){
+            def tmpWarehouseOrderStateType = new WarehouseOrderStateType()
+            tmpWarehouseOrderStateType.description = "Rechazada"
+            tmpWarehouseOrderStateType.code = WarehouseOrderStateType.WAREHOUSE_ORDER_DECLINED
+            tmpWarehouseOrderStateType.save()
+        }
+
+        //tipos de movimiento de bodegas
+        if(!WarehouseOrderMovementType.findByCode(WarehouseOrderMovementType.WAREHOUSE_ORDER_MOVEMENT_PRODUCTION)){
+            def tmpWarehouseOrderMovementType = new WarehouseOrderMovementType()
+            tmpWarehouseOrderMovementType.description = "Producción"
+            tmpWarehouseOrderMovementType.code = WarehouseOrderMovementType.WAREHOUSE_ORDER_MOVEMENT_PRODUCTION
+            tmpWarehouseOrderMovementType.save()
+        }
+        if(!WarehouseOrderMovementType.findByCode(WarehouseOrderMovementType.WAREHOUSE_ORDER_MOVEMENT_SALE)){
+            def tmpWarehouseOrderMovementType = new WarehouseOrderMovementType()
+            tmpWarehouseOrderMovementType.description = "Venta"
+            tmpWarehouseOrderMovementType.code = WarehouseOrderMovementType.WAREHOUSE_ORDER_MOVEMENT_SALE
+            tmpWarehouseOrderMovementType.save()
+        }
+        if(!WarehouseOrderMovementType.findByCode(WarehouseOrderMovementType.WAREHOUSE_ORDER_MOVEMENT_BETWEEN_STOREHOUSES)){
+            def tmpWarehouseOrderMovementType = new WarehouseOrderMovementType()
+            tmpWarehouseOrderMovementType.description = "Movimiento entre bodegas"
+            tmpWarehouseOrderMovementType.code = WarehouseOrderMovementType.WAREHOUSE_ORDER_MOVEMENT_BETWEEN_STOREHOUSES
+            tmpWarehouseOrderMovementType.save()
         }
 
         //monedas

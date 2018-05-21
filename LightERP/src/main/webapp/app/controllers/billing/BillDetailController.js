@@ -5,9 +5,9 @@ angular
     .controller('BillDetailController', BillDetailController);
 
 BillDetailController.$inject = ['$uibModal', '$http', '$state', '$stateParams', '$scope', 'billService', '$timeout', 'ngDialog', 'toaster',
-    '$filter', 'DTOptionsBuilder', 'DTColumnDefBuilder', 'APP_CONSTANTS', 'printService'];
+    '$filter', 'DTOptionsBuilder', 'DTColumnDefBuilder', 'APP_CONSTANTS', 'printService', '$window', 'productService'];
 function BillDetailController($uibModal, $http, $state, $stateParams, $scope, billService, $timeout, ngDialog, toaster, $filter,
-                              DTOptionsBuilder, DTColumnDefBuilder, APP_CONSTANTS, printService) {
+                              DTOptionsBuilder, DTColumnDefBuilder, APP_CONSTANTS, printService, $window, productService) {
     var vm = this;
     $scope.globalConstants = APP_CONSTANTS;
     activateCalendar();
@@ -93,7 +93,8 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
 
         var bill;
         billService.get($stateParams.billId).then(function (response) {
-            console.log(response.data);
+
+            console.log(response)
 
             if (response.code == '0') {
 
@@ -111,6 +112,14 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
                 vm.paidTotal = calculatePaidTotal(bill);
                 vm.toBepaidTotal = calculateToBePaidTotal(bill);
             }
+        });
+
+        /**=========================================================
+         * Productos
+         =========================================================*/
+
+        productService.getAll().then(function (response) {
+            vm.productList = response;
         });
 
         /**=========================================================
@@ -317,8 +326,23 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
                 className: 'ngdialog-theme-default',
                 closeByDocument: false,
                 closeByEscape: false
-            }).then(function (value) {
-                vm.updateBill(currentBill);
+            }).then(function () {
+
+                if(validateNegativeLotResult(currentBill)){
+
+                    ngDialog.openConfirm({
+                        template: 'containsNegativeLotsWarning',
+                        className: 'ngdialog-theme-default',
+                        closeByDocument: false,
+                        closeByEscape: false
+                    }).then(function (value) {
+                        vm.updateBill(currentBill);
+                    }, function (reason) {
+                        console.log('Modal promise rejected. Reason: ', reason);
+                    });
+
+                }
+
             }, function (reason) {
                 console.log('Modal promise rejected. Reason: ', reason);
             });
@@ -343,6 +367,7 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
         var userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
 
         var billToUpdate = {
+            "userName" : JSON.parse($window.sessionStorage["userInfo"]).userName,
             "billId" : currentBill.id,
             "customerId": currentBill.customer.id,
             "exchangeRate": parseFloat(currentBill.exchangeRate),
@@ -357,7 +382,7 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
 
         console.log(billToUpdate);
 
-        billService.updateBill(billToUpdate).then(function (response) {
+        /*billService.updateBill(billToUpdate).then(function (response) {
             var toasterdata;
 
             if (response.code == "0") {
@@ -381,7 +406,7 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
             }, 3000);
         }, function (error) {
             console.log(error);
-        });
+        });*/
     };
 
     /**=========================================================
@@ -764,6 +789,32 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
         return toBePaidTotal;
     }
 
+    /**======================================================================================
+     * Valida si en bodega hay cantidades suficientes para una factura en estado borrador
+     ========================================================================================*/
+    function validateNegativeLotResult(currentBill){
+
+        var productList = vm.productList;
+        var producesNegativeLot = false;
+
+        for (var i = 0; i < currentBill.billDetails.length; i++) {
+            var tmpProduct = $filter("filter")(productList, {id: currentBill.billDetails[i].product.id})[0];
+
+            var productSum = 0;
+
+            angular.forEach(tmpProduct.productLots, function(value){
+                productSum += value.quantity;
+            });
+
+            if (productSum - currentBill.billDetails[i].quantity < 0) {
+                producesNegativeLot =  true;
+                break;
+            }
+        }
+
+        return producesNegativeLot;
+    }
+
     /**=========================================================
      * Formatea el numero de factura para que muestre 6 caracteres
      =========================================================*/
@@ -788,16 +839,10 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
                     formatedBillNumber = formatedBillNumber.concat("0");
                 }
 
-                formatedBillNumber = formatedBillNumber.concat("B");
-
+                formatedBillNumber = formatedBillNumber.concat("PR");
                 formatedBillNumber = formatedBillNumber.concat(bill.id);
-
             }
-
             return formatedBillNumber;
-
         }
-
     };
-
 }

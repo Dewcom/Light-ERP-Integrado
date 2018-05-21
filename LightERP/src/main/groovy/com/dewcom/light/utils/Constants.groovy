@@ -49,13 +49,21 @@ class Constants {
     public static final Integer FACTURA_TOTAL_DESCUENTOS = 3;
     public static final Integer FACTURA_TOTAL_IMPUESTOS = 4;
 
-
     //tipos registro factura
-    public static final Integer BILL_DRAFT_STATE_CODE = 1;
-    public static final Integer BILL_VALIDATED_STATE_CODE = 2;
-    public static final Integer BILL_PARTIALLY_PAID_STATE_CODE = 3;
-    public static final Integer BILL_PAID_STATE_CODE = 4;
-    public static final Integer BILL_VOID_STATE_CODE = 5;
+    public static final Integer BILL_DRAFT_STATE_CODE = 1
+    public static final Integer BILL_VALIDATED_STATE_CODE = 2
+    public static final Integer BILL_PARTIALLY_PAID_STATE_CODE = 3
+    public static final Integer BILL_PAID_STATE_CODE = 4
+    public static final Integer BILL_VOID_STATE_CODE = 5
+    public static final Integer BILL_PRE_BILL_STATE_CODE = 6
 
+    //tipos de estados de orden de bodega
+    public static final Integer WAREHOUSE_ORDER_CREATED = 1
+    public static final Integer WAREHOUSE_ORDER_VALIDATED =2
+
+    //tipos de movimientos de bodega
+    public static final Integer WAREHOUSE_ORDER_MOVEMENT_PRODUCTION = 1
+    public static final Integer WAREHOUSE_ORDER_MOVEMENT_SALE = 2
+    public static final Integer WAREHOUSE_ORDER_MOVEMENT_BETWEEN_STOREHOUSES = 3
 
 }

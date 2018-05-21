@@ -1,5 +1,6 @@
 package com.dewcom.light.admin
 
+import com.dewcom.light.billing.Taxes
 import com.dewcom.light.rest.thirdparty.UpdateAgentTypeRequest
 import com.dewcom.light.utils.Constants
 import com.dewcom.light.exception.LightRuntimeException
@@ -17,8 +18,10 @@ import com.dewcom.light.rest.warehouse.UpdateProductTypeRequest
 import com.dewcom.light.thirdparty.AgentType
 import com.dewcom.light.thirdparty.CustomerType
 import com.dewcom.light.thirdparty.IdentificationType
+import com.dewcom.light.warehouse.MeasureUnit
 import com.dewcom.light.warehouse.PresentationType
 import com.dewcom.light.warehouse.ProductType
+import com.dewcom.light.warehouse.WarehouseOrderMovementType
 import grails.transaction.Transactional
 
 @Transactional
@@ -30,11 +33,11 @@ class AdminService {
         log.info "====== Getting identification type from DB ======"
         log.info pid
         try{
-            IdentificationType idTypeFromDB = IdentificationType.findByIdAndEnabled(pid, Constants.ESTADO_ACTIVO);
+            IdentificationType idTypeFromDB = IdentificationType.findByIdAndEnabled(pid, Constants.ESTADO_ACTIVO)
             return idTypeFromDB
         }catch(Exception e){
-            log.error(e);
-            throw new LightRuntimeException(messageSource.getMessage("get.identification.type.error", null, Locale.default));
+            log.error(e)
+            throw new LightRuntimeException(messageSource.getMessage("get.identification.type.error", null, Locale.default))
         }
     }
 
@@ -160,7 +163,7 @@ class AdminService {
 
     def createCustomerType(CustomerType pcustomerType) {
         try{
-            pcustomerType.save(flush: true, failOnError:true)
+            return pcustomerType.save(flush: true, failOnError:true)
         }catch(Exception e){
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("create.customer.type.error", null, Locale.default));
@@ -179,11 +182,11 @@ class AdminService {
 
     def updateCustomerType(CustomerType pcustomerType, UpdateCustomerTypeRequest pupdateCustomerTypeREST) {
         try{
-            pcustomerType.name = pupdateCustomerTypeREST.name;
-            pcustomerType.save(flush: true, failOnError:true)
+            pcustomerType.name = pupdateCustomerTypeREST.name
+            pcustomerType.save(failOnError: true)
         }catch(Exception e){
-            log.error(e);
-            throw new LightRuntimeException(messageSource.getMessage("update.customer.type.error", null, Locale.default));
+            log.error(e)
+            throw new LightRuntimeException(messageSource.getMessage("update.customer.type.error", null, Locale.default))
         }
     }
 
@@ -193,51 +196,51 @@ class AdminService {
         log.info "====== Getting product type from DB ======"
         log.info pid
         try{
-            ProductType productTypeFromDB = ProductType.findByIdAndEnabled(pid, Constants.ESTADO_ACTIVO);
+            ProductType productTypeFromDB = ProductType.findByIdAndEnabled(pid, Constants.ESTADO_ACTIVO)
             return productTypeFromDB
         }catch(Exception e){
-            log.error(e);
-            throw new LightRuntimeException(messageSource.getMessage("get.product.type.error", null, Locale.default));
+            log.error(e)
+            throw new LightRuntimeException(messageSource.getMessage("get.product.type.error", null, Locale.default))
         }
     }
 
     def getAllProductTypes() {
         log.info "====== Getting all product types from DB ======"
         try{
-            def productTypesFromDB = ProductType.findAllByEnabled(Constants.ESTADO_ACTIVO);
+            def productTypesFromDB = ProductType.findAllByEnabled(Constants.ESTADO_ACTIVO)
             return productTypesFromDB
         }catch(Exception e){
-            log.error(e);
-            throw new LightRuntimeException(messageSource.getMessage("get.all.product.types.error", null, Locale.default));
+            log.error(e)
+            throw new LightRuntimeException(messageSource.getMessage("get.all.product.types.error", null, Locale.default))
         }
     }
 
     def createProductType(ProductType pproductType) {
         try{
-            pproductType.save(flush: true, failOnError:true)
+            return pproductType.save(flush: true, failOnError:true)
         }catch(Exception e){
-            log.error(e);
-            throw new LightRuntimeException(messageSource.getMessage("create.product.type.error", null, Locale.default));
+            log.error(e)
+            throw new LightRuntimeException(messageSource.getMessage("create.product.type.error", null, Locale.default))
         }
     }
 
     def deleteProductType(ProductType pproductType) {
         try{
-            pproductType.enabled = Constants.ESTADO_INACTIVO;
+            pproductType.enabled = Constants.ESTADO_INACTIVO
             pproductType.save(flush: true, failOnError:true)
         }catch(Exception e){
-            log.error(e);
-            throw new LightRuntimeException(messageSource.getMessage("delete.product.type.error", null, Locale.default));
+            log.error(e)
+            throw new LightRuntimeException(messageSource.getMessage("delete.product.type.error", null, Locale.default))
         }
     }
 
     def updateProductType(ProductType pproductType, UpdateProductTypeRequest pupdateProductTypeREST) {
         try{
-            pproductType.name = pupdateProductTypeREST.name;
+            pproductType.name = pupdateProductTypeREST.name
             pproductType.save(flush: true, failOnError:true)
         }catch(Exception e){
-            log.error(e);
-            throw new LightRuntimeException(messageSource.getMessage("update.product.type.error", null, Locale.default));
+            log.error(e)
+            throw new LightRuntimeException(messageSource.getMessage("update.product.type.error", null, Locale.default))
         }
     }
 
@@ -269,7 +272,7 @@ class AdminService {
 
     def createPresentationType(PresentationType ppresentationType) {
         try{
-            ppresentationType.save(flush: true, failOnError:true)
+            return ppresentationType.save(flush: true, failOnError:true)
         }catch(Exception e){
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("create.presentation.type.error", null, Locale.default));
@@ -320,11 +323,11 @@ class AdminService {
     }
 
 
-        def getConfiguration(def argConfigId) {
+        def getConfiguration(def argCode) {
         log.info "====== Getting configuration from db ======"
-        log.info argConfigId
+        log.info argCode
         try{
-            Configuration config = Configuration.findById(argConfigId);
+            Configuration config = Configuration.findByCode(argCode)
             return config
         }catch(Exception e){
             log.error(e);
@@ -335,7 +338,7 @@ class AdminService {
     def getAllConfigurations() {
         log.info "====== Getting all configurations  from DB ======"
         try{
-            def customerTypesFromDB = Configuration.findAllByEnabled(Constants.ESTADO_ACTIVO);
+            def customerTypesFromDB = Configuration.findAll()
             return customerTypesFromDB
         }catch(Exception e){
             log.error(e);
@@ -379,7 +382,7 @@ class AdminService {
 
     def getAllCreditConditions() {
         try{
-            def creditConditions = CreditCondition.findAll()
+            def creditConditions = CreditCondition.findAllByEnabled(Constants.ESTADO_ACTIVO)
             return creditConditions
         }catch(Exception e){
             log.error(e);
@@ -405,6 +408,82 @@ class AdminService {
         }catch(Exception e){
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("get.all.exchange.rates.error", null, Locale.default));
+        }
+    }
+
+    def getAllTaxes() {
+        log.info "====== Getting all taxes  from DB ======"
+        try{
+            def taxes = Taxes.findAllByEnabled(Constants.ESTADO_ACTIVO)
+            return taxes
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("get.all.taxes.error", null, Locale.default));
+        }
+    }
+
+    def getAllMeasureUnits() {
+        log.info "====== Getting all measureUnits  from DB ======"
+        try{
+            def measureUnits = MeasureUnit.findAllByEnabled(Constants.ESTADO_ACTIVO)
+            return measureUnits
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("generic.get.error", null, Locale.default));
+        }
+    }
+
+    def createOrUpdateMeasureUnit(def pMeasure) {
+        log.info "====== create/update measure unit  ======"
+        try{
+            return pMeasure.save()
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("generic.create.error", null, Locale.default));
+        }
+    }
+
+    def createOrUpdateTax(def pTax) {
+        log.info "====== create/update tax  ======"
+        try{
+            def tmpTax = pTax.save()
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("createUpdate.tax.error", null, Locale.default));
+        }
+    }
+
+    def deleteTax(def pTax) {
+        log.info "====== delete tax  ======"
+        try{
+            pTax.enabled = Constants.ESTADO_INACTIVO
+            pTax.save()
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("tax.delete.error", null, Locale.default));
+        }
+    }
+
+    def deleteMeasureUnit(def pMeasure) {
+        log.info "====== delete measureUnit  ======"
+        try{
+            pMeasure.enabled = Constants.ESTADO_INACTIVO
+            pMeasure.save()
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("generic.delete.error", null, Locale.default));
+        }
+    }
+
+    def getTaxById(def pid) {
+        log.info "====== Getting tax by id from DB ======"
+        log.info pid
+        try{
+            Taxes taxFromDB = Taxes.findByIdAndEnabled(pid, Constants.ESTADO_ACTIVO);
+            return taxFromDB
+        }catch(Exception e){
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("get.tax.error", null, Locale.default));
         }
     }
 
@@ -476,13 +555,23 @@ class AdminService {
 
 
 
-    def  createCreditCondition(def pJSON) {
+    def  createOrUpdateCreditCon(def pCreditCon) {
         try {
-            def creditCondition = new CreditCondition(pJSON)
-            creditCondition.save(flush: true, failOnError:true)
+             def tmpCrd= pCreditCon.save(flush: true, failOnError:true)
         } catch (Exception e) {
             log.error(e);
             throw new LightRuntimeException(messageSource.getMessage("create.constantReference.error", null, Locale.default));
+        }
+    }
+
+
+    def  deleteCreditCondition(def pCreditCondition) {
+        try {
+            pCreditCondition.enabled = Constants.ESTADO_INACTIVO
+            pCreditCondition.save()
+        } catch (Exception e) {
+            log.error(e);
+            throw new LightRuntimeException(messageSource.getMessage("delete.constantReference.error", null, Locale.default));
         }
     }
 
@@ -506,4 +595,63 @@ class AdminService {
         }
     }
 
+    def getMaxCreditConCode(){
+        def lastCode = 0;
+        try{
+             lastCode = CreditCondition.createCriteria().get {
+                projections {
+                    max "code"
+                }
+              } as int
+        }
+        catch(Exception e){
+            log.error(e);
+        }
+        lastCode
+    }
+
+    def getMaxMeasureUnitCode(){
+        def lastCode = 0;
+        try{
+            lastCode = MeasureUnit.createCriteria().get {
+                projections {
+                    max "code"
+                }
+            } as int
+        }
+        catch(Exception e){
+            log.error(e);
+        }
+        lastCode
+    }
+
+    def getMaxPresentationTypeCode(){
+        def lastCode = 0;
+        try{
+            lastCode = PresentationType.createCriteria().get {
+                projections {
+                    max "code"
+                }
+            } as int
+        }
+        catch(Exception e){
+            log.error(e);
+        }
+        lastCode
+    }
+
+    def getMaxProductCode(){
+        def lastCode = 0;
+        try{
+            lastCode = ProductType.createCriteria().get {
+                projections {
+                    max "code"
+                }
+            } as int
+        }
+        catch(Exception e){
+            log.error(e);
+        }
+        lastCode
+    }
 }
