@@ -5,14 +5,14 @@ import com.dewcom.light.utils.Constants
 
 class WarehouseOrderDetail {
     WarehouseOrder warehouseOrder
-    Product product
-    Integer quantity
+    ProductLot productLot
+    Float quantity
     Byte enabled = Constants.ESTADO_ACTIVO
 
     static belongsTo = [WarehouseOrder]
     static constraints = {
         warehouseOrder nullable: false
-        product nullable: false
+        productLot nullable: false
         quantity nullable: false
     }
 }

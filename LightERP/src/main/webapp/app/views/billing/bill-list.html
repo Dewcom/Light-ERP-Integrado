@@ -52,7 +52,7 @@
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="billObj in controller.billListInf track by $index">
-                                            <td ng-if="billObj.billNumber == null" >{{"B" + billObj.id }}</td>
+                                            <td ng-if="billObj.billNumber == null" >{{"PR" + billObj.id }}</td>
                                             <td ng-if="billObj.billNumber != null" >{{controller.formatBillNumber(billObj)}}</td>
                                             <td>{{ billObj.billState.description }}</td>
                                             <td>{{billObj.customer.name + " " + billObj.customer.firstLastName + " " + billObj.customer.secondLastName}}</td>

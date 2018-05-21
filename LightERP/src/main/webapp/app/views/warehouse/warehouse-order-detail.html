@@ -1,0 +1,188 @@
+<div>
+    <div class="row">
+        <div class="col-md-7">
+            <h3>Detalle de orden de salida</h3>
+        </div>
+    </div>
+    <form class="panel" name="controller.billDetailForm" action="" method="post" novalidate="novalidate">
+        <div>
+            <div class="mb">
+                <hr class="hidden-print"/>
+                <div class="clearfix">
+                    <button uib-tooltip="Imprimir orden" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="controller.toPDF(currentWarehouseOrder)" class="btn btn-labeled btn-info pull-left ml">
+                            <span class="btn-label">
+                                <em class="fa fa-print"></em>
+                            </span>Imprimir
+                    </button>
+                    <button uib-tooltip="Regresar a la lista" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ng-click="controller.goBack()"
+                            class="btn btn-labeled btn-info pull-left ml">
+                              <span class="btn-label">
+                                 <em class="fa fa-mail-reply"></em>
+                              </span>Regresar
+                    </button>
+                    <button uib-tooltip="Rechazar orden" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button"
+                            ng-click="controller.rejectOrder(currentWarehouseOrder.id)"
+                            class="btn btn-labeled btn-danger pull-right mr" ng-show="currentWarehouseOrder.warehouseOrderStateType.code == globalConstants.WAREHOUSE_ORDER_DRAFT_STATE">
+                              <span class="btn-label">
+                                 <em class="fa fa-times"></em>
+                              </span>Rechazar
+                    </button>
+                    <button uib-tooltip="Modificar orden" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button"
+                            ui-sref="app.updateBill({billId: currentWarehouseOrder.id})"
+                            class="btn btn-labeled btn-warning pull-right mr" ng-show="currentWarehouseOrder.warehouseOrderStateType.code == globalConstants.WAREHOUSE_ORDER_DRAFT_STATE">
+                              <span class="btn-label">
+                                 <em class="fa fa-pencil"></em>
+                              </span>Modificar
+                    </button>
+                    <button uib-tooltip="Validar orden" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button"
+                            class="btn btn-labeled btn-success pull-right mr"
+                            ng-click="controller.approveWarehouseOrder(currentWarehouseOrder)" ng-show="currentWarehouseOrder.warehouseOrderStateType.code == globalConstants.WAREHOUSE_ORDER_DRAFT_STATE">
+                              <span class="btn-label">
+                                 <em class="fa fa-check-circle"></em>
+                              </span>Aprovar orden
+                    </button>
+                </div>
+            </div>
+            <hr>
+            <div class="panel">
+                <div class="panel-body">
+                    <h3 class="mt0">{{"Orden # " + formatedWarehouseOrderNumber}}</h3>
+                    <hr/>
+                    <div class="row mb-lg">
+                        <div class="col-lg-4 col-xs-6 br pv">
+                            <div class="row">
+                                <div class="col-md-2 text-center visible-md visible-lg">
+                                    <em class="fa fa-user fa-4x text-muted"></em>
+                                </div>
+                                <div class="col-md-10">
+                                    <h4>{{currentWarehouseOrder.bill.customer.name + " " + currentWarehouseOrder.bill.customer.firstLastName + " "
+                                        + currentWarehouseOrder.bill.customer.secondLastName}}</h4>
+                                    <address></address>
+                                    {{currentWarehouseOrder.bill.address.district.name + ", " +
+                                    currentWarehouseOrder.bill.address.canton.name}}<br/>
+                                    {{currentWarehouseOrder.bill.address.province.name}}<br/>
+                                    {{currentWarehouseOrder.bill.address.address}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-xs-6 br pv">
+                            <div class="row">
+                                <div class="col-md-2 text-center visible-md visible-lg">
+                                    <em class="fa fa-phone fa-4x text-muted"></em>
+                                </div>
+                                <div class="col-md-10">
+                                    <h4>{{currentWarehouseOrder.bill.customer.contacts[0].name + " " +
+                                        currentWarehouseOrder.bill.customer.contacts[0].firstLastName + " " +
+                                        currentWarehouseOrder.bill.customer.contacts[0].secondLastName }}</h4>
+                                    <address></address>
+                                    {{currentWarehouseOrder.bill.customer.contacts[0].phoneNumber1}}<br/>
+                                    {{currentWarehouseOrder.bill.customer.contacts[0].mobile}}<br/>
+                                    {{currentWarehouseOrder.bill.customer.contacts[0].email}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clearfix hidden-md hidden-lg">
+                            <hr/>
+                        </div>
+                        <div class="col-lg-4 col-xs-12 pv">
+                            <div class="clearfix">
+                                <p class="pull-left">ORDEN NO.</p>
+                                <p class="pull-right mr">{{formatedWarehouseOrderNumber}}</p>
+                            </div>
+                            <div class="clearfix">
+                                <p class="pull-left">Tipo de movimiento</p>
+                                <p class="pull-right mr">{{currentWarehouseOrder.warehouseOrderMovementType.description}}</p>
+                            </div>
+                            <div class="clearfix">
+                                <p class="pull-left">Estado de la orden</p>
+                                <p class="pull-right mr">{{currentWarehouseOrder.warehouseOrderStateType.description}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive table-bordered mb-lg">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Número de lote</th>
+                                <th>Fecha de expiración</th>
+                                <th>Código de producto</th>
+                                <th>Nombre del producto</th>
+                                <th class="text-right">Cantidad</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="orderDetail in currentWarehouseOrder.warehouseOrderDetails">
+                                <td>{{orderDetail.productLot.lotNumber}}</td>
+                                <td>{{orderDetail.productLot.expirationDate | date :  "dd-MM-yyyy"}}</td>
+                                <td>{{orderDetail.productLot.product.productCode}}</td>
+                                <td>{{orderDetail.productLot.product.name}}</td>
+                                <td class="text-right">{{orderDetail.quantity}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!--<div class="row">
+                        <div class="col-sm-offset-8 col-sm-4 pv">
+                            <div class="clearfix">
+                                <p class="pull-left">Subtotal</p>
+                                <p class="pull-right mr" ng-if="currentWarehouseOrder.currency.currencyCode == globalConstants.CURRENCY_DOLLARS_CODE">{{
+                                    currentWarehouseOrder.subTotalAmount | currency : "$" : 2}}</p>
+                                <p class="pull-right mr" ng-if="currentWarehouseOrder.currency.currencyCode == globalConstants.CURRENCY_COLONES_CODE">{{
+                                    currentWarehouseOrder.subTotalAmount | currency : "₡" : 2}}</p>
+                            </div>
+                            <div class="clearfix">
+                                <p class="pull-left">Total de descuentos</p>
+                                <p class="pull-right mr" ng-if="currentWarehouseOrder.currency.currencyCode == globalConstants.CURRENCY_DOLLARS_CODE">{{
+                                    currentWarehouseOrder.totalDiscount | currency : "$" : 2}}</p>
+                                <p class="pull-right mr" ng-if="currentWarehouseOrder.currency.currencyCode == globalConstants.CURRENCY_COLONES_CODE">{{
+                                    currentWarehouseOrder.totalDiscount | currency : "₡" : 2}}</p>
+                            </div>
+                            <div class="clearfix">
+                                <p class="pull-left">Total de impuestos</p>
+                                <p class="pull-right mr" ng-if="currentWarehouseOrder.currency.currencyCode == globalConstants.CURRENCY_DOLLARS_CODE">{{
+                                    currentWarehouseOrder.totalTaxAmount | currency : "$" : 2}}</p>
+                                <p class="pull-right mr" ng-if="currentWarehouseOrder.currency.currencyCode == globalConstants.CURRENCY_COLONES_CODE">{{
+                                    currentWarehouseOrder.totalTaxAmount | currency : "₡" : 2}}</p>
+                            </div>
+                            <div class="clearfix">
+                                <p class="pull-left h3">TOTAL</p>
+                                <p class="pull-right h3 mr" ng-if="currentWarehouseOrder.currency.currencyCode == globalConstants.CURRENCY_DOLLARS_CODE">{{
+                                    currentWarehouseOrder.totalAmount | currency : "$" : 2}}</p>
+                                <p class="pull-right h3 mr" ng-if="currentWarehouseOrder.currency.currencyCode == globalConstants.CURRENCY_COLONES_CODE">{{
+                                    currentWarehouseOrder.totalAmount | currency : "₡" : 2}}</p>
+                            </div>
+                        </div>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+    </form>
+    <toaster-container
+            toaster-options="{'position-class': 'toast-bottom-right', 'close-button':true}"></toaster-container>
+    <script type="text/ng-template" id="rejectOrderModal">
+        <div class="ngdialog-message text-center">
+            <h3>Rechazo de orden</h3>
+            <p>Por favor agregar el motivo del rechazo.</p>
+            <div class="form-group mb">
+                <div>
+                    <input type="text" name="rejectReason" required="" ng-model="rejectReason" class="form-control" placeholder="Motivo de rechazo"/>
+                </div>
+            </div>
+            <div ng-show="rejectReason != null">
+                <button type="button" ng-click="confirm(rejectReason)" class="btn btn-primary mr">Confirmar</button>
+                <button type="button" ng-click="closeThisDialog('button')" class="btn btn-default">Cancelar</button>
+            </div>
+        </div>
+    </script>
+    <script type="text/ng-template" id="approveOrderModal">
+        <div class="ngdialog-message text-center">
+            <h3>Aprobar orden</h3>
+            <p>¿Está seguro que desea aprobar la orden?</p>
+            <div>
+                <button type="button" ng-click="confirm()" class="btn btn-primary mr">Confirmar</button>
+                <button type="button" ng-click="closeThisDialog('button')" class="btn btn-default">Cancelar</button>
+            </div>
+        </div>
+    </script>
+    <div ng-include="'app/views/billing/modal/update-payment-modal.html'"></div>
+</div>

@@ -21,6 +21,7 @@ import com.dewcom.light.thirdparty.IdentificationType
 import com.dewcom.light.warehouse.MeasureUnit
 import com.dewcom.light.warehouse.PresentationType
 import com.dewcom.light.warehouse.ProductType
+import com.dewcom.light.warehouse.WarehouseOrderMovementType
 import grails.transaction.Transactional
 
 @Transactional
@@ -32,11 +33,11 @@ class AdminService {
         log.info "====== Getting identification type from DB ======"
         log.info pid
         try{
-            IdentificationType idTypeFromDB = IdentificationType.findByIdAndEnabled(pid, Constants.ESTADO_ACTIVO);
+            IdentificationType idTypeFromDB = IdentificationType.findByIdAndEnabled(pid, Constants.ESTADO_ACTIVO)
             return idTypeFromDB
         }catch(Exception e){
-            log.error(e);
-            throw new LightRuntimeException(messageSource.getMessage("get.identification.type.error", null, Locale.default));
+            log.error(e)
+            throw new LightRuntimeException(messageSource.getMessage("get.identification.type.error", null, Locale.default))
         }
     }
 
@@ -181,11 +182,11 @@ class AdminService {
 
     def updateCustomerType(CustomerType pcustomerType, UpdateCustomerTypeRequest pupdateCustomerTypeREST) {
         try{
-            pcustomerType.name = pupdateCustomerTypeREST.name;
+            pcustomerType.name = pupdateCustomerTypeREST.name
             pcustomerType.save(failOnError: true)
         }catch(Exception e){
-            log.error(e);
-            throw new LightRuntimeException(messageSource.getMessage("update.customer.type.error", null, Locale.default));
+            log.error(e)
+            throw new LightRuntimeException(messageSource.getMessage("update.customer.type.error", null, Locale.default))
         }
     }
 
@@ -195,22 +196,22 @@ class AdminService {
         log.info "====== Getting product type from DB ======"
         log.info pid
         try{
-            ProductType productTypeFromDB = ProductType.findByIdAndEnabled(pid, Constants.ESTADO_ACTIVO);
+            ProductType productTypeFromDB = ProductType.findByIdAndEnabled(pid, Constants.ESTADO_ACTIVO)
             return productTypeFromDB
         }catch(Exception e){
-            log.error(e);
-            throw new LightRuntimeException(messageSource.getMessage("get.product.type.error", null, Locale.default));
+            log.error(e)
+            throw new LightRuntimeException(messageSource.getMessage("get.product.type.error", null, Locale.default))
         }
     }
 
     def getAllProductTypes() {
         log.info "====== Getting all product types from DB ======"
         try{
-            def productTypesFromDB = ProductType.findAllByEnabled(Constants.ESTADO_ACTIVO);
+            def productTypesFromDB = ProductType.findAllByEnabled(Constants.ESTADO_ACTIVO)
             return productTypesFromDB
         }catch(Exception e){
-            log.error(e);
-            throw new LightRuntimeException(messageSource.getMessage("get.all.product.types.error", null, Locale.default));
+            log.error(e)
+            throw new LightRuntimeException(messageSource.getMessage("get.all.product.types.error", null, Locale.default))
         }
     }
 
@@ -218,33 +219,34 @@ class AdminService {
         try{
             return pproductType.save(flush: true, failOnError:true)
         }catch(Exception e){
-            log.error(e);
-            throw new LightRuntimeException(messageSource.getMessage("create.product.type.error", null, Locale.default));
+            log.error(e)
+            throw new LightRuntimeException(messageSource.getMessage("create.product.type.error", null, Locale.default))
         }
     }
 
     def deleteProductType(ProductType pproductType) {
         try{
-            pproductType.enabled = Constants.ESTADO_INACTIVO;
+            pproductType.enabled = Constants.ESTADO_INACTIVO
             pproductType.save(flush: true, failOnError:true)
         }catch(Exception e){
-            log.error(e);
-            throw new LightRuntimeException(messageSource.getMessage("delete.product.type.error", null, Locale.default));
+            log.error(e)
+            throw new LightRuntimeException(messageSource.getMessage("delete.product.type.error", null, Locale.default))
         }
     }
 
     def updateProductType(ProductType pproductType, UpdateProductTypeRequest pupdateProductTypeREST) {
         try{
-            pproductType.name = pupdateProductTypeREST.name;
+            pproductType.name = pupdateProductTypeREST.name
             pproductType.save(flush: true, failOnError:true)
         }catch(Exception e){
-            log.error(e);
-            throw new LightRuntimeException(messageSource.getMessage("update.product.type.error", null, Locale.default));
+            log.error(e)
+            throw new LightRuntimeException(messageSource.getMessage("update.product.type.error", null, Locale.default))
         }
     }
 
 
     //Presentation type
+
     PresentationType getPresentationType(def pid) {
         log.info "====== Getting presentation type from DB ======"
         log.info pid
@@ -325,7 +327,7 @@ class AdminService {
         log.info "====== Getting configuration from db ======"
         log.info argCode
         try{
-            Configuration config = Configuration.findByCode(argCode);
+            Configuration config = Configuration.findByCode(argCode)
             return config
         }catch(Exception e){
             log.error(e);
@@ -336,7 +338,7 @@ class AdminService {
     def getAllConfigurations() {
         log.info "====== Getting all configurations  from DB ======"
         try{
-            def customerTypesFromDB = Configuration.findAll();
+            def customerTypesFromDB = Configuration.findAll()
             return customerTypesFromDB
         }catch(Exception e){
             log.error(e);

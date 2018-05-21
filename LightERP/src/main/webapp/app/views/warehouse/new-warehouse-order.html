@@ -1,0 +1,120 @@
+<div>
+    <div class="row">
+        <div class="col-md-7">
+            <h3>Nueva orden de bodega</h3>
+        </div>
+    </div>
+    <div class="mb">
+        <hr class="hidden-print"/>
+        <div class="clearfix">
+            <button uib-tooltip="Regresar a la lista" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="controller.goBack()" class="btn btn-labeled btn-info pull-left">
+                <span class="btn-label"> <em class="fa fa-mail-reply"></em></span>Regresar
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="panel b">
+                <div class="panel-body">
+                    <div class="panel-body">
+                        <div class="pull-left text-bold text-dark col-md-6">FECHA</div>
+                        <div class="pull-right col-md-6">
+                            <button uib-tooltip="Calendario" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="controller.open($event)" class="btn btn-default">
+                                <em class="fa fa-calendar"></em>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="input-group">
+                        <input type="text" uib-datepicker-popup="{{controller.format}}" ng-model="controller.warehouseOrderDate"
+                               is-open="controller.opened" min-date="controller.minDate" max-date="'2020-12-31'"
+                               datepicker-options="controller.dateOptions" popup-placement="top" ng-required="true"
+                               current-text="Hoy" clear-text="Limpiar" close-text="Salir" class="form-control"
+                               onkeydown="return false"/>
+                    </p>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        <button ng-show="controller.addedProductList.length > 0 && controller.warehouseOrderDate != null" type="button" class="btn btn-primary btn-block"
+                                ng-click="controller.submitForm()">
+                            Crear orden
+                        </button>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-10">
+            <div class="container-md">
+                <!-- Información del cliente-->
+                <form name="controller.warehouseOrderForm" action="" method="post" novalidate="novalidate">
+
+                    <div>
+                        <div class="col-lg-12">
+                            <h4>Tipo de movimiento</h4>
+                            <div class="form-group col-lg-6">
+                                <div class="controls">
+                                    <select name="controller.warehouseOrderMovementType" ng-model="controller.warehouseOrderMovementType" required=""
+                                            ng-options="item.code as item.description for item in controller.warehouseOrderMovementsTypes"
+                                            class="form-control" >
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="pull-right">
+                                <button uib-tooltip="Agregar nuevo producto" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="controller.openAddProductModal()"
+                                        class="btn btn-labeled btn-success addButton">
+                                  <span class="btn-label">
+                                     <em class="fa fa-plus"></em>
+                                  </span>Agregar producto
+                                </button>
+                            </div>
+                            <h4>Productos escogidos</h4>
+                            <table datatable="ng" dt-options="controller.dtOptionsAddedProductLots"
+                                   dt-column-defs="controller.dtColumnDefsAddedProductLots"
+                                   class="row-border hover">
+                                <thead>
+                                <tr>
+                                    <th>Cantidad total</th>
+                                    <th>Código</th>
+                                    <th>Nombre</th>
+                                    <th>Total de lotes</th>
+                                    <th>Eliminar</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="addedProductObj in controller.addedProductList">
+                                    <td>{{ addedProductObj.totalQuantity }}</td>
+                                    <td>{{ addedProductObj.productCode }}</td>
+                                    <td>{{ addedProductObj.name }}</td>
+                                    <td>{{ addedProductObj.productLotsTotal }}</td>
+                                    <td>
+                                        <button uib-tooltip="Eliminar" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="controller.removeProduct($index)"
+                                                class="btn btn-sm btn-danger">
+                                            <em class="fa fa-trash-o"></em>
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+                <toaster-container toaster-options="{'position-class': 'toast-bottom-right', 'close-button':true, 'body-output-type': 'trustedHtml'}"></toaster-container>
+
+            </div>
+        </div>
+        <script type="text/ng-template" id="createPreBillModal">
+            <div class="ngdialog-message text-center">
+                <h3>Crear pre-factura</h3>
+                <p>¿Está seguro que desea crear pre-factura?</p>
+                <p>La misma será enviada a bodega para su aprobación</p>
+                <div>
+                    <button type="button" ng-click="confirm(confirmValue)" class="btn btn-primary mr">Confirmar</button>
+                    <button type="button" ng-click="closeThisDialog('button')" class="btn btn-default">Cancelar</button>
+                </div>
+            </div>
+        </script>
+        <div ng-include="'app/views/warehouse/modal/add-product-to-warehouse-order-modal.html'"></div>
+    </div>
+</div>

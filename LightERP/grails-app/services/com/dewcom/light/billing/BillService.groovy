@@ -19,6 +19,7 @@ class BillService {
 
     def messageSource
     def adminService
+    def warehouseOrderService
 
     Bill getBill(def billId) {
         log.info "====== Getting bill from DB ======"
@@ -58,14 +59,14 @@ class BillService {
     }
 
     def createBill(BillRequest argRestBill) {
-        def savedBill;
+        def savedBill
         try {
             def configConsecFactura
             Bill tmpBill = new Bill()
             def billUser = User.findByUsername(argRestBill.userName)
             def customer = Customer.findById(argRestBill.customerId)
             def paymentType = BillPaymentType.findById(argRestBill.billPaymentTypeId)
-            def creditCondition;
+            def creditCondition
             tmpBill.address = Address.get(argRestBill.billAddress)
             def billDate = LightUtils.stringToDate(argRestBill.billDate,"dd-MM-yyyy")
             tmpBill.dueDate = billDate
@@ -106,25 +107,26 @@ class BillService {
                 tmpBill.subTotalAmount = calculateBillAmount(tmpBill, Constants.FACTURA_SUBTOTAL)
                 tmpBill.totalTaxAmount = calculateBillAmount(tmpBill, Constants.FACTURA_TOTAL_IMPUESTOS)
                 tmpBill.totalDiscount = calculateBillAmount(tmpBill, Constants.FACTURA_TOTAL_DESCUENTOS)
-
-                if(billStateType.code != Constants.BILL_DRAFT_STATE_CODE){
-                    checkProducLotQuantities(argRestBill.billDetails);
-                }
             }
 
             savedBill = tmpBill.save(flush: true, failOnError:true)
 
+            // Si la factura se crea correctamente se manda a crear la orden de bodega
+            if(savedBill && savedBill.billState.id == Constants.BILL_PRE_BILL_STATE_CODE){
+                warehouseOrderService.createWarehouseOrderFromBill(warehouseOrderService.getWarehouseOrderFromBill(argRestBill, savedBill))
+            }
+
         } catch (Exception e) {
-            log.error(e);
+            log.error(e)
 
             if(e instanceof LightRuntimeException){
-                throw e;
+                throw e
             }
             else{
                 throw new LightRuntimeException(messageSource.getMessage("create.bill.error", null, Locale.default));
             }
         }
-        return savedBill;
+        return savedBill
     }
 
     def deleteBill(Bill bill) {
@@ -138,6 +140,8 @@ class BillService {
     }
 
     def updateBill(UpdateBillRequest argUpdateBillRequest) {
+
+        def updatedBill
         try {
             Bill tmpBillToUpdate = Bill.findByIdAndEnabled(argUpdateBillRequest.billId, Constants.ESTADO_ACTIVO)
             if (tmpBillToUpdate) {
@@ -169,7 +173,7 @@ class BillService {
                     def tmpState = BillStateType.findByCode(argUpdateBillRequest.billStateId)
                     if(tmpState.code == BillStateType.FACTURA_VALIDADA){
                         if(tmpBillToUpdate.billState.code == BillStateType.FACTURA_CREADA){
-                           def  configConsecFactura = Configuration.findByCode(Configuration.CONFIG_CONSECUTIVO_FACTURA)
+                            def configConsecFactura = Configuration.findByCode(Configuration.CONFIG_CONSECUTIVO_FACTURA)
                             def billNumber = configConsecFactura.value as Long
                             tmpBillToUpdate.billNumber = billNumber
                             //se actualiza el consecutivo al existir para generar un nuevo candidato a utilizar
@@ -223,7 +227,11 @@ class BillService {
                     tmpBillToUpdate.totalTaxAmount = calculateBillAmount(tmpBillToUpdate, Constants.FACTURA_TOTAL_IMPUESTOS)
                     tmpBillToUpdate.totalDiscount = calculateBillAmount(tmpBillToUpdate, Constants.FACTURA_TOTAL_DESCUENTOS)
                 }
-                tmpBillToUpdate.save(flush: true, failOnError: true);
+                updatedBill = tmpBillToUpdate.save(flush: true, failOnError: true)
+
+                if(updatedBill.billState.code == BillStateType.BILL_PRE_BILL_STATE_CODE){
+                    warehouseOrderService.createWarehouseOrderFromBill(warehouseOrderService.getWarehouseOrderFromBill(argUpdateBillRequest, updatedBill))
+                }
             } else {
                 throw new LightRuntimeException(messageSource.getMessage("update.bill.notFound.error", null, Locale.default));
             }
@@ -407,6 +415,30 @@ class BillService {
     }
 
     /**
+     * Este servicio se encarga de actualizar el estado de una factura y asignar consecutivo de factura cuando la orden de salida de
+     * bodega asociada es aprobada
+     * @param pBill es la factura a actualizar
+     * @param pBillStateCode es el codigo del estado
+     * @author Leo Chen
+     */
+    def changeBillStateFromAppovedWarehouseOrder(def pBill){
+        try {
+            pBill.billState = BillStateType.findByCode(BillStateType.FACTURA_VALIDADA)
+            def configConsecFactura = Configuration.findByCode(Configuration.CONFIG_CONSECUTIVO_FACTURA)
+            def billNumber = configConsecFactura.value as Long
+            pBill.billNumber = billNumber
+            //se actualiza el consecutivo al existir para generar un nuevo candidato a utilizar
+            configConsecFactura.value = billNumber+1
+            adminService.updateConfiguration(configConsecFactura)
+
+            pBill.save(failOnError: true)
+        } catch (Exception e) {
+            log.error "Ha ocurrido un error actualizando el estado de la factura" + e.message
+            throw e
+        }
+    }
+
+    /**
      * Este metodo se encarga de determinar si las cantidades de cada una de los detalles de la factura estan disponibles
      * @param pbill es la factura a crear
      * @author Mauricio Fernandez
@@ -414,13 +446,15 @@ class BillService {
      */
     def checkProducLotQuantities(def detailsList){
 
+        // Metodo no se usa mas, eventualmente se puede eliminar
+
         detailsList.each { billDetailReq ->
             def tmpquantity = 0;
             def tmpProduct = Product.findByIdAndEnabled(billDetailReq.productId, Constants.ESTADO_ACTIVO);
 
             tmpProduct.productLot.each{ productLot ->
                 if(productLot.enabled == Constants.ESTADO_ACTIVO){
-                    tmpquantity += productLot.quantity;
+                    tmpquantity += productLot.quantity
                 }
             }
 

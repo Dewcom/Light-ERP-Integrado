@@ -175,7 +175,6 @@
              =========================================================*/
 
             productService.getAll().then(function (response) {
-                console.log(response)
                 vm.productList = $filter('orderBy')(response, 'productCode');
             });
 
@@ -347,7 +346,7 @@
                     formatedBillNumber = formatedBillNumber.concat("0");
                 }
 
-                formatedBillNumber = formatedBillNumber.concat("B");
+                formatedBillNumber = formatedBillNumber.concat("PR");
 
                 formatedBillNumber = formatedBillNumber.concat(bill.id);
 
@@ -458,11 +457,11 @@
          =========================================================*/
         vm.submitted = false;
         vm.validateInput = function (action, name, type) {
-            if (action == 'add') {
+            if (action === 'add') {
                 var input = vm.addProductToBillForm[name];
                 return (input.$dirty || vm.submitted) && input.$error[type];
 
-            } else if (action == 'modify') {
+            } else if (action === 'modify') {
                 var input = vm.form[name];
                 return (input.$dirty || vm.submitted) && input.$error[type];
             }
@@ -473,9 +472,9 @@
             var vm = this;
             vm.submitted = true;
 
-            if(registrationType == APP_CONSTANTS.BILL_DRAFT_STATE_CODE){
+            if(registrationType === APP_CONSTANTS.BILL_DRAFT_STATE_CODE){
                 vm.addBill(APP_CONSTANTS.BILL_DRAFT_STATE_CODE);
-            }else if(registrationType == APP_CONSTANTS.BILL_PRE_BILL_STATE_CODE){
+            }else if(registrationType === APP_CONSTANTS.BILL_PRE_BILL_STATE_CODE){
 
                 if (vm.newBillForm.$valid && billService.getAddedProductList().length > 0){
 
@@ -485,7 +484,24 @@
                         closeByDocument: false,
                         closeByEscape: false
                     }).then(function (value) {
-                        vm.addBill(APP_CONSTANTS.BILL_PRE_BILL_STATE_CODE);
+
+
+                        if(vm.addedProductList.filter(function(e) { return e.producesNegativeLot === true; }).length > 0){
+
+                            ngDialog.openConfirm({
+                                template: 'containsNegativeLotsWarning',
+                                className: 'ngdialog-theme-default',
+                                closeByDocument: false,
+                                closeByEscape: false
+                            }).then(function (value) {
+                                vm.addBill(APP_CONSTANTS.BILL_PRE_BILL_STATE_CODE);
+                            }, function (reason) {
+                                console.log('Modal promise rejected. Reason: ', reason);
+                            });
+
+                        }else{
+                            vm.addBill(APP_CONSTANTS.BILL_PRE_BILL_STATE_CODE);
+                        }
                     }, function (reason) {
                         console.log('Modal promise rejected. Reason: ', reason);
                     });
@@ -629,27 +645,43 @@
             vm.productList = productList;
             var rate = APP_CONSTANTS.LOCAL_EXCHANGE_RATE_VALUE;
 
-            if(currency == APP_CONSTANTS.CURRENCY_COLONES_CODE){
+            if(currency === APP_CONSTANTS.CURRENCY_COLONES_CODE){
                 rate = dollarExchangeRateFromDB;
             }else{
                 rate = exchangeRate;
             }
 
             $scope.selectProduct = function (product) {
+
+                console.log(product);
                 var sum = 0;
+                var addedProductSum = 0;
                 vm.selectedProduct = product;
                 vm.selectedProduct.quantity = 1;
                 vm.selectedProduct.discount = 0;
                 vm.selectedProduct.calcDollarPrice = product.price / rate;
                 vm.currency = currency;
 
+                var addedProductList = billService.getAddedProductList();
+
+                console.log(addedProductList);
+
+
+                var filterdAddedProductList = $filter('filter')(addedProductList, {productId: product.id });
+
+                angular.forEach(filterdAddedProductList, function(v) {
+                    addedProductSum += parseInt(v.quantity);
+                });
+
                 vm.selectedProduct.totalLots = product.productLots.length;
                 angular.forEach(product.productLots, function(v) {
                     sum += parseInt(v.quantity);
                 });
 
-                vm.selectedProduct.totalProductText = sum + ' ' + product.measureUnit.name;
-                vm.selectedProduct.totalProduct = sum;
+                var finalSum = sum - addedProductSum;
+
+                vm.selectedProduct.totalProductText = finalSum + ' ' + product.measureUnit.name;
+                vm.selectedProduct.totalProduct = finalSum;
             };
 
             $scope.ok = function () {
@@ -703,7 +735,8 @@
                 "discountPercentage": selectedProduct.discount,
                 "taxPercentage": selectedProduct.productTax,
                 "subtotal": calculateSubtotal(selectedProduct.quantity, linePrice,
-                    selectedProduct.discount, selectedProduct.productTax)
+                    selectedProduct.discount, selectedProduct.productTax),
+                "producesNegativeLot" : selectedProduct.totalProduct - selectedProduct.quantity < 0
             };
 
             var tmpList = billService.getAddedProductList();
@@ -804,9 +837,6 @@
             });
         }
 
-        function callAtTimeout() {
-            $state.go("app.billingMain");
-        }
     }
 
     /**

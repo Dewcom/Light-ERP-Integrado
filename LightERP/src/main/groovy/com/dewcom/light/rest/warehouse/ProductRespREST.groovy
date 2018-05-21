@@ -1,5 +1,4 @@
-package com.dewcom.light.rest.response
-
+package com.dewcom.light.rest.warehouse
 /**
  * Created by lchen on 5/22/17.
  */

@@ -135,7 +135,6 @@ function UpdateBillController(DTOptionsBuilder, DTColumnDefBuilder, $http, $stat
             vm.currentBill.productList = billService.getUpdateBillProductList();
         }
 
-
         /**=========================================================
          * Productos
          =========================================================*/
