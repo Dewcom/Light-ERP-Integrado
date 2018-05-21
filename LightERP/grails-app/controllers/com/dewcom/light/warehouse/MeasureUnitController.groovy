@@ -1,13 +1,13 @@
-package com.dewcom.light.billing
+package com.dewcom.light.warehouse
 
+import com.dewcom.light.rest.ResponseREST
+import com.dewcom.light.rest.RestController
 import com.dewcom.light.utils.Constants
 import com.dewcom.light.utils.JSONMapper
-import com.dewcom.light.rest.RestController
-import com.dewcom.light.rest.ResponseREST
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 
-class CreditConditionController extends RestController {
+class MeasureUnitController extends RestController {
     static allowedMethods = [get: "GET", create: "POST", delete:"DELETE", update:"PUT"]
     def messageSource
     def adminService
@@ -16,11 +16,11 @@ class CreditConditionController extends RestController {
     def getAll() {
         ResponseREST tmpResponse = new ResponseREST();
         try {
-            def creditConditions = adminService.getAllCreditConditions();
+            def measureUnits = adminService.getAllMeasureUnits();
 
             tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
             tmpResponse.code = Constants.SUCCESS_RESPONSE
-            tmpResponse.data = JSONMapper.listFrom(creditConditions)
+            tmpResponse.data = JSONMapper.listFrom(measureUnits)
 
             log.info tmpResponse as JSON
             render tmpResponse as JSON
@@ -33,19 +33,16 @@ class CreditConditionController extends RestController {
     def create() {
         ResponseREST tmpResponse = new ResponseREST();
         try {
-            if(!request.JSON.days){
-                returnBadRequestResponse("El atributo dias es requerido")
-            }
-            else if(!request.JSON.description){
-                returnBadRequestResponse("El atributo descripcion es requerido")
+            if(!request.JSON.name){
+                returnBadRequestResponse("El atributo nombre es requerido")
             }
 
-            CreditCondition tmpCreditCon = new CreditCondition(description:request.JSON.description, days: request.JSON.days as Integer)
-            tmpCreditCon.code= adminService.getMaxCreditConCode() + 1
-            def createdCond = adminService.createOrUpdateCreditCon(tmpCreditCon);
-            tmpResponse.message = messageSource.getMessage("generic.create.success", null, Locale.default);
+            MeasureUnit tmpMeasure = new MeasureUnit(name: request.JSON.name, symbol: request.JSON.symbol)
+            tmpMeasure.code= adminService.getMaxMeasureUnitCode() + 1
+            def createdMeasure = adminService.createOrUpdateMeasureUnit(tmpMeasure)
+            tmpResponse.message = messageSource.getMessage("generic.create.success", null, Locale.default)
             tmpResponse.code = Constants.SUCCESS_RESPONSE
-            tmpResponse.data = [id: createdCond.id]
+            tmpResponse.data = [id: createdMeasure.id]
             log.info tmpResponse as JSON
             render tmpResponse as JSON
         } catch (Exception e) {
@@ -58,17 +55,14 @@ class CreditConditionController extends RestController {
         ResponseREST tmpResponse = new ResponseREST();
         def tmpId = params.long('id')
         try {
-            if(!request.JSON.days){
-                returnBadRequestResponse("El atributo dias es requerido")
-            }
-            else if(!request.JSON.description){
-                returnBadRequestResponse("El atributo descripcion es requerido")
+            if(!request.JSON.name){
+                returnBadRequestResponse("El atributo name es requerido")
             }
 
-            CreditCondition tmpCreditConToModify = CreditCondition.findByIdAndEnabled(tmpId, Constants.ESTADO_ACTIVO)
-            tmpCreditConToModify.days = request.JSON.days as Integer
-            tmpCreditConToModify.description = request.JSON.description
-            adminService.createOrUpdateCreditCon(tmpCreditConToModify);
+            MeasureUnit tmpMeasureUnit = MeasureUnit.findByIdAndEnabled(tmpId, Constants.ESTADO_ACTIVO)
+            tmpMeasureUnit.name = request.JSON.name
+            tmpMeasureUnit.symbol = request.JSON.symbol
+            adminService.createOrUpdateMeasureUnit(tmpMeasureUnit);
             tmpResponse.message = messageSource.getMessage("generic.update.success", null, Locale.default);
             tmpResponse.code = Constants.SUCCESS_RESPONSE
             log.info tmpResponse as JSON
@@ -83,8 +77,8 @@ class CreditConditionController extends RestController {
         ResponseREST tmpResponse = new ResponseREST();
         def tmpId = params.long('id')
         try {
-            CreditCondition tmpCreditCon = CreditCondition.findByIdAndEnabled(tmpId, Constants.ESTADO_ACTIVO)
-            adminService.deleteCreditCondition(tmpCreditCon);
+            MeasureUnit tmpMeasureUnit = MeasureUnit.findByIdAndEnabled(tmpId, Constants.ESTADO_ACTIVO)
+            adminService.deleteMeasureUnit(tmpMeasureUnit);
             tmpResponse.message = messageSource.getMessage("generic.delete.success", null, Locale.default);
             tmpResponse.code = Constants.SUCCESS_RESPONSE
             log.info tmpResponse as JSON

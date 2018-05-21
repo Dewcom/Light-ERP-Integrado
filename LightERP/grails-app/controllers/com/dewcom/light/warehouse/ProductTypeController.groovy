@@ -71,10 +71,12 @@ class ProductTypeController extends RestController {
             if (tmpProductType.hasErrors()) {
                 this.handleDataErrorsREST(messageSource, tmpProductType.errors);
             } else {
-                adminService.createProductType(tmpProductType);
+                tmpProductType.code = adminService.getMaxProductCode()
+                def createdObj = adminService.createProductType(tmpProductType);
 
                 tmpResponse.message = messageSource.getMessage("create.product.type.success", null, Locale.default)
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
+                tmpResponse.data = [id: createdObj.id]
             }
             log.info "====== Create product type response ======"
             log.info tmpResponse as JSON
@@ -93,11 +95,10 @@ class ProductTypeController extends RestController {
     def delete() {
         log.info "==========  Delete product type request =========="
         log.info request.JSON
-
+        def tmpId = params.long('id')
         ResponseREST tmpResponse = new ResponseREST();
         try {
-            if (request.JSON && request.JSON != null) {
-                ProductType tmpProductType = adminService.getProductType(request.JSON.id);
+                ProductType tmpProductType = adminService.getProductType(tmpId);
 
                 if(tmpProductType) {
                     adminService.deleteProductType(tmpProductType);
@@ -107,10 +108,7 @@ class ProductTypeController extends RestController {
                     tmpResponse.message = messageSource.getMessage("product.type.not.found", null, Locale.default);
                     tmpResponse.code = Constants.REGISTER_NOT_FOUND
                 }
-            }else{
-                tmpResponse.message = messageSource.getMessage("generic.request.error.missing.parameters", null, Locale.default);
-                tmpResponse.code = Constants.ERROR_VALIDACION_DE_CAMPOS
-            }
+
             log.info "====== Delete product type response ======"
             log.info tmpResponse as JSON
             render tmpResponse as JSON
@@ -127,6 +125,7 @@ class ProductTypeController extends RestController {
     def update() {
         log.info "==========  Update product type request =========="
         log.info request.JSON
+        def tmpId = params.long('id')
 
         ResponseREST tmpResponse = new ResponseREST();
         UpdateProductTypeRequest tmpUpdateProductTypeREST = new UpdateProductTypeRequest(request.JSON);
@@ -135,7 +134,7 @@ class ProductTypeController extends RestController {
             if (tmpUpdateProductTypeREST.hasErrors()) {
                 this.handleDataErrorsREST(messageSource, tmpUpdateProductTypeREST.errors);
             } else {
-                ProductType tmpProductType = adminService.getProductType(tmpUpdateProductTypeREST.id);
+                ProductType tmpProductType = adminService.getProductType(tmpId);
 
                 if(tmpProductType) {
 

@@ -14,5 +14,7 @@ class Configuration implements Validateable {
     String value
     boolean enabled = Constants.ESTADO_ACTIVO
     static constraints = {
+        description nullable: true, blank: true
+        code nullable: true
     }
 }

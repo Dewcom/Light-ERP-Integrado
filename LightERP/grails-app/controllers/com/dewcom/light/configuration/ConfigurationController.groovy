@@ -22,11 +22,11 @@ class ConfigurationController extends RestController {
     def get() {
         log.info "========== Get configuration  request =====+++====="
         ResponseREST tmpResponse = new ResponseREST();
+        def tmpCode = params.long('code')
         try {
-            def tmpId = params.id
 
-            if(tmpId){
-                Configuration config = adminService.getConfiguration(tmpId);
+            if(tmpCode != null){
+                Configuration config = adminService.getConfiguration(tmpCode);
 
                 if(config){
                     tmpResponse.message = messageSource.getMessage("generic.request.success", null, Locale.default);
@@ -123,7 +123,7 @@ class ConfigurationController extends RestController {
     def update() {
         log.info "==========  Update configuration  request =========="
         log.info request.JSON
-
+        def tmpCode = params.long('code')
         ResponseREST tmpResponse = new ResponseREST();
         Configuration tmpConfigurationRest = new Configuration(request.JSON);
         try {
@@ -131,17 +131,16 @@ class ConfigurationController extends RestController {
             if (tmpConfigurationRest.hasErrors()) {
                 this.handleDataErrorsREST(messageSource, tmpConfigurationRest.errors);
             } else {
-                Configuration tmpConfiguration = adminService.getConfiguration(tmpConfigurationRest.id);
-                if(tmpConfiguration.code == Configuration.CONFIG_CONSECUTIVO_FACTURA) {
-                    billService.validateBillNumber(tmpConfiguration.value as Long)
-                }
-
+                Configuration tmpConfiguration = adminService.getConfiguration(tmpCode);
                 if(tmpConfiguration) {
-                    tmpConfiguration.value = tmpConfigurationRest.value
-                    tmpConfiguration.description = tmpConfigurationRest.description
-                    tmpConfiguration.code = tmpConfigurationRest.code
+                    if(tmpConfiguration.code == Configuration.CONFIG_CONSECUTIVO_FACTURA) {
+                        billService.validateBillNumber(tmpConfigurationRest.value as Long)
+                    }
+                    tmpConfiguration.value = tmpConfigurationRest.value == null ? tmpConfiguration.value : tmpConfigurationRest.value
+                    tmpConfiguration.description = tmpConfigurationRest.description == null ?    tmpConfiguration.description : tmpConfigurationRest.description
+                    tmpConfiguration.code = tmpConfigurationRest.code == null ? tmpConfiguration.code : tmpConfigurationRest.code
                     adminService.updateConfiguration(tmpConfiguration);
-                    tmpResponse.message = messageSource.getMessage("update.configuration.success", null, Locale.default)
+                    tmpResponse.message = messageSource.getMessage("generic.update.success", null, Locale.default)
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
                 }else {
                     tmpResponse.message = messageSource.getMessage("configuration.not.found", null, Locale.default)

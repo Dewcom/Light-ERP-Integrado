@@ -72,8 +72,9 @@ class PresentationTypeController extends RestController {
             if (tmpPresentationType.hasErrors()) {
                 this.handleDataErrorsREST(messageSource, tmpPresentationType.errors);
             } else {
-                adminService.createPresentationType(tmpPresentationType);
-
+                tmpPresentationType.code = adminService.getMaxPresentationTypeCode()
+               def createdObj = adminService.createPresentationType(tmpPresentationType);
+                tmpResponse.data = [id:createdObj.id]
                 tmpResponse.message = messageSource.getMessage("create.presentation.type.success", null, Locale.default)
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
             }
@@ -94,11 +95,10 @@ class PresentationTypeController extends RestController {
     def delete() {
         log.info "==========  Delete presentation type request =========="
         log.info request.JSON
-
+        def tmpId = params.long('id')
         ResponseREST tmpResponse = new ResponseREST();
         try {
-            if (request.JSON && request.JSON != null) {
-                PresentationType tmpPresentationType = adminService.getPresentationType(request.JSON.id);
+                PresentationType tmpPresentationType = adminService.getPresentationType(tmpId);
 
                 if(tmpPresentationType) {
                     adminService.deletePresentationType(tmpPresentationType);
@@ -108,10 +108,7 @@ class PresentationTypeController extends RestController {
                     tmpResponse.message = messageSource.getMessage("presentation.type.not.found", null, Locale.default);
                     tmpResponse.code = Constants.REGISTER_NOT_FOUND
                 }
-            }else{
-                tmpResponse.message = messageSource.getMessage("generic.request.error.missing.parameters", null, Locale.default);
-                tmpResponse.code = Constants.ERROR_VALIDACION_DE_CAMPOS
-            }
+
             log.info "====== Delete presentation type response ======"
             log.info tmpResponse as JSON
             render tmpResponse as JSON
@@ -128,7 +125,7 @@ class PresentationTypeController extends RestController {
     def update() {
         log.info "==========  Update presentation type request =========="
         log.info request.JSON
-
+        def tmpId = params.long('id')
         ResponseREST tmpResponse = new ResponseREST();
         UpdatePresentationTypeRequest tmpUpdatePresentationTypeREST = new UpdatePresentationTypeRequest(request.JSON);
         try {
@@ -136,7 +133,7 @@ class PresentationTypeController extends RestController {
             if (tmpUpdatePresentationTypeREST.hasErrors()) {
                 this.handleDataErrorsREST(messageSource, tmpUpdatePresentationTypeREST.errors);
             } else {
-                PresentationType tmpPresentationType = adminService.getPresentationType(tmpUpdatePresentationTypeREST.id);
+                PresentationType tmpPresentationType = adminService.getPresentationType(tmpId);
 
                 if(tmpPresentationType) {
 

@@ -71,8 +71,8 @@ class CustomerTypeController extends RestController {
             if (tmpCustomerType.hasErrors()) {
                 this.handleDataErrorsREST(messageSource, tmpCustomerType.errors);
             } else {
-                adminService.createCustomerType(tmpCustomerType);
-
+                def createdObj = adminService.createCustomerType(tmpCustomerType);
+                tmpResponse.data = [id:createdObj.id ]
                 tmpResponse.message = messageSource.getMessage("create.customer.type.success", null, Locale.default)
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
             }
@@ -93,24 +93,21 @@ class CustomerTypeController extends RestController {
     def delete() {
         log.info "==========  Delete customer type request =========="
         log.info request.JSON
-
+        def tmpId = params.long('id')
         ResponseREST tmpResponse = new ResponseREST();
         try {
-            if (request.JSON && request.JSON != null) {
-                CustomerType tmpCustomerType = adminService.getCustomerType(request.JSON.id);
+                CustomerType tmpCustomerType = adminService.getCustomerType(tmpId);
 
                 if(tmpCustomerType) {
                     adminService.deleteCustomerType(tmpCustomerType);
                     tmpResponse.message = messageSource.getMessage("delete.customer.type.success", null, Locale.default);
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
+
                 }else {
                     tmpResponse.message = messageSource.getMessage("customer.type.not.found", null, Locale.default);
                     tmpResponse.code = Constants.REGISTER_NOT_FOUND
                 }
-            }else{
-                tmpResponse.message = messageSource.getMessage("generic.request.error.missing.parameters", null, Locale.default);
-                tmpResponse.code = Constants.ERROR_VALIDACION_DE_CAMPOS
-            }
+
             log.info "====== Delete customer type response ======"
             log.info tmpResponse as JSON
             render tmpResponse as JSON
@@ -128,7 +125,7 @@ class CustomerTypeController extends RestController {
     def update() {
         log.info "==========  Update customer type request =========="
         log.info request.JSON
-
+        def tmpId = params.long('id')
         ResponseREST tmpResponse = new ResponseREST();
         UpdateCustomerTypeRequest tmpUpdateCustomerTypeREST = new UpdateCustomerTypeRequest(request.JSON);
         try {
@@ -136,7 +133,7 @@ class CustomerTypeController extends RestController {
             if (tmpUpdateCustomerTypeREST.hasErrors()) {
                 this.handleDataErrorsREST(messageSource, tmpUpdateCustomerTypeREST.errors);
             } else {
-                CustomerType tmpCustomerType = adminService.getCustomerType(tmpUpdateCustomerTypeREST.id);
+                CustomerType tmpCustomerType = adminService.getCustomerType(tmpId);
 
                 if(tmpCustomerType) {
 

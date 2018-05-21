@@ -12,11 +12,12 @@ class MeasureUnit {
 
     Integer code
     String name
-    String symbol
+    String symbol = ""
     Byte enabled = Constants.ESTADO_ACTIVO
     Date registrationDate = new Date()
 
     static constraints = {
         name blank: false
+        symbol blank: true, nullable: true
     }
 }

@@ -3615,6 +3615,7 @@
         .constant('APP_CONSTANTS', {
             'appURL':             'http://localhost:8080/api/',
             'BILL_DRAFT_STATE_CODE' : 1,
+            'BILL_NUMBER_CONFIG_CODE' : 0,
             'TIPO_CAMBIO_DOLAR': 1,
             'BILL_VALIDATED_STATE_CODE':2,
             'BILL_PARTIALLY_PAID_STATE_CODE':3,
@@ -3793,7 +3794,9 @@
                 {name: 'angularGrid', files: ['bower_components/ag-grid/dist/styles/ag-grid.css',
                     'bower_components/ag-grid/dist/ag-grid.js',
                     'bower_components/ag-grid/dist/styles/theme-dark.css',
-                    'bower_components/ag-grid/dist/styles/theme-fresh.css']}
+                    'bower_components/ag-grid/dist/styles/theme-fresh.css']},
+                {name: 'xeditable', files: ['bower_components/angular-xeditable/dist/js/xeditable.js',
+                    'bower_components/angular-xeditable/dist/css/xeditable.css']},
             ]
         })
     ;
@@ -4287,7 +4290,7 @@
                 url: '/configuration',
                 title: 'Configuración',
                 templateUrl: helper.basepath('configuration/configuration.html'),
-                resolve: helper.resolveFor('datatables')
+                resolve: helper.resolveFor('datatables', 'xeditable')
             })
             .state('app.reports', {
                 url: '/reports',

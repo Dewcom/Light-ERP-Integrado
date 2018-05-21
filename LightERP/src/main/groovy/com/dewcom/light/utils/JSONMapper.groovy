@@ -7,6 +7,8 @@ import com.dewcom.light.billing.BillStateType
 import com.dewcom.light.billing.CreditCondition
 import com.dewcom.light.billing.ExchangeRate
 import com.dewcom.light.billing.Payment
+import com.dewcom.light.billing.Taxes
+import com.dewcom.light.rest.billing.TaxRespREST
 import com.dewcom.light.user.User
 import com.dewcom.light.rest.response.AddressRespREST
 import com.dewcom.light.rest.billing.BillDetailProductResponse
@@ -210,6 +212,14 @@ class JSONMapper {
             tmpRestObject.registrationDate = pProductType.registrationDate
             tmpRestObject.id = pProductType.id
 
+        tmpRestObject
+    }
+
+    def static from(Taxes ptax){
+        def tmpRestObject = new TaxRespREST()
+        tmpRestObject.description = ptax.description
+        tmpRestObject.id = ptax.id
+        tmpRestObject.percentage = ptax.percentage
         tmpRestObject
     }
 

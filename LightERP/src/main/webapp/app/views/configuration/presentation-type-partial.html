@@ -6,14 +6,14 @@
                 <td style="width:35%">Nombre</td>
                 <td style="width:25%">Opciones</td>
             </tr>
-            <tr ng-repeat="customerType in configCtrl.customerTypeList">
+            <tr ng-repeat="presentationType in configCtrl.presentationTypesList">
                 <td>
                     <!-- editable username (text with validation)-->
-                    <span editable-text="customerType.name" e-name="name" e-form="rowform" onbeforesave="configCtrl.checkRequiredText($data)" e-required="">{{ customerType.name || &apos;Incompleto&apos; }}</span>
+                    <span editable-text="presentationType.name" e-name="name" e-form="rowform" onbeforesave="configCtrl.checkRequiredText($data)" e-required="">{{ presentationType.name || &apos;Incompleto&apos; }}</span>
                 </td>
                 <td style="white-space: nowrap">
                     <!-- form-->
-                    <form editable-form="" name="rowform" onbeforesave="configCtrl.createCustomerType($data, customerType.id, $index)" ng-show="rowform.$visible" shown="configCtrl.insertedCustomerType == customerType" class="form-buttons form-inline">
+                    <form editable-form="" name="rowform" onbeforesave="configCtrl.createPresentationType($data, presentationType.id, $index)" ng-show="rowform.$visible" shown="configCtrl.insertedPresentation == presentationType" class="form-buttons form-inline">
                         <button type="submit" ng-disabled="rowform.$waiting" title="Save" class="btn btn-sm btn-info">
                             <em class="fa fa-save"></em>
                         </button>
@@ -25,13 +25,13 @@
                         <button ng-click="rowform.$show()" title="Editar" class="btn btn-sm btn-info">
                             <em class="fa fa-pencil"></em>
                         </button>
-                        <button ng-click="configCtrl.removeCustomerType(customerType.id, $index)" title="Eliminar" class="btn btn-sm btn-danger">
+                        <button ng-click="configCtrl.removePresentationType(presentationType.id, $index)" title="Eliminar" class="btn btn-sm btn-danger">
                             <em class="fa fa-trash"></em>
                         </button>
                     </div>
                 </td>
             </tr>
         </table>
-        <button ng-click="configCtrl.addCustomerTypeToTable()" class="btn btn-success btn-lg  mt-xl">Agregar</button>
+        <button ng-click="configCtrl.addPresentationTypeToTable()" class="btn btn-success btn-lg  mt-xl">Agregar</button>
     </div>
 </div>

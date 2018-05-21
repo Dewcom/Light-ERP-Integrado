@@ -15,5 +15,6 @@ class PresentationType {
 
     static constraints = {
         name blank: false
+        code nullable: true
     }
 }
