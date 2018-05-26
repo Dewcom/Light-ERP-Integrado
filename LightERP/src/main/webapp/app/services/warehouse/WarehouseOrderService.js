@@ -2,7 +2,7 @@
 
 angular
     .module('app.services')
-    .factory("warehouseOrderService", function ($http, $state, APP_CONSTANTS) {
+    .factory("warehouseOrderService", function ($http, $state, $filter, APP_CONSTANTS) {
 
         var warehouseOrderService = {};
         var addedProductList = [];
@@ -46,6 +46,8 @@ angular
                     'Content-type': 'application/json;charset=utf-8'
                 }
             }).then(function (response) {
+                addedProductList = formatWarehouseOrderDetails(response.data.data.warehouseOrderDetails);
+
                 return response.data;
             }, function (error) {
                 console.log(error);
@@ -76,8 +78,6 @@ angular
         };
 
         warehouseOrderService.updateWarehouseOrder = function (updatedWarehouseOrder) {
-
-            http://localhost:8080/api/warehouseOrder/update
 
             var updatedWarehouseOrderResult = $http({
                 method: 'PUT',
@@ -179,5 +179,52 @@ angular
             return warehouseOrderMovementsTypes;
         };
 
+
+
+
+
+        /**=========================================================
+         * Formateo de detalles de orden de salida de bodega
+         =========================================================*/
+
+        function formatWarehouseOrderDetails(list) {
+            warehouseOrderService.resetAddedProductList();
+
+            var formattedList = [];
+            var listLength = list.length;
+
+            var firstItem = list[0].productLot.product;
+
+            firstItem.productLotsTotal = 1;
+            firstItem.totalQuantity = parseInt(list[0].quantity);
+
+            formattedList = warehouseOrderService.getAddedProductList();
+
+            formattedList.push(firstItem);
+
+            for(var i = 1; i < listLength; i++){
+
+                var tmpProduct = $filter('filter')(formattedList, {productCode: list[i].productLot.product.productCode })[0];
+
+                if(tmpProduct){
+                    tmpProduct.totalQuantity += list[i].quantity;
+                    tmpProduct.productLotsTotal ++;
+
+                }else{
+                    var newItem = list[i].productLot.product;
+
+                    newItem.productLotsTotal = 1;
+                    newItem.totalQuantity = parseInt(list[i].quantity);
+
+                    formattedList.push(newItem);
+                }
+
+
+            }
+
+            return formattedList;
+        }
+
         return warehouseOrderService;
+
     });

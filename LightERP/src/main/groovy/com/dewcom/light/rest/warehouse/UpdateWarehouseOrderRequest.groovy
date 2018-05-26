@@ -7,6 +7,7 @@ import grails.validation.Validateable
  * Created by Mauricio Fernández Mora on 17/02/18.
  */
 class UpdateWarehouseOrderRequest implements Validateable {
+    String username
     Integer billId
     Integer warehouseOrderId
     Integer warehouseOrderStateType

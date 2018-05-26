@@ -30,11 +30,12 @@
                     formatWarehouseOrderNumber();
                 }
 
-
-                if($scope.currentWarehouseOrder.bill.address != null){
-                    billService.getAddressInfo($scope.currentWarehouseOrder.bill.address, function (addressInfo) {
-                        $scope.currentWarehouseOrder.bill.address = addressInfo;
-                    });
+                if($scope.currentWarehouseOrder.bill){
+                    if($scope.currentWarehouseOrder.bill.address != null){
+                        billService.getAddressInfo($scope.currentWarehouseOrder.bill.address, function (addressInfo) {
+                            $scope.currentWarehouseOrder.bill.address = addressInfo;
+                        });
+                    }
                 }
             });
 
@@ -60,7 +61,7 @@
 
         }
 
-        //REGRESA A LA PANTALLA DE LISTA DE FACTURAS
+        //REGRESA A LA PANTALLA DE LISTA DE ORDENES
         vm.goBack = function () {
             var params = {tabIndex: 2, storehouseId : 1};
             $state.go('app.storehouseDetail', params);
@@ -153,25 +154,6 @@
             });
         };
 
-
-        /**=========================================================
-         * Formateo de informacion de facturas
-         =========================================================*/
-
-        function formatWarehouseOrderDetails(list) {
-            var formattedList = [];
-
-            angular.forEach(list, function (value) {
-
-                var item = {
-                    'productLotId': value.productLot.id,
-                    'quantity': value.quantity
-                };
-                formattedList.push(item);
-
-            });
-            return formattedList;
-        }
 
         function pop(toasterdata) {
             toaster.pop({

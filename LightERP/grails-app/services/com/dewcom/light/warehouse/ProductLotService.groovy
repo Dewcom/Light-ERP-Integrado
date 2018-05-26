@@ -39,7 +39,7 @@ class ProductLotService {
 
     def createProductLot(ProductLotRequest productLotRequest) {
         def savedProductLot
-        def productLot = new ProductLot()
+        def productLot
         try {
             def tmpProductLot = ProductLot.findByLotNumber(productLotRequest.lotNumber);
 
@@ -161,17 +161,16 @@ class ProductLotService {
 
 
 
-    def updateProductLotQuantity(ProductLot productLot, Double quantity) {
+    def updateProductLotQuantity(ProductLot productLot) {
         try {
 
-            ProductLot tmpProductLotToUpdate = ProductLot.findByIdAndEnabled(productLot.id, Constants.ESTADO_ACTIVO)
-            tmpProductLotToUpdate.quantity = productLot.quantity - quantity
-
-            if(tmpProductLotToUpdate.quantity == 0){
-                tmpProductLotToUpdate.enabled = Constants.ESTADO_INACTIVO
+            if(productLot.quantity == 0){
+                productLot.enabled = Constants.ESTADO_INACTIVO
+            }else{
+                productLot.enabled = Constants.ESTADO_ACTIVO
             }
 
-            tmpProductLotToUpdate.save(flush: true, failOnError:true)
+            productLot.save(flush: true, failOnError:true)
 
         } catch (Exception e) {
             log.error(e)

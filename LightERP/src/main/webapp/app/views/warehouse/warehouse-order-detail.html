@@ -28,7 +28,7 @@
                               </span>Rechazar
                     </button>
                     <button uib-tooltip="Modificar orden" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button"
-                            ui-sref="app.updateBill({billId: currentWarehouseOrder.id})"
+                            ui-sref="app.updateWarehouseOrder({warehouseOrderId: currentWarehouseOrder.id})"
                             class="btn btn-labeled btn-warning pull-right mr" ng-show="currentWarehouseOrder.warehouseOrderStateType.code == globalConstants.WAREHOUSE_ORDER_DRAFT_STATE">
                               <span class="btn-label">
                                  <em class="fa fa-pencil"></em>
@@ -55,23 +55,28 @@
                                     <em class="fa fa-user fa-4x text-muted"></em>
                                 </div>
                                 <div class="col-md-10">
-                                    <h4>{{currentWarehouseOrder.bill.customer.name + " " + currentWarehouseOrder.bill.customer.firstLastName + " "
+                                    <h4 ng-if="currentWarehouseOrder.bill">{{currentWarehouseOrder.bill.customer.name + " " + currentWarehouseOrder.bill.customer.firstLastName + " "
                                         + currentWarehouseOrder.bill.customer.secondLastName}}</h4>
-                                    <address></address>
-                                    {{currentWarehouseOrder.bill.address.district.name + ", " +
-                                    currentWarehouseOrder.bill.address.canton.name}}<br/>
-                                    {{currentWarehouseOrder.bill.address.province.name}}<br/>
-                                    {{currentWarehouseOrder.bill.address.address}}
+                                    <h4 ng-if="currentWarehouseOrder.bill === null">Movimiento por:</h4>
+                                    <address ng-if="currentWarehouseOrder.bill">
+                                        {{currentWarehouseOrder.bill.address.district.name + ", " +
+                                        currentWarehouseOrder.bill.address.canton.name}}<br/>
+                                        {{currentWarehouseOrder.bill.address.province.name}}<br/>
+                                        {{currentWarehouseOrder.bill.address.address}}
+                                    </address>
+                                    <address ng-if="currentWarehouseOrder.bill === null">
+                                        {{currentWarehouseOrder.warehouseOrderMovementType.description}}<br/>
+                                    </address>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-4 col-xs-6 br pv">
                             <div class="row">
-                                <div class="col-md-2 text-center visible-md visible-lg">
+                                <div class="col-md-2 text-center visible-md visible-lg" ng-if="currentWarehouseOrder.bill">
                                     <em class="fa fa-phone fa-4x text-muted"></em>
                                 </div>
                                 <div class="col-md-10">
-                                    <h4>{{currentWarehouseOrder.bill.customer.contacts[0].name + " " +
+                                    <h4 ng-if="currentWarehouseOrder.bill">{{currentWarehouseOrder.bill.customer.contacts[0].name + " " +
                                         currentWarehouseOrder.bill.customer.contacts[0].firstLastName + " " +
                                         currentWarehouseOrder.bill.customer.contacts[0].secondLastName }}</h4>
                                     <address></address>
