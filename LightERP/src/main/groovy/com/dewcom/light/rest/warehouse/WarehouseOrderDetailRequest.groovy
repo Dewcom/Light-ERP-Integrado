@@ -4,12 +4,13 @@ import com.dewcom.light.utils.Constants
 
 /**
  * Created by Mauricio Fernández Mora on 17/02/18.
+ * Este POJO sirve tanto para create como para update
  */
 class WarehouseOrderDetailRequest {
-    List<WarehouseOrderProductLotRequest> productLots
+    Integer productLotId
+    Integer quantity
     Byte enabled = Constants.ESTADO_ACTIVO
 
     static constraints = {
-        productId nullable: false
     }
 }

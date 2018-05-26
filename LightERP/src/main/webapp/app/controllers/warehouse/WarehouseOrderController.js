@@ -278,13 +278,20 @@
          * Validación de campos y patrones
          =========================================================*/
         vm.submitted = false;
-        vm.validateInput = function (action, name, type) {
-            console.log('validate');
-        };
 
         // Submit form
         vm.submitForm = function (action) {
-            addWarehouseOrder();
+
+            ngDialog.openConfirm({
+                template: 'confirmWarehouseOrder',
+                className: 'ngdialog-theme-default',
+                closeByDocument: false,
+                closeByEscape: false
+            }).then(function (value) {
+                addWarehouseOrder();
+            }, function (reason) {
+                console.log('Modal promise rejected. Reason: ', reason);
+            });
         };
 
         /**=========================================================
@@ -299,10 +306,8 @@
                 "username": userInfo.userName,
                 "warehouseOrderStateType": APP_CONSTANTS.WAREHOUSE_ORDER_VALIDATED_STATE,
                 "warehouseOrderMovementType": vm.warehouseOrderMovementType,
-                "warehouseOrderDetails": formatWarehouseOrderDetails(warehouseOrderService.getAddedProductList())
+                "warehouseOrderDetails": formatDetails(warehouseOrderService.getAddedProductList())
             };
-
-            console.log(newWarehouseOrder);
 
             warehouseOrderService.resetAddedProductList();
 
@@ -333,37 +338,7 @@
             });
         }
 
-
-        AddModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance'];
-        function AddModalInstanceCtrl($scope, $uibModalInstance) {
-            var vm = this;
-
-
-            $scope.close = function () {
-                $uibModalInstance.close('closed');
-            };
-
-            $scope.cancel = function () {
-                $uibModalInstance.dismiss('cancel');
-            };
-        }
-
-        UpdateModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', 'warehouseOrder'];
-        function UpdateModalInstanceCtrl($scope, $uibModalInstance, warehouseOrder) {
-
-            $scope.currentProduct = JSON.parse(JSON.stringify(warehouseOrder));
-
-            $scope.close = function () {
-                $uibModalInstance.close('closed');
-            };
-
-            $scope.cancel = function () {
-                $uibModalInstance.dismiss('cancel');
-            };
-        }
-
         vm.openAddProductModal = function () {
-            console.log(vm.productList);
 
             var modalInstance = $uibModal.open({
                 templateUrl: '/addProductToWarehouseOrderModal.html',
@@ -380,10 +355,6 @@
 
             var state = $('#modal-state');
             modalInstance.result.then(function (result) {
-                console.log(result);
-                console.log(warehouseOrderService.getAddedProductList());
-
-                // Se le cambia la cantidad de producto a cada lote para restarle la que se ordenó
 
                 state.text('Modal dismissed with OK status');
             }, function () {
@@ -391,15 +362,11 @@
             });
         };
 
-        // Please note that $uibModalInstance represents a modal window (instance) dependency.
-        // It is not the same as the $uibModal service used above.
-
         AddModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', 'productList'];
         function AddModalInstanceCtrl($scope, $uibModalInstance, productList) {
 
             $scope.selectedProduct = {};
 
-            console.log(productList);
             $scope.modalProductList = productList;
 
             $scope.selectProduct = function (product) {
@@ -436,10 +403,6 @@
 
             var tmpList = warehouseOrderService.getAddedProductList();
 
-            console.log(selectedProduct);
-
-            console.log(tmpList);
-
             var tmpProduct = $filter('filter')(tmpList, {productCode: selectedProduct.productCode })[0];
 
             if(tmpProduct){
@@ -466,7 +429,7 @@
          * Formateo de detalles de orden de salida de bodega
          =========================================================*/
 
-        function formatWarehouseOrderDetails(list) {
+        function formatDetails(list) {
             var formattedList = [];
             angular.forEach(list, function (value) {
 

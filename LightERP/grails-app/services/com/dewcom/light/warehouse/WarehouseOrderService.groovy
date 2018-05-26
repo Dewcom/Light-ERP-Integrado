@@ -1,13 +1,12 @@
 package com.dewcom.light.warehouse
 
 import com.dewcom.light.billing.Bill
-import com.dewcom.light.billing.BillStateType
 import com.dewcom.light.exception.LightRuntimeException
-import com.dewcom.light.rest.billing.UpdateBillRequest
 import com.dewcom.light.rest.warehouse.ProductLotRequest
 import com.dewcom.light.rest.warehouse.RejectWarehouseOrderRequest
 import com.dewcom.light.rest.warehouse.UpdateProductLotRequest
 import com.dewcom.light.rest.warehouse.UpdateWarehouseOrderRequest
+import com.dewcom.light.rest.warehouse.WarehouseOrderDetailRequest
 import com.dewcom.light.utils.Constants
 import com.dewcom.light.utils.LightUtils
 import grails.transaction.Transactional
@@ -30,7 +29,6 @@ class WarehouseOrderService {
             throw new LightRuntimeException(messageSource.getMessage("get.warehouse.order.error", null, Locale.default))
         }
     }
-
 
     def getAllWarehouseOrders() {
         log.info "====== Getting all warehouse orders from DB ======"
@@ -95,7 +93,78 @@ class WarehouseOrderService {
     }
 
     def updateWarehouseOrder(UpdateWarehouseOrderRequest updateWarehouseOrderRequest) {
-        //TODO
+
+        def savedOrder
+
+        try{
+
+            def originalOrder = WarehouseOrder.findByIdAndEnabled(updateWarehouseOrderRequest.warehouseOrderId, Constants.ESTADO_ACTIVO)
+
+            //Se crea un mapa para luego ser usado en la actualizacion de los lotes de producto
+            def productLotsToUpdate  = getProductLotListToUpdate(originalOrder.warehouseOrderDetails, updateWarehouseOrderRequest.warehouseOrderDetails)
+
+            // Se desactivan cada uno de los detalles viejos para activar luego solo los nuevos
+            originalOrder.warehouseOrderDetails.each {
+                it.enabled = Constants.ESTADO_INACTIVO
+            }
+
+            updateWarehouseOrderRequest.warehouseOrderDetails.each { newDetail ->
+
+                def found = false
+
+                originalOrder.warehouseOrderDetails.each { oldDetail ->
+
+                    if(newDetail.productLotId == oldDetail.productLotId){
+                        found = true
+                        oldDetail.enabled = Constants.ESTADO_ACTIVO
+                        oldDetail.quantity = newDetail.quantity
+                    }
+                }
+                if(!found){
+                    def newWarehouseDetail = new WarehouseOrderDetail()
+                    newWarehouseDetail.quantity = newDetail.quantity
+                    newWarehouseDetail.productLot = ProductLot.findByIdAndEnabled(newDetail.productLotId, Constants.ESTADO_ACTIVO)
+                    originalOrder.addToWarehouseOrderDetails(newWarehouseDetail)
+                }
+            }
+
+            originalOrder.warehouseOrderStateType = WarehouseOrderStateType.findByCode(updateWarehouseOrderRequest.warehouseOrderStateType)
+            originalOrder.warehouseOrderMovementType = WarehouseOrderMovementType.findByCode(updateWarehouseOrderRequest.warehouseOrderMovementType)
+
+
+
+            savedOrder = originalOrder.save(flush: true, failOnError:true)
+
+            // Si la orden se actualiza correctamente se mandan a actualizar cada uno de los lotes de producto
+            if(savedOrder){
+                productLotsToUpdate.each { k, v ->
+                    def tmpProductLot = ProductLot.findById(k)
+                    tmpProductLot.quantity += v
+
+                    if(tmpProductLot.quantity < 0){
+                        def negativeProductLot = new ProductLotRequest()
+                        negativeProductLot.quantity = tmpProductLot.quantity
+                        negativeProductLot.username = "admin" // TODO: se quema el usuario administrador, cambiar si eventualmente se crea un usuario 'system;
+                        negativeProductLot.lotNumber = "loteTemporal " + new Date()
+                        negativeProductLot.expirationDate = null
+                        negativeProductLot.lotDate = LightUtils.dateToString(new Date(), "dd-MM-yyyy")
+                        negativeProductLot.productId = tmpProductLot.product.id
+                        negativeProductLot.storehouseId = 1 // TODO: Se quema el id de la bodega, cambiar cuando se implementen facturas por bodega
+
+                        productLotService.createProductLot(negativeProductLot)
+
+                        tmpProductLot.quantity = 0
+                    }
+                    productLotService.updateProductLotQuantity(tmpProductLot)
+                }
+            }
+
+
+        }catch(Exception e){
+            log.error(e)
+            throw new LightRuntimeException(messageSource.getMessage("update.warehouse.order.error", null, Locale.default))
+
+        }
     }
 
     def approveWarehouseOrder(WarehouseOrder warehouseOrder) {
@@ -183,7 +252,9 @@ class WarehouseOrderService {
                         warehouseOrderDetail.productLot = tmpProductLots[index]
                         warehouseOrderDetail.quantity = tmpQuantity
 
-                        productLotService.updateProductLotQuantity(tmpProductLots[index], tmpQuantity)
+                        tmpProductLots[index].quantity = tmpProductLots[index].quantity - tmpQuantity
+
+                        productLotService.updateProductLotQuantity(tmpProductLots[index])
 
                         tmpWarehouseOrder.addToWarehouseOrderDetails(warehouseOrderDetail)
 
@@ -195,14 +266,20 @@ class WarehouseOrderService {
                         if(tmpProductLots[index].quantity < 0){
                             warehouseOrderDetail.productLot = tmpProductLots[index]
                             warehouseOrderDetail.quantity = tmpQuantity
-                            productLotService.updateProductLotQuantity(tmpProductLots[index], tmpQuantity)
+
+                            tmpProductLots[index].quantity = tmpProductLots[index].quantity - tmpQuantity
+
+                            productLotService.updateProductLotQuantity(tmpProductLots[index])
                             tmpQuantity = 0
                         }else{
                             tmpQuantity -= tmpProductLots[index].quantity
 
                             warehouseOrderDetail.productLot = tmpProductLots[index]
                             warehouseOrderDetail.quantity = tmpProductLots[index].quantity
-                            productLotService.updateProductLotQuantity(tmpProductLots[index], tmpProductLots[index].quantity)
+
+                            tmpProductLots[index].quantity = tmpProductLots[index].quantity - tmpProductLots[index].quantity
+
+                            productLotService.updateProductLotQuantity(tmpProductLots[index])
 
                             tmpWarehouseOrder.addToWarehouseOrderDetails(warehouseOrderDetail)
 
@@ -246,7 +323,7 @@ class WarehouseOrderService {
         negativeProductLot.username = "admin" // TODO: se quema el usuario administrador, cambiar si eventualmente se crea un usuario 'system;
         negativeProductLot.lotNumber = "loteTemporal " + new Date()
         negativeProductLot.expirationDate = null
-        negativeProductLot.lotDate = new Date()
+        negativeProductLot.lotDate = LightUtils.dateToString(new Date(), "dd-MM-yyyy")
         negativeProductLot.productId = billDetailRequest.productId
         negativeProductLot.storehouseId = 1 // TODO: Se quema el id de la bodega, cambiar cuando se implementen facturas por bodega
 
@@ -290,6 +367,39 @@ class WarehouseOrderService {
 
             productLotService.updateProductLot(updateProductLotRequest)
         }
+    }
+
+    //Se encarga de procesar la lista de detalles de orden originales contra los nuevos para determinar cada uno de los lotes
+    // de producto que necesitan actualizarse
+    def getProductLotListToUpdate(def oldList, def newList){
+        def productLotMap = new HashMap<Integer, Integer>()
+
+        try{
+
+            newList.each { newDetail ->
+                productLotMap.put(newDetail.productLotId, - newDetail.quantity)
+            }
+
+
+
+            oldList.each {oldDetail ->
+
+                if(productLotMap.containsKey(oldDetail.productLotId as Integer)){
+
+                    Integer tmpId = oldDetail.productLotId as Integer
+                    productLotMap[tmpId] = oldDetail.quantity + productLotMap[tmpId]
+
+                }else{
+                    productLotMap.put(oldDetail.productLotId, oldDetail.quantity)
+                }
+            }
+
+        }catch (Exception e){
+            log.error "Ha ocurrido un error ajustando los lotes de producto " + e.message
+            throw e
+        }
+
+        return productLotMap
     }
 
 }

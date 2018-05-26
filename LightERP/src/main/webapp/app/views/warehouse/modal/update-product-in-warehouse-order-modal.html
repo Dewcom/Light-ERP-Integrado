@@ -1,0 +1,119 @@
+<div class="form-group">
+    <script type="text/ng-template" id="/updateProductInWarehouseOrderModal.html">
+        <div ng-controller="UpdateWarehouseOrderController as modalCtrl">
+            <div class="modal-header">
+                <button type="button" data-dismiss="modal" aria-hidden="true" class="close"
+                        ng-click="close()">×
+                </button>
+                <h4 id="myModalLabel" class="modal-title">Modificar producto</h4>
+            </div>
+            <form name="addProductToWarehouseOrderForm" novalidate="" class="form-validate">
+                <!-- START panel-->
+                <div class="panel panel-default col-lg-12">
+                    <div class="col-lg-12">
+                        <div class="col-lg-6">
+                            <h4>Modificar producto</h4>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <fieldset>
+                            <legend></legend>
+                            <div class="panel-body col-lg-3">
+                                <div class="form-group">
+                                    <label class="control-label">Código</label>
+                                    <input tabindex="1" type="text" name="productCode"
+                                           ng-model="selectedProduct.productCode"
+                                           class="form-control" disabled="true"/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Tipo de presentación</label>
+                                    <input tabindex="1" type="text" name="presentationType"
+                                           ng-model="selectedProduct.presentationType.name"
+                                           class="form-control" disabled="true"/>
+                                </div>
+                            </div>
+                            <div class="panel-body col-lg-3">
+                                <div class="form-group">
+                                    <label class="control-label">Nombre</label>
+                                    <input tabindex="2" type="text" name="productName" ng-model="selectedProduct.name"
+                                           class="form-control" disabled="true"/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Cantidad por bulto</label>
+                                    <input tabindex="6" type="text" name="bulkQuantity"
+                                           ng-model="selectedProduct.bulkQuantity" class="form-control"
+                                           disabled="true"/>
+                                </div>
+                            </div>
+                            <div class="panel-body col-lg-3">
+                                <div class="form-group">
+                                    <label class="control-label">Nombre comercial</label>
+                                    <input tabindex="3" type="text" name="productCommercialName"
+                                           ng-model="selectedProduct.commercialName"
+                                           class="form-control" disabled="true"/>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Unidad de medida</label>
+                                    <input tabindex="1" type="text" name="measureUnit"
+                                           ng-model="selectedProduct.measureUnit.name"
+                                           class="form-control" disabled="true"/>
+                                </div>
+                            </div>
+                            <div class="panel-body col-lg-3">
+                                <div class="form-group">
+                                    <label class="control-label">Tipo de producto</label>
+                                    <input tabindex="1" type="text" name="productType"
+                                           ng-model="selectedProduct.productType.name"
+                                           class="form-control" disabled="true"/>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>Número de lote</th>
+                                            <th>Fecha de lote</th>
+                                            <th>Fecha de expiración</th>
+                                            <th>Cantidad en bodega</th>
+                                            <th>Cantidad a agregar</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="productLotObj in selectedProduct.productLots track by $index">
+                                            <td>{{ productLotObj.lotNumber }}</td>
+                                            <td>{{ productLotObj.lotDate | date :  "dd-MM-yyyy" }}</td>
+                                            <td>{{ productLotObj.expirationDate | date :  "dd-MM-yyyy" }}</td>
+                                            <td>{{ productLotObj.quantity }}</td>
+                                            <td>
+                                                <input type="number" name="'orderQuantity-' + $index"
+                                                       ng-model="selectedProduct.productLots[$index].addedQuantity"
+                                                       class="form-control" min="1"/>
+                                                <span ng-if="selectedProduct.productLots[$index].addedQuantity > productLotObj.quantity" class="text-danger">Cantidad supera la disponible</span>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END panel-->
+                <div class="panel-footer">
+                    <div class="clearfix">
+                        <div class="pull-right">
+                            <button type="submit" ng-click="ok()" class="btn btn-success btn-lg">Agregar</button>
+                            <button type="button" ng-click="cancel()" class="btn btn-danger btn-lg">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </script>
+</div>

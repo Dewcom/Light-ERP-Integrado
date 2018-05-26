@@ -1,0 +1,82 @@
+<div>
+    <div class="row">
+        <div class="col-md-7">
+            <h3>Modificar orden de bodega</h3>
+        </div>
+    </div>
+    <div class="mb">
+        <hr class="hidden-print"/>
+        <div class="clearfix">
+            <button uib-tooltip="Im
+            <button uib-tooltip="Regresar a la lista" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="controller.goBack()" class="btn btn-labeled btn-info pull-left">
+                <span class="btn-label"> <em class="fa fa-mail-reply"></em></span>Regresar
+            </button>
+            <button uib-tooltip="Rechazar orden" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button"
+                    ng-click="controller.rejectOrder(controller.currentWarehouseOrder.id)"
+                    class="btn btn-labeled btn-danger pull-right mr" ng-show="currentWarehouseOrder.warehouseOrderStateType.code == globalConstants.WAREHOUSE_ORDER_DRAFT_STATE">
+                              <span class="btn-label">
+                                 <em class="fa fa-times"></em>
+                              </span>Rechazar
+            </button>
+            <button uib-tooltip="Validar orden" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button"
+                    class="btn btn-labeled btn-success pull-right mr"
+                    ng-click="controller.submitForm()">
+                              <span class="btn-label">
+                                 <em class="fa fa-check-circle"></em>
+                              </span>Aprovar orden
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="container-md">
+            <form name="controller.warehouseOrderForm" action="" method="post" novalidate="novalidate">
+
+                <div>
+                    <div class="col-lg-12">
+                        <h4>Productos escogidos</h4>
+                        <table datatable="ng" dt-options="controller.dtOptionsAddedProductLots"
+                               dt-column-defs="controller.dtColumnDefsAddedProductLots"
+                               class="row-border hover">
+                            <thead>
+                            <tr>
+                                <th>Cantidad total</th>
+                                <th>Código</th>
+                                <th>Nombre</th>
+                                <th>Total de lotes</th>
+                                <th>Modificar</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="addedProductObj in controller.addedProductList">
+                                <td>{{ addedProductObj.totalQuantity }}</td>
+                                <td>{{ addedProductObj.productCode }}</td>
+                                <td>{{ addedProductObj.name }}</td>
+                                <td>{{ addedProductObj.productLotsTotal }}</td>
+                                <td>
+                                    <button uib-tooltip="Ver producto" uib-tooltip-trigger="focus" uib-tooltip-placement="top"  type="button" ng-click="controller.openUpdateProductModal(addedProductObj)" class="btn btn-sm btn-toolbar">
+                                        <em class="fa fa-search"></em>
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+            <toaster-container toaster-options="{'position-class': 'toast-bottom-right', 'close-button':true, 'body-output-type': 'trustedHtml'}"></toaster-container>
+
+        </div>
+        <script type="text/ng-template" id="confirmWarehouseOrderUpdate">
+            <div class="ngdialog-message text-center">
+                <h3>Crear orden de salida</h3>
+                <p>¿Está seguro que desea modificar la orden de salida?</p>
+                <p>La misma será validada de inmediato</p>
+                <div>
+                    <button type="button" ng-click="confirm()" class="btn btn-primary mr">Confirmar</button>
+                    <button type="button" ng-click="closeThisDialog('button')" class="btn btn-default">Cancelar</button>
+                </div>
+            </div>
+        </script>
+        <div ng-include="'app/views/warehouse/modal/update-product-in-warehouse-order-modal.html'"></div>
+    </div>
+</div>

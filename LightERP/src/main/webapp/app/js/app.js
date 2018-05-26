@@ -4299,6 +4299,15 @@
                 controllerAs: 'controller',
                 resolve: helper.resolveFor('ngDialog')
             })
+            .state('app.updateWarehouseOrder', {
+                url: '/updateWarehouseOrder',
+                title: 'Modificar orden de salida de bodega',
+                templateUrl: helper.basepath('warehouse/update-warehouse-order.html'),
+                controller: 'UpdateWarehouseOrderController',
+                controllerAs: 'controller',
+                resolve: helper.resolveFor('ngDialog'),
+                params : {warehouseOrderId: null, tabIndex: 0}
+            })
             .state('app.productLotDetail', {
                 url: '/productLotDetail',
                 title: 'Lote',

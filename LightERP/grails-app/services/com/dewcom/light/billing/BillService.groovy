@@ -189,20 +189,20 @@ class BillService {
                     if (argUpdateBillRequest.billDetails.size() == 0) {
                         //si la lista viene vacia, se eliminan todas los detalles factura
                         tmpBillToUpdate.billDetails.each{
-                            it.enabled = Constants.ESTADO_INACTIVO;
+                            it.enabled = Constants.ESTADO_INACTIVO
                         }
                     }else{
 
                         tmpBillToUpdate.billDetails.each { tmpPersistedBillDetail ->
 
-                            tmpPersistedBillDetail.enabled = Constants.ESTADO_INACTIVO;
+                            tmpPersistedBillDetail.enabled = Constants.ESTADO_INACTIVO
                             argUpdateBillRequest.billDetails.each { restBilLDetail ->
                                 if (tmpPersistedBillDetail.id == restBilLDetail.id) {
-                                    tmpPersistedBillDetail.enabled = Constants.ESTADO_ACTIVO;
+                                    tmpPersistedBillDetail.enabled = Constants.ESTADO_ACTIVO
                                     /*
                                     si viene un detalle factura que ya existe, se pone activo
                                     para quitarlo de los candidatos a eliminar y a la misma vez se
-                                    edita indempotentemente
+                                    edita
                                      */
                                     setBillDetailFromRESTObject(tmpPersistedBillDetail, restBilLDetail)
                                 }
