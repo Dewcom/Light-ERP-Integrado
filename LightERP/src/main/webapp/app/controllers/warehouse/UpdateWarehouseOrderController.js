@@ -229,6 +229,7 @@
 
             var userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
 
+            console.log(vm.addedProductList);
             var updatedWarehouseOrder = {
                 "username": userInfo.userName,
                 "warehouseOrderId": vm.currentWarehouseOrder.id,
@@ -366,10 +367,10 @@
         function formatWarehouseOrderDetails(list) {
             var formattedList = [];
 
-            angular.forEach(list, function (value) {
+            list.forEach(function (value) {
 
                 if(value.productLots){
-                    angular.forEach(value.productLots, function (v) {
+                    value.productLots.forEach(function (v) {
 
                         if(v.addedQuantity){
 

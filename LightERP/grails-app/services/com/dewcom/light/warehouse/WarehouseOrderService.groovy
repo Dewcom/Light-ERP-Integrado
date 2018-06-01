@@ -1,12 +1,16 @@
 package com.dewcom.light.warehouse
 
 import com.dewcom.light.billing.Bill
+import com.dewcom.light.billing.BillPaymentType
+import com.dewcom.light.billing.BillStateType
+import com.dewcom.light.billing.CreditCondition
 import com.dewcom.light.exception.LightRuntimeException
+import com.dewcom.light.rest.billing.BillDetailRequest
+import com.dewcom.light.rest.billing.UpdateBillRequest
 import com.dewcom.light.rest.warehouse.ProductLotRequest
 import com.dewcom.light.rest.warehouse.RejectWarehouseOrderRequest
 import com.dewcom.light.rest.warehouse.UpdateProductLotRequest
 import com.dewcom.light.rest.warehouse.UpdateWarehouseOrderRequest
-import com.dewcom.light.rest.warehouse.WarehouseOrderDetailRequest
 import com.dewcom.light.utils.Constants
 import com.dewcom.light.utils.LightUtils
 import grails.transaction.Transactional
@@ -100,6 +104,9 @@ class WarehouseOrderService {
 
             def originalOrder = WarehouseOrder.findByIdAndEnabled(updateWarehouseOrderRequest.warehouseOrderId, Constants.ESTADO_ACTIVO)
 
+            //Se manda a crear un el objeto a ser usado para modificar una factura basado en los cambios de una orden de salida
+            UpdateBillRequest billToUpdate = createUpdateBillRequestFromWarehouseOrder(updateWarehouseOrderRequest)
+
             //Se crea un mapa para luego ser usado en la actualizacion de los lotes de producto
             def productLotsToUpdate  = getProductLotListToUpdate(originalOrder.warehouseOrderDetails, updateWarehouseOrderRequest.warehouseOrderDetails)
 
@@ -108,6 +115,7 @@ class WarehouseOrderService {
                 it.enabled = Constants.ESTADO_INACTIVO
             }
 
+            // Se recorren los detalles nuevos para determinar los nuevos detalles de orden de salida
             updateWarehouseOrderRequest.warehouseOrderDetails.each { newDetail ->
 
                 def found = false
@@ -131,11 +139,9 @@ class WarehouseOrderService {
             originalOrder.warehouseOrderStateType = WarehouseOrderStateType.findByCode(updateWarehouseOrderRequest.warehouseOrderStateType)
             originalOrder.warehouseOrderMovementType = WarehouseOrderMovementType.findByCode(updateWarehouseOrderRequest.warehouseOrderMovementType)
 
-
-
             savedOrder = originalOrder.save(flush: true, failOnError:true)
 
-            // Si la orden se actualiza correctamente se mandan a actualizar cada uno de los lotes de producto
+            // Si la orden se actualiza correctamente se mandan a actualizar cada uno de los lotes de producto y luego la factura
             if(savedOrder){
                 productLotsToUpdate.each { k, v ->
                     def tmpProductLot = ProductLot.findById(k)
@@ -156,14 +162,14 @@ class WarehouseOrderService {
                         tmpProductLot.quantity = 0
                     }
                     productLotService.updateProductLotQuantity(tmpProductLot)
+                    boolean isUpdateFromWarehouseOrder = true
+                    billService.updateBill(billToUpdate, isUpdateFromWarehouseOrder)
                 }
             }
-
 
         }catch(Exception e){
             log.error(e)
             throw new LightRuntimeException(messageSource.getMessage("update.warehouse.order.error", null, Locale.default))
-
         }
     }
 
@@ -380,8 +386,6 @@ class WarehouseOrderService {
                 productLotMap.put(newDetail.productLotId, - newDetail.quantity)
             }
 
-
-
             oldList.each {oldDetail ->
 
                 if(productLotMap.containsKey(oldDetail.productLotId as Integer)){
@@ -400,6 +404,72 @@ class WarehouseOrderService {
         }
 
         return productLotMap
+    }
+
+    def createUpdateBillRequestFromWarehouseOrder(UpdateWarehouseOrderRequest warehouseOrderRequest){
+
+        def originalBill = Bill.findById(warehouseOrderRequest.billId)
+
+        UpdateBillRequest billRequest = new UpdateBillRequest()
+
+        billRequest.billId = originalBill.id
+        billRequest.billDate = originalBill.billDate
+        billRequest.customerId = originalBill.customer.id
+        billRequest.addressId = originalBill.address.id
+
+        def tmpBillState = BillStateType.findById(originalBill.billState.id)
+        billRequest.billStateId = tmpBillState.code
+        billRequest.exchangeRate = originalBill.exchangeRate
+
+        def tmpBillPaymentType = BillPaymentType.findById(originalBill.billPaymentType.id)
+        billRequest.billPaymentTypeId = tmpBillPaymentType.code
+        billRequest.currencyId = originalBill.currency.id
+
+        if(originalBill.creditCondition != null){
+            def tmpCreditCondition = CreditCondition.findById(originalBill.creditCondition.id)
+            billRequest.creditConditionId = tmpCreditCondition.code
+        }else{
+            billRequest.creditConditionId = null
+        }
+
+        billRequest.billDetails = processNewBillDetails(warehouseOrderRequest, originalBill)
+
+        return billRequest
+    }
+
+    def processNewBillDetails(UpdateWarehouseOrderRequest warehouseOrderRequest, Bill originalBill){
+
+        List<BillDetailRequest> newDetails = new ArrayList<>()
+        def productMap = new HashMap<Integer, Integer>()
+
+        warehouseOrderRequest.warehouseOrderDetails.each { newDetail ->
+
+            def tmpProductLot = ProductLot.findById(newDetail.productLotId)
+
+            if(productMap.containsKey(tmpProductLot.product.id)){
+                def newQuantity = productMap[tmpProductLot.product.id] + newDetail.quantity
+                productMap[tmpProductLot.product.id] = newQuantity as Integer
+
+            }else{
+                productMap.put(tmpProductLot.product.id, newDetail.quantity)
+            }
+            
+        }
+
+        originalBill.billDetails.each { oldDetail ->
+
+            productMap.each { k, v ->
+
+                if(oldDetail.product.id == k){
+                    oldDetail.quantity = v
+                    newDetails.push(oldDetail)
+                }
+
+            }
+        }
+
+        return newDetails
+
     }
 
 }

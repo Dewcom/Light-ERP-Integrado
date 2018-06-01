@@ -25,11 +25,11 @@ class BillService {
         log.info "====== Getting bill from DB ======"
         log.info billId
         try {
-            Bill billFromDB = Bill.findByIdAndEnabled(billId, Constants.ESTADO_ACTIVO);
+            Bill billFromDB = Bill.findByIdAndEnabled(billId, Constants.ESTADO_ACTIVO)
             return billFromDB
         } catch (Exception e) {
-            log.error(e);
-            throw new LightRuntimeException(messageSource.getMessage("get.bill.error", null, Locale.default));
+            log.error(e)
+            throw new LightRuntimeException(messageSource.getMessage("get.bill.error", null, Locale.default))
         }
     }
 
@@ -37,11 +37,11 @@ class BillService {
     def getAllBills() {
         log.info "======Getting all bills from DB======"
         try {
-            def billsFromDB = Bill.findAllByEnabled(Constants.ESTADO_ACTIVO);
+            def billsFromDB = Bill.findAllByEnabled(Constants.ESTADO_ACTIVO)
             return billsFromDB
         } catch (Exception e) {
-            log.error(e);
-            throw new LightRuntimeException(messageSource.getMessage("get.all.bills.error", null, Locale.default));
+            log.error(e)
+            throw new LightRuntimeException(messageSource.getMessage("get.all.bills.error", null, Locale.default))
         }
     }
 
@@ -50,11 +50,11 @@ class BillService {
         log.info "====== Getting all biils from DB by customerId ======"
         def tmpCustomer = Customer.findById(customerId)
         try {
-            def billsFromDB = Bill.findAllByEnabledAndCustomer(Constants.ESTADO_ACTIVO, tmpCustomer);
+            def billsFromDB = Bill.findAllByEnabledAndCustomer(Constants.ESTADO_ACTIVO, tmpCustomer)
             return billsFromDB
         } catch (Exception e) {
-            log.error(e);
-            throw new LightRuntimeException(messageSource.getMessage("get.all.bills.error", null, Locale.default));
+            log.error(e)
+            throw new LightRuntimeException(messageSource.getMessage("get.all.bills.error", null, Locale.default))
         }
     }
 
@@ -123,7 +123,7 @@ class BillService {
                 throw e
             }
             else{
-                throw new LightRuntimeException(messageSource.getMessage("create.bill.error", null, Locale.default));
+                throw new LightRuntimeException(messageSource.getMessage("create.bill.error", null, Locale.default))
             }
         }
         return savedBill
@@ -131,15 +131,16 @@ class BillService {
 
     def deleteBill(Bill bill) {
         try {
-            bill.enabled = Constants.ESTADO_INACTIVO;
+            bill.enabled = Constants.ESTADO_INACTIVO
             bill.save(flush: true, failOnError:true)
         } catch (Exception e) {
-            log.error(e);
-            throw new LightRuntimeException(messageSource.getMessage("delete.bill.error", null, Locale.default));
+            log.error(e)
+            throw new LightRuntimeException(messageSource.getMessage("delete.bill.error", null, Locale.default))
         }
     }
 
-    def updateBill(UpdateBillRequest argUpdateBillRequest) {
+    // Si la llamada al metodo viene desde una actualizacion de orden de salida de bodega no se crea una orden de salida nueva
+def updateBill(UpdateBillRequest argUpdateBillRequest, boolean isUpdateFromWarehouseOrder) {
 
         def updatedBill
         try {
@@ -183,6 +184,7 @@ class BillService {
                     }
                     tmpBillToUpdate.billState = tmpState
                 }
+
                 if(argUpdateBillRequest.billDetails != null) {
                     //Se desactivan las detalles de factura que fueron eliminadas en el FE
 
@@ -229,21 +231,21 @@ class BillService {
                 }
                 updatedBill = tmpBillToUpdate.save(flush: true, failOnError: true)
 
-                if(updatedBill.billState.code == BillStateType.BILL_PRE_BILL_STATE_CODE){
+                if(updatedBill.billState.code == BillStateType.BILL_PRE_BILL_STATE_CODE && !isUpdateFromWarehouseOrder){
                     warehouseOrderService.createWarehouseOrderFromBill(warehouseOrderService.getWarehouseOrderFromBill(argUpdateBillRequest, updatedBill))
                 }
             } else {
-                throw new LightRuntimeException(messageSource.getMessage("update.bill.notFound.error", null, Locale.default));
+                throw new LightRuntimeException(messageSource.getMessage("update.bill.notFound.error", null, Locale.default))
             }
         }
 
         catch (Exception e) {
-            log.error(e);
+            log.error(e)
             if(e instanceof LightRuntimeException ){
-                throw e;
+                throw e
             }
             else{
-                throw new LightRuntimeException(messageSource.getMessage("update.bill.error", null, Locale.default));
+                throw new LightRuntimeException(messageSource.getMessage("update.bill.error", null, Locale.default))
             }
         }
     }
@@ -333,7 +335,7 @@ class BillService {
             else{
                 //si entramos en este bloque no existe facturas registradas
                 // por lo tanto el numero de factura
-                billNumber =1;
+                billNumber =1
             }
         } catch (Exception e) {
             log.error "Ha ocurrido un error calculando el numero de factura " + e.message
@@ -449,8 +451,8 @@ class BillService {
         // Metodo no se usa mas, eventualmente se puede eliminar
 
         detailsList.each { billDetailReq ->
-            def tmpquantity = 0;
-            def tmpProduct = Product.findByIdAndEnabled(billDetailReq.productId, Constants.ESTADO_ACTIVO);
+            def tmpquantity = 0
+            def tmpProduct = Product.findByIdAndEnabled(billDetailReq.productId, Constants.ESTADO_ACTIVO)
 
             tmpProduct.productLot.each{ productLot ->
                 if(productLot.enabled == Constants.ESTADO_ACTIVO){
@@ -459,7 +461,7 @@ class BillService {
             }
 
             if(tmpquantity < billDetailReq.quantity){
-                throw new LightRuntimeException(messageSource.getMessage("bill.detail.quantity.exceeded.error", null, Locale.default));
+                throw new LightRuntimeException(messageSource.getMessage("bill.detail.quantity.exceeded.error", null, Locale.default))
             }
         }
     }

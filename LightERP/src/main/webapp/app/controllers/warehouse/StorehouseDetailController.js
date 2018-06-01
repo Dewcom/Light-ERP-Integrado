@@ -264,14 +264,6 @@
 
         function addProductLot() {
 
-            /*console.log($window.sessionStorage["userInfo"].userName);
-
-            var userinfo = JSON.parse($window.sessionStorage["userInfo"]);
-
-            console.log(userinfo.userName);
-
-            console.log(userinfo.role);*/
-
             var newProductLot = {
                 "username" : JSON.parse($window.sessionStorage["userInfo"]).userName,
                 "lotNumber": $scope.addProductLotForm.lotNumber,

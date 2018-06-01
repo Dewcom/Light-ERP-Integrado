@@ -335,12 +335,14 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
                         className: 'ngdialog-theme-default',
                         closeByDocument: false,
                         closeByEscape: false
-                    }).then(function (value) {
+                    }).then(function () {
                         vm.updateBill(currentBill);
                     }, function (reason) {
                         console.log('Modal promise rejected. Reason: ', reason);
                     });
 
+                }else{
+                    vm.updateBill(currentBill);
                 }
 
             }, function (reason) {
@@ -382,7 +384,7 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
 
         console.log(billToUpdate);
 
-        /*billService.updateBill(billToUpdate).then(function (response) {
+        billService.updateBill(billToUpdate).then(function (response) {
             var toasterdata;
 
             if (response.code == "0") {
@@ -406,7 +408,7 @@ function BillDetailController($uibModal, $http, $state, $stateParams, $scope, bi
             }, 3000);
         }, function (error) {
             console.log(error);
-        });*/
+        });
     };
 
     /**=========================================================

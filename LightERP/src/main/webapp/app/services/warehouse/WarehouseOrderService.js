@@ -190,36 +190,50 @@ angular
         function formatWarehouseOrderDetails(list) {
             warehouseOrderService.resetAddedProductList();
 
-            var formattedList = [];
+            var formattedList;
             var listLength = list.length;
+            var firstProductLot = {};
 
             var firstItem = list[0].productLot.product;
+            firstItem.productLots = [];
 
             firstItem.productLotsTotal = 1;
             firstItem.totalQuantity = parseInt(list[0].quantity);
+            firstProductLot.id = list[0].productLot.id;
+            firstProductLot.addedQuantity = list[0].quantity;
+
+            firstItem.productLots.push(firstProductLot);
 
             formattedList = warehouseOrderService.getAddedProductList();
 
             formattedList.push(firstItem);
 
             for(var i = 1; i < listLength; i++){
-
                 var tmpProduct = $filter('filter')(formattedList, {productCode: list[i].productLot.product.productCode })[0];
 
                 if(tmpProduct){
+                    var tmpProductLot = {};
+                    tmpProductLot.id = list[i].productLot.id;
+                    tmpProductLot.addedQuantity = list[i].quantity;
+
                     tmpProduct.totalQuantity += list[i].quantity;
                     tmpProduct.productLotsTotal ++;
+                    tmpProduct.productLots.push(tmpProductLot);
 
                 }else{
                     var newItem = list[i].productLot.product;
+                    newItem.productLots = [];
+                    var tmpProductLot = {};
+
+                    tmpProductLot.id = list[i].productLot.id;
+                    tmpProductLot.addedQuantity = list[i].quantity;
 
                     newItem.productLotsTotal = 1;
                     newItem.totalQuantity = parseInt(list[i].quantity);
+                    newItem.productLots.push(tmpProductLot);
 
                     formattedList.push(newItem);
                 }
-
-
             }
 
             return formattedList;

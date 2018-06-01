@@ -185,7 +185,8 @@ class BillController extends RestController {
         log.info request.JSON
         log.info tmpUpdateBillRequest.billId
         try {
-            billService.updateBill(tmpUpdateBillRequest)
+            boolean isUpdateFromWarehouseOrder = false;
+            billService.updateBill(tmpUpdateBillRequest, isUpdateFromWarehouseOrder)
             tmpResponse.message = messageSource.getMessage("update.bill.success", null, Locale.default)
             tmpResponse.code = Constants.SUCCESS_RESPONSE
 
