@@ -190,6 +190,11 @@
             }
         };
 
+        vm.goToCreateNewOrder = function (){
+            warehouseOrderService.resetAddedProductList();
+            $state.go("app.newWarehouseOrder");
+        };
+
 
         /**=========================================================
          * Eliminar ordenes de salida
