@@ -443,6 +443,16 @@ class AdminService {
         }
     }
 
+    def createOrUpdateMovementType(def pMovementType) {
+        log.info "====== create/update movementType  ======"
+        try{
+            return pMovementType.save()
+        }catch(Exception e){
+            log.error(e)
+            throw new LightRuntimeException(messageSource.getMessage("generic.create.error", null, Locale.default))
+        }
+    }
+
     def createOrUpdateTax(def pTax) {
         log.info "====== create/update tax  ======"
         try{
@@ -469,6 +479,17 @@ class AdminService {
         try{
             pMeasure.enabled = Constants.ESTADO_INACTIVO
             pMeasure.save()
+        }catch(Exception e){
+            log.error(e)
+            throw new LightRuntimeException(messageSource.getMessage("generic.delete.error", null, Locale.default))
+        }
+    }
+
+    def deleteWarehouseOrderMovementType(def pMovement) {
+        log.info "====== delete movementType  ======"
+        try{
+            pMovement.enabled = Constants.ESTADO_INACTIVO
+            pMovement.save()
         }catch(Exception e){
             log.error(e)
             throw new LightRuntimeException(messageSource.getMessage("generic.delete.error", null, Locale.default))
@@ -655,10 +676,25 @@ class AdminService {
         lastCode
     }
 
+    def getMaxCode(def criteriaObj){
+        def lastCode = 0
+        try{
+            lastCode = criteriaObj.get {
+                projections {
+                    max "code"
+                }
+            } as int
+        }
+        catch(Exception e){
+            log.error(e)
+        }
+        lastCode
+    }
+
     //Tipos de movimientos de ordenes de salida de bodega
     def getAllWarehouseMovementsTypes() {
         try {
-            def movementsTypes = WarehouseOrderMovementType.findAll()
+            def movementsTypes = WarehouseOrderMovementType.findAllByEnabled(Constants.ESTADO_ACTIVO)
             return movementsTypes
         } catch (Exception e) {
             log.error(e)

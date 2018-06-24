@@ -39,31 +39,75 @@ class WarehouseOrderMovementTypeController extends RestController {
     }
 
     /**
-     * Este método se encarga de crear un nuevo tipo de producto
+     * Este método se encarga de crear un nuevo movimiento de orden de almacen
      * @author Mauricio Fernández Mora
      * @param name
      */
     @Secured(['ROLE_ANONYMOUS'])
     def create() {
-        //TODO
+        ResponseREST tmpResponse = new ResponseREST();
+        try {
+            if(!request.JSON.description){
+                returnBadRequestResponse("El atributo descripcion es requerido")
+            }
+
+            WarehouseOrderMovementType tmpMovement = new WarehouseOrderMovementType(description: request.JSON.description)
+            tmpMovement.code= adminService.getMaxCode(WarehouseOrderMovementType.createCriteria()) + 1
+            def createdMovement = adminService.createOrUpdateMovementType(tmpMovement)
+            tmpResponse.message = messageSource.getMessage("generic.create.success", null, Locale.default)
+            tmpResponse.code = Constants.SUCCESS_RESPONSE
+            tmpResponse.data = [id: createdMovement.id]
+            log.info tmpResponse as JSON
+            render tmpResponse as JSON
+        } catch (Exception e) {
+            this.handleRESTExceptions(messageSource, e)
+        }
     }
 
     /**
-     * Este método se encarga de borrar (Borrado lógico) un tipo de producto
+     * Este método se encarga de borrar (Borrado lógico) un movimiento de orden de almacen
      * @author Mauricio Fernández Mora
      * @param id
      */
     @Secured(['ROLE_ANONYMOUS'])
     def delete() {
-        //TODO
+        ResponseREST tmpResponse = new ResponseREST();
+        def tmpId = params.long('id')
+        try {
+            WarehouseOrderMovementType tmpMovement = WarehouseOrderMovementType.findByIdAndEnabled(tmpId, Constants.ESTADO_ACTIVO )
+            adminService.deleteWarehouseOrderMovementType(tmpMovement);
+            tmpResponse.message = messageSource.getMessage("generic.delete.success", null, Locale.default);
+            tmpResponse.code = Constants.SUCCESS_RESPONSE
+            log.info tmpResponse as JSON
+            render tmpResponse as JSON
+        }
+        catch (Exception e) {
+            this.handleRESTExceptions(messageSource, e)
+        }
     }
 
     /**
-     * Este método se encarga de modificar un tipo de producto
+     * Este método se encarga de modificar un movimiento de orden de almacen
      * @author Mauricio Fernández Mora
      */
     @Secured(['ROLE_ANONYMOUS'])
     def update() {
-        //TODO
+        ResponseREST tmpResponse = new ResponseREST();
+        def tmpId = params.long('id')
+        try {
+            if(!request.JSON.description){
+                returnBadRequestResponse("El atributo descripcion es requerido")
+            }
+
+            WarehouseOrderMovementType tmpMovement = WarehouseOrderMovementType.findByIdAndEnabled(tmpId, Constants.ESTADO_ACTIVO)
+            tmpMovement.description = request.JSON.description
+            adminService.createOrUpdateMovementType(tmpMovement)
+            tmpResponse.message = messageSource.getMessage("generic.update.success", null, Locale.default);
+            tmpResponse.code = Constants.SUCCESS_RESPONSE
+            log.info tmpResponse as JSON
+            render tmpResponse as JSON
+        } catch (Exception e) {
+            this.handleRESTExceptions(messageSource, e)
+        }
     }
 }

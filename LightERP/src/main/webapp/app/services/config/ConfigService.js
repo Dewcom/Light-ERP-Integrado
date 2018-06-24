@@ -545,6 +545,82 @@ angular
             return updateBillNumberResult;
         }
 
+
+        configService.createMovementType = function (data) {
+            var createMovementTypeResult = $http({
+                method: 'POST',
+                url: APP_CONSTANTS.appURL + 'warehouseOrderMovementType',
+                data: {
+                    description: data.description
+                },
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            }).then(function (response) {
+                return response.data;
+            }, function (error) {
+                console.log(error);
+                return error;
+            });
+            return createMovementTypeResult;
+        }
+
+
+        configService.updateMovementType = function (data, movementTypeId) {
+            var updateMovementTypeResult = $http({
+                method: 'PUT',
+                url: APP_CONSTANTS.appURL + 'warehouseOrderMovementType/'+movementTypeId,
+                data: {
+                    description: data.description
+                },
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            }).then(function (response) {
+                return response.data;
+            }, function (error) {
+                console.log(error);
+                return error;
+            });
+            return updateMovementTypeResult;
+        }
+
+        configService.deleteMovementType = function (movementTypeList) {
+            var deleteMovementTypeResult = $http({
+                method: 'DELETE',
+                url: APP_CONSTANTS.appURL + 'warehouseOrderMovementType/'+movementTypeList,
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            }).then(function (response) {
+                return response.data;
+            }, function (error) {
+                console.log(error);
+                return error;
+            });
+            return deleteMovementTypeResult;
+        }
+
+
+
+        configService.getAllMovementTypesList = function () {
+
+            var movementTypes = $http({
+                method: 'GET',
+                url: APP_CONSTANTS.appURL + 'warehouseOrderMovementType',
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            }).then(function (response) {
+                return response.data.data;
+            }, function (error) {
+                console.log(error);
+                return error.status;
+            });
+
+            return movementTypes;
+        }
+
         return configService;
     });
 

@@ -1,0 +1,37 @@
+<div>
+    <div  ng-con class="panel-body container-fluid">
+        <!-- Editable row-->
+        <table class="table table-bordered table-hover bg-white">
+            <tr style="font-weight: bold">
+                <td style="width:35%">Descripción</td>
+                <td style="width:25%">Opciones</td>
+            </tr>
+            <tr ng-repeat="movementType in configCtrl.movementTypeList">
+                <td>
+                    <!-- editable username (text with validation)-->
+                    <span editable-text="movementType.description" e-name="description" e-form="rowform" onbeforesave="configCtrl.checkRequiredText($data)" e-required="">{{ movementType.description || &apos;Incompleto&apos; }}</span>
+                </td>
+                <td style="white-space: nowrap">
+                    <!-- form-->
+                    <form editable-form="" name="rowform" onbeforesave="configCtrl.createMovementType($data, movementType.id, $index)" ng-show="rowform.$visible" shown="configCtrl.insertedMovementType == movementType" class="form-buttons form-inline">
+                        <button type="submit" ng-disabled="rowform.$waiting" title="Save" class="btn btn-sm btn-info">
+                            <em class="fa fa-save"></em>
+                        </button>
+                        <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" title="Cancel" class="btn btn-sm btn-default">
+                            <em class="fa fa-times"></em>
+                        </button>
+                    </form>
+                    <div ng-show="!rowform.$visible" class="buttons">
+                        <button ng-click="rowform.$show()" title="Editar" class="btn btn-sm btn-info">
+                            <em class="fa fa-pencil"></em>
+                        </button>
+                        <button ng-click="configCtrl.removeMovementType(movementType.id, $index)" title="Eliminar" class="btn btn-sm btn-danger">
+                            <em class="fa fa-trash"></em>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <button ng-click="configCtrl.addMovementTypeToTable()" class="btn btn-success btn-lg  mt-xl">Agregar</button>
+    </div>
+</div>

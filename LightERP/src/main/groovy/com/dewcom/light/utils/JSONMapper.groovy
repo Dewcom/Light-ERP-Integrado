@@ -410,6 +410,7 @@ class JSONMapper {
         def tmpWarehouseOrderMovementTypeObj = new WarehouseOrderMovementType()
         tmpWarehouseOrderMovementTypeObj.code = pWarehouseOrderMovementType.code
         tmpWarehouseOrderMovementTypeObj.description = pWarehouseOrderMovementType.description
+        tmpWarehouseOrderMovementTypeObj.id = pWarehouseOrderMovementType.id
         tmpWarehouseOrderMovementTypeObj
     }
 

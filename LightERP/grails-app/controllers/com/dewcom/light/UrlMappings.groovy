@@ -55,6 +55,12 @@ class UrlMappings {
         put  "/api/productType/$id"(controller: 'productType', action: 'update')
         delete  "/api/productType/$id"(controller: 'productType', action: 'delete')
 
+
+        get "/api/warehouseOrderMovementType"(controller: 'warehouseOrderMovementType', action: 'get')
+        post "/api/warehouseOrderMovementType"(controller: 'warehouseOrderMovementType', action: 'create')
+        put "/api/warehouseOrderMovementType/$id"(controller: 'warehouseOrderMovementType', action: 'update')
+        delete "/api/warehouseOrderMovementType/$id"(controller: 'warehouseOrderMovementType', action: 'delete')
+
         //measureUnit
         get "/api/measureUnit"(controller: 'measureUnit', action: 'getAll')
         put "/api/measureUnit/$id"(controller: 'measureUnit', action: 'update')

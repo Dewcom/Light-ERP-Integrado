@@ -11,6 +11,7 @@ function AdminConfigController($http, $state, customerTypeService, configService
     init();
 
     function init() {
+        fetchAllMovementTypes();
         fetchAllCustomerTypes();
         fetchAllTaxes();
         fetchAllProductTypes();
@@ -729,6 +730,116 @@ function AdminConfigController($http, $state, customerTypeService, configService
 
         //********************CUSTOMER TYPE  END*************************
 
+        //********************MOVEMENT TYPE  START*************************
+
+        vm.addMovementTypeToTable = function() {
+            vm.insertedMovementType = {
+                id: null,
+                description: ""
+            };
+            vm.movementTypeList.push(vm.insertedMovementType);
+        };
+
+        vm.removeMovementType = function(movementTypeId, index) {
+            if(movementTypeId){
+                deleteMovementType(movementTypeId).then(function (response) {
+                    var toasterdata;
+                    if (response.status != undefined && response.status != 200) {
+                        toasterdata = {
+                            type: 'warning',
+                            title: 'Eliminar tipo de movimiento',
+                            text: response.data.message == undefined ? 'Ha ocurrido un error eliminando  el tipo de movimiento' : response.data.message
+                        };
+                    }
+                    else if (response.code == 0) {
+
+                        vm.movementTypeList.splice(index, 1);
+                        toasterdata = {
+                            type: 'success',
+                            title: 'Eliminar tipo de movimiento',
+                            text: response.message
+                        };
+                    }
+                    else {
+                        toasterdata = {
+                            type: 'warning',
+                            title: 'Eliminar tipo de movimiento',
+                            text: response.message
+                        };
+                    }
+                    pop(toasterdata);
+                });
+            }
+            else{
+                vm.movementTypeList.splice(index, 1);
+            }
+        };
+
+
+        vm.createMovementType = function(data, movementTypeId, index) {
+            if(!movementTypeId){
+                saveMovementType(data).then(function (response) {
+                    var toasterdata;
+                    if(response.status != undefined && response.status != 200){
+
+                        vm.movementTypeList.splice(index, 1);
+                        toasterdata = {
+                            type: 'warning',
+                            title: 'Crear tipo de movmiento',
+                            text: response.message == undefined ? 'Ha ocurrido un error creando tipo de movimiento' : response.message
+                        };
+                    }
+                    else if(response.code == 0){
+                        angular.extend(data, {id: response.data.id});
+                        setMovementTypeId(index, response.data.id )
+                        toasterdata = {
+                            type: 'success',
+                            title: 'Crear tipo de movimiento',
+                            text: response.message
+                        };
+                    }
+                    else{
+                        vm.movementTypeList.splice(index, 1);
+                        toasterdata = {
+                            type: 'warning',
+                            title: 'Crear tipo de movimiento',
+                            text: response.message
+                        };
+                    }
+                    pop(toasterdata);
+                });
+            }
+            else{
+                updateMovementType(data, movementTypeId).then(function (response) {
+                    var toasterdata;
+                    if(response.status != undefined && response.status != 200){
+                        toasterdata = {
+                            type: 'warning',
+                            title: 'Modificar tipo de movimiento',
+                            text: 'Ha ocurrido un error modificando tipo de movimiento'
+                        };
+                    }
+                    else if(response.code == 0){
+                        toasterdata = {
+                            type: 'success',
+                            title: 'Modificar tipo de movimiento',
+                            text: response.message
+                        };
+                    }
+                    else{
+                        toasterdata = {
+                            type: 'warning',
+                            title: 'Modificar tipo de movimiento',
+                            text: response.message
+                        };
+                    }
+                    pop(toasterdata);
+                });
+            }
+        };
+
+        //********************MOVEMENT TYPE END*************************
+
         //********************BILL NUMBER   START*************************
         vm.updateBillNumber = function() {
             vm.submitted = true;
@@ -1012,6 +1123,31 @@ function AdminConfigController($http, $state, customerTypeService, configService
         angular.extend(vm.customerTypeList[index], {id:customerTypeId})
     }
 
+    //********************WAREHOUSE MOVEMENT TYPE START*************************
+
+    function fetchAllMovementTypes(){
+        configService.getAllMovementTypesList().then(function(response) {
+            vm.movementTypeList = response;
+        });
+    }
+
+    function deleteMovementType(movementTypeId) {
+        return configService.deleteMovementType(movementTypeId);
+    }
+
+    function updateMovementType(data, movementTypeId) {
+        return configService.updateMovementType(data, movementTypeId);
+    }
+
+    function saveMovementType(data) {
+        return configService.createMovementType(data);
+    }
+
+    //set movement type id to the new added object in the  list by index
+    function setMovementTypeId(index, movementTypeId) {
+        angular.extend(vm.movementTypeList[index], {id:movementTypeId})
+    }
+//********************WAREHOUSE MOVEMENT TYPE END*************************
 
     //********************UPDATE BILL NUMBER  START*************************
     function updateBillNumber(value, configCode) {
