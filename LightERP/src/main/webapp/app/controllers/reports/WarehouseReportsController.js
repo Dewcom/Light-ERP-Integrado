@@ -6,11 +6,12 @@
         .controller('WarehouseReportsController', WarehouseReportsController);
 
 
-    WarehouseReportsController.$inject = ['usSpinnerService', '$http', '$uibModal', '$resource', 'warehouseReportService', 'toaster', '$state', '$filter'];
-    function WarehouseReportsController(usSpinnerService, $http, $uibModal, $resource, warehouseReportService, toaster, $state, $filter) {
+    WarehouseReportsController.$inject = ['usSpinnerService', '$http', '$uibModal', '$resource', 'warehouseReportService', 'toaster', '$state', '$filter', 'productService'];
+    function WarehouseReportsController(usSpinnerService, $http, $uibModal, $resource, warehouseReportService, toaster, $state, $filter, productService) {
 
         var vm = this;
-        vm.reportData = [];
+        vm.legacyReport= {};
+        vm.productLotHistoryreport= {};
         vm.reportSummary= [];
         activateCalendars();
         activate();
@@ -58,9 +59,21 @@
 
 
         function activate() {
-            vm.resultsLabel= "";
-            vm.showTable = false;
-            vm.dateRange = "";
+
+            /**=========================================================
+             * Productos
+             =========================================================*/
+            productService.getAll().then(function (response) {
+                vm.productList = $filter('orderBy')(response, 'productCode');
+            });
+
+            vm.legacyReport.clearSelected = function() {
+                vm.legacyReport.selectedProduct = undefined;
+            };
+
+
+            vm.productLotHistoryreport.showTable = false;
+            vm.legacyReport.showTable = false;
             // Submit form
             vm.submitForm = function() {
                 vm.fillTable();
@@ -104,7 +117,7 @@
             };
 
             vm.fillTable = function () {
-                vm.showTable = true;
+                vm.productLotHistoryreport.showTable = true;
                 usSpinnerService.spin('customersSpinner');
 
                 var startDate = $filter('date')(vm.startDate, "yyyy-MM-dd");
@@ -114,24 +127,25 @@
                 warehouseReportService.getProductLotHistory(startDate, endDate, lotNumber)
                     .then(function(response) {
                         console.log(response);
-                        vm.reportData =  response == null ? [] : response.data.size == 0 ? [] : response.data;
-                        vm.reportSummary = response == null ? [] : response.data.size == 0 ? [] : response.data;
+                        vm.productLotHistoryreport.reportData =  response == null ? [] : response.data.size == 0 ? [] : response.data;
+                        vm.productLotHistoryreport.reportSummary = response == null ? [] : response.data.size == 0 ? [] : response.data;
                         vm.gridOptions.api.setRowData(vm.reportData);
 
-                        _autoSizeColumns(columnDefs);
+                        _autoSizeColumns(vm.gridOptions, columnDefs);
 
-                        vm.dateRange = vm.startDate == undefined ? "" : $filter('date')(vm.startDate, "dd-MM-yyyy") +'/'+ vm.endDate == undefined ? "" : $filter('date')(vm.endDate, "dd-MM-yyyy");
+                        vm.productLotHistoryreport.dateRange = vm.productLotHistoryreport.startDate == undefined ? "" : $filter('date')(vm.productLotHistoryreport.startDate, "dd-MM-yyyy") +'/'+ vm.productLotHistoryreport.endDate == undefined ? "" : $filter('date')(vm.productLotHistoryreport.endDate, "dd-MM-yyyy");
                         usSpinnerService.stop('customersSpinner');
                     });
             };
 
-            function _autoSizeColumns(columnDefs){
+            function _autoSizeColumns(gridOptions ,columnDefs){
                 var allColumnIds = [];
                 columnDefs.forEach( function(columnDef) {
                     allColumnIds.push(columnDef.field);
                 });
-                vm.gridOptions.columnApi.autoSizeColumns(allColumnIds);
+                gridOptions.columnApi.autoSizeColumns(allColumnIds);
             }
+
             vm.exportToCsv = function() {
                 console.log("text");
                 var params = {
@@ -151,7 +165,118 @@
                 vm.gridOptions.api.exportDataAsCsv(params);
             }
 
+
+            /***********PRODUCTS LEGACY REPORT***********/
+
+            var legacyReportcolumnDefs = [
+                {headerName: 'Código de producto', field: 'productCode', minWidth: 150},
+                {headerName: 'Nombre', field: 'productName', minWidth: 150},
+                {headerName: 'Unidad de medida', field: 'symbol', minWidth: 150},
+                {headerName: 'Tipo cambio', field: 'exchangeRate', minWidth: 200, cellFormatter: colonCurrencyFormatter, cellClass: 'number-cell'},
+                {headerName: 'Costo colones', field: 'colonesCost', minWidth: 150, cellFormatter: colonCurrencyFormatter, cellClass: 'number-cell'},
+                {headerName: 'Costo dolares', field: 'dollarsCost', minWidth: 150, cellFormatter: dollarsCurrencyFormatter, cellClass: 'number-cell'},
+                {headerName: 'Existencias', field: 'stock', minWidth: 150},
+                {headerName: 'Total costo colones', field: 'totalColonesCost', minWidth: 150, cellFormatter: colonCurrencyFormatter, cellClass: 'number-cell'},
+                {headerName: 'Total costo dolares', field: 'totalDollarsCost', minWidth: 150, cellFormatter: dollarsCurrencyFormatter, cellClass: 'number-cell'}
+            ];
+
+            vm.gridOptionsLegacyReport = {
+                columnDefs: legacyReportcolumnDefs,
+                rowData: [],
+                enableFilter: false,
+                localeText:{
+                    noRowsToShow:'No hay información para mostrar'
+                },
+                onGridReady: function(params){
+                    params.api.setRowData([]);
+                },
+                getRowHeight: function(params) {
+                    if (params.node.floating) {
+                        return 50;
+                    } else {
+                        return 28;
+                    }
+                },
+                getRowStyle: function(params) {
+                    if (params.node.floating) {
+                        return {'font-weight': 'bold', 'background-color': '#EDF1F2','font-size': '20px',
+                            'border-style': 'solid none none none', 'border-width': '2px', 'text-align': 'center'}
+                    }else{
+                        return {'text-align': 'center'}
+                    }
+                },
+                // no rows to pin to start with
+                pinnedBottomRowData: []
+            };
+
+            vm.fillProductLegacyTable = function () {
+                vm.legacyReport.showTable = true;
+                usSpinnerService.spin('customersSpinner');
+
+                var selectedProductCode = vm.selectedProduct != undefined ? vm.legacyReport.selectedProduct.productCode : "" ;
+
+                warehouseReportService.getProductsLegacy(selectedProductCode)
+                    .then(function(response) {
+                        console.log(response);
+                        vm.legacyReport.reportData =  response == null ? [] : response.data.size == 0 ? [] : response.data.reportData;
+                        vm.legacyReport.reportSummary = response == null ? [] : response.data.size == 0 ? [] : response.data.reportSummary;
+
+                        var footerWrapper ={
+                            productCode: 'TOTALES:',
+                            productName: '',
+                            symbol: '',
+                            exchangeRate: undefined,
+                            colonesCost: vm.legacyReport.reportSummary.totalColonesCost,
+                            dollarsCost: vm.legacyReport.reportSummary.totalDollarsCost,
+                            stock: vm.legacyReport.reportSummary.totalStock,
+                            totalColonesCost: vm.legacyReport.reportSummary.totalColonesCostAmount,
+                            totalDollarsCost: vm.legacyReport.reportSummary.totalDollarsCostAmount
+                        };
+
+                        vm.gridOptionsLegacyReport.api.setRowData(vm.legacyReport.reportData);
+                        vm.gridOptionsLegacyReport.api.setFloatingBottomRowData(_createTableFooterData(footerWrapper));
+                        _autoSizeColumns(vm.gridOptionsLegacyReport, legacyReportcolumnDefs);
+                        usSpinnerService.stop('customersSpinner');
+                    });
+            };
+
+            function _createTableFooterData(footerDataWrapper) {
+                var result = [];
+                result.push(footerDataWrapper);
+
+                return result;
+            }
+
+            vm.exportLegacyReportAsCvs = function () {
+                var columns=  'TOTALES:,,,,'+vm.legacyReport.reportSummary.totalColonesCost+','+vm.legacyReport.reportSummary.totalDollarsCost+','+vm.legacyReport.reportSummary.totalStock+','+vm.legacyReport.reportSummary.totalColonesCostAmount+','+vm.legacyReport.reportSummary.totalDollarsCostAmount;
+                exportToCsv('warehouseProductLegacyRpt.csv', columns, vm.gridOptionsLegacyReport  );
+            }
+        }
+        function colonCurrencyFormatter(params) {
+            return params.value == undefined ? '': $filter('currency')(params.value, '&#8353; ', 2);
         }
 
+        function dollarsCurrencyFormatter(params) {
+            return params.value == undefined ? '': $filter('currency')(params.value, '&#036;', 2);
+        }
+
+        function exportToCsv(fileName, columns, grid) {
+            var params = {
+                skipHeader: false,
+                columnGroups: false,
+                skipFooters: true,
+                skipGroups: true,
+                skipPinnedTop: true,
+                skipPinnedBottom: true,
+                allColumns: true,
+                onlySelected: false,
+                suppressQuotes: true,
+                fileName: fileName,
+                columnSeparator: ','
+            };
+
+            params.customFooter = columns;
+            grid.api.exportDataAsCsv(params);
+        }
     }
 })();

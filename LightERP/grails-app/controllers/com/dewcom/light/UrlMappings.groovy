@@ -78,7 +78,7 @@ class UrlMappings {
         //reports
         get "/api/customer/purchaseReport"(controller: 'customerReport', action: 'getCustomerProductPurchases')
         get "/api/customer/billingReport"(controller: 'customerReport', action: 'getCustomerBills')
-
+        get "/api/warehouse/productLegacyReport"(controller: 'WarehouseReport', action: 'getProductsLegacyReport')
         //users
         get "/api/user"(controller: 'user', action: 'get')
 

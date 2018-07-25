@@ -19,71 +19,76 @@
             <div>
                 <uib-accordion close-others="false">
                     <uib-accordion-group is-open="status.isFirstOpen" is-disabled="status.isFirstDisabled">
+                        <uib-accordion-heading>Patrimonio de inventario</uib-accordion-heading><!-- START panel-->
+                        <div ng-include="'app/views/reports/warehouse-product-legacy-report-partial.html'"></div>
+
+                    </uib-accordion-group>
+                    <uib-accordion-group is-open="status.isSecondOpen" is-disabled="status.isSecondDisabled">
                         <uib-accordion-heading>Lotes de producto</uib-accordion-heading><!-- START panel-->
-                            <div>
-                                <form name="controller.billsSearchForm" ng-submit="controller.submitForm()" novalidate="" class="form-validate">
-                                    <div class="col-lg-12">
-                                        <div class="panel-body col-lg-4">
-                                            <div class="form-group">
-                                                <label>Nųmero de lote</label>
-                                                <input type="text" name="lotNumber" ng-model="controller.lotNumber" class="form-control"/>
-                                            </div>
+                        <div>
+                            <form name="controller.billsSearchForm" ng-submit="controller.submitForm()" novalidate="" class="form-validate">
+                                <div class="col-lg-12">
+                                    <div class="panel-body col-lg-4">
+                                        <div class="form-group">
+                                            <label>Nųmero de lote</label>
+                                            <input type="text" name="lotNumber" ng-model="controller.lotNumber" class="form-control"/>
                                         </div>
-                                        <div class="panel-body col-lg-4">
-                                            <div class="form-group">
-                                                <label>Desde</label>
-                                                <p class="input-group">
-                                                    <input name="startDate" type="text" uib-datepicker-popup="{{controller.format}}" ng-model="controller.startDate" is-open="controller.isStartDateOpened" max-date="'2020-12-30'" datepicker-options="controller.dateOptions" current-text="Hoy" close-text="Salir" clear-text="Limpiar" class="form-control" onkeydown="return false"/>
-                                                    <span class="input-group-btn">
-                                                            <button type="button" ng-click="controller.openStartDate($event)" class="btn btn-default">
-                                                                <em class="fa fa-calendar"></em>
-                                                            </button>
-                                                        </span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="panel-body col-lg-4">
-                                            <label>Hasta</label>
+                                    </div>
+                                    <div class="panel-body col-lg-4">
+                                        <div class="form-group">
+                                            <label>Desde</label>
                                             <p class="input-group">
-                                                <input name="endDate" type="text" uib-datepicker-popup="{{controller.format}}" ng-model="controller.endDate" is-open="controller.isEndDateOpened" max-date="'2020-12-30'" datepicker-options="controller.dateOptions" current-text="Hoy" close-text="Salir" clear-text="Limpiar" class="form-control" onkeydown="return false"/>
+                                                <input name="startDate" type="text" uib-datepicker-popup="{{controller.format}}" ng-model="controller.startDate" is-open="controller.isStartDateOpened" max-date="'2020-12-30'" datepicker-options="controller.dateOptions" current-text="Hoy" close-text="Salir" clear-text="Limpiar" class="form-control" onkeydown="return false"/>
                                                 <span class="input-group-btn">
-                                                            <button type="button" ng-click="controller.openEndDate($event)" class="btn btn-default">
+                                                            <button type="button" ng-click="controller.openStartDate($event)" class="btn btn-default">
                                                                 <em class="fa fa-calendar"></em>
                                                             </button>
                                                         </span>
                                             </p>
                                         </div>
                                     </div>
-                                    <div class="col-lg-12">
-                                        <div class="panel-body col-lg-3 pull-right">
-                                            <div class="form-group">
-                                                <button uib-tooltip="Buscar" uib-tooltip-trigger="focus"
-                                                        uib-tooltip-placement="top" type="submit" class="btn btn-primary pull-right ml">
-                                                    Buscar
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div ng-show="controller.showTable" class="container-fluid">
-                                <!-- Filter Example-->
-                                <h4 class="page-header">Resultados</h4>
-                                <div class="row">
-                                    <div class="col-lg-4 col-md-6">
-                                        <input placeholder="Filtrar..." type="text" ng-model="controller.gridOptions.quickFilterText" class="mb form-control" />
-
-                                    </div>
-                                    <div class="col-lg-4 col-md-6">
-
-                                        <button ng-disabled="controller.reportData.length <= 0" uib-tooltip="Exportar" uib-tooltip-trigger="focus"
-                                                uib-tooltip-placement="top" ng-click="controller.exportToCsv()" class="btn btn-primary">
-                                            Exportar a CSV
-                                        </button>
+                                    <div class="panel-body col-lg-4">
+                                        <label>Hasta</label>
+                                        <p class="input-group">
+                                            <input name="endDate" type="text" uib-datepicker-popup="{{controller.format}}" ng-model="controller.endDate" is-open="controller.isEndDateOpened" max-date="'2020-12-30'" datepicker-options="controller.dateOptions" current-text="Hoy" close-text="Salir" clear-text="Limpiar" class="form-control" onkeydown="return false"/>
+                                            <span class="input-group-btn">
+                                                            <button type="button" ng-click="controller.openEndDate($event)" class="btn btn-default">
+                                                                <em class="fa fa-calendar"></em>
+                                                            </button>
+                                                        </span>
+                                        </p>
                                     </div>
                                 </div>
-                                <div ag-grid="controller.gridOptions" style="width: 100%; height: 400px;" class="ag-angle"></div>
+                                <div class="col-lg-12">
+                                    <div class="panel-body col-lg-3 pull-right">
+                                        <div class="form-group">
+                                            <button uib-tooltip="Buscar" uib-tooltip-trigger="focus"
+                                                    uib-tooltip-placement="top" type="submit" class="btn btn-primary pull-right ml">
+                                                Buscar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div ng-show="controller.productLotHistoryreport.showTable" class="container-fluid">
+                            <!-- Filter Example-->
+                            <h4 class="page-header">Resultados</h4>
+                            <div class="row">
+                                <div class="col-lg-4 col-md-6">
+                                    <input placeholder="Filtrar..." type="text" ng-model="controller.gridOptions.quickFilterText" class="mb form-control" />
+
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+
+                                    <button ng-disabled="controller.reportData.length <= 0" uib-tooltip="Exportar" uib-tooltip-trigger="focus"
+                                            uib-tooltip-placement="top" ng-click="controller.exportToCsv()" class="btn btn-primary">
+                                        Exportar a CSV
+                                    </button>
+                                </div>
                             </div>
+                            <div ag-grid="controller.gridOptions" style="width: 100%; height: 400px;" class="ag-angle"></div>
+                        </div>
                         <span us-spinner="{radius:20, width:8, length: 16, color: '#3A3F51'}" spinner-key="customersSpinner" spinner-start-active="false"></span>
                     </uib-accordion-group>
                 </uib-accordion>

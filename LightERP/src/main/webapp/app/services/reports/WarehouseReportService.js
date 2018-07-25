@@ -24,6 +24,25 @@ angular
             return reportResults;
         };
 
+
+        warehouseReportService.getProductsLegacy = function (productCode) {
+
+            var reportResults = $http({
+                method: 'GET',
+                url: APP_CONSTANTS.appURL + 'warehouse/productLegacyReport?productCode='+productCode,
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            }).then(function (response) {
+                return response.data;
+            }, function (error) {
+                console.log(error);
+                return null
+            });
+
+            return reportResults;
+        };
+
         return warehouseReportService;
     });
 

@@ -61,7 +61,7 @@ class LightUtils {
      * Metodo usado para ver diferencias entre fechas
      * @return Devuelve cantidad de dias
      */
-    public static Long daysBetweenDates(Date startDate, Date endDate) {
+     static Long daysBetweenDates(Date startDate, Date endDate) {
         ZoneId defaultZoneId = ZoneId.systemDefault();
         Instant startInstant = startDate.toInstant();
         Instant endInstant = endDate.toInstant();
@@ -78,7 +78,7 @@ class LightUtils {
      * Metodo usado para parsear fecha en date a objeto String
      * @return Devuelve la fecha formateada
      */
-    public static String dateToString(Date argDate, String datePattern) {
+     static String dateToString(Date argDate, String datePattern) {
         SimpleDateFormat formatter = new SimpleDateFormat(datePattern);
         String tmpDate;
         try {
@@ -95,7 +95,7 @@ class LightUtils {
      * Metodo usado para revisar si un string no es blank ni nulo
      * @return Devuelve la fecha formateada
      */
-    public static boolean isNotBlank(String pStringToCheck) {
+     static boolean isNotBlank(String pStringToCheck) {
       if(pStringToCheck == null || pStringToCheck.length() == 0){
           return false
       }
@@ -106,8 +106,8 @@ class LightUtils {
      * Metodo usado para formatear un decimal a un numero deseado de decimales
      * @return Devuelve el numero aleatorio
      */
-    public static String formatDouble(Double argDouble, int zeros) {
-        def result= "0"
+     static String formatDouble(Double argDouble, int zeros) {
+        String result= "0"
         if(argDouble != null){
             String pattern = "0.";
             for(int i = 0; i< zeros; i++ ){
@@ -139,5 +139,17 @@ class LightUtils {
         catch(NumberFormatException ex){
             throw ex
         }
+    }
+
+    //builds dinamically report domain objects
+     static  buildReportDomainObjects(def pQueryResults, def targetDomainClass ){
+        List results = new ArrayList<>()
+        if(pQueryResults != null) {
+            pQueryResults.each { it ->
+                def tmpReportObj =  Class.forName(targetDomainClass).newInstance(it)
+                results.add(tmpReportObj)
+            }
+        }
+        results
     }
 }

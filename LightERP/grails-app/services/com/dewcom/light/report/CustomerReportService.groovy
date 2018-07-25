@@ -10,7 +10,7 @@ import com.dewcom.light.rest.report.customer.response.CustomerBillsReport
 import com.dewcom.light.rest.report.customer.response.CustomerBillsReportDto
 import com.dewcom.light.rest.report.customer.response.CustomerPurchasesReport
 import com.dewcom.light.rest.report.customer.response.CustomerPurchasesReportDto
-import com.dewcom.light.rest.report.customer.response.CustomerReportResp
+import com.dewcom.light.rest.report.response.ReportResp
 import com.dewcom.light.rest.report.customer.response.PurchasesReportHeader
 import com.dewcom.light.rest.report.customer.response.PurchasesReportSummary
 import com.dewcom.light.thirdparty.Customer
@@ -26,7 +26,7 @@ class CustomerReportService {
     def getCustomerProductPurchases(CustomerPurchasesReportReq pReq){
 
         try{
-            CustomerReportResp purchasesReportResponse = new CustomerReportResp()
+            ReportResp purchasesReportResponse = new ReportResp()
             //TODO THIS SHOULD BE REFACTORED BY USING STORED PROCEDURES, LEO
             String hqlQuery = "select new map (b.billNumber as billNumber, c.identification as customerId, b.billDate as buyDate," +
                     " p.productCode as productCode, p.name as productName, cur.currencyCode as currencyCode, b.exchangeRate as exchange, d.subTotal as buyPrice, " +
@@ -70,7 +70,7 @@ class CustomerReportService {
 
             purchasesReportResponse.reportHeader = reportHeader
             def purchasesReportSummary = new PurchasesReportSummary()
-            purchasesReportResponse.reportData = buildPurchasesReportDtoObjects(buildReportDomainObjects(results, CustomerPurchasesReport.getName()))
+            purchasesReportResponse.reportData = buildPurchasesReportDtoObjects(LightUtils.buildReportDomainObjects(results, CustomerPurchasesReport.getName()))
             purchasesReportSummary.totalGrossPrice = LightUtils.formatDouble(purchasesReportResponse.reportData.buyPrice.sum(),2)
             purchasesReportSummary.totalQuantity = purchasesReportResponse.reportData.quantity.sum()
             purchasesReportSummary.totalTaxAmount = LightUtils.formatDouble(purchasesReportResponse.reportData.totalTaxAmount.sum(),2)
@@ -89,17 +89,7 @@ class CustomerReportService {
         }
     }
 
-    //builds dinamically report domain objects
-    def buildReportDomainObjects(def pQueryResults, def targetDomainClass ){
-        def List results = new ArrayList<>()
-        if(pQueryResults != null) {
-            pQueryResults.each { it ->
-                def tmpReportObj =  Class.forName(targetDomainClass).newInstance(it)
-                results.add(tmpReportObj)
-            }
-        }
-        results
-    }
+
 
 
     //builds purchases report dto objects
@@ -212,7 +202,7 @@ class CustomerReportService {
 
     def getCustomerBills(CustomerBillsReportReq pReq){
         try{
-             def billsReportResponse = new CustomerReportResp()
+             def billsReportResponse = new ReportResp()
             //TODO IF POSSIBLE THIS SHOULD BE REFACTORED BY USING STORED PROCEDURES, LEO
             String selectProjections = "select new map (sum(payment.amount) as paymentsTotalAmount, count(payment) as totalPayments, b.billNumber as billNumber, " +
                     "c.identification as customerId, b.billDate as buyDate, c.name as customerName, " +
@@ -241,7 +231,7 @@ class CustomerReportService {
 
             billsReportResponse.reportHeader = new PurchasesReportHeader()
             def billsReportSummary = new BillsReportSummary()
-            billsReportResponse.reportData = buildBillsReportDtoObjects(buildReportDomainObjects(results, CustomerBillsReport.getName()))
+            billsReportResponse.reportData = buildBillsReportDtoObjects(LightUtils.buildReportDomainObject(results, CustomerBillsReport.getName()))
             billsReportSummary.totalDiscount = LightUtils.formatDouble(billsReportResponse.reportData.totalDiscount.sum(),2)
             billsReportSummary.totalSubtotal =  LightUtils.formatDouble(billsReportResponse.reportData.subTotal.sum(), 2)
             billsReportSummary.totalNetAmount = LightUtils.formatDouble(billsReportResponse.reportData.totalAmount.sum(), 2)
