@@ -78,4 +78,25 @@ class WarehouseReportController extends RestController {
             this.handleRESTExceptions(messageSource, e)
         }
     }
+
+    /*
+     * Este método se encarga de obterner el historial del patrimonio de inventario
+     * @author lchen
+     */
+    @Secured(['ROLE_ANONYMOUS'])
+    def getProductsLegacyReport() {
+        log.info "========== Get product lot history  =========="
+        log.info params
+        try {
+            ResponseREST tmpResponse = new ResponseREST()
+            tmpResponse.data = warehouseReportService.getProductLegacyReport(params.productCode);
+            tmpResponse.message = messageSource.getMessage("product.legacy.report.success", null, Locale.default)
+            tmpResponse.code = Constants.SUCCESS_RESPONSE
+            log.info tmpResponse as JSON
+            render tmpResponse as JSON
+        }
+        catch (Exception e) {
+            this.handleRESTExceptions(messageSource, e)
+        }
+    }
 }
