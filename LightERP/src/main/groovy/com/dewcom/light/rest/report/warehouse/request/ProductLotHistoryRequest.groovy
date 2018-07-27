@@ -5,7 +5,7 @@ import grails.validation.Validateable
 /**
  * Created by Mauricio Fernández Mora on 28/01/18.
  */
-class ProductLotHistoryRequest  implements Validateable {
+class ProductLotHistoryRequest implements Validateable {
     String startDate
     String endDate
     String lotNumber

@@ -85,7 +85,7 @@ class CustomerReportService {
 
         }
         catch(Exception e){
-            throw e;
+            throw e
         }
     }
 
