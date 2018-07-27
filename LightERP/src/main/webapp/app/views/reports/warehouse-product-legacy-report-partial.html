@@ -20,7 +20,17 @@
                             </div>
                         </ui-select-choices>
                     </ui-select>
-
+                </div>
+                <div class="form-group">
+                <div class="row">
+                    <label class="col-sm-6 control-label">Mostrar montos</label>
+                    <div class="col-sm-2">
+                        <label class="switch switch-md">
+                            <input type="checkbox" ng-change="controller.legacyReport.showAmountsColumns()" checked="checked" ng-model="controller.legacyReport.showAmounts" />
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
                 </div>
             </div>
         </div>

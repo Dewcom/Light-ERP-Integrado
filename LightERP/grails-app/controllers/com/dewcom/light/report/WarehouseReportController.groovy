@@ -44,8 +44,8 @@ class WarehouseReportController extends RestController {
         }
     }
 
-    /*g
-     * Este método se encarga de obterner el historial del patrimonio de productos
+    /*
+     * Este método se encarga de obterner el historial del patrimonio de inventario
      * @author lchen
      */
     @Secured(['ROLE_ANONYMOUS'])

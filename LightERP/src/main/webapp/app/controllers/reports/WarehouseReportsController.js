@@ -11,6 +11,7 @@
 
         var vm = this;
         vm.legacyReport= {};
+        vm.legacyReport.showAmounts = true;
         vm.productLotHistoryreport= {};
         vm.reportSummary= [];
         activateCalendars();
@@ -171,19 +172,20 @@
             var legacyReportcolumnDefs = [
                 {headerName: 'Código de producto', field: 'productCode', minWidth: 150},
                 {headerName: 'Nombre', field: 'productName', minWidth: 150},
-                {headerName: 'Unidad de medida', field: 'symbol', minWidth: 150},
-                {headerName: 'Tipo cambio', field: 'exchangeRate', minWidth: 200, cellFormatter: colonCurrencyFormatter, cellClass: 'number-cell'},
-                {headerName: 'Costo colones', field: 'colonesCost', minWidth: 150, cellFormatter: colonCurrencyFormatter, cellClass: 'number-cell'},
-                {headerName: 'Costo dolares', field: 'dollarsCost', minWidth: 150, cellFormatter: dollarsCurrencyFormatter, cellClass: 'number-cell'},
+                {headerName: 'Unidad de medida', field: 'symbol', minWidth: 150, sortingOrder: [null]},
+                {headerName: 'Tipo cambio', field: 'exchangeRate', minWidth: 200, cellFormatter: colonCurrencyFormatter, cellClass: 'number-cell', sortingOrder: [null]},
+                {headerName: 'Costo colones', comparator:amountComp, field: 'colonesCost', minWidth: 150, cellFormatter: colonCurrencyFormatter, cellClass: 'number-cell'},
+                {headerName: 'Costo dolares',comparator:amountComp, field: 'dollarsCost', minWidth: 150, cellFormatter: dollarsCurrencyFormatter, cellClass: 'number-cell'},
                 {headerName: 'Existencias', field: 'stock', minWidth: 150},
-                {headerName: 'Total costo colones', field: 'totalColonesCost', minWidth: 150, cellFormatter: colonCurrencyFormatter, cellClass: 'number-cell'},
-                {headerName: 'Total costo dolares', field: 'totalDollarsCost', minWidth: 150, cellFormatter: dollarsCurrencyFormatter, cellClass: 'number-cell'}
+                {headerName: 'Total costo colones', comparator:amountComp,  field: 'totalColonesCost', minWidth: 150, cellFormatter: colonCurrencyFormatter, cellClass: 'number-cell'},
+                {headerName: 'Total costo dolares', comparator:amountComp,  field: 'totalDollarsCost', minWidth: 150, cellFormatter: dollarsCurrencyFormatter, cellClass: 'number-cell'}
             ];
 
             vm.gridOptionsLegacyReport = {
                 columnDefs: legacyReportcolumnDefs,
                 rowData: [],
                 enableFilter: false,
+                enableSorting: true,
                 localeText:{
                     noRowsToShow:'No hay información para mostrar'
                 },
@@ -213,7 +215,7 @@
                 vm.legacyReport.showTable = true;
                 usSpinnerService.spin('customersSpinner');
 
-                var selectedProductCode = vm.selectedProduct != undefined ? vm.legacyReport.selectedProduct.productCode : "" ;
+                var selectedProductCode = vm.legacyReport.selectedProduct != undefined ? vm.legacyReport.selectedProduct.productCode : "" ;
 
                 warehouseReportService.getProductsLegacy(selectedProductCode)
                     .then(function(response) {
@@ -235,7 +237,14 @@
 
                         vm.gridOptionsLegacyReport.api.setRowData(vm.legacyReport.reportData);
                         vm.gridOptionsLegacyReport.api.setFloatingBottomRowData(_createTableFooterData(footerWrapper));
-                        _autoSizeColumns(vm.gridOptionsLegacyReport, legacyReportcolumnDefs);
+                        if(vm.legacyReport.showAmounts){
+                            vm.gridOptionsLegacyReport.api.sizeColumnsToFit();
+                            _autoSizeColumns(vm.gridOptionsLegacyReport, legacyReportcolumnDefs);
+                        }
+                        else{
+                            vm.gridOptionsLegacyReport.api.sizeColumnsToFit();
+                        }
+
                         usSpinnerService.stop('customersSpinner');
                     });
             };
@@ -251,9 +260,18 @@
                 var columns=  'TOTALES:,,,,'+vm.legacyReport.reportSummary.totalColonesCost+','+vm.legacyReport.reportSummary.totalDollarsCost+','+vm.legacyReport.reportSummary.totalStock+','+vm.legacyReport.reportSummary.totalColonesCostAmount+','+vm.legacyReport.reportSummary.totalDollarsCostAmount;
                 exportToCsv('warehouseProductLegacyRpt.csv', columns, vm.gridOptionsLegacyReport  );
             }
+
+            vm.legacyReport.showAmountsColumns = function () {
+                var columns =['colonesCost','dollarsCost', 'totalColonesCost', 'totalDollarsCost', 'exchangeRate'];
+               showHideColumns(columns, vm.gridOptionsLegacyReport, vm.legacyReport.showAmounts)
+            };
         }
         function colonCurrencyFormatter(params) {
             return params.value == undefined ? '': $filter('currency')(params.value, '&#8353; ', 2);
+        }
+
+        function amountComp(val1, val2){
+            return val1 - val2;
         }
 
         function dollarsCurrencyFormatter(params) {
@@ -277,6 +295,12 @@
 
             params.customFooter = columns;
             grid.api.exportDataAsCsv(params);
+        }
+
+        function showHideColumns(columns, grid, action) {
+            grid.columnApi.setColumnsVisible(columns, action);
+            grid.api.sizeColumnsToFit();
+            _autoSizeColumns(grid, columns )
         }
     }
 })();

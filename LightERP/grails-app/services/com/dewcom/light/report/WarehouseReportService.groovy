@@ -54,11 +54,13 @@ class WarehouseReportService {
         try {
 
             String hqlQuery = "select new map (sum(productLot.quantity) as stock, p.productCode as productCode, p.name as productName, p.cost as productCost, ms.symbol as symbol)"+
-                    " from Product p  join p.measureUnit ms join p.productLot as productLot  group by p"
+                    " from Product p  join p.measureUnit ms join p.productLot as productLot"
 
             if(productCode){
                 hqlQuery+= " where p.productCode like :pcode"
             }
+
+            hqlQuery+=  " group by p";
 
             def session = sessionFactory.currentSession
             def query = session.createQuery(hqlQuery)
