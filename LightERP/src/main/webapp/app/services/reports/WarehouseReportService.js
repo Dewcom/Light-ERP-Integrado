@@ -43,6 +43,24 @@ angular
             return reportResults;
         };
 
+        warehouseReportService.getWarehouseMovementsReport = function (productCode, startDate, endDate, lotNumber) {
+
+            var reportResults = $http({
+                method: 'GET',
+                url: APP_CONSTANTS.appURL + 'warehouseReport/getWarehouseMovements?startDate='+startDate+'&endDate='+endDate+'&lotNumber='+lotNumber+'&movementType='+'1'+'&productCode='+productCode,
+                headers: {
+                    'Content-type': 'application/json;charset=utf-8'
+                }
+            }).then(function (response) {
+                return response.data;
+            }, function (error) {
+                console.log(error);
+                return null
+            });
+
+            return reportResults;
+        };
+
         return warehouseReportService;
     });
 

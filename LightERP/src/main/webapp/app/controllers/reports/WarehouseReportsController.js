@@ -11,6 +11,7 @@
 
         var vm = this;
         vm.legacyReport= {};
+        vm.movementsReport= {};
         vm.legacyReport.showAmounts = true;
         vm.productLotHistoryreport= {};
         vm.reportSummary= [];
@@ -49,6 +50,14 @@
                 vm.isEndDateOpened = true;
             };
 
+            vm.openMovementsStartDate = function ($event) {
+                vm.isMovementsStartDateOpened = true;
+            };
+
+            vm.openMovementsEndDate = function ($event) {
+                vm.isMovementsEndDateOpened = true;
+            };
+
             vm.dateOptions = {
                 formatYear: 'yy',
                 startingDay: 1
@@ -75,6 +84,7 @@
 
             vm.productLotHistoryreport.showTable = false;
             vm.legacyReport.showTable = false;
+            vm.movementsReport.showTable = false;
             // Submit form
             vm.submitForm = function() {
                 vm.fillTable();
@@ -164,7 +174,7 @@
                 };
 
                 vm.gridOptions.api.exportDataAsCsv(params);
-            }
+            };
 
 
             /***********PRODUCTS LEGACY REPORT***********/
@@ -249,6 +259,87 @@
                     });
             };
 
+
+            /*********** WAREHOUSE MOVEMENTS REPORT ***********/
+
+            var warehouseMovmentsReportcolumnDefs = [
+                {headerName: 'Número de lote', field: 'lotCode', minWidth: 150},
+                {headerName: 'Código de producto', field: 'productCode', minWidth: 150},
+                {headerName: 'Producto', field: 'productName', minWidth: 150, sortingOrder: [null]},
+                {headerName: 'Cantidad', field: 'quantity', minWidth: 150},
+                {headerName: 'Movimiento', field: 'movementType', minWidth: 150},
+                {headerName: 'Detalles', field: 'details', minWidth: 150},
+                {headerName: 'Fecha', field: 'movementDate', minWidth: 150},
+                {headerName: 'Usuario', field: 'username', minWidth: 150}
+            ];
+
+            vm.gridOptionsWarehouseMovementsReport = {
+                columnDefs: warehouseMovmentsReportcolumnDefs,
+                rowData: [],
+                enableFilter: false,
+                enableSorting: true,
+                localeText:{
+                    noRowsToShow:'No hay información para mostrar'
+                },
+                onGridReady: function(params){
+                    params.api.setRowData([]);
+                },
+                getRowHeight: function(params) {
+                    if (params.node.floating) {
+                        return 50;
+                    } else {
+                        return 28;
+                    }
+                },
+                getRowStyle: function(params) {
+                    if (params.node.floating) {
+                        return {'font-weight': 'bold', 'background-color': '#EDF1F2','font-size': '20px',
+                            'border-style': 'solid none none none', 'border-width': '2px', 'text-align': 'center'}
+                    }else{
+                        return {'text-align': 'center'}
+                    }
+                },
+                // no rows to pin to start with
+                pinnedBottomRowData: []
+            };
+
+            vm.fillWarehouseMovementsReportTable = function () {
+                vm.movementsReport.showTable = true;
+                usSpinnerService.spin('customersSpinner');
+
+                var lotNumber = vm.movementsReport.lotNumber != undefined ? vm.movementsReport.lotNumber : "" ;
+                var productCode = vm.movementsReport.productCode != undefined ? vm.movementsReport.productCode : "" ;
+                var startDate = $filter('date')(vm.movementsReport.startDate, "yyyy-MM-dd");
+                var endDate = $filter('date')(vm.movementsReport.endDate, "yyyy-MM-dd");
+
+                warehouseReportService.getWarehouseMovementsReport(productCode, startDate, endDate, lotNumber)
+                    .then(function(response) {
+                        console.log(response);
+
+                        usSpinnerService.stop('customersSpinner');
+                        vm.movementsReport.reportData = response == null ? [] : response.data.size == 0 ? [] : response.data.reportData;
+
+                       /* var footerWrapper = {
+                            productCode: 'TOTALES:',
+                            productName: '',
+                            symbol: ''
+                        };*/
+
+                        vm.gridOptionsWarehouseMovementsReport.api.setRowData(vm.movementsReport.reportData);
+                        vm.gridOptionsWarehouseMovementsReport.api.setFloatingBottomRowData(_createTableFooterData(footerWrapper));
+                        if(vm.movementsReport.showAmounts){
+                            vm.gridOptionsWarehouseMovementsReport.api.sizeColumnsToFit();
+                            _autoSizeColumns(vm.gridOptionsWarehouseMovementsReport, legacyReportcolumnDefs);
+                        }
+                        else{
+                            vm.gridOptionsWarehouseMovementsReport.api.sizeColumnsToFit();
+                        }
+
+                        usSpinnerService.stop('customersSpinner');
+                    });
+            };
+
+
             function _createTableFooterData(footerDataWrapper) {
                 var result = [];
                 result.push(footerDataWrapper);
@@ -259,13 +350,14 @@
             vm.exportLegacyReportAsCvs = function () {
                 var columns=  'TOTALES:,,,,'+vm.legacyReport.reportSummary.totalColonesCost+','+vm.legacyReport.reportSummary.totalDollarsCost+','+vm.legacyReport.reportSummary.totalStock+','+vm.legacyReport.reportSummary.totalColonesCostAmount+','+vm.legacyReport.reportSummary.totalDollarsCostAmount;
                 exportToCsv('warehouseProductLegacyRpt.csv', columns, vm.gridOptionsLegacyReport  );
-            }
+            };
 
             vm.legacyReport.showAmountsColumns = function () {
                 var columns =['colonesCost','dollarsCost', 'totalColonesCost', 'totalDollarsCost', 'exchangeRate'];
                showHideColumns(columns, vm.gridOptionsLegacyReport, vm.legacyReport.showAmounts)
             };
         }
+
         function colonCurrencyFormatter(params) {
             return params.value == undefined ? '': $filter('currency')(params.value, '&#8353; ', 2);
         }
@@ -300,7 +392,7 @@
         function showHideColumns(columns, grid, action) {
             grid.columnApi.setColumnsVisible(columns, action);
             grid.api.sizeColumnsToFit();
-            _autoSizeColumns(grid, columns )
+            autoSizeColumns(grid, columns )
         }
     }
 })();

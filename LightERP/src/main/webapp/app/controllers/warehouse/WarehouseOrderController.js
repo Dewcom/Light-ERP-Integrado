@@ -310,7 +310,7 @@
             var newWarehouseOrder = {
                 "username": userInfo.userName,
                 "warehouseOrderStateType": APP_CONSTANTS.WAREHOUSE_ORDER_VALIDATED_STATE,
-                "warehouseOrderMovementType": vm.warehouseOrderMovementType,
+                "warehouseOrderMovementType": vm.warehouseOrderMovementsType,
                 "warehouseOrderDetails": formatDetails(warehouseOrderService.getAddedProductList())
             };
 

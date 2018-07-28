@@ -30,7 +30,7 @@
                                 <div class="col-lg-12">
                                     <div class="panel-body col-lg-4">
                                         <div class="form-group">
-                                            <label>Nųmero de lote</label>
+                                            <label>Número de lote</label>
                                             <input type="text" name="lotNumber" ng-model="controller.lotNumber" class="form-control"/>
                                         </div>
                                     </div>
@@ -90,6 +90,11 @@
                             <div ag-grid="controller.gridOptions" style="width: 100%; height: 400px;" class="ag-angle"></div>
                         </div>
                         <span us-spinner="{radius:20, width:8, length: 16, color: '#3A3F51'}" spinner-key="customersSpinner" spinner-start-active="false"></span>
+                    </uib-accordion-group>
+                    <uib-accordion-group is-open="status.isThirdOpen" is-disabled="status.isThirdDisabled">
+                        <uib-accordion-heading>Movimientos de bodega</uib-accordion-heading>
+                        <div ng-include="'app/views/reports/warehouse-movements.html'"></div>
+
                     </uib-accordion-group>
                 </uib-accordion>
             </div>
