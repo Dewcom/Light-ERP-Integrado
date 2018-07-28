@@ -76,6 +76,9 @@ class WarehouseReportService {
             Date tmpStartDate = LightUtils.stringToDate(request.startDate, "yyyy-MM-dd") ?: null
             Date tmpEndDate = LightUtils.stringToDate(request.endDate, "yyyy-MM-dd") ?: null
 
+            // Se suma un dia mas ya que la consulta en hql no es inclusiva
+            tmpEndDate = LightUtils.plusDaysToDate(tmpEndDate, 1)
+
             def session = sessionFactory.currentSession
             def query = session.createQuery(hqlQuery)
 

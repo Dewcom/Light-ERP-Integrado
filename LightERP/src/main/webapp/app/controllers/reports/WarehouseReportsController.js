@@ -326,7 +326,7 @@
                         };*/
 
                         vm.gridOptionsWarehouseMovementsReport.api.setRowData(vm.movementsReport.reportData);
-                        vm.gridOptionsWarehouseMovementsReport.api.setFloatingBottomRowData(_createTableFooterData(footerWrapper));
+                        //vm.gridOptionsWarehouseMovementsReport.api.setFloatingBottomRowData(_createTableFooterData(footerWrapper));
                         if(vm.movementsReport.showAmounts){
                             vm.gridOptionsWarehouseMovementsReport.api.sizeColumnsToFit();
                             _autoSizeColumns(vm.gridOptionsWarehouseMovementsReport, legacyReportcolumnDefs);
