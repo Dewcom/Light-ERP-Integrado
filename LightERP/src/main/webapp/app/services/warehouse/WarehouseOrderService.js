@@ -98,13 +98,14 @@ angular
             return updatedWarehouseOrderResult;
         };
 
-        warehouseOrderService.approveWarehouseOrder = function(id){
+        warehouseOrderService.approveWarehouseOrder = function(id, username){
 
             var approveWarehouseOrderResult = $http({
                 method: 'PUT',
                 url: APP_CONSTANTS.appURL + 'warehouseOrder/approveWarehouseOrder',
                 data: {
-                    id: id
+                    id: id,
+                    username: username
                 },
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'

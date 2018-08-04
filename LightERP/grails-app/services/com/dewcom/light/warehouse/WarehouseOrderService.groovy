@@ -53,8 +53,8 @@ class WarehouseOrderService {
 
             // Si la orden de salida se crea correctamente se mandan a actualizar las cantidades en los lotes
             if(savedWarehouseOrder){
-                savedWarehouseOrder.warehouseOrderDetails.each {
-                    def tmpProductLot = it.productLot
+                savedWarehouseOrder.warehouseOrderDetails.each {  detail ->
+                    def tmpProductLot = detail.productLot
 
                     UpdateProductLotRequest updateProductLotRequest = new UpdateProductLotRequest()
                     updateProductLotRequest.id = tmpProductLot.id as Integer
@@ -62,11 +62,11 @@ class WarehouseOrderService {
                     updateProductLotRequest.lotNumber = tmpProductLot.lotNumber
                     updateProductLotRequest.expirationDate = tmpProductLot.expirationDate
                     updateProductLotRequest.lotDate = tmpProductLot.lotDate
-                    updateProductLotRequest.quantity = tmpProductLot.quantity - it.quantity
+                    updateProductLotRequest.quantity = tmpProductLot.quantity - detail.quantity
                     updateProductLotRequest.reason = savedWarehouseOrder.warehouseOrderMovementType.description
                     updateProductLotRequest.registrationDate = tmpProductLot.registrationDate
 
-                    productLotService.updateProductLot(updateProductLotRequest)
+                    productLotService.updateProductLot(updateProductLotRequest, detail.quantity)
 
                 }
             }
@@ -173,7 +173,7 @@ class WarehouseOrderService {
         }
     }
 
-    def approveWarehouseOrder(WarehouseOrder warehouseOrder) {
+    def approveWarehouseOrder(WarehouseOrder warehouseOrder, String username) {
 
         def approvedWarehouseOrder
         try {
@@ -187,6 +187,13 @@ class WarehouseOrderService {
 
                 Bill tmpBill = Bill.findByIdAndEnabled(approvedWarehouseOrder.bill.id, Constants.ESTADO_ACTIVO)
                 billService.changeBillStateFromAppovedWarehouseOrder(tmpBill)
+
+                //Se mandan a crear logs de acciones sobre cada lote de producto
+                warehouseOrder.warehouseOrderDetails.each { detail ->
+
+                    productLotService.createProductLotActionLog(detail, username)
+
+                }
             }
 
         }catch (Exception e) {
@@ -371,7 +378,7 @@ class WarehouseOrderService {
             updateProductLotRequest.registrationDate = tmpProductLot.registrationDate
             updateProductLotRequest.enabled = Constants.ESTADO_ACTIVO
 
-            productLotService.updateProductLot(updateProductLotRequest)
+            productLotService.updateProductLot(updateProductLotRequest, updateProductLotRequest.quantity)
         }
     }
 

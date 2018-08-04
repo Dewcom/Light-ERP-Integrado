@@ -59,12 +59,13 @@ class ProductLotService {
 
             def binnacleLog = new ActionBinnacleLog()
             binnacleLog.itemId = savedProductLot.id
-            binnacleLog.action = messageSource.getMessage("binnacle.action.create", null, Locale.default)
-            binnacleLog.details = ""
+            binnacleLog.movementType = WarehouseOrderMovementType.WAREHOUSE_ORDER_MOVEMENT_NEW_LOT
+            binnacleLog.details = messageSource.getMessage("binnacle.action.create", null, Locale.default)
             binnacleLog.domain = productLot.getClass().getSimpleName() as String
             binnacleLog.actionDate = new Date()
             binnacleLog.modifiedItemCode = productLotRequest.lotNumber
             binnacleLog.username = productLotRequest.username
+            binnacleLog.quantity = productLotRequest.quantity
 
             binnacleLog.save(flush: true, failOnError:true)
 
@@ -84,12 +85,13 @@ class ProductLotService {
         try {
             def binnacleLog = new ActionBinnacleLog()
             binnacleLog.itemId = productLot.id
-            binnacleLog.action = messageSource.getMessage("binnacle.action.delete", null, Locale.default)
+            binnacleLog.movementType = WarehouseOrderMovementType.WAREHOUSE_ORDER_MOVEMENT_DELETE
             binnacleLog.details = deleteReason
             binnacleLog.domain = productLot.getClass().getSimpleName() as String
             binnacleLog.actionDate = new Date()
             binnacleLog.modifiedItemCode = productLot.lotNumber
             binnacleLog.username = username
+            binnacleLog.quantity = productLot.quantity
 
             binnacleLog.save(flush: true, failOnError:true)
 
@@ -101,7 +103,7 @@ class ProductLotService {
         }
     }
 
-    def updateProductLot(UpdateProductLotRequest updateProductLotReq) {
+    def updateProductLot(UpdateProductLotRequest updateProductLotReq, def detailQuantity) {
         try {
 
             def filtered = ['storehouses', 'product', 'constraintsMap', 'class', 'constraints', 'errors', 'reason', 'productId', 'id', 'username', 'registrationDate']
@@ -135,12 +137,13 @@ class ProductLotService {
 
                 def binnacleLog = new ActionBinnacleLog()
                 binnacleLog.itemId = tmpProductLotToUpdate.id
-                binnacleLog.action = messageSource.getMessage("binnacle.action.modify", null, Locale.default)
+                binnacleLog.movementType = WarehouseOrderMovementType.WAREHOUSE_ORDER_MOVEMENT_UPDATE
                 binnacleLog.details = 'RAZON: ' + updateProductLotReq.reason + ', ORIGINAL: ' + filtererOriginalProductLot + ', MODIFICADO: ' + filtererUpdateRequest
                 binnacleLog.domain = tmpProductLotToUpdate.getClass().getSimpleName() as String
                 binnacleLog.actionDate = new Date()
                 binnacleLog.modifiedItemCode = updateProductLotReq.lotNumber
                 binnacleLog.username = updateProductLotReq.username
+                binnacleLog.quantity = detailQuantity
 
                 binnacleLog.save(flush: true, failOnError:true)
 
@@ -159,8 +162,6 @@ class ProductLotService {
         }
     }
 
-
-
     def updateProductLotQuantity(ProductLot productLot) {
         try {
 
@@ -176,5 +177,31 @@ class ProductLotService {
             log.error(e)
             throw new LightRuntimeException(messageSource.getMessage("update.productLot.error", null, Locale.default))
         }
+    }
+
+    def createProductLotActionLog(def updatedItem, def username){
+
+        try {
+
+            ProductLot productLot = ProductLot.findById(updatedItem.productLot.id)
+
+            def binnacleLog = new ActionBinnacleLog()
+            binnacleLog.itemId = updatedItem.id
+            binnacleLog.movementType = WarehouseOrderMovementType.WAREHOUSE_ORDER_MOVEMENT_SALE
+            binnacleLog.details = messageSource.getMessage("binnacle.action.sale", null, Locale.default)
+            binnacleLog.domain = updatedItem.getClass().getSimpleName() as String
+            binnacleLog.actionDate = new Date()
+            binnacleLog.modifiedItemCode = productLot.lotNumber
+            binnacleLog.username = username
+            binnacleLog.quantity = updatedItem.quantity
+
+            binnacleLog.save(flush: true, failOnError:true)
+
+        } catch (Exception e) {
+            log.error(e)
+            throw new LightRuntimeException(messageSource.getMessage("binnacle.action.error", null, Locale.default))
+        }
+
+
     }
 }

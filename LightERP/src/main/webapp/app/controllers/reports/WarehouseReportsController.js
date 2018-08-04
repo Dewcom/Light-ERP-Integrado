@@ -6,8 +6,10 @@
         .controller('WarehouseReportsController', WarehouseReportsController);
 
 
-    WarehouseReportsController.$inject = ['usSpinnerService', '$http', '$uibModal', '$resource', 'warehouseReportService', 'toaster', '$state', '$filter', 'productService'];
-    function WarehouseReportsController(usSpinnerService, $http, $uibModal, $resource, warehouseReportService, toaster, $state, $filter, productService) {
+    WarehouseReportsController.$inject = ['usSpinnerService', '$http', '$uibModal', '$resource', 'warehouseReportService',
+        'toaster', '$state', '$filter', 'productService', 'warehouseOrderService'];
+    function WarehouseReportsController(usSpinnerService, $http, $uibModal, $resource, warehouseReportService, toaster, $state,
+        $filter, productService, warehouseOrderService) {
 
         var vm = this;
         vm.legacyReport= {};
@@ -17,6 +19,28 @@
         vm.reportSummary= [];
         activateCalendars();
         activate();
+
+
+
+        /**=========================================================
+         * Validación de campos y patrones
+         =========================================================*/
+        vm.submitted = false;
+        vm.validateInput = function (name, type) {
+            var input = vm.productLotMovementsForm[name];
+            return (input.$dirty || vm.submitted) && input.$error[type];
+        };
+
+        // Submit form
+        vm.submitForm = function () {
+            vm.submitted = true;
+            if (vm.productLotMovementsForm.$valid) {
+                vm.fillWarehouseMovementsReportTable();
+            } else {
+                console.log('Not valid!!');
+                return false;
+            }
+        };
 
         /**=========================================================
          * Inicializa los calendarios
@@ -80,6 +104,14 @@
             vm.legacyReport.clearSelected = function() {
                 vm.legacyReport.selectedProduct = undefined;
             };
+
+            /**=========================================================
+             * Tipos de movimientos de ordenes de salida de bodega
+             =========================================================*/
+
+            warehouseOrderService.getAllWarehouseOrderMovementsTypes().then(function (response) {
+                vm.warehouseOrderMovementsTypes = response;
+            });
 
 
             vm.productLotHistoryreport.showTable = false;
@@ -233,7 +265,7 @@
                         vm.legacyReport.reportData =  response == null ? [] : response.data.size == 0 ? [] : response.data.reportData;
                         vm.legacyReport.reportSummary = response == null ? [] : response.data.size == 0 ? [] : response.data.reportSummary;
 
-                        var footerWrapper ={
+                        var footerWrapper = {
                             productCode: 'TOTALES:',
                             productName: '',
                             symbol: '',
@@ -260,17 +292,17 @@
             };
 
 
-            /*********** WAREHOUSE MOVEMENTS REPORT ***********/
+            /*********** PRODUCT LOT HISTORY REPORT ***********/
 
             var warehouseMovmentsReportcolumnDefs = [
-                {headerName: 'Número de lote', field: 'lotCode', minWidth: 150},
+                {headerName: 'Número de lote', field: 'lotCode', minWidth: 100},
                 {headerName: 'Código de producto', field: 'productCode', minWidth: 150},
                 {headerName: 'Producto', field: 'productName', minWidth: 150, sortingOrder: [null]},
-                {headerName: 'Cantidad', field: 'quantity', minWidth: 150},
-                {headerName: 'Movimiento', field: 'movementType', minWidth: 150},
-                {headerName: 'Detalles', field: 'details', minWidth: 150},
-                {headerName: 'Fecha', field: 'movementDate', minWidth: 150},
-                {headerName: 'Usuario', field: 'username', minWidth: 150}
+                {headerName: 'Cantidad', field: 'quantity', minWidth: 100},
+                {headerName: 'Movimiento', field: 'movementType', minWidth: 300},
+                {headerName: 'Detalles', field: 'details', minWidth: 600},
+                {headerName: 'Fecha', field: 'movementDate', minWidth: 100},
+                {headerName: 'Usuario', field: 'username', minWidth: 100}
             ];
 
             vm.gridOptionsWarehouseMovementsReport = {
@@ -311,19 +343,14 @@
                 var productCode = vm.movementsReport.productCode != undefined ? vm.movementsReport.productCode : "" ;
                 var startDate = $filter('date')(vm.movementsReport.startDate, "yyyy-MM-dd");
                 var endDate = $filter('date')(vm.movementsReport.endDate, "yyyy-MM-dd");
+                var movementType = vm.movementsReport.warehouseOrderMovementsType != undefined ? vm.movementsReport.warehouseOrderMovementsType : "" ;
 
-                warehouseReportService.getWarehouseMovementsReport(productCode, startDate, endDate, lotNumber)
+                warehouseReportService.getProductLotHistory(productCode, startDate, endDate, lotNumber, movementType)
                     .then(function(response) {
                         console.log(response);
 
                         usSpinnerService.stop('customersSpinner');
                         vm.movementsReport.reportData = response == null ? [] : response.data.size == 0 ? [] : response.data.reportData;
-
-                       /* var footerWrapper = {
-                            productCode: 'TOTALES:',
-                            productName: '',
-                            symbol: ''
-                        };*/
 
                         vm.gridOptionsWarehouseMovementsReport.api.setRowData(vm.movementsReport.reportData);
                         //vm.gridOptionsWarehouseMovementsReport.api.setFloatingBottomRowData(_createTableFooterData(footerWrapper));
@@ -350,6 +377,11 @@
             vm.exportLegacyReportAsCvs = function () {
                 var columns=  'TOTALES:,,,,'+vm.legacyReport.reportSummary.totalColonesCost+','+vm.legacyReport.reportSummary.totalDollarsCost+','+vm.legacyReport.reportSummary.totalStock+','+vm.legacyReport.reportSummary.totalColonesCostAmount+','+vm.legacyReport.reportSummary.totalDollarsCostAmount;
                 exportToCsv('warehouseProductLegacyRpt.csv', columns, vm.gridOptionsLegacyReport  );
+            };
+
+            vm.exportProductLotHistoryAsCvs = function () {
+                var columns=  '';
+                exportToCsv('historial-lotes.csv', columns, vm.gridOptionsWarehouseMovementsReport  );
             };
 
             vm.legacyReport.showAmountsColumns = function () {

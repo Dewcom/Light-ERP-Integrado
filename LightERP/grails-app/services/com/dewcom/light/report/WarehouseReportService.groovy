@@ -1,15 +1,18 @@
 package com.dewcom.light.report
 
+import com.dewcom.light.billing.ExchangeRate
 import com.dewcom.light.exception.LightRuntimeException
 import com.dewcom.light.rest.report.response.ReportResp
 import com.dewcom.light.rest.report.warehouse.request.ProductLotHistoryRequest
 import com.dewcom.light.rest.report.warehouse.request.WarehouseMovementsReportRequest
 import com.dewcom.light.rest.report.warehouse.response.WarehouseMovementsReportDto
 import com.dewcom.light.rest.report.warehouse.response.WarehouseMovementsReportResponse
+import com.dewcom.light.rest.report.warehouse.response.WarehouseProductLegacyReport
 import com.dewcom.light.rest.report.warehouse.response.WarehouseProductLegacyReportDto
 import com.dewcom.light.rest.report.warehouse.response.WarehouseProductLegacyReportSummary
 import com.dewcom.light.utils.LightUtils
 import com.dewcom.light.warehouse.MeasureUnit
+import com.dewcom.light.warehouse.WarehouseOrderMovementType
 import grails.transaction.Transactional
 
 @Transactional
@@ -18,7 +21,7 @@ class WarehouseReportService {
     def sessionFactory
     def adminService
 
-    def getProductLotHistory(ProductLotHistoryRequest request) {
+    /*def getProductLotHistory(ProductLotHistoryRequest request) {
         log.info "====== Getting product lot history from DB ======"
         try {
 
@@ -45,18 +48,18 @@ class WarehouseReportService {
             throw new LightRuntimeException(messageSource.getMessage("product.lot.history.report.error", null, Locale.default))
         }
 
-    }
+    }*/
 
-    def getWarehouseMovements(WarehouseMovementsReportRequest request){
+    def getProductLotHistory(WarehouseMovementsReportRequest request){
         log.info "====== Getting warehouse order movement types from DB ======"
 
         WarehouseMovementsReportResponse response = new WarehouseMovementsReportResponse()
 
         try {
 
-            String hqlQuery = "SELECT new map (a.action as action, a.actionDate as actionDate, a.details as details, " +
+            String hqlQuery = "SELECT new map (a.actionDate as actionDate, a.details as details, " +
                     "a.domain as domain, a.itemId as productLotId, a.modifiedItemCode as productLotCode, " +
-                    "a.username as username, pl.product as productId, pl.quantity as quantity, " +
+                    "a.username as username, pl.product as productId, a.quantity as quantity, a.movementType as movementType, " +
                     "p.name as productName, p.productCode as productCode, p.measureUnit as measureUnit) " +
                     "FROM ActionBinnacleLog as a, ProductLot as pl, Product as p " +
                     "WHERE a.modifiedItemCode = pl.lotNumber " +
@@ -70,6 +73,10 @@ class WarehouseReportService {
 
             if(request.productCode != null && !request.productCode.isEmpty()){
                 hqlQuery += "AND p.productCode LIKE'" + request.productCode.trim()+"'"
+            }
+
+            if(request.movementType != null && !request.movementType.isEmpty()){
+                hqlQuery += "AND a.movementType LIKE'" + request.movementType.trim()+"'"
             }
 
 
@@ -145,12 +152,15 @@ class WarehouseReportService {
         if(pDomainObjects != null) {
             pDomainObjects.each { it ->
                 def tmpReportObj = new WarehouseMovementsReportDto()
+
+                WarehouseOrderMovementType movementType = WarehouseOrderMovementType.findByCode(it.movementType)
+
                 tmpReportObj.movementDate = LightUtils.dateToString(it.actionDate, "dd-MM-yyyy")
                 tmpReportObj.productCode = it.productCode
                 tmpReportObj.productName = it.productName
                 tmpReportObj.lotCode = it.productLotCode
                 tmpReportObj.quantity = it.quantity
-                tmpReportObj.movementType = it.action
+                tmpReportObj.movementType = movementType.description
                 tmpReportObj.details = it.details
                 tmpReportObj.username = it.username
 

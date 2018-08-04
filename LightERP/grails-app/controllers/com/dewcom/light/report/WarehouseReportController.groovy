@@ -17,7 +17,7 @@ class WarehouseReportController extends RestController {
      * Este método se encarga de obtener el historial acciones sobre un lote de producto
      * @author Mauricio Fernandez
      */
-    @Secured(['ROLE_ANONYMOUS'])
+    /*@Secured(['ROLE_ANONYMOUS'])
     def getProductLotHistory() {
         log.info "========== Get product lot history  =========="
         log.info params
@@ -43,15 +43,15 @@ class WarehouseReportController extends RestController {
         catch (Exception e) {
             this.handleRESTExceptions(messageSource, e)
         }
-    }
+    }*/
 
     /**
-     * Este método se encarga de obtener los tipos de movimientos asociados a un producto o lote de producto en una bodega
+     * Este método se encarga de obtener los tipos de movimientos de un lote de producto en una bodega
      * @author Mauricio Fernandez
      */
     @Secured(['ROLE_ANONYMOUS'])
-    def getWarehouseMovements() {
-        log.info "========== Get warehouse movements history  =========="
+    def getProductLotHistory() {
+        log.info "========== Get product lot history history  =========="
         log.info params
         try {
             ResponseREST tmpResponse = new ResponseREST()
@@ -67,7 +67,7 @@ class WarehouseReportController extends RestController {
             if (tmpRequest.hasErrors()) {
                 this.handleDataErrorsREST(messageSource, tmpRequest.errors)
             } else {
-                tmpResponse.data = warehouseReportService.getWarehouseMovements(tmpRequest)
+                tmpResponse.data = warehouseReportService.getProductLotHistory(tmpRequest)
                 tmpResponse.message = messageSource.getMessage("product.lot.history.report.success", null, Locale.default)
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
             }

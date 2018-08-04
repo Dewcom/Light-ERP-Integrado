@@ -1,41 +1,51 @@
 <div>
-    <form name="movementsReport.warehouseHouseMovementsForm" ng-submit="controller.fillWarehouseMovementsReportTable()" novalidate="" class="form-validate">
+    <form name="controller.productLotMovementsForm" ng-submit="controller.submitForm()" novalidate="" class="form-validate">
         <div class="col-lg-12">
             <div class="panel-body col-lg-3">
+                <div class="form-group">
+                    <label>Tipo de movimiento</label>
+                    <select name="controller.movementsReport.warehouseOrderMovementsType" ng-model="controller.movementsReport.warehouseOrderMovementsType"
+                            ng-options="item.code as item.description for item in controller.warehouseOrderMovementsTypes"
+                            class="form-control" >
+                    </select>
+                </div>
+            </div>
+            <div class="panel-body col-lg-2">
                 <div class="form-group">
                     <label>Número de lote</label>
                     <input type="text" name="controller.movementsReport.lotNumber" ng-model="controller.movementsReport.lotNumber" class="form-control"/>
                 </div>
             </div>
-            <div class="panel-body col-lg-3">
+            <div class="panel-body col-lg-2">
                 <div class="form-group">
                     <label>Código de producto</label>
-                    <input type="text" name="controller.movementsReport.productCode" ng-model="controller.movementsReport.productCode" class="form-control"/>
+                    <input type="text" name="productCode" ng-model="controller.movementsReport.productCode" class="form-control"/>
                 </div>
             </div>
-            <div class="panel-body col-lg-3">
+            <div class="panel-body col-lg-2">
                 <div class="form-group">
                     <label>Desde</label>
                     <p class="input-group">
                         <input name="movementsStartDate" type="text" uib-datepicker-popup="{{controller.format}}"
                                ng-model="controller.movementsReport.startDate" is-open="controller.isMovementsStartDateOpened"
                                max-date="'2020-12-30'" datepicker-options="controller.dateOptions" current-text="Hoy"
-                               close-text="Salir" clear-text="Limpiar" class="form-control" onkeydown="return false"/>
+                               close-text="Salir" clear-text="Limpiar" class="form-control" onkeydown="return false" ng-required="true"/>
                         <span class="input-group-btn">
                             <button type="button" ng-click="controller.openMovementsStartDate($event)" class="btn btn-default">
                                 <em class="fa fa-calendar"></em>
                             </button>
                         </span>
                     </p>
+                    <span ng-show="controller.validateInput('movementsStartDate', 'required')" class="text-danger">Este campo es requerido</span>
                 </div>
             </div>
-            <div class="panel-body col-lg-3">
+            <div class="panel-body col-lg-2">
                 <label>Hasta</label>
                 <p class="input-group">
                     <input name="movementsEndDate" type="text" uib-datepicker-popup="{{controller.format}}"
                            ng-model="controller.movementsReport.endDate" is-open="controller.isMovementsEndDateOpened" max-date="'2020-12-30'"
                            datepicker-options="controller.dateOptions" current-text="Hoy" close-text="Salir"
-                           clear-text="Limpiar" class="form-control" onkeydown="return false"/>
+                           clear-text="Limpiar" class="form-control" onkeydown="return false" ng-required="true"/>
                     <span class="input-group-btn">
                     <button type="button"
                             ng-click="controller.openMovementsEndDate($event)"
@@ -44,6 +54,7 @@
                     </button>
                 </span>
                 </p>
+                <span ng-show="controller.validateInput('movementsEndDate', 'required')" class="text-danger">Este campo es requerido</span>
             </div>
         </div>
         <div class="col-lg-12">
@@ -69,7 +80,7 @@
         <div class="col-lg-4 col-md-6">
 
             <button ng-disabled="controller.reportData.length <= 0" uib-tooltip="Exportar" uib-tooltip-trigger="focus"
-                    uib-tooltip-placement="top" ng-click="controller.exportToCsv()" class="btn btn-primary">
+                    uib-tooltip-placement="top" ng-click="controller.exportProductLotHistoryAsCvs()" class="btn btn-primary">
                 Exportar a CSV
             </button>
         </div>

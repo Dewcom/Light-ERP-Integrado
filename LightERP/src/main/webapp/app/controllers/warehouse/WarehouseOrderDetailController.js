@@ -73,7 +73,9 @@
 
         vm.approveWarehouseOrder = function (currentWarehouseOrder) {
 
-            warehouseOrderService.approveWarehouseOrder(currentWarehouseOrder.id).then(function (response) {
+            var userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
+
+            warehouseOrderService.approveWarehouseOrder(currentWarehouseOrder.id, userInfo.userName).then(function (response) {
                 var toasterdata;
 
                 if (response.code === "0") {

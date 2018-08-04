@@ -9,6 +9,9 @@ class WarehouseOrderMovementType {
     public static final Integer WAREHOUSE_ORDER_MOVEMENT_PRODUCTION = 1
     public static final Integer WAREHOUSE_ORDER_MOVEMENT_SALE = 2
     public static final Integer WAREHOUSE_ORDER_MOVEMENT_BETWEEN_STOREHOUSES = 3
+    public static final Integer WAREHOUSE_ORDER_MOVEMENT_NEW_LOT = 4
+    public static final Integer WAREHOUSE_ORDER_MOVEMENT_UPDATE = 5
+    public static final Integer WAREHOUSE_ORDER_MOVEMENT_DELETE = 6
     Long id
     Integer code
     Byte enabled = Constants.ESTADO_ACTIVO

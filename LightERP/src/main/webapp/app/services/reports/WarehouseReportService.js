@@ -6,7 +6,7 @@ angular
 
         var warehouseReportService = {};
 
-        warehouseReportService.getProductLotHistory = function (startDate, endDate, lotNumber) {
+        /*warehouseReportService.getProductLotHistory = function (startDate, endDate, lotNumber) {
 
             var reportResults = $http({
                 method: 'GET',
@@ -23,7 +23,7 @@ angular
 
             return reportResults;
         };
-
+*/
 
         warehouseReportService.getProductsLegacy = function (productCode) {
 
@@ -43,11 +43,11 @@ angular
             return reportResults;
         };
 
-        warehouseReportService.getWarehouseMovementsReport = function (productCode, startDate, endDate, lotNumber) {
+        warehouseReportService.getProductLotHistory = function (productCode, startDate, endDate, lotNumber, movementType) {
 
             var reportResults = $http({
                 method: 'GET',
-                url: APP_CONSTANTS.appURL + 'warehouseReport/getWarehouseMovements?startDate='+startDate+'&endDate='+endDate+'&lotNumber='+lotNumber+'&movementType='+'1'+'&productCode='+productCode,
+                url: APP_CONSTANTS.appURL + 'warehouseReport/getProductLotHistory?startDate='+startDate+'&endDate='+endDate+'&lotNumber='+lotNumber+'&movementType='+movementType+'&productCode='+productCode,
                 headers: {
                     'Content-type': 'application/json;charset=utf-8'
                 }

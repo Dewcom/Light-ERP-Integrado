@@ -3,11 +3,12 @@ package com.dewcom.light.configuration
 class ActionBinnacleLog {
     Integer itemId
     String username
-    String action
+    Integer movementType
     String modifiedItemCode
     String domain
     String details
     Date actionDate
+    double quantity
 
     static mapping = {
         details sqlType: 'text'

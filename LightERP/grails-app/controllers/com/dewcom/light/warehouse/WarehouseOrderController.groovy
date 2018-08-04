@@ -131,7 +131,7 @@ class WarehouseOrderController extends RestController {
                 WarehouseOrder tmpWarehouseOrder = warehouseOrderService.getWarehouseOrder(request.JSON.id)
 
                 if(tmpWarehouseOrder) {
-                    warehouseOrderService.approveWarehouseOrder(tmpWarehouseOrder)
+                    warehouseOrderService.approveWarehouseOrder(tmpWarehouseOrder, request.JSON.username)
                     tmpResponse.message = messageSource.getMessage("approve.warehouse.order.success", null, Locale.default)
                     tmpResponse.code = Constants.SUCCESS_RESPONSE
                 }else {

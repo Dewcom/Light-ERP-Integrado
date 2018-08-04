@@ -65,7 +65,7 @@ class UserService {
             puser.enabled = Constants.ESTADO_INACTIVO;
             puser.save(flush: true)
         } catch (Exception e) {
-            log.error(e);
+            log.error(e)
             throw new LightRuntimeException(messageSource.getMessage("delete.user.error", null, Locale.default));
         }
     }

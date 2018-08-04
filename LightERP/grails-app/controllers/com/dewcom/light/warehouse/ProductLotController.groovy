@@ -135,7 +135,7 @@ class ProductLotController extends RestController{
             if (tmpProductLot.hasErrors()) {
                 this.handleDataErrorsREST(messageSource, tmpProductLot.errors)
             } else {
-                productLotService.updateProductLot(tmpProductLot)
+                productLotService.updateProductLot(tmpProductLot, tmpProductLot.quantity)
                 tmpResponse.message = messageSource.getMessage("update.productLot.success", null, Locale.default)
                 tmpResponse.code = Constants.SUCCESS_RESPONSE
 

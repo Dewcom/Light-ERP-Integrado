@@ -134,6 +134,24 @@ class BootStrap {
             tmpWarehouseOrderMovementType.code = WarehouseOrderMovementType.WAREHOUSE_ORDER_MOVEMENT_BETWEEN_STOREHOUSES
             tmpWarehouseOrderMovementType.save()
         }
+        if(!WarehouseOrderMovementType.findByCode(WarehouseOrderMovementType.WAREHOUSE_ORDER_MOVEMENT_NEW_LOT)){
+            def tmpWarehouseOrderMovementType = new WarehouseOrderMovementType()
+            tmpWarehouseOrderMovementType.description = "Creación de nuevo lote"
+            tmpWarehouseOrderMovementType.code = WarehouseOrderMovementType.WAREHOUSE_ORDER_MOVEMENT_NEW_LOT
+            tmpWarehouseOrderMovementType.save()
+        }
+        if(!WarehouseOrderMovementType.findByCode(WarehouseOrderMovementType.WAREHOUSE_ORDER_MOVEMENT_UPDATE)){
+            def tmpWarehouseOrderMovementType = new WarehouseOrderMovementType()
+            tmpWarehouseOrderMovementType.description = "Modificación de un lote"
+            tmpWarehouseOrderMovementType.code = WarehouseOrderMovementType.WAREHOUSE_ORDER_MOVEMENT_UPDATE
+            tmpWarehouseOrderMovementType.save()
+        }
+        if(!WarehouseOrderMovementType.findByCode(WarehouseOrderMovementType.WAREHOUSE_ORDER_MOVEMENT_DELETE)){
+            def tmpWarehouseOrderMovementType = new WarehouseOrderMovementType()
+            tmpWarehouseOrderMovementType.description = "Eliminación de un lote"
+            tmpWarehouseOrderMovementType.code = WarehouseOrderMovementType.WAREHOUSE_ORDER_MOVEMENT_DELETE
+            tmpWarehouseOrderMovementType.save()
+        }
 
         //monedas
 
