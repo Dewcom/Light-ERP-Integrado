@@ -33,7 +33,7 @@ function ProductLotController($scope, $stateParams, APP_CONSTANTS, $state, $uibM
         };
 
         vm.toggleMin = function () {
-            vm.minDate = vm.minDate ? null : new Date();
+            vm.minDate = null;
         };
         vm.toggleMin();
 
@@ -69,7 +69,7 @@ function ProductLotController($scope, $stateParams, APP_CONSTANTS, $state, $uibM
         };
 
         vm.toggleMinExpDate = function () {
-            vm.minDateExpDate = vm.minDateExpDate ? null : new Date();
+            vm.minDateExpDate = null;
         };
         vm.toggleMinExpDate();
 

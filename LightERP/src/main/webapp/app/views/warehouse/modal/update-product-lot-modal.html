@@ -76,7 +76,7 @@
                                                 <em class="fa fa-calendar"></em>
                                             </button>
                                         </span>
-                                <input tabindex="2" name="paymentDate" type="text" uib-datepicker-popup="{{modalCtrl.format}}"
+                                <input tabindex="2" name="lotDate" type="text" uib-datepicker-popup="{{modalCtrl.format}}"
                                        ng-model="currentProductLot.lotDate" is-open="modalCtrl.opened"
                                        min-date="modalCtrl.minDate" max-date="'2030-12-31'"
                                        datepicker-options="modalCtrl.dateOptions" popup-placement="top" ng-required="true"
@@ -105,7 +105,7 @@
                                                 <em class="fa fa-calendar"></em>
                                             </button>
                                         </span>
-                                <input tabindex="3" name="paymentDate" type="text" uib-datepicker-popup="{{modalCtrl.formatExpDate}}"
+                                <input tabindex="3" name="expirationDate" type="text" uib-datepicker-popup="{{modalCtrl.formatExpDate}}"
                                        ng-model="currentProductLot.expirationDate" is-open="modalCtrl.openedExpDate"
                                        min-date="modalCtrl.minDateExpDate" max-date="'2030-12-31'"
                                        datepicker-options="modalCtrl.dateOptionsExpDate" popup-placement="top" ng-required="true"
