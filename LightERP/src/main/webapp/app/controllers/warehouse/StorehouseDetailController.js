@@ -273,7 +273,6 @@
                 "productId": vm.selectedProduct.id,
                 "storehouseId":  vm.currentStorehouse.id
             };
-            console.log(newProductLot);
             productLotService.addProductLot(newProductLot).then(function (response) {
                 console.log(response);
                 var toasterdata;

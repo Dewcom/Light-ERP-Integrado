@@ -283,6 +283,8 @@ class WarehouseOrderService {
                             tmpProductLots[index].quantity = tmpProductLots[index].quantity - tmpQuantity
 
                             productLotService.updateProductLotQuantity(tmpProductLots[index])
+
+                            tmpWarehouseOrder.addToWarehouseOrderDetails(wareho useOrderDetail)
                             tmpQuantity = 0
                         }else{
                             tmpQuantity -= tmpProductLots[index].quantity
@@ -334,7 +336,7 @@ class WarehouseOrderService {
         def negativeProductLot = new ProductLotRequest()
         negativeProductLot.quantity = -billDetailRequest.quantity
         negativeProductLot.username = "admin" // TODO: se quema el usuario administrador, cambiar si eventualmente se crea un usuario 'system;
-        negativeProductLot.lotNumber = "loteTemporal " + LightUtils.dateToString(new Date(), "dd-MM-yyyy")
+        negativeProductLot.lotNumber = "temporal " + LightUtils.dateToString(new Date(), "dd-MM-yyyy")
         negativeProductLot.expirationDate = null
         negativeProductLot.lotDate = LightUtils.dateToString(new Date(), "dd-MM-yyyy")
         negativeProductLot.productId = billDetailRequest.productId
