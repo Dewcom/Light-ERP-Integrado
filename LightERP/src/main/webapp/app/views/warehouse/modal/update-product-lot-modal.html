@@ -12,41 +12,41 @@
                     <div class="panel col-lg-3">
                         <div class="form-group">
                             <label class="control-label">Código</label>
-                            <input type="text" name="lotNumber" required="" ng-model="currentProductLot.product.productCode" class="form-control" disabled="true"/>
+                            <input type="text" name="lotNumber" ng-model="currentProductLot.product.productCode" class="form-control" disabled="true"/>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Tipo de producto</label>
-                            <input type="text" name="lotNumber" required="" ng-model="currentProductLot.product.productType.name" class="form-control" disabled="true"/>
+                            <input type="text" name="lotNumber" ng-model="currentProductLot.product.productType.name" class="form-control" disabled="true"/>
                         </div>
                     </div>
                     <div class="panel col-lg-3">
                         <div class="form-group">
                             <label class="control-label">Nombre</label>
-                            <input type="text" name="lotNumber" required="" ng-model="currentProductLot.product.name" class="form-control" disabled="true"/>
+                            <input type="text" name="lotNumber" ng-model="currentProductLot.product.name" class="form-control" disabled="true"/>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Tipo de presentación</label>
-                            <input type="text" name="lotNumber" required="" ng-model="currentProductLot.product.presentationType.name" class="form-control" disabled="true"/>
+                            <input type="text" name="lotNumber" ng-model="currentProductLot.product.presentationType.name" class="form-control" disabled="true"/>
                         </div>
                     </div>
                     <div class="panel col-lg-3">
                         <div class="form-group">
                             <label class="control-label">Nombre comercial</label>
-                            <input type="text" name="lotNumber" required="" ng-model="currentProductLot.product.commercialName" class="form-control" disabled="true"/>
+                            <input type="text" name="lotNumber" ng-model="currentProductLot.product.commercialName" class="form-control" disabled="true"/>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Cantidad por bulto</label>
-                            <input type="text" name="lotNumber" required="" ng-model="currentProductLot.product.bulkQuantity" class="form-control" disabled="true"/>
+                            <input type="text" name="lotNumber" ng-model="currentProductLot.product.bulkQuantity" class="form-control" disabled="true"/>
                         </div>
                     </div>
                     <div class="panel col-lg-3">
                         <div class="form-group">
                             <label class="control-label">Unidad de medida</label>
-                            <input type="text" name="lotNumber" required="" ng-model="currentProductLot.product.measureUnit.name" class="form-control" disabled="true"/>
+                            <input type="text" name="lotNumber" ng-model="currentProductLot.product.measureUnit.name" class="form-control" disabled="true"/>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Partida arancelaria</label>
-                            <input type="text" name="lotNumber" required="" ng-model="currentProductLot.product.tariffHeading" class="form-control" disabled="true"/>
+                            <input type="text" name="lotNumber" ng-model="currentProductLot.product.tariffHeading" class="form-control" disabled="true"/>
                         </div>
                     </div>
                 </div>
@@ -76,7 +76,7 @@
                                                 <em class="fa fa-calendar"></em>
                                             </button>
                                         </span>
-                                <input tabindex="2" name="paymentDate" type="text" uib-datepicker-popup="{{modalCtrl.format}}"
+                                <input tabindex="2" name="lotDate" type="text" uib-datepicker-popup="{{modalCtrl.format}}"
                                        ng-model="currentProductLot.lotDate" is-open="modalCtrl.opened"
                                        min-date="modalCtrl.minDate" max-date="'2030-12-31'"
                                        datepicker-options="modalCtrl.dateOptions" popup-placement="top" ng-required="true"
@@ -105,7 +105,7 @@
                                                 <em class="fa fa-calendar"></em>
                                             </button>
                                         </span>
-                                <input tabindex="3" name="paymentDate" type="text" uib-datepicker-popup="{{modalCtrl.formatExpDate}}"
+                                <input tabindex="3" name="expirationDate" type="text" uib-datepicker-popup="{{modalCtrl.formatExpDate}}"
                                        ng-model="currentProductLot.expirationDate" is-open="modalCtrl.openedExpDate"
                                        min-date="modalCtrl.minDateExpDate" max-date="'2030-12-31'"
                                        datepicker-options="modalCtrl.dateOptionsExpDate" popup-placement="top" ng-required="true"

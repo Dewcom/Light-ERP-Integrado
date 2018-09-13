@@ -83,14 +83,6 @@ class BillService {
 
             def billStateType = BillStateType.findByCode(argRestBill.billState)
 
-            /*if(billStateType.code != Constants.BILL_DRAFT_STATE_CODE){
-                configConsecFactura = Configuration.findByCode(Configuration.CONFIG_CONSECUTIVO_FACTURA)
-                def billNumber = configConsecFactura.value as Long
-                tmpBill.billNumber = billNumber
-                configConsecFactura.value = billNumber+1
-                adminService.updateConfiguration(configConsecFactura)
-            }*/
-
             tmpBill.user = billUser
             tmpBill.customer = customer
             tmpBill.billPaymentType = paymentType

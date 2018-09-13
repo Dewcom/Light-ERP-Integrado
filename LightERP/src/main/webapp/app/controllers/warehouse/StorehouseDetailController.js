@@ -34,7 +34,7 @@
             };
 
             vm.toggleMin = function () {
-                vm.minDate = vm.minDate ? null : new Date();
+                vm.minDate = null;
             };
             vm.toggleMin();
 
@@ -70,7 +70,7 @@
             };
 
             vm.toggleMinExpDate = function () {
-                vm.minDateExpDate = vm.minDateExpDate ? null : new Date();
+                vm.minDateExpDate = null;
             };
             vm.toggleMinExpDate();
 
@@ -273,7 +273,6 @@
                 "productId": vm.selectedProduct.id,
                 "storehouseId":  vm.currentStorehouse.id
             };
-            console.log(newProductLot);
             productLotService.addProductLot(newProductLot).then(function (response) {
                 console.log(response);
                 var toasterdata;

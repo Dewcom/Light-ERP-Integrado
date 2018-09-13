@@ -201,7 +201,5 @@ class ProductLotService {
             log.error(e)
             throw new LightRuntimeException(messageSource.getMessage("binnacle.action.error", null, Locale.default))
         }
-
-
     }
 }

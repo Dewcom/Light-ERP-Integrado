@@ -283,6 +283,8 @@ class WarehouseOrderService {
                             tmpProductLots[index].quantity = tmpProductLots[index].quantity - tmpQuantity
 
                             productLotService.updateProductLotQuantity(tmpProductLots[index])
+
+                            tmpWarehouseOrder.addToWarehouseOrderDetails(wareho useOrderDetail)
                             tmpQuantity = 0
                         }else{
                             tmpQuantity -= tmpProductLots[index].quantity
