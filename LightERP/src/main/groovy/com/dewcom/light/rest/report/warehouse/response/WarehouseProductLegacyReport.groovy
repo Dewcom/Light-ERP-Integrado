@@ -9,4 +9,5 @@ class WarehouseProductLegacyReport {
     def stock
     def productCost
     def symbol
+    def price
 }

@@ -15,4 +15,5 @@ class WarehouseProductLegacyReportDto {
     def totalDollarsCost //dollarsCost * stock
     def exchangeRate
     def stock
+    def price
 }

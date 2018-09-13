@@ -214,6 +214,7 @@
             var legacyReportcolumnDefs = [
                 {headerName: 'Código de producto', field: 'productCode', minWidth: 150},
                 {headerName: 'Nombre', field: 'productName', minWidth: 150},
+                {headerName: 'Precio', comparator:amountComp, field: 'price', minWidth: 150, cellFormatter: colonCurrencyFormatter, cellClass: 'number-cell'},
                 {headerName: 'Unidad de medida', field: 'symbol', minWidth: 150, sortingOrder: [null]},
                 {headerName: 'Tipo cambio', field: 'exchangeRate', minWidth: 200, cellFormatter: colonCurrencyFormatter, cellClass: 'number-cell', sortingOrder: [null]},
                 {headerName: 'Costo colones', comparator:amountComp, field: 'colonesCost', minWidth: 150, cellFormatter: colonCurrencyFormatter, cellClass: 'number-cell'},
@@ -268,6 +269,7 @@
                         var footerWrapper = {
                             productCode: 'TOTALES:',
                             productName: '',
+                            price: vm.legacyReport.reportSummary.totalPrice,
                             symbol: '',
                             exchangeRate: undefined,
                             colonesCost: vm.legacyReport.reportSummary.totalColonesCost,
@@ -375,8 +377,8 @@
             }
 
             vm.exportLegacyReportAsCvs = function () {
-                var columns=  'TOTALES:,,,,'+vm.legacyReport.reportSummary.totalColonesCost+','+vm.legacyReport.reportSummary.totalDollarsCost+','+vm.legacyReport.reportSummary.totalStock+','+vm.legacyReport.reportSummary.totalColonesCostAmount+','+vm.legacyReport.reportSummary.totalDollarsCostAmount;
-                exportToCsv('warehouseProductLegacyRpt.csv', columns, vm.gridOptionsLegacyReport  );
+                var columns=  'TOTALES:,,'+vm.legacyReport.reportSummary.totalPrice+',,,'+vm.legacyReport.reportSummary.totalColonesCost+','+vm.legacyReport.reportSummary.totalDollarsCost+','+vm.legacyReport.reportSummary.totalStock+','+vm.legacyReport.reportSummary.totalColonesCostAmount+','+vm.legacyReport.reportSummary.totalDollarsCostAmount;
+                exportToCsv('productosAlmacenRpt.csv', columns, vm.gridOptionsLegacyReport  );
             };
 
             vm.exportProductLotHistoryAsCvs = function () {

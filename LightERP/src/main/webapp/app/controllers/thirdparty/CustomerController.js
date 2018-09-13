@@ -153,10 +153,9 @@
                             title: 'Cliente',
                             text: response.message
                         };
-
                     }
                     pop(toasterdata);
-                    init();
+                    $state.reload();
                 }, function (error) {
                     console.log(error);
                 });

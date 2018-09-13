@@ -55,6 +55,9 @@ class CustomerService {
             pcustomer.addresses.each {
                 it.enabled = Constants.ESTADO_INACTIVO
             }
+            pcustomer.contacts.each {
+                it.enabled = Constants.ESTADO_INACTIVO
+            }
             pcustomer.enabled = Constants.ESTADO_INACTIVO;
             pcustomer.save(flush: true, failOnError:true)
         } catch (Exception e) {

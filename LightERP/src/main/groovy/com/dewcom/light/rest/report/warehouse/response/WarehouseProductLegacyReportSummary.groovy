@@ -7,4 +7,5 @@ class WarehouseProductLegacyReportSummary {
     String totalStock= "0"
     String totalColonesCost= "0"
     String totalDollarsCost= "0"
+    String totalPrice= "0"
 }

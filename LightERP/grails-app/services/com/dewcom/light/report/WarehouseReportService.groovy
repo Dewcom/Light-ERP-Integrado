@@ -110,7 +110,7 @@ class WarehouseReportService {
         log.info "====== Getting product legacy report from DB ======"
         try {
 
-            String hqlQuery = "select new map (sum(productLot.quantity) as stock, p.productCode as productCode, p.name as productName, p.cost as productCost, ms.symbol as symbol)"+
+            String hqlQuery = "select new map (sum(productLot.quantity) as stock, p.productCode as productCode, p.name as productName, p.price as price, p.cost as productCost, ms.symbol as symbol)"+
                     " from Product p  join p.measureUnit ms join p.productLot as productLot"
 
             if(productCode){
@@ -136,6 +136,7 @@ class WarehouseReportService {
                 warehouseProductLegacyReportSummary.totalColonesCost = LightUtils.formatDouble(warehouseProductLegacyReportResponse.reportData.colonesCost.sum(), 2)
                 warehouseProductLegacyReportSummary.totalColonesCostAmount = LightUtils.formatDouble(warehouseProductLegacyReportResponse.reportData.totalColonesCost.sum(), 2)
                 warehouseProductLegacyReportSummary.totalDollarsCostAmount = LightUtils.formatDouble(warehouseProductLegacyReportResponse.reportData.totalDollarsCost.sum(), 2)
+                warehouseProductLegacyReportSummary.totalPrice = LightUtils.formatDouble(warehouseProductLegacyReportResponse.reportData.price.sum(), 2)
                 warehouseProductLegacyReportResponse.reportSummary = warehouseProductLegacyReportSummary
                 formatProductLegacyReportAmounts(warehouseProductLegacyReportResponse.reportData)
             }
@@ -189,6 +190,7 @@ class WarehouseReportService {
                 tmpReportObj.stock = it.stock
                 tmpReportObj.exchangeRate = exchangeRate.value
                 tmpReportObj.symbol = it.symbol
+                tmpReportObj.price = it.price
                 results.add(tmpReportObj)
             }
         }
@@ -201,6 +203,7 @@ class WarehouseReportService {
             it.totalDollarsCost = LightUtils.formatDouble(it.totalDollarsCost, 2)
             it.colonesCost = LightUtils.formatDouble(it.colonesCost, 2)
             it.dollarsCost = LightUtils.formatDouble(it.dollarsCost, 2)
+            it.price = LightUtils.formatDouble(it.price, 2)
         }
     }
 }
