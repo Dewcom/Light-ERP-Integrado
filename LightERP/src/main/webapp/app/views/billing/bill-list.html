@@ -23,7 +23,7 @@
                         <div>
                             <div>
                                 <input type="text" name="search" ng-model="controller.search"
-                                       class="form-control"/>
+                                       class="form-control" placeholder="Buscar por Número de factura o Cliente"/>
                             </div>
                         </div>
                     </form>
@@ -52,7 +52,8 @@
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="billObj in controller.billListInf track by $index">
-                                            <td ng-if="billObj.billNumber == null" >{{"PR" + billObj.id }}</td>
+                                            <td ng-if="billObj.billNumber == null && billObj.billState.code == 1" >{{"B" + billObj.id }}</td>
+                                            <td ng-if="billObj.billNumber == null && billObj.billState.code == 6" >{{"PR" + billObj.id }}</td>
                                             <td ng-if="billObj.billNumber != null" >{{controller.formatBillNumber(billObj)}}</td>
                                             <td>{{ billObj.billState.description }}</td>
                                             <td>{{billObj.customer.name + " " + billObj.customer.firstLastName + " " + billObj.customer.secondLastName}}</td>

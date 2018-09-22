@@ -264,45 +264,82 @@
         };
 
         vm.filterBills = function(){
-            var searchCriteria;
+            vm.disableInfScroll = true;
             vm.billListInf = vm.billList;
             var finalFilteredList = [];
-            // Regex para facturas en borrador
-            var re = new RegExp('^[bB]{1}\\d{1,}$');
+            var listById;
+            var searchCriteria;
+            var borradorRegex = new RegExp('^[B]{1}\\d{1,}$');
+            var prefacturaRegex = new RegExp('^PR{1}\\d{1,}$');
 
+            if(vm.search !== undefined && vm.search !== ''){
+                searchCriteria = vm.search.toUpperCase();
+            }
 
-            //Valida que el criterio de busqueda sea un codigo de factura borrador (b12, B23, etc)
-            if (re.test(vm.search)) {
-                //Si es de factura borrador la lista final solo incluye busquedas por id y que el billNumber sea nulo
-                var searchCriteria  = vm.search.replace(vm.search.charAt(0), '');
-                var listById = $filter('filter')(vm.billList, {id: searchCriteria });
-
-                angular.forEach(listById, function (value, key) {
-
-                    if(value.billNumber == null){
-                        finalFilteredList.push(value);
-                    }
-                });
-                vm.disableInfScroll = true;
-            } else if(vm.search == undefined || vm.search == '') {
+            if(searchCriteria === undefined || searchCriteria === ''){
                 // Si el criterio de busqueda es undefined o vacio devuelve la lista al estado original y habilita el infinite scroll
                 finalFilteredList = vm.billList.slice(0, 10);
                 vm.disableInfScroll = false;
-            } else if(vm.search.toUpperCase() == 'B'){
-                // Si el criterio de busqueda es solamente una 'B' busca las facturas borrador y las empresas con B
-                var tmpListById = [];
+            }else if(searchCriteria.startsWith('PR')){
 
-                angular.forEach(vm.billList, function (value, key) {
+                //Valida que el criterio de busqueda sea un codigo de factura borrador (PR12, PR23, etc) y busca solo por id
+                if(prefacturaRegex.test(vm.search)){
+                    searchCriteria = searchCriteria.slice(2);
+                    listById = $filter('filter')(vm.billList, {id: searchCriteria });
 
-                    if(value.billNumber == null){
-                        tmpListById.push(value);
-                    }
-                });
+                    angular.forEach(listById, function (value) {
 
-                var listByCustomer = $filter('filter')(vm.billList, {customer: {name : vm.search }});
-                finalFilteredList = tmpListById.concat(listByCustomer);
-                vm.disableInfScroll = true;
+                        if(value.billNumber == null && value.billState.code === 6){
+                            finalFilteredList.push(value);
+                        }
+                    });
 
+                //Busca todas las facturas con codigo de prefactura y que el numero de factura sea null
+                }else if(searchCriteria === 'PR'){
+
+                    angular.forEach(vm.billList, function (value) {
+
+                        if(value.billNumber == null && value.billState.code === 6){
+                            finalFilteredList.push(value);
+                        }
+                    });
+
+                }else{
+                    //Busca solo por nombre de cliente
+                    listByCustomer = $filter('filter')(vm.billList, {customer: {name : searchCriteria }});
+                    finalFilteredList = listByCustomer;
+                }
+
+            }else if (searchCriteria.startsWith('B')) {
+
+                //Valida que el criterio de busqueda sea un codigo de factura borrador (B12, B23, etc) y busca solo por id
+                if(borradorRegex.test(searchCriteria)){
+                    searchCriteria = searchCriteria.slice(1);
+                    listById = $filter('filter')(vm.billList, {id: searchCriteria });
+
+                    angular.forEach(listById, function (value) {
+
+                        if(value.billNumber == null && value.billState.code === 1){
+                            finalFilteredList.push(value);
+                        }
+                    });
+
+                //Busca todas las facturas con codigo de borrador y que el numero de factura sea null
+                }else if(searchCriteria === 'B'){
+
+                    angular.forEach(vm.billList, function (value) {
+
+                        if(value.billNumber == null && value.billState.code === 1){
+                            finalFilteredList.push(value);
+                        }
+                    });
+
+                }else{
+
+                    //Busca solo por nombre de cliente
+                    listByCustomer = $filter('filter')(vm.billList, {customer: {name : searchCriteria }});
+                    finalFilteredList = listByCustomer;
+                }
             }else{
 
                 if(isNaN(vm.search)){
@@ -316,7 +353,6 @@
                 var listByNumber = $filter('filter')(vm.billList, {billNumber: searchCriteria });
                 var listByCustomer = $filter('filter')(vm.billList, {customer: {name : searchCriteria }});
                 finalFilteredList = listByNumber.concat(listByCustomer);
-                vm.disableInfScroll = true;
             }
 
             vm.billListInf = finalFilteredList;
