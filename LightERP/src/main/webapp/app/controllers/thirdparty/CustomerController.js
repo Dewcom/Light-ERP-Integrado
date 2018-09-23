@@ -102,7 +102,7 @@
         vm.filterCustomers = function(){
             vm.customerListInf = vm.customerList;
 
-            if(vm.search == undefined || vm.search == ''){
+            if(vm.search === undefined || vm.search === ''){
                 vm.customerListInf = vm.customerList.slice(0,10);
                 vm.disableInfScroll = false;
             }else{

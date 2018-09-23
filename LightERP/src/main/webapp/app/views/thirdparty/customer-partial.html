@@ -23,7 +23,7 @@
                         <div>
                             <div>
                                 <input type="text" name="search" ng-model="controller.search"
-                                       class="form-control"/>
+                                       class="form-control" placeholder="Buscar por Nombre o Identificación"/>
                             </div>
                         </div>
                     </form>
@@ -50,12 +50,12 @@
                                     </thead>
                                     <tbody>
                                     <tr ng-repeat="customerObj in controller.customerListInf track by $index">
-                                        <td ng-if="customerObj.firstLastName == null" >{{ ::customerObj.name }}</td>
+                                        <td ng-if="customerObj.firstLastName == null" >{{customerObj.name }}</td>
                                         <td ng-if="customerObj.firstLastName != null"><span ng-bind="customerObj.name + ' ' + customerObj.firstLastName + ' ' + customerObj.secondLastName"></span></td>
-                                        <td>{{ ::customerObj.identification }}</td>
-                                        <td>{{ ::customerObj.phoneNumber1 }}</td>
+                                        <td>{{customerObj.identification}}</td>
+                                        <td>{{customerObj.phoneNumber1 }}</td>
                                         <td ng-if="customerObj.email == null" >**SIN CORREO**</td>
-                                        <td ng-if="customerObj.email != null" >{{ ::customerObj.email }}</td>
+                                        <td ng-if="customerObj.email != null" >{{customerObj.email}}</td>
                                         <td>
                                             <button uib-tooltip="Ver cliente" uib-tooltip-trigger="focus" uib-tooltip-placement="top" type="button" ui-sref="app.customerDetail({customerId: customerObj.id})" class="btn btn-sm btn-toolbar">
                                                 <em class="fa fa-search"></em>
