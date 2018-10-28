@@ -5,4 +5,15 @@ package com.dewcom.light.rest.fe.request.invoice
  */
 class InvoiceKey {
 
+    String branch // sucursal
+    String terminal
+    String type
+    String receipt //comprobante
+    String country
+    String day
+    String month
+    String year
+    String presentationSituation // situacion presentacion
+    String securityCode
+
 }
